@@ -33,6 +33,8 @@ Plugin 'vim-latex/vim-latex'
 Plugin 'prettier/vim-prettier'
 " anderson color scheme
 Plugin 'gilgigilgil/anderson.vim'
+" srecry color scheme
+Plugin 'srcery-colors/srcery-vim'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -41,7 +43,17 @@ call vundle#end()            " required
 " set runtime env to real vim
 let $VIMRUNTIME='/usr/local/share/vim/vim81'
 " best numbering
-set number relativenumber
+if exists('+relativenumber')
+  set number relativenumber  "Display how far away each line is from the current one by default
+    " Switch to absolute line numbers whenever Vim loses focus
+    autocmd FocusLost * :set number
+    autocmd FocusGained * :set relativenumber
+    " Use absolute line numbers when in insert mode and relative numbers when in normal mode
+    autocmd InsertEnter * :set norelativenumber | set number
+    autocmd InsertLeave * :set relativenumber
+else
+    set number          " Show absolute line numbers
+endif
 " highlight current line
 set cursorline
 " disable word wrap
@@ -67,6 +79,7 @@ autocmd StdinReadPre * let s:std_in=1
 autocmd vimenter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
 " exit vim if nerdtree is the last open buffer
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+
 " hide 'help' message
 let g:NERDTreeMinimalUI = 1
 
@@ -84,7 +97,7 @@ set termguicolors
 "  let base16colorspace=256
 "  source ~/.vimrc_background
 "endif
-colorscheme anderson
+colorscheme srcery
 " pretty highlighting
 syntax on
 filetype plugin indent on
@@ -154,13 +167,10 @@ command! MakeTags !ctags -R --exclude=*.pyc
 inoremap <expr> ] getline('.')[getpos('.')[2] - 1] == ']' ? '<Right>' : ']'
 inoremap <expr> ) getline('.')[getpos('.')[2] - 1] == ')' ? '<Right>' : ')'
 inoremap <expr> } getline('.')[getpos('.')[2] - 1] == '}' ? '<Right>' : '}'
-inoremap <expr> > getline('.')[getpos('.')[2] - 1] == '>' ? '<Right>' : '>'
 " auto complete matching symbols
 inoremap [ []<Left>
 inoremap ( ()<Left>
 inoremap { {}<Left>
-inoremap < <><Left>
-inoremap " ""<Left>
 " auto expand grouping symbols
 inoremap [<CR> []<Esc>i<CR><CR><Esc>ki<Tab>
 inoremap (<CR> ()<Esc>i<CR><CR><Esc>ki<Tab>
