@@ -8,18 +8,12 @@ call vundle#begin()
 
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
-" nerdtree
-Plugin 'scrooloose/nerdtree'
-" show git modified in nerdtree
-Plugin 'Xuyuanp/nerdtree-git-plugin'
 " toggle comments on selected lines
 Plugin 'scrooloose/nerdcommenter'
 " commands to surround words
 Plugin 'tpope/vim-surround'
 " pretty colors
 Plugin 'chriskempson/base16-vim'
-" easily align text
-Plugin 'godlygeek/tabular'
 " pretty status line
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
@@ -27,21 +21,23 @@ Plugin 'vim-airline/vim-airline-themes'
 Plugin 'tpope/vim-fugitive'
 " linting
 Plugin 'w0rp/ale'
-" latex
-Plugin 'vim-latex/vim-latex'
 " prettier
 Plugin 'prettier/vim-prettier'
 " anderson color scheme
 Plugin 'gilgigilgil/anderson.vim'
 " srecry color scheme
 Plugin 'srcery-colors/srcery-vim'
+" pretty screenshots
+Plugin 'segeljakt/vim-silicon'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 
 " THE BASICS
 " set runtime env to real vim
-let $VIMRUNTIME='/usr/local/share/vim/vim81'
+if has('nvim')
+	let $VIMRUNTIME='/usr/local/share/vim/vim81'
+endif
 " best numbering
 if exists('+relativenumber')
   set number relativenumber  "Display how far away each line is from the current one by default
@@ -67,21 +63,39 @@ set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 
 
-" NERDTREE
-" auto start nerdtree
-autocmd vimenter * NERDTree
-" don't auto enter nerdtree
-autocmd vimenter * wincmd w
-" automatically start nerdtree in working directory if one is given
-autocmd StdinReadPre * let s:std_in=1
-" set root dir to given directory if one is provided (rather than current
-" directory)
-autocmd vimenter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
-" exit vim if nerdtree is the last open buffer
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-
-" hide 'help' message
-let g:NERDTreeMinimalUI = 1
+" ~NERDTREE~ NETRW
+" disable header
+let g:netrw_banner = 0
+" look like nerdtree
+let g:netrw_liststyle = 3
+let g:netrw_browse_split = 4
+let g:netrw_altv = 1
+" skinnier
+let g:netrw_winsize = 20
+" automatically hide dotfiles/folders
+let ghregex='\(^\|\s\s\)\zs\.\S\+'
+let g:netrw_list_hide=ghregex
+augroup ProjectDrawer
+  autocmd!
+  "autocmd VimEnter * :Vexplore
+augroup END
+let g:NetrwIsOpen=0
+" let it toggle
+function! ToggleNetrw()
+    if g:NetrwIsOpen
+        let i = bufnr("$")
+        while (i >= 1)
+            if (getbufvar(i, "&filetype") == "netrw")
+                silent exe "bwipeout " . i
+            endif
+            let i-=1
+        endwhile
+        let g:NetrwIsOpen=0
+    else
+        let g:NetrwIsOpen=1
+        silent Lexplore
+    endif
+endfunction
 
 
 " ON SAVE
@@ -97,26 +111,33 @@ set termguicolors
 "  let base16colorspace=256
 "  source ~/.vimrc_background
 "endif
-colorscheme srcery
+colorscheme anderson
 " pretty highlighting
 syntax on
 filetype plugin indent on
 set background=dark
 " make fzf match color scheme
-let g:fzf_colors =
-\ { 'fg':      ['fg', 'Normal'],
-  \ 'bg':      ['bg', 'Normal'],
-  \ 'hl':      ['fg', 'Comment'],
-  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-  \ 'hl+':     ['fg', 'Statement'],
-  \ 'info':    ['fg', 'PreProc'],
-  \ 'border':  ['fg', 'Ignore'],
-  \ 'prompt':  ['fg', 'Conditional'],
-  \ 'pointer': ['fg', 'Exception'],
-  \ 'marker':  ['fg', 'Keyword'],
-  \ 'spinner': ['fg', 'Label'],
-  \ 'header':  ['fg', 'Comment'] }
+if has('fzf')
+  let g:fzf_colors =
+  \ { 'fg':      ['fg', 'Normal'],
+    \ 'bg':      ['bg', 'Normal'],
+    \ 'hl':      ['fg', 'Comment'],
+    \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+    \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+    \ 'hl+':     ['fg', 'Statement'],
+    \ 'info':    ['fg', 'PreProc'],
+    \ 'border':  ['fg', 'Ignore'],
+    \ 'prompt':  ['fg', 'Conditional'],
+    \ 'pointer': ['fg', 'Exception'],
+    \ 'marker':  ['fg', 'Keyword'],
+    \ 'spinner': ['fg', 'Label'],
+    \ 'header':  ['fg', 'Comment'] }
+
+  " enable searching with fzf
+  set rtp+=/usr/local/opt/fzf
+
+  nnoremap <silent> <Leader>ff :FZF<CR>
+endif
 
 " SEARCHING
 set path+=**
@@ -129,8 +150,6 @@ set smartcase
 set hlsearch
 " do incremental searching
 set incsearch
-" enable searching with fzf
-set rtp+=/usr/local/opt/fzf
 
 " INDENTING
 set autoindent
@@ -151,11 +170,11 @@ set laststatus=2
 " always show file name and path
 set statusline+="%f"
 
+
 " MAPPINGS
 inoremap jj <Esc>
 nnoremap <silent> <Leader>no :nohl<CR>
-nnoremap <silent> <Leader>ff :FZF<CR>
-nnoremap <silent> <Leader>nt :NERDTreeToggle<CR>
+noremap <silent> <Leader>nt :call ToggleNetrw()<CR>:wincmd l<CR>
 nnoremap <C-e> 3<C-e>
 nnoremap <C-y> 3<C-y>
 nnoremap <silent> <C-h> :wincmd h<CR>
