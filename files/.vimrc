@@ -19,6 +19,8 @@ Plug 'junegunn/fzf.vim'
 " LSP
 if has('nvim-0.5')
     Plug 'neovim/nvim-lsp'
+elseif has('nvim')
+    Plug 'neoclide/coc.nvim'
 endif
 " Git status in gutter
 Plug 'airblade/vim-gitgutter'
@@ -61,11 +63,11 @@ set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set scrolloff=999
 
 " nvim specific
-if has("nvim")
+if has('nvim')
     " preview substitutions
     set inccommand=split
     " enable python
-    let g:python3_host_prog = '/home/agarcia02/nvim-env/bin/python'
+    let g:python3_host_prog = '$HOME/nvim-env/bin/python'
 endif
 
 

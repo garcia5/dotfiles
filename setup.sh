@@ -5,73 +5,93 @@ export NVIM_HOME=$CONFIG_HOME/nvim
 export DF_HOME=$HOME/dotfiles
 
 function usage {
-  echo "USAGE: $0 [bash, brew, nvim, tmux, vim, zsh]"
+    echo "USAGE: $0 [bash, brew, nvim, tmux, vim, zsh]"
 }
 
 function install_brew {
-  exists=`which brew | wc -c`
-  # no brew, install it
-  if [[ $exists == 0 ]]; then
-    # TODO: linuxbrew distinction?
-    echo "No brew installation found, installing..."
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
-  fi
+    exists=`which brew | wc -c`
+    # no brew, install it
+    if [[ $exists == 0 ]]; then
+        # TODO: linuxbrew distinction?
+        echo "No brew installation found, installing..."
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+    fi
 
-  brew update
-  for package in `cat ./files/.brew-installed`; do
-    echo "installing $package"
-    output=`brew install $package`
-  done
+    brew update
+    for package in `cat ./files/.brew-installed`; do
+        echo "installing $package"
+        output=`brew install $package`
+    done
+}
+
+function backup_file {
+    file=$1
+    if [-e $file]; then
+        mv $file "$file.backup"
+    fi
 }
 
 # TODO backup old files if they already exist
 function setup_bash {
-  ln -s "./files/.bashrc" "$HOME/.bashrc"
+    file="$HOME/.bashrc"
+    backup_file $file
+    ln -s "./files/.bashrc" "$file"
 }
 
 function setup_nvim {
-  ln -s "./files/init.vim" "$NVIM_HOME/init.vim"
-  setup_vim
+    if ! [-d $HOME/nvim-env]; then
+        python3 -m venv "$HOME/nvim-env"
+    fi
+    file="$NVIM_HOME/init.vim"
+    backup_file $file
+    ln -s "./files/init.vim" "$file"
+    setup_vim
 }
 
 function setup_tmux {
-  ln -s "./files/.tmux.conf" "$HOME/.tmux.conf"
+    file="$HOME/.tmux.conf"
+    backup_file $file
+    ln -s "./files/.tmux.conf" "$file"
 }
 
 function setup_vim {
-  ln -s "./files/.vimrc" "$HOME/.vimrc"
-  if ! [-d "$HOME/.vim/autoload/"]; then
-     mkdir -p "$HOME/.vim/autoload"
-  fi
-  cp "./files/autoload/*" "$HOME/.vim/autoload/"
+    # install vim plug
+    curl -fLo $HOME/.vim/autoload/plug.vim --create-dirs \
+            https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+    file="$HOME/.vimrc"
+    backup_file $file
+    ln -s "./files/.vimrc" "$file"
 }
 
 function setup_zsh {
-  ln -s "./files/.zshrc" "$HOME/.zshrc"
+    file="$HOME/.zshrc"
+    backup_file $file
+    ln -s "./files/.zshrc" "$file"
 }
 
 for conf in "$@"; do
-  case "$conf" in
-    "bash")
-      setup_bash
-      ;;
-    "brew")
-      setup_brew
-      ;;
-    "nvim")
-      setup_nvim
-      ;;
-    "tmux")
-      setup_tmux
-      ;;
-    "vim")
-      setup_vim
-      ;;
-    "zsh")
-      setup_zsh
-      ;;
-    "*")
-      usage
-      ;;
-  esac
+    case "$conf" in
+        "bash")
+            setup_bash
+            ;;
+        "brew")
+            setup_brew
+            ;;
+        "nvim")
+            setup_nvim
+            ;;
+        "tmux")
+            setup_tmux
+            ;;
+        "vim")
+            setup_vim
+            ;;
+        "zsh")
+            setup_zsh
+            ;;
+        "*")
+            usage
+            ;;
+    esac
 done
