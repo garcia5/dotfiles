@@ -18,7 +18,7 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 " LSP
 if has('nvim-0.5')
-  Plug 'neovim/nvim-lsp'
+    Plug 'neovim/nvim-lsp'
 endif
 " Git status in gutter
 Plug 'airblade/vim-gitgutter'
@@ -59,11 +59,13 @@ set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 " keep it centered
 set scrolloff=999
+
+" nvim specific
 if has("nvim")
-  " preview substitutions
-  set inccommand=split
-  " enable python
-  let g:python3_host_prog = '/home/agarcia02/nvim-env/bin/python'
+    " preview substitutions
+    set inccommand=split
+    " enable python
+    let g:python3_host_prog = '/home/agarcia02/nvim-env/bin/python'
 endif
 
 
@@ -80,25 +82,25 @@ let g:netrw_winsize = 20
 let ghregex='\(^\|\s\s\)\zs\.\S\+'
 let g:netrw_list_hide=ghregex
 augroup ProjectDrawer
-  autocmd!
-  "autocmd VimEnter * :Vexplore
+    autocmd!
+    "autocmd VimEnter * :Vexplore
 augroup END
 let g:NetrwIsOpen=0
 " let it toggle
 function! ToggleNetrw()
-  if g:NetrwIsOpen
-    let i = bufnr("$")
-    while (i >= 1)
-      if (getbufvar(i, "&filetype") == "netrw")
-        silent exe "bwipeout " . i
-      endif
-      let i-=1
-    endwhile
-    let g:NetrwIsOpen=0
-  else
-    let g:NetrwIsOpen=1
-    silent Lexplore
-  endif
+    if g:NetrwIsOpen
+        let i = bufnr("$")
+        while (i >= 1)
+            if (getbufvar(i, "&filetype") == "netrw")
+                silent exe "bwipeout " . i
+            endif
+            let i-=1
+        endwhile
+        let g:NetrwIsOpen=0
+    else
+        let g:NetrwIsOpen=1
+        silent Lexplore
+    endif
 endfunction
 
 
@@ -123,19 +125,19 @@ filetype plugin indent on
 set background=dark
 " make fzf match color scheme
 let g:fzf_colors =
-      \ { 'fg':      ['fg', 'Normal'],
-      \ 'bg':      ['bg', 'Normal'],
-      \ 'hl':      ['fg', 'Comment'],
-      \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-      \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-      \ 'hl+':     ['fg', 'Statement'],
-      \ 'info':    ['fg', 'PreProc'],
-      \ 'border':  ['fg', 'Ignore'],
-      \ 'prompt':  ['fg', 'Conditional'],
-      \ 'pointer': ['fg', 'Exception'],
-      \ 'marker':  ['fg', 'Keyword'],
-      \ 'spinner': ['fg', 'Label'],
-      \ 'header':  ['fg', 'Comment'] }
+            \ { 'fg':      ['fg', 'Normal'],
+            \ 'bg':      ['bg', 'Normal'],
+            \ 'hl':      ['fg', 'Comment'],
+            \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+            \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+            \ 'hl+':     ['fg', 'Statement'],
+            \ 'info':    ['fg', 'PreProc'],
+            \ 'border':  ['fg', 'Ignore'],
+            \ 'prompt':  ['fg', 'Conditional'],
+            \ 'pointer': ['fg', 'Exception'],
+            \ 'marker':  ['fg', 'Keyword'],
+            \ 'spinner': ['fg', 'Label'],
+            \ 'header':  ['fg', 'Comment'] }
 
 
 " SEARCHING
@@ -211,7 +213,7 @@ inoremap <expr> ) getline('.')[getpos('.')[2] - 1] == ')' ? '<Right>' : ')'
 inoremap <expr> } getline('.')[getpos('.')[2] - 1] == '}' ? '<Right>' : '}'
 " auto complete matching symbols (if necessary)
 function! WhitespaceNext()
-   return match(getline('.')[getpos('.')[2] - 1], '\S') !=? -1
+    return match(getline('.')[getpos('.')[2] - 1], '\S') !=? -1
 endfunction
 inoremap <expr> [ WhitespaceNext() == '1' ? '[' : '[]<Left>'
 inoremap <expr> ( WhitespaceNext() == '1' ? '(' : '()<Left>'
@@ -222,13 +224,13 @@ inoremap (<CR> ()<Left><CR><CR><Up><Tab>
 inoremap {<CR> {}<Left><CR><CR><Up><Tab>
 
 function! ToggleFocus()
-let g:expanded='false'
-  if( g:expanded ==? 'false' )
-    wincmd |
-    wincmd _
-    let g:expanded = 'true'
-  else
-    wincmd =
-    let g:expanded = 'false'
-  endif
+    let g:expanded='false'
+    if( g:expanded ==? 'false' )
+        wincmd |
+        wincmd _
+        let g:expanded = 'true'
+    else
+        wincmd =
+        let g:expanded = 'false'
+    endif
 endfunction
