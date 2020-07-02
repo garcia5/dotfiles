@@ -8,7 +8,7 @@ function usage {
     echo "USAGE: $0 [bash, brew, nvim, tmux, vim, zsh]"
 }
 
-function install_brew {
+function setup_brew {
     exists=`which brew | wc -c`
     # no brew, install it
     if [[ $exists == 0 ]]; then
@@ -26,32 +26,32 @@ function install_brew {
 
 function backup_file {
     file=$1
-    if [-e $file]; then
+    if [ -e $file ]; then
         mv $file "$file.backup"
     fi
 }
 
-# TODO backup old files if they already exist
 function setup_bash {
-    file="$HOME/.bashrc"
+    file="$HOME/.bash_profile"
     backup_file $file
-    ln -s "./files/.bashrc" "$file"
+    ln -s "$DF_HOME/files/.bash_profile" "$file"
+    echo "source ~/.bash_profile" >> ~/.bashrc
 }
 
 function setup_nvim {
-    if ! [-d $HOME/nvim-env]; then
+    if ! [ -d $HOME/nvim-env ]; then
         python3 -m venv "$HOME/nvim-env"
     fi
     file="$NVIM_HOME/init.vim"
     backup_file $file
-    ln -s "./files/init.vim" "$file"
+    ln -s "$DF_HOME/files/init.vim" "$file"
     setup_vim
 }
 
 function setup_tmux {
     file="$HOME/.tmux.conf"
     backup_file $file
-    ln -s "./files/.tmux.conf" "$file"
+    ln -s "$DF_HOME/files/.tmux.conf" "$file"
 }
 
 function setup_vim {
@@ -61,19 +61,20 @@ function setup_vim {
 
     file="$HOME/.vimrc"
     backup_file $file
-    ln -s "./files/.vimrc" "$file"
+    ln -s "$DF_HOME/files/.vimrc" "$file"
 }
 
 function setup_zsh {
     file="$HOME/.zshrc"
     backup_file $file
-    ln -s "./files/.zshrc" "$file"
+    ln -s "$DF_HOME/files/.zshrc" "$file"
 }
 
 for conf in "$@"; do
     case "$conf" in
         "bash")
             setup_bash
+            source "~/.bashrc"
             ;;
         "brew")
             setup_brew
@@ -90,6 +91,14 @@ for conf in "$@"; do
         "zsh")
             setup_zsh
             ;;
+        "all")
+            setup_brew
+            setup_bash
+            source "~/.bashrc"
+            setup_nvim
+            setup_tmux
+            setup_zsh
+	    ;;
         "*")
             usage
             ;;
