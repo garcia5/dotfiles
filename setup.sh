@@ -1,7 +1,8 @@
 #!/bin/bash
 
-export CONFIG_HOME=$HOME/.config/
-export NVIM_HOME=$HOME/.config/nvim
+export CONFIG_HOME=$HOME/.config
+export NVIM_HOME=$CONFIG_HOME/nvim
+export DF_HOME=$HOME/dotfiles
 
 function usage {
   echo "USAGE: $0 [bash, brew, nvim, tmux, vim, zsh]"
@@ -23,12 +24,14 @@ function install_brew {
   done
 }
 
+# TODO backup old files if they already exist
 function setup_bash {
   ln -s "./files/.bashrc" "$HOME/.bashrc"
 }
 
 function setup_nvim {
   ln -s "./files/init.vim" "$NVIM_HOME/init.vim"
+  setup_vim
 }
 
 function setup_tmux {
@@ -37,6 +40,10 @@ function setup_tmux {
 
 function setup_vim {
   ln -s "./files/.vimrc" "$HOME/.vimrc"
+  if ! [-d "$HOME/.vim/autoload/"]; then
+     mkdir -p "$HOME/.vim/autoload"
+  fi
+  cp "./files/autoload/*" "$HOME/.vim/autoload/"
 }
 
 function setup_zsh {

@@ -59,9 +59,11 @@ set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 " keep it centered
 set scrolloff=999
-" preview substitutions
 if has("nvim")
+  " preview substitutions
   set inccommand=split
+  " enable python
+  let g:python3_host_prog = '/home/agarcia02/nvim-env/bin/python'
 endif
 
 
@@ -103,12 +105,6 @@ endfunction
 " FOLDING
 set foldmethod=indent
 set foldlevelstart=99
-
-
-" ON SAVE
-" remove trailing whitespace
-"autocmd BufWritePre * :%s/\s\+$//e
-nnoremap <silent> <Leader>tt :%s/\s\+$//e<CR>
 
 
 " COLORS
@@ -161,7 +157,7 @@ set incsearch
 " INDENTING
 set autoindent
 set smarttab
-" <Tab> = 2 spaces
+" <Tab> = 4 spaces
 set shiftwidth=4
 set ts=4
 set softtabstop=4
@@ -178,6 +174,7 @@ set statusline+="%f"
 " MAPPINGS
 nnoremap ; :
 nnoremap : ;
+nnoremap K -J
 inoremap jj <Esc>
 nnoremap <silent> <Leader>no :nohl<CR>
 " toggle Netrw
@@ -187,6 +184,8 @@ nnoremap <silent> <C-h> :wincmd h<CR>
 nnoremap <silent> <C-j> :wincmd j<CR>
 nnoremap <silent> <C-k> :wincmd k<CR>
 nnoremap <silent> <C-l> :wincmd l<CR>
+" trim whitespace
+nnoremap <silent> <Leader>tt :%s/\s\+$//e<CR>
 " search files
 nnoremap <silent> <Leader>ff :FZF<CR>
 "search open buffers
@@ -198,9 +197,32 @@ nnoremap <silent> <Leader>gg :Rg<CR>
 command! MakeTags !ctags -R --exclude=*.pyc
 " toggle focus
 nnoremap <silent> <Leader>z :call ToggleFocus()<CR>
+" custom text objects
+for char in [ '_', '.', ':', ',', ';', '<bar>', '/', '<bslash>', '*', '+', '-', '#' ]
+    execute 'xnoremap i' . char . ' :<C-u>normal! T' . char . 'vt' . char . '<CR>'
+    execute 'onoremap i' . char . ' :normal vi' . char . '<CR>'
+    execute 'xnoremap a' . char . ' :<C-u>normal! F' . char . 'vf' . char . '<CR>'
+    execute 'onoremap a' . char . ' :normal va' . char . '<CR>'
+endfor
 
-let g:expanded='false'
+" skip over closing grouping symbols
+inoremap <expr> ] getline('.')[getpos('.')[2] - 1] == ']' ? '<Right>' : ']'
+inoremap <expr> ) getline('.')[getpos('.')[2] - 1] == ')' ? '<Right>' : ')'
+inoremap <expr> } getline('.')[getpos('.')[2] - 1] == '}' ? '<Right>' : '}'
+" auto complete matching symbols (if necessary)
+function! WhitespaceNext()
+   return match(getline('.')[getpos('.')[2] - 1], '\S') !=? -1
+endfunction
+inoremap <expr> [ WhitespaceNext() == '1' ? '[' : '[]<Left>'
+inoremap <expr> ( WhitespaceNext() == '1' ? '(' : '()<Left>'
+inoremap <expr> { WhitespaceNext() == '1' ? '{' : '{}<Left>'
+" auto expand grouping symbols
+inoremap [<CR> []<Left><CR><CR><Up><Tab>
+inoremap (<CR> ()<Left><CR><CR><Up><Tab>
+inoremap {<CR> {}<Left><CR><CR><Up><Tab>
+
 function! ToggleFocus()
+let g:expanded='false'
   if( g:expanded ==? 'false' )
     wincmd |
     wincmd _
