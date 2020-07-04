@@ -62,14 +62,6 @@ set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 " keep it centered
 set scrolloff=999
 
-" nvim specific
-if has('nvim')
-    " preview substitutions
-    set inccommand=split
-    " enable python
-    let g:python3_host_prog = '$HOME/nvim-env/bin/python'
-endif
-
 
 " ~NERDTREE~ NETRW
 " disable header
