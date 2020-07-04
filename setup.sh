@@ -35,10 +35,11 @@ function setup_bash {
     file="$HOME/.bash_profile"
     backup_file $file
     ln -s "$DF_HOME/files/.bash_profile" "$file"
-    echo "source ~/.bash_profile" >> ~/.bashrc
+    echo "source $HOME/.bash_profile" >> ~/.bashrc
 }
 
 function setup_nvim {
+    # Create python environment for vim first
     if ! [ -d $HOME/nvim-env ]; then
         python3 -m venv "$HOME/nvim-env"
     fi
@@ -55,9 +56,9 @@ function setup_tmux {
 }
 
 function setup_vim {
-    # install vim plug
+    # install vim plug first
     curl -fLo $HOME/.vim/autoload/plug.vim --create-dirs \
-            https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
     file="$HOME/.vimrc"
     backup_file $file
@@ -98,7 +99,7 @@ for conf in "$@"; do
             setup_nvim
             setup_tmux
             setup_zsh
-	    ;;
+            ;;
         "*")
             usage
             ;;

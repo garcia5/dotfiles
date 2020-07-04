@@ -1,3 +1,5 @@
+export DF_HOME="$HOME/dotfiles"
+export HOMEBREW_PREFIX=`brew --prefix`
 export TERM="xterm-256color"
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
@@ -130,6 +132,6 @@ eval "$(rbenv init -)"
 alias la='ls -aG'
 alias ll="ls -halt"
 alias ls='ls -G'
-alias vim='nvim'
+alias vim='source $HOME/nvim-env/bin/activate && nvim'
 alias pip='pip3'
 alias python='python3'
