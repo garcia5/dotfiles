@@ -1,26 +1,33 @@
+" PLUG {{{
 call plug#begin(stdpath('data') . '/plugged')
-" toggle comments on selected lines
 Plug 'scrooloose/nerdcommenter'
-" commands to surround words
-Plug 'tpope/vim-surround'
-" pretty status line
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-" prettier
-Plug 'prettier/vim-prettier'
 " FZF
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 " better fzf integration
 Plug 'junegunn/fzf.vim'
-" LSP and things
+" LSP
 if has('nvim-0.5')
-    Plug 'neovim/nvim-lsp'
-    Plug 'neovim/nvim-lspconfig'
-    Plug 'nvim-lua/completion-nvim'
+  Plug 'neovim/nvim-lsp'
+  Plug 'neovim/nvim-lspconfig'
+  Plug 'nvim-lua/completion-nvim'
+  Plug 'Shougo/deoplete-lsp'
+  Plug 'nvim-lua/popup.nvim'
+  Plug 'nvim-lua/plenary.nvim'
+  Plug 'neovim/nvim-lspconfig'
+  "Plug 'nvim-lua/telescope.nvim'
 endif
 " Git status in gutter
 Plug 'airblade/vim-gitgutter'
-" " Colorschemes
+" Auto complete pairs
+Plug 'jiangmiao/auto-pairs'
+" Surround
+Plug 'tpope/vim-surround'
+" ... and make them repeatable
+Plug 'tpope/vim-repeat'
+
+" Colorschemes
 " anderson color scheme
 Plug 'gilgigilgil/anderson.vim'
 " srecry color scheme
@@ -29,39 +36,120 @@ Plug 'srcery-colors/srcery-vim'
 Plug 'phanviet/vim-monokai-pro'
 " corvine
 Plug 'arzg/vim-corvine'
+" pretty colors
+Plug 'chriskempson/base16-vim'
+" better syntax highlighting
+Plug 'sheerun/vim-polyglot'
+
+" format on save
+Plug 'lukas-reineke/format.nvim'
+
+" icons
+"Plug 'ryanoasis/vim-devicons'
 call plug#end()
+" }}}
 
 
-" BASICS
+" BASICS {{{
 if has('nvim-0.5')
     let g:builtin_lsp=v:true
 endif
+set rtp+=/home/linuxbrew/.linuxbrew/opt/fzf
 set number
 set cursorline
-set mouse="a"
-set backspace=indent,eol,start
+set nowrap
+" no bells!
+set noerrorbells
+set vb t_vb=
 set completeopt=menuone,noinsert,noselect
 " preview :s commands
 set inccommand=split
-let g:python_host_prog='/usr/local/bin/python'
-let g:python3_host_prog="$HOME/nvim-env/bin/python"
-augroup Python
+let g:python3_host_prog='/home/agarcia02/.linuxbrew/bin/python3'
+augroup Filetype_setup
     autocmd BufReadPre,FileReadPre *.py set ft=python
+    autocmd BufReadPre,FileReadPre *.ts set ft=typescript
+    autocmd BufReadPre,FileReadPre *.vue$ set ft=vue
+    autocmd BufReadPre,FileReadPre *.yaml set ft=yaml
 augroup END
 set noswapfile
+set backspace=indent,eol,start
+set lcs=tab:»·,eol:↲,nbsp:␣,extends:…,precedes:<,extends:>,trail:·
+set list
+set scrolloff=15
+set hidden " Change buffers without having to save
+set encoding=utf8
+set formatoptions-=o " O and o, don't continue comments
+set formatoptions+=r " But do continue when pressing enter.
+set foldmethod=marker " fold on curly braces
+" }}}
 
 
-" INDENTING
-set autoindent
-set smarttab
-" <Tab> = 4 spaces
-set shiftwidth=4
-set ts=4
-set softtabstop=4
-set expandtab
+" ON SAVE {{{
+lua <<EOF
+require 'format'.setup {
+    python = {
+        {cmd={"yapf -i"}}
+    }
+}
+EOF
+augroup OnSave
+    autocmd!
+    autocmd BufWritePre * FormatWrite
+augroup END
+" }}}
 
 
-" NETRW
+" COLORS {{{
+" let colors display correctly
+set t_co=256
+set termguicolors
+" pretty highlighting
+syntax on
+filetype plugin indent on
+set background=dark
+" base16 settings
+if (v:true) " to toggle base16 colors
+    if filereadable(expand("~/.vimrc_background"))
+      let base16colorspace=256
+      source ~/.vimrc_background
+    endif
+    let g:airline_theme='base16_gruvbox_dark_hard'
+else
+    colorscheme monokai_pro
+    let g:airline_theme='ayu_dark'
+endif
+" make fzf match color scheme
+"let g:fzf_colors = {
+            "\ 'fg':      ['fg', 'Normal'],
+            "\ 'bg':      ['bg', 'Normal'],
+            "\ 'hl':      ['fg', 'Comment'],
+            "\ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+            "\ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+            "\ 'hl+':     ['fg', 'Statement'],
+            "\ 'info':    ['fg', 'PreProc'],
+            "\ 'border':  ['fg', 'Ignore'],
+            "\ 'prompt':  ['fg', 'Conditional'],
+            "\ 'pointer': ['fg', 'Exception'],
+            "\ 'marker':  ['fg', 'Keyword'],
+            "\ 'spinner': ['fg', 'Label'],
+            "\ 'header':  ['fg', 'Comment'] }
+" }}}
+
+
+" FONTS {{{
+let g:webdevicons_enable = 1
+let g:airline_powerline_fonts = 1
+let g:webdevicons_enable_airline_statusline = 1
+" }}}
+
+
+" GIT(gutter) {{{
+set updatetime=100
+let g:gitgutter_git_executable='/usr/bin/git'
+" }}}
+
+
+" NETRW {{{
 " disable header
 let g:netrw_banner = 0
 " look like nerdtree
@@ -73,6 +161,10 @@ let g:netrw_winsize = 20
 " automatically hide dotfiles/folders
 let ghregex='\(^\|\s\s\)\zs\.\S\+'
 let g:netrw_list_hide=ghregex
+augroup ProjectDrawer
+    autocmd!
+    "autocmd VimEnter * :Vexplore
+augroup END
 let g:NetrwIsOpen=0
 " let it toggle
 function! ToggleNetrw()
@@ -90,43 +182,10 @@ function! ToggleNetrw()
         silent Lexplore
     endif
 endfunction
+" }}}
 
 
-" COLORS
-" let colors display correctly
-set t_co=256
-set termguicolors
-" set vim base16 color scheme based on termianl color scheme
-"if filereadable(expand("~/.vimrc_background"))
-"let base16colorspace=256
-"source ~/.vimrc_background
-"endif
-colorscheme srcery
-" pretty highlighting
-syntax enable
-filetype plugin on
-set background=dark
-" make fzf match color scheme
-let g:fzf_colors = {
-            \ 'fg':      ['fg', 'Normal'],
-            \ 'bg':      ['bg', 'Normal'],
-            \ 'hl':      ['fg', 'Comment'],
-            \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-            \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-            \ 'hl+':     ['fg', 'Statement'],
-            \ 'info':    ['fg', 'PreProc'],
-            \ 'border':  ['fg', 'Ignore'],
-            \ 'prompt':  ['fg', 'Conditional'],
-            \ 'pointer': ['fg', 'Exception'],
-            \ 'marker':  ['fg', 'Keyword'],
-            \ 'spinner': ['fg', 'Label'],
-            \ 'header':  ['fg', 'Comment'] }
-
-
-" SEARCHING
-" enable searching with fzf
-set rtp+=/usr/local/bin/fzf
-" look everywhere
+" SEARCH {{{
 set path+=.,**
 " tab complete on :file
 set wildmenu
@@ -137,74 +196,87 @@ set smartcase
 set hlsearch
 " do incremental searching
 set incsearch
+" }}}
 
 
-" MAPPINGS
-let mapleader = " "
+" INDENTING {{{
+set autoindent
+set smarttab
+" <Tab> = 4 spaces
+set shiftwidth=4
+set ts=4
+set softtabstop=4
+set expandtab
+" }}}
+
+
+" STATUS LINE {{{
+" always show status line
+set laststatus=2
+" always show file name and path
+set statusline+="%f"
+" }}}
+
+
+" TERMINAL {{{
+augroup term
+    autocmd TermOpen * startinsert
+    autocmd TermOpen * setlocal nonumber
+    autocmd BufEnter * if &buftype == 'terminal' | startinsert | endif
+augroup end
+" }}}
+
+
+" MAPPINGS {{{
 inoremap jj <Esc>
-nnoremap <leader>S :source %<CR>
-nnoremap <leader>no :nohl<CR>
+let mapleader=" "
+nnoremap <silent> <Leader>no :nohl<CR>
 
-" move around better
-nnoremap <silent> <C-j> :wincmd j<CR>
-nnoremap <silent> <C-k> :wincmd k<CR>
-nnoremap <silent> <C-h> :wincmd h<CR>
-nnoremap <silent> <C-l> :wincmd l<CR>
+" toggle paste
+nnoremap <silent> <Leader>pp :set paste!<CR>
 
-" Terminal mappings
-" " esc exits terminal
-tnoremap <Esc> <C-\><C-n>
-" " movemint
-tnoremap <A-h> <C-\><C-n><C-w>h
-tnoremap <A-j> <C-\><C-n><C-w>j
-tnoremap <A-k> <C-\><C-n><C-w>k
-tnoremap <A-l> <C-\><C-n><C-w>l
+" trim trailing whitespace
+nnoremap <silent> <Leader>tt :%s/\s\+$//<CR>
 
-noremap <silent> <Leader>nt :call ToggleNetrw()<CR>:wincmd l<CR>
+" LSP specific binds
+nnoremap <silent> <leader><c-]>                 <cmd>lua vim.lsp.buf.definition()<CR>
+nnoremap <silent> <leader><leader>k             <cmd>lua vim.lsp.buf.hover()<CR>
+nnoremap <silent> <leader><leader>f             <cmd>lua vim.lsp.buf.signature_help()<CR>
+nnoremap <silent> <leader><leader>d             <cmd>lua vim.lsp.buf.implementation()<CR>
+nnoremap <silent> <leader><leader>r             <cmd>lua vim.lsp.buf.references()<CR>
+nnoremap <silent> <leader><leader>s             <cmd>lua vim.lsp.buf.rename()<CR>
+nnoremap <silent> <leader><leader>h             <cmd>lua vim.lsp.buf.code_action()<CR>
+nnoremap <silent> <leader><leader>i             <cmd>lua vim.lsp.buf.incoming_calls()<CR>
+nnoremap <silent> <leader>dn                    <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
+nnoremap <silent> <leader>dp                    <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
+" Show all diagnostics in one place
+nnoremap <silent> <leader>da                    <cmd>vim.lsp.diagnostic.set_loclist()<CR>
 
-" trim whitespace
-nnoremap <silent> <Leader>tt :%s/\s\+$//e<CR>
-" search files
-nnoremap <silent> <Leader>ff :FZF<CR>
+" Movemint
+nnoremap <silent> <C-h> <C-w>h
+nnoremap <silent> <C-j> <C-w>j
+nnoremap <silent> <C-k> <C-w>k
+nnoremap <silent> <C-l> <C-w>l
+
+" search all files, respecting .gitignore if one exists
+nnoremap <silent> <Leader>ff <cmd>:Files<CR>
 "search open buffers
-nnoremap <silent> <Leader>fb :Buffers<CR>
-" search lines in open buffers
-nnoremap <silent> <Leader>fl :Lines<CR>
+nnoremap <silent> <Leader>fb <cmd>:Buffers<CR>
+"search lines in open buffers
+nnoremap <silent> <Leader>fl <cmd>:Lines<CR>
 " search all lines in project
-nnoremap <silent> <Leader>gg :Rg<CR>
-nnoremap <silent> <Leader>z :call ToggleFocus()<CR>
-" custom text objects
-for char in [ '_', '.', ':', ',', ';', '<bar>', '/', '<bslash>', '*', '+', '-', '#' ]
-    execute 'xnoremap i' . char . ' :<C-u>normal! T' . char . 'vt' . char . '<CR>'
-    execute 'onoremap i' . char . ' :normal vi' . char . '<CR>'
-    execute 'xnoremap a' . char . ' :<C-u>normal! F' . char . 'vf' . char . '<CR>'
-    execute 'onoremap a' . char . ' :normal va' . char . '<CR>'
-endfor
+nnoremap <silent> <Leader>gg <cmd>:Rg<CR>
 
-" skip over closing grouping symbols
-inoremap <expr> ] getline('.')[getpos('.')[2] - 1] == ']' ? '<Right>' : ']'
-inoremap <expr> ) getline('.')[getpos('.')[2] - 1] == ')' ? '<Right>' : ')'
-inoremap <expr> } getline('.')[getpos('.')[2] - 1] == '}' ? '<Right>' : '}'
-" auto complete matching symbols (if necessary)
-function! WhitespaceNext()
-    return match(getline('.')[getpos('.')[2] - 1], '\S') !=? -1
-endfunction
-inoremap <expr> [ WhitespaceNext() == '1' ? '[' : '[]<Left>'
-inoremap <expr> ( WhitespaceNext() == '1' ? '(' : '()<Left>'
-inoremap <expr> { WhitespaceNext() == '1' ? '{' : '{}<Left>'
-" auto expand grouping symbols
-inoremap [<CR> []<Left><CR><CR><Up><Tab>
-inoremap (<CR> ()<Left><CR><CR><Up><Tab>
-inoremap {<CR> {}<Left><CR><CR><Up><Tab>
-
-function! ToggleFocus()
-    let g:expanded='false'
-    if( g:expanded ==? 'false' )
-        wincmd |
-        wincmd _
-        let g:expanded = 'true'
-    else
-        wincmd =
-        let g:expanded = 'false'
-    endif
-endfunction
+nnoremap <silent> <Leader>nt :call ToggleNetrw()<CR>
+" toggle list chars
+nnoremap <silent> <Leader>sl :set list!<CR>
+"
+" Terminal mappings
+" remap escape
+tnoremap <Esc><Esc> <C-\><C-n>
+" movemint from terminal 'insert' mode
+tnoremap <C-h> <C-\><C-n><C-w>h
+tnoremap <C-j> <C-\><C-n><C-w>j
+tnoremap <C-k> <C-\><C-n><C-w>k
+tnoremap <C-l> <C-\><C-n><C-w>l
+" }}}
