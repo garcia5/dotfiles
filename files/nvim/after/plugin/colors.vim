@@ -11,8 +11,8 @@ if (v:false)                                       "  to toggle base16 colors
       AirlineTheme base16_snazzy                   "  Make statusline match nvim colors
     endif
 else
-    colorscheme base16-snazzy
-    AirlineTheme base16_snazzy
+    colorscheme monokai_pro
+    AirlineTheme minimalist
 endif
 
 " Make FZF window match color scheme

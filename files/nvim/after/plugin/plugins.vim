@@ -65,7 +65,6 @@ function! ToggleFocus()
         let g:expanded = 'false'
     endif
 endfunction
-nnoremap <silent> <Leader>z :call ToggleFocus()<CR>
 
 " Terminal setup
 augroup term

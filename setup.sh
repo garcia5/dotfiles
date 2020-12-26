@@ -5,7 +5,26 @@ export NVIM_HOME=$CONFIG_HOME/nvim
 export DF_HOME=$HOME/dotfiles
 
 function usage {
-    echo "USAGE: $0 [bash, brew, nvim, tmux, vim, zsh]"
+    echo "USAGE: $0 [bash, brew, nvim, tmux, zsh]"
+}
+
+function backup_file {
+    file=$1
+    echo "backing up '$file' to '$file.backup'"
+    if [ -e $file ]; then
+        mv $file "$file.backup"
+    fi
+}
+
+function backup_dir {
+    dir=$1
+    echo "backing up '$dir' to '$dir backup'"
+    if [ -d $dir ]; then
+        mv $dir "$dir backup"
+    fi
+    if [[ -L $dir && -d $dir ]]; then
+        rm $dir
+    fi
 }
 
 function setup_brew {
@@ -24,13 +43,6 @@ function setup_brew {
     done
 }
 
-function backup_file {
-    file=$1
-    if [ -e $file ]; then
-        mv $file "$file.backup"
-    fi
-}
-
 function setup_bash {
     file="$HOME/.bash_profile"
     backup_file $file
@@ -39,10 +51,9 @@ function setup_bash {
 }
 
 function setup_nvim {
-    file="$NVIM_HOME/init.vim"
-    backup_file $file
-    ln -s "$DF_HOME/files/init.vim" "$file"
-    setup_vim
+    dir="$NVIM_HOME"
+    backup_dir $dir
+    ln -s "$DF_HOME/files/nvim" "$dir"
 }
 
 function setup_tmux {
@@ -68,7 +79,7 @@ function setup_zsh {
 }
 
 for conf in "$@"; do
-    echo "This only barely works. Do not trust it to do anything useful\n"
+    echo "setting up $conf..."
     case "$conf" in
         "bash")
             setup_bash
@@ -82,9 +93,6 @@ for conf in "$@"; do
             ;;
         "tmux")
             setup_tmux
-            ;;
-        "vim")
-            setup_vim
             ;;
         "zsh")
             setup_zsh
@@ -103,3 +111,5 @@ for conf in "$@"; do
             ;;
     esac
 done
+echo "Done!"
+exit 0

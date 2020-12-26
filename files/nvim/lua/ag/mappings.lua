@@ -22,6 +22,9 @@ mapper("n", "<Leader>co", "<cmd>:Colors<CR>")
 -- Toggle netrw
 mapper("n", "<Leader>nt", ":call ToggleNetrw()<CR>")
 
+-- Toggle focus
+mapper("n", "<Leader>z", ":call ToggleFocus()<CR>")
+
 -- Movemint
 mapper("n", "<C-j>", "<C-w>j")
 mapper("n", "<C-h>", "<C-w>h")
@@ -34,3 +37,5 @@ mapper("t", "<C-j>", [[<C-\><C-n><C-w>j]])
 mapper("t", "<C-h>", [[<C-\><C-n><C-w>h]])
 mapper("t", "<C-k>", [[<C-\><C-n><C-w>k]])
 mapper("t", "<C-l>", [[<C-\><C-n><C-w>l]])
+-- open new term in vertical split
+mapper("n", "<Leader>tn", ":vnew<CR><C-w><C-l>:term<CR>")

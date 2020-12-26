@@ -6,10 +6,10 @@ local install_path = fn.stdpath('data')..'/site/pack/packer/opt/packer.nvim'
 
 if fn.empty(fn.glob(install_path)) > 0 then
     execute('!git clone https://github.com/wbthomason/packer.nvim '..install_path)
-    execute 'packadd packer.nvim'
 end
 
-vim.cmd [[packadd packer.nvim]]
+execute 'packadd packer.nvim'
+
 
 -- Install plugins
 return require('packer').startup(function()
@@ -32,13 +32,13 @@ return require('packer').startup(function()
     use 'nvim-lua/plenary.nvim'
     use 'nvim-treesitter/nvim-treesitter'
     -- Git status in gutter
-    use 'airblade/vim-gitgutter'
+    use {'airblade/vim-gitgutter', opt = true}
     -- Surround
     use 'tpope/vim-surround'
     -- ... and make them repeatable
     use 'tpope/vim-repeat'
     -- Line it up
-    use 'godlygeek/tabular'
+    use {'godlygeek/tabular', opt = true}
 
     -- Colorschemes
     -- anderson color scheme
