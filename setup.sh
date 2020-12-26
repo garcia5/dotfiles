@@ -20,7 +20,7 @@ function setup_brew {
     brew update
     for package in `cat ./files/.brew-installed`; do
         echo "installing $package"
-        output=`brew install $package`
+        brew install $package
     done
 }
 
@@ -69,8 +69,6 @@ function setup_zsh {
 
 for conf in "$@"; do
     echo "This only barely works. Do not trust it to do anything useful\n"
-    usage
-    exit 1
     case "$conf" in
         "bash")
             setup_bash
@@ -90,6 +88,7 @@ for conf in "$@"; do
             ;;
         "zsh")
             setup_zsh
+            source "~/.zshrc"
             ;;
         "all")
             setup_brew

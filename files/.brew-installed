@@ -2,11 +2,13 @@ autoconf
 automake
 autopep8
 bat
+binaryen
 bison
 bzip2
 cmake
 ctags
 curl
+emscripten
 eslint
 flake8
 fzf
@@ -15,7 +17,9 @@ gettext
 gh
 ghostscript
 go
+gopls
 gperf
+htop
 icu4c
 jemalloc
 jpeg
@@ -39,11 +43,13 @@ luarocks
 m4
 mercurial
 mongodb-community
+mongodb-database-tools
 msgpack
 ncurses
 neovim
 nim
 node
+openjdk
 openssl
 openssl@1.1
 pandoc
@@ -60,6 +66,7 @@ pylint
 python
 python@2
 python@3.8
+python@3.9
 rbenv
 readline
 ripgrep
@@ -67,12 +74,14 @@ ruby
 ruby-build
 screenfetch
 snappy
+sphinx-doc
 spotify-tui
 sqlite
 sqliteodbc
 thefuck
 tmux
 tree
+tree-sitter
 unibilium
 universal-ctags
 unixodbc
@@ -82,5 +91,6 @@ vim
 wget
 xz
 yarn
+yuicompressor
 zlib
 zsh
