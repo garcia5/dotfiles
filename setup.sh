@@ -39,10 +39,6 @@ function setup_bash {
 }
 
 function setup_nvim {
-    # Create python environment for vim first
-    if ! [ -d $HOME/nvim-env ]; then
-        python3 -m venv "$HOME/nvim-env"
-    fi
     file="$NVIM_HOME/init.vim"
     backup_file $file
     ln -s "$DF_HOME/files/init.vim" "$file"
@@ -72,6 +68,9 @@ function setup_zsh {
 }
 
 for conf in "$@"; do
+    echo "This only barely works. Do not trust it to do anything useful\n"
+    usage
+    exit 1
     case "$conf" in
         "bash")
             setup_bash
