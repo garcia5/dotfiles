@@ -1,5 +1,4 @@
 export DF_HOME="$HOME/dotfiles"
-export HOMEBREW_PREFIX=`brew --prefix`
 export TERM="xterm-256color"
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
@@ -24,7 +23,7 @@ ZSH_THEME="af-magic"
 
 # Uncomment the following line to use hyphen-insensitive completion.
 # Case-sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
+HYPHEN_INSENSITIVE="true"
 
 # Uncomment the following line to disable bi-weekly auto-update checks.
 # DISABLE_AUTO_UPDATE="true"
@@ -44,15 +43,15 @@ ZSH_THEME="af-magic"
 # DISABLE_AUTO_TITLE="true"
 
 # Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
+ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
-# COMPLETION_WAITING_DOTS="true"
+COMPLETION_WAITING_DOTS="true"
 
 # Uncomment the following line if you want to disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories
 # much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
+DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # Uncomment the following line if you want to change the command execution time
 # stamp shown in the history command output.
@@ -79,6 +78,11 @@ plugins=(
 
 source $ZSH/oh-my-zsh.sh
 
+# Base16 Shell
+BASE16_SHELL="$HOME/.config/base16-shell/"
+[ -n "$PS1" ] && \
+    [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
+        eval "$("$BASE16_SHELL/profile_helper.sh")"
 # User configuration
 
 # export MANPATH="/usr/local/man:$MANPATH"
@@ -88,24 +92,26 @@ export PATH="/usr/local/opt/ruby/bin:$PATH"
 export PATH="/usr/local/bin:$PATH"
 export PATH="/usr/local/Cellar:$PATH"
 
+export HOMEBREW_PREFIX=`brew --prefix`
+
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
- if [[ -n $SSH_CONNECTION ]]; then
-   export EDITOR='vim'
- else
-   export EDITOR='nvim'
- fi
+if [[ -n $SSH_CONNECTION ]]; then
+  export EDITOR='vim'
+else
+  export EDITOR='nvim'
+fi
 
- # vi mode
- bindkey -v
+# vi mode
+bindkey -v
 
- # colors
- export TERM=screen-256color
+# colors
+export TERM=screen-256color
 
- autoload -Uz compinit && compinit
- zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+autoload -Uz compinit && compinit
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 
  # FZF things
 export FZF_BASE=$(brew --prefix)/bin/fzf
@@ -132,6 +138,8 @@ eval "$(rbenv init -)"
 alias la='ls -aG'
 alias ll="ls -halt"
 alias ls='ls -G'
-alias vim='source $HOME/nvim-env/bin/activate && nvim'
-alias pip='pip3'
+alias vim='nvim'
 alias python='python3'
+alias pip='pip3'
+
+alias claer='clear'
