@@ -1,9 +1,11 @@
-vim.g.mapleader                = " "
-vim.g.python3_host_prog        = '/usr/local/bin/python3'
-vim.g.bulitin_lsp              = true
+-- Essentials
+vim.g.mapleader         = " "
+vim.g.python3_host_prog = '/usr/local/bin/python3'
+vim.g.bulitin_lsp       = true
 
 require('ag.plugins') -- load my plugins
 
+-- Behaviors
 vim.wo.number                  = true                        -- absolute numbers for easier screen sharing
 vim.wo.cursorline              = true                        -- highlight current line
 vim.o.belloff                  = 'all'                       -- NO BELLS!
@@ -13,7 +15,9 @@ vim.o.inccommand               = 'nosplit'                   -- previow %s comma
 vim.o.hidden                   = true                        -- move away from unsaved buffers
 vim.o.updatetime               = 100                         -- stop typing quickly
 vim.bo.undofile                = true                        -- keep track of my 'undo's between sessions
+vim.g.python_recommended_style = 0                           -- I know how I like my python
 
+-- Look and feel
 vim.wo.list                    = true                                               -- show list chars
 vim.o.lcs                      = 'tab:»·,eol:↲,nbsp:␣,extends:…,precedes:<,trail:·' -- these list chars
 vim.o.scrolloff                = 10                                                 -- padding between cursor and top/bottom of window
@@ -24,6 +28,7 @@ vim.o.splitright               = true                                           
 vim.o.splitbelow               = true                                               -- prefer splitting below
 vim.wo.wrap                    = false                                              -- don't wrap my text
 
+-- Searching
 vim.cmd([[set path +=.,**]]) -- search from project root
 vim.o.wildmenu      = true   -- tab complete on command line
 vim.o.ignorecase    = true   -- case insensitive search...
@@ -31,7 +36,6 @@ vim.o.smartcase     = true   -- unless I use caps
 vim.o.hlsearch      = true   -- highlight matching text
 vim.o.incsearch     = true   -- search while I type
 
-vim.g.python_recommended_style = 0 -- I know how I like my python
 
 require('ag.mappings') -- Load keymaps
 

@@ -17,17 +17,17 @@ paq 'nvim-lua/popup.nvim'
 paq 'nvim-lua/plenary.nvim'
 paq 'nvim-treesitter/nvim-treesitter'
 -- Git status in gutter
-paq {'airblade/vim-gitgutter'}
+paq 'airblade/vim-gitgutter'
 -- Surround
 paq 'tpope/vim-surround'
 -- ... and make them repeatable
 paq 'tpope/vim-repeat'
 -- Line it up
-paq {'godlygeek/tabular'}
+paq 'godlygeek/tabular'
 -- format on save
 paq 'lukas-reineke/format.nvim'
 -- git integration
-paq {'tpope/vim-fugitive'}
+paq 'tpope/vim-fugitive'
 
 -- Colorschemes
 -- anderson color scheme
