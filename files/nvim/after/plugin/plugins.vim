@@ -54,8 +54,8 @@ inoremap (<CR> ()<Left><CR><CR><Up><Tab>
 inoremap {<CR> {}<Left><CR><CR><Up><Tab>
 
 " Zoomer
+let g:expanded='false'
 function! ToggleFocus()
-    let g:expanded='false'
     if( g:expanded ==? 'false' )
         wincmd |
         wincmd _
