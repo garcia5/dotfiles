@@ -69,6 +69,5 @@ endfunction
 " Terminal setup
 augroup term
     autocmd TermOpen * startinsert
-    autocmd TermOpen * setlocal nonumber norelativenumber
     autocmd BufEnter * if &buftype == 'terminal' | startinsert | endif
 augroup end
