@@ -121,6 +121,7 @@ export FZF_DEFAULT_OPTS="--height 40% --border --layout=reverse \
     echo {} 2> /dev/null | head -200'"
 export FZF_DEFAULT_COMMAND='rg --files'
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+export FZF_CTRL_T_COMMAND='rg --files'
 
 eval "$(rbenv init -)"
 
