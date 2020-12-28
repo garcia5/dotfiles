@@ -5,9 +5,8 @@ paq{'savq/paq-nvim', opt=true}     -- Let Paq manage itself
 paq 'scrooloose/nerdcommenter'
 paq 'vim-airline/vim-airline'
 paq 'vim-airline/vim-airline-themes'
--- use brew installed FZF for nvim
--- Same as doing rtp+='/usr/local/bin/fzf'
-vim.g.rtp = '/usr/local/bin/fzf'
+-- make sure we always have a good FZF
+paq 'junegunn/fzf'
 -- better fzf integration
 paq 'junegunn/fzf.vim'
 -- LSP

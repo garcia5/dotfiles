@@ -114,13 +114,12 @@ autoload -Uz compinit && compinit
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 
  # FZF things
-export FZF_BASE=$(brew --prefix)/bin/fzf
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_OPTS="--height 40% --border --layout=reverse \
   --preview='([[ -f {} ]] && (bat --style=numbers --color=always {} || cat {})) || \
     ([[ -d {} ]] && (tree -C {} | less)) || \
     echo {} 2> /dev/null | head -200'"
 export FZF_DEFAULT_COMMAND='rg --files'
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_CTRL_T_COMMAND='rg --files'
 
 eval "$(rbenv init -)"
