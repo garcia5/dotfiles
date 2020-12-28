@@ -7,9 +7,6 @@ let g:netrw_browse_split = 4
 let g:netrw_altv = 1
 " skinnier
 let g:netrw_winsize = 20
-" automatically hide dotfiles/folders
-let ghregex='\(^\|\s\s\)\zs\.\S\+'
-let g:netrw_list_hide=ghregex
 let g:NetrwIsOpen=0
 " let it toggle
 function! ToggleNetrw()
@@ -29,4 +26,3 @@ function! ToggleNetrw()
 endfunction
 " Navigate left instead of refreshing
 au Filetype netrw nmap <buffer> <silent> <C-l> <C-w>l
-
