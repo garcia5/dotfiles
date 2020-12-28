@@ -1,8 +1,6 @@
 vim.g.mapleader         = " "
 vim.g.python3_host_prog = '/usr/local/bin/python3'
 vim.g.bulitin_lsp       = true
-vim.cmd('syntax on')
-vim.cmd('filetype plugin indent on')
 
 require('ag.plugins')
 

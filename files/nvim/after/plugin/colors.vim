@@ -8,11 +8,9 @@ set background=dark                                "  dark theme
 if (v:false)                                       "  to toggle base16 colors
     if filereadable(expand("~/.vimrc_background"))
       source ~/.vimrc_background                   "  Make nvim colors match term colors
-      AirlineTheme base16_snazzy                   "  Make statusline match nvim colors
     endif
 else
-    colorscheme monokai_pro
-    AirlineTheme minimalist
+    colorscheme base16-porple
 endif
 
 " Make FZF window match color scheme
