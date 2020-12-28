@@ -39,3 +39,9 @@ mapper("t", "<C-k>", [[<C-\><C-n><C-w>k]])
 mapper("t", "<C-l>", [[<C-\><C-n><C-w>l]])
 -- open new term in vertical split
 mapper("n", "<Leader>tn", ":vnew<CR><C-w><C-l>:term<CR>")
+
+-- Fugitive
+mapper("n", "<Leader>gs", "<cmd>:Gstatus<CR>")
+mapper("n", "<Leader>gd", "<cmd>:Gdiffsplit<CR>")
+mapper("n", "<Leader>gb", "<cmd>:Gblame<CR>")
+mapper("n", "<Leader>gc", "<cmd>:Gcommit<CR>")
