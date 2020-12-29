@@ -14,7 +14,7 @@ vim.o.swapfile                 = false                       -- swap files annoy
 vim.o.inccommand               = 'nosplit'                   -- previow %s commands as I type
 vim.o.hidden                   = true                        -- move away from unsaved buffers
 vim.o.updatetime               = 100                         -- stop typing quickly
-vim.bo.undofile                = true                        -- keep track of my 'undo's between sessions
+vim.o.undofile                 = true                        -- keep track of my 'undo's between sessions
 vim.g.python_recommended_style = 0                           -- I know how I like my python
 
 -- Look and feel
@@ -35,7 +35,6 @@ vim.o.ignorecase    = true   -- case insensitive search...
 vim.o.smartcase     = true   -- unless I use caps
 vim.o.hlsearch      = true   -- highlight matching text
 vim.o.incsearch     = true   -- search while I type
-
 
 require('ag.mappings') -- Load keymaps
 
