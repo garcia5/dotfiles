@@ -8,6 +8,8 @@ let g:netrw_browse_split = 4
 let g:netrw_altv         = 1
 " skinnier
 let g:netrw_winsize      = 20
+" don't keep history
+let g:netrw_dirhistmax   = 0
 
 " let it toggle
 let g:NetrwIsOpen        = 0

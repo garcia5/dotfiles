@@ -28,6 +28,8 @@ paq 'godlygeek/tabular'
 paq 'lukas-reineke/format.nvim'
 -- git integration
 paq 'tpope/vim-fugitive'
+-- that fancy start screen with the cow
+paq 'mhinz/vim-startify'
 
 -- Colorschemes
 -- anderson color scheme
@@ -40,3 +42,6 @@ paq 'phanviet/vim-monokai-pro'
 paq 'arzg/vim-corvine'
 -- pretty colors
 paq 'chriskempson/base16-vim'
+
+-- NOTE
+-- If :h <plugin> does not work, run :helptags ALL to add them
