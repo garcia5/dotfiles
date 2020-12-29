@@ -30,6 +30,11 @@ mapper("n", "<C-j>", "<C-w>j")
 mapper("n", "<C-h>", "<C-w>h")
 mapper("n", "<C-k>", "<C-w>k")
 mapper("n", "<C-l>", "<C-w>l")
+-- Move without firing 'BufEnter' autocommands
+mapper("n", "<M-j>", ":noautocmd wincmd j<CR>")
+mapper("n", "<M-h>", ":noautocmd wincmd h<CR>")
+mapper("n", "<M-k>", ":noautocmd wincmd k<CR>")
+mapper("n", "<M-l>", ":noautocmd wincmd l<CR>")
 
 -- Term
 mapper("t", "<Esc><Esc>", [[<C-\><C-n>]])
@@ -38,7 +43,7 @@ mapper("t", "<C-h>", [[<C-\><C-n><C-w>h]])
 mapper("t", "<C-k>", [[<C-\><C-n><C-w>k]])
 mapper("t", "<C-l>", [[<C-\><C-n><C-w>l]])
 -- open new term in vertical split
-mapper("n", "<Leader>tn", ":vnew<CR><C-w><C-l>:term<CR>")
+mapper("n", "<Leader>tn", ":vs | term<CR>")
 
 -- Fugitive
 mapper("n", "<Leader>gs", "<cmd>:Gstatus<CR>")
