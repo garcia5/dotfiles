@@ -10,7 +10,7 @@ if (v:false)                                       "  to toggle base16 colors
       source ~/.vimrc_background                   "  Make nvim colors match term colors
     endif
 else
-    colorscheme base16-porple
+    colorscheme base16-atelier-dune
 endif
 
 " Make FZF window match color scheme
