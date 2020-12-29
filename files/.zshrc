@@ -142,4 +142,8 @@ alias vim='nvim'
 alias python='python3'
 alias pip='pip3'
 
+alias gs='git status'
+alias gd='git diff'
+alias gpush='git push'
+
 alias claer='clear'
