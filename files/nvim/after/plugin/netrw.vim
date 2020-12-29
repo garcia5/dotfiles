@@ -1,14 +1,16 @@
 " Netrw
+
 " disable header
-let g:netrw_banner = 0
+let g:netrw_banner       = 0
 " look like nerdtree
-let g:netrw_liststyle = 3
+let g:netrw_liststyle    = 3
 let g:netrw_browse_split = 4
-let g:netrw_altv = 1
+let g:netrw_altv         = 1
 " skinnier
-let g:netrw_winsize = 20
-let g:NetrwIsOpen=0
+let g:netrw_winsize      = 20
+
 " let it toggle
+let g:NetrwIsOpen        = 0
 function! ToggleNetrw()
     if g:NetrwIsOpen
         let i = bufnr("$")

@@ -12,3 +12,6 @@ augroup term
     " Enter insert mode any time I enter the terminal
     autocmd BufEnter * if &buftype == 'terminal' | startinsert | endif
 augroup end
+
+" exit vim if netrw is the last open buffer
+autocmd BufEnter * if winnr("$") == 1 && &filetype == 'netrw' | q | endif

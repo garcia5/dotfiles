@@ -1,16 +1,12 @@
 " Let colors display properly
-set t_co=256
 set termguicolors
-let base16colorspace=256
+let base16colorspace = 256
+set background       = dark
 
-
-set background=dark                                "  dark theme
-if (v:false)                                       "  to toggle base16 colors
-    if filereadable(expand("~/.vimrc_background"))
-      source ~/.vimrc_background                   "  Make nvim colors match term colors
-    endif
+if (v:false && filereadable(expand('~/.vimrc_background'))) " Match terminal color scheme
+    source ~/.vimrc_background
 else
-    colorscheme base16-atelier-dune
+    colorscheme base16-atelier-dune                         " Or just manually set colorscheme
 endif
 
 " Make FZF window match color scheme
