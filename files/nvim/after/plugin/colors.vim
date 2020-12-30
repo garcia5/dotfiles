@@ -6,7 +6,7 @@ set background=dark
 if (v:false && filereadable(expand('~/.vimrc_background'))) " Match terminal color scheme
     source ~/.vimrc_background
 else
-    colorscheme base16-horizon-dark                         " Or just manually set colorscheme
+    colorscheme base16-gruvbox-dark-pale                    " Or just manually set colorscheme
 endif
 
 " Make FZF window match color scheme
@@ -29,3 +29,6 @@ let g:fzf_colors = {
 let g:webdevicons_enable                    = 1
 let g:airline_powerline_fonts               = 1
 let g:webdevicons_enable_airline_statusline = 1
+
+" Highlighting
+let g:Illuminate_ftblacklist = ['fzf', 'netrw', 'startify'] " Disable for non-normal buffers
