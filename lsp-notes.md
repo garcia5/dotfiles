@@ -1,7 +1,7 @@
 # Initial setup
-0. Get `pyls_ms` setup
+0. Get `pyls` setup
  - Install dotnet if necessary
- - `:LspInstall pyls_ms`
+ - `$ pip install python_language_server[all]`
  - Make sure to install to nvim virtual environment if one is set up
 
 # init.vim
@@ -33,6 +33,6 @@ let g:python3_host_prog="$HOME/nvim-env/bin/python"
 set noswapfile
 ```
 # LSP configuration
-All LSP configuration is done *once* in `lua/lsp_config.lua`. Add `lua require'lsp_config'` to source file
+All LSP configuration is done *once* in `lua/ag/lsp_config.lua`. Add `lua require'ag.lsp_config'` to source file
 
 Mappings are set up here that only apply if an LSP client is attached, and this makes sure that the client only attaches once.
