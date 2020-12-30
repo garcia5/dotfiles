@@ -1,5 +1,6 @@
 local lspconfig = require('lspconfig')
 local completion = require('completion')
+local illuminate = require('illuminate')
 
 local mapper = function(mode, key, result)
     vim.api.nvim_buf_set_keymap(0, mode, key, "<cmd>lua " .. result .. "<CR>", {noremap = true, silent = true})
@@ -9,6 +10,7 @@ end
 local custom_attach = function(client)
 
     completion.on_attach(client)
+    illuminate.on_attach(client)
 
     -- set up mappings (only apply when LSP client attached)
     mapper("n", "K", "vim.lsp.buf.hover()")

@@ -29,3 +29,8 @@ let g:fzf_colors = {
 let g:webdevicons_enable                    = 1
 let g:airline_powerline_fonts               = 1
 let g:webdevicons_enable_airline_statusline = 1
+
+" Define 'LspReferenceText' highlight group for vim-illuminate
+" TODO: figure this out
+hi def link LspReferenceText CursorLine
+hi illuminatedWord cterm=underline gui=underline
