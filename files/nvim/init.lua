@@ -18,7 +18,7 @@ vim.o.undofile                 = true                        -- keep track of my
 
 -- Look and feel
 vim.wo.list                    = true                                               -- show list chars
-vim.o.lcs                      = 'tab:»·,eol:↵,nbsp:␣,extends:…,precedes:…,trail:·' -- these list chars
+vim.o.listchars                = 'tab:»·,eol:↵,nbsp:␣,extends:…,precedes:…,trail:·' -- these list chars
 vim.o.scrolloff                = 10                                                 -- padding between cursor and top/bottom of window
 vim.wo.foldmethod              = 'marker'                                           -- fold on {{{...}}} by default
 vim.wo.foldlevel               = 99                                                 -- default to all folds open
