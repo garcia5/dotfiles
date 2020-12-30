@@ -10,4 +10,3 @@ Symlinks the associated configuration file to the one in this repo and creates a
 
 ## TODO
 - Figure out `vim-illuminate` hl groups https://github.com/RRethy/vim-illuminate#lsp-configuration
-- Make `:Rg` command only search file contents, (exclude file names)
