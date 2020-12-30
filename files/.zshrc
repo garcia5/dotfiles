@@ -119,8 +119,8 @@ export FZF_DEFAULT_OPTS="--height 40% --border --layout=reverse \
   --preview='([[ -f {} ]] && (bat --style=numbers --color=always {} || cat {})) || \
     ([[ -d {} ]] && (tree -C {} | less)) || \
     echo {} 2> /dev/null | head -200'"
-export FZF_DEFAULT_COMMAND='rg --files'
-export FZF_CTRL_T_COMMAND='rg --files'
+export FZF_DEFAULT_COMMAND='rg --files --smart-case'
+export FZF_CTRL_T_COMMAND='rg --files --smart-case'
 
 eval "$(rbenv init -)"
 
