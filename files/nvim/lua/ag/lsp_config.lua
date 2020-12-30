@@ -10,7 +10,12 @@ end
 local custom_attach = function(client)
 
     completion.on_attach(client)
-    illuminate.on_attach(client)
+    require('illuminate').on_attach(client)
+    -- Tell illuminate how to illuminate
+    vim.api.nvim_command [[ hi def link LspReferenceText CursorLine ]]
+    vim.api.nvim_command [[ hi def link LspReferenceRead CursorLine ]]
+    vim.api.nvim_command [[ hi def link LspReferenceWrite CursorLine ]]
+
 
     -- set up mappings (only apply when LSP client attached)
     mapper("n", "K", "vim.lsp.buf.hover()")
