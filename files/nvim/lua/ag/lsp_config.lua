@@ -60,3 +60,24 @@ lspconfig.pyls.setup({
         },
     }
 })
+
+lspconfig.vimls.setup({
+    on_attach=custom_attach,
+})
+
+lspconfig.sumneko_lua.setup({
+    cmd = {
+        "/Users/alexander/.cache/nvim/lspconfig/sumneko_lua/lua-language-server/bin/macOS/lua-language-server",
+        "-E",
+        "/Users/alexander/.cache/nvim/lspconfig/sumneko_lua/lua-language-server/main.lua"
+    },
+    on_attach=custom_attach,
+    settings = {
+      Lua = {
+        diagnostics = {
+          enable = true,
+          globals = { "vim" },
+        },
+      }
+    },
+})
