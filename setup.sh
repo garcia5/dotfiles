@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export CONFIG_HOME=$HOME/.config
+export CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
 export NVIM_HOME=$CONFIG_HOME/nvim
 export DF_HOME=$HOME/dotfiles
 
@@ -19,28 +19,23 @@ function backup_file {
 function backup_dir {
     dir=$1
     echo "backing up '$dir' to '$dir backup'"
-    if [ -d $dir ]; then
-        mv $dir "$dir backup"
-    fi
     if [[ -L $dir && -d $dir ]]; then
         rm $dir
+    elif [[ -d $dir ]]; then
+        mv $dir "$dir backup"
     fi
 }
 
 function setup_brew {
-    exists=`which brew | wc -c`
+    exists=$(command -v brew)
     # no brew, install it
-    if [[ $exists == 0 ]]; then
+    if [[ ! $exists ]]; then
         # TODO: linuxbrew distinction?
         echo "No brew installation found, installing..."
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
     fi
 
     brew update
-    for package in `cat ./files/.brew-installed`; do
-        echo "installing $package"
-        brew install $package
-    done
 }
 
 function setup_bash {
@@ -51,9 +46,15 @@ function setup_bash {
 }
 
 function setup_nvim {
-    dir="$NVIM_HOME"
+    setup_brew
+    # install package manager, paq-nvim
+    git clone https://github.com/savq/paq-nvim.git \
+        "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/pack/paqs/opt/paq-nvim
+    if [[ ! $(command -v nvim) ]]; then
+        brew install --HEAD neovim
+    fi
     backup_dir $dir
-    ln -s "$DF_HOME/files/nvim" "$dir"
+    ln -s "$DF_HOME/files/nvim" "$NVIM_HOME"
 }
 
 function setup_tmux {
