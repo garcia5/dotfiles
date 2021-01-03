@@ -8,12 +8,12 @@ mapper("i", "jj", "<Esc>")
 mapper("n", "<Leader>no", ":nohl<CR>")
 
 -- FZF integration
-mapper("n", "<Leader>ff", "<cmd>:Files<CR>")         -- search all files, respecting .gitignore if one exists
-mapper("n", "<Leader>fb", "<cmd>:Buffers<CR>")       -- search open buffers
-mapper("n", "<Leader>fl", "<cmd>:Lines<CR>")         -- search lines in open buffers
-mapper("n", "<Leader>gg", "<cmd>:Rg<CR>")            -- search all lines in project
-mapper("n", "<Leader>fr", "<cmd>:References<CR>")    -- search references to symbol under cursor
-mapper("n", "<Leader>co", "<cmd>:Colors<CR>")        -- Fuzzy find colorschemes
+mapper("n", "<Leader>ff", "<cmd>Files<cr>")         -- search all files, respecting .gitignore if one exists
+mapper("n", "<Leader>fb", "<cmd>Buffers<CR>")       -- search open buffers
+mapper("n", "<Leader>fl", "<cmd>Lines<CR>")         -- search lines in open buffers
+mapper("n", "<Leader>gg", "<cmd>Rg<CR>")            -- search all lines in project
+mapper("n", "<Leader>fr", "<cmd>References<CR>")    -- search references to symbol under cursor
+mapper("n", "<Leader>co", "<cmd>Colors<CR>")        -- Fuzzy find colorschemes
 
 mapper("n", "<Leader>nt", ":call ToggleNetrw()<CR>") -- Toggle netrw
 

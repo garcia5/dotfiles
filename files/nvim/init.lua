@@ -3,18 +3,18 @@ vim.g.mapleader         = " "
 vim.g.python3_host_prog = '/usr/local/bin/python3'
 vim.g.bulitin_lsp       = true
 
-require('ag.plugins') -- load my plugins
+require('ag') -- load my lua configs
 
 -- Behaviors
-vim.wo.number                  = true                        -- absolute numbers for easier screen sharing
-vim.wo.cursorline              = true                        -- highlight current line
-vim.o.belloff                  = 'all'                       -- NO BELLS!
-vim.o.completeopt              = 'menuone,noinsert,noselect' -- ins-completion how I like it
-vim.o.swapfile                 = false                       -- swap files annoy me
-vim.o.inccommand               = 'nosplit'                   -- previow %s commands as I type
-vim.o.hidden                   = true                        -- move away from unsaved buffers
-vim.o.updatetime               = 100                         -- stop typing quickly
-vim.o.undofile                 = true                        -- keep track of my 'undo's between sessions
+vim.wo.number     = true                        -- absolute numbers for easier screen sharing
+vim.wo.cursorline = true                        -- highlight current line
+vim.o.belloff     = 'all'                       -- NO BELLS!
+vim.o.completeopt = 'menuone,noinsert,noselect' -- ins-completion how I like it
+vim.o.swapfile    = false                       -- swap files annoy me
+vim.o.inccommand  = 'nosplit'                   -- previow %s commands as I type
+vim.o.hidden      = true                        -- move away from unsaved buffers
+vim.o.updatetime  = 100                         -- stop typing quickly
+vim.o.undofile    = true                        -- keep track of my 'undo's between sessions
 
 -- Look and feel
 vim.wo.list                    = true                                               -- show list chars
@@ -35,8 +35,3 @@ vim.o.ignorecase    = true   -- case insensitive search...
 vim.o.smartcase     = true   -- unless I use caps
 vim.o.hlsearch      = true   -- highlight matching text
 vim.o.incsearch     = true   -- search while I type
-
-require('ag.mappings')   -- Load keymaps
-require('ag.format')     -- format.nvim
-require('ag.lsp_config') -- LSP
-require('ag.treesitter') -- treesitter
