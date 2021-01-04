@@ -39,21 +39,37 @@ end
 -- - enable only syntax/unused warnings
 lspconfig.pyls.setup({
     on_attach=custom_attach,
-    plugins={
-        pylint={
-            enabled=true
-        },
-        pyflakes={
-            enabled=false
-        },
-        pydocstyle={
-            enabled=false
-        },
-        rope_completion={
-            enabled=false
-        },
-        yapf={
-            enabled=true
+    settings = {
+        pyls = {
+            configurationSources={"flake8"},
+            plugins={
+                pylint={
+                    enabled=false,
+                    args={"--disable=R,C"},
+                    executable="/home/linuxbrew/.linuxbrew/bin/pylint"
+                },
+                pyflakes={
+                    enabled=true
+                },
+                pydocstyle={
+                    enabled=false
+                },
+                pycodestyle={
+                    enabled=false
+                },
+                rope_completion={
+                    enabled=false
+                },
+                yapf={
+                    enabled=true
+                },
+                mccabe={
+                    enabled=false
+                },
+                preload={
+                    enabled=false
+                },
+            }
         }
     }
 })
