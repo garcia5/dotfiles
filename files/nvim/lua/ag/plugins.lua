@@ -22,7 +22,6 @@ paq 'tpope/vim-repeat'                -- ... and make them repeatable
 paq 'godlygeek/tabular'               -- Line it up
 paq 'lukas-reineke/format.nvim'       -- format on save
 paq 'tpope/vim-fugitive'              -- git integration
-paq 'mhinz/vim-startify'              -- that fancy start screen with the cow
 paq 'RRethy/vim-illuminate'           -- highlight occurrances of symbol under cursor
 
 -- Colorschemes
