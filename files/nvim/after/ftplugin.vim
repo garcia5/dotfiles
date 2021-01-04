@@ -9,7 +9,6 @@ set formatoptions-=2       " ... that's just weird
 
 " <Tab> Behavior
 set autoindent  " continue indentation to new line
-set smartindent " make grouping symbol indentation match
 set smarttab    " <Tab> behaves as expected
 set shiftwidth=4        " autoindent uses 4 spaces
 set tabstop=4        " <Tab> appears as 4 spaces

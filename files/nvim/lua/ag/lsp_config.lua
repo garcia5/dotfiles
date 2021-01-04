@@ -10,7 +10,7 @@ end
 local custom_attach = function(client)
 
     completion.on_attach(client)
-    --illuminate.on_attach(client) -- this throws errors, disable for now
+    illuminate.on_attach(client)
     -- Tell illuminate how to illuminate
     vim.api.nvim_command [[ hi def link LspReferenceText CursorLine ]]
     vim.api.nvim_command [[ hi def link LspReferenceRead CursorLine ]]
@@ -31,20 +31,35 @@ local custom_attach = function(client)
     vim.bo.omnifunc = 'v:lua.vim.lsp.omnifunc'
 end
 
--- set up clients
-
+-- Set up clients
 -- python
+-- TODO: Figure out how to show only what I want
+-- this could mean either/or...
+-- - turn off style warnings
+-- - enable only syntax/unused warnings
 lspconfig.pyls.setup({
     on_attach=custom_attach,
     plugins={
         pylint={
-            enabled=true,
+            enabled=true
+        },
+        pyflakes={
+            enabled=false
+        },
+        pydocstyle={
+            enabled=false
+        },
+        rope_completion={
+            enabled=false
         },
         yapf={
             enabled=true
-        },
-        pycodestyle={
-            enabled=false,
-        },
+        }
     }
 })
+
+-- typescript
+lspconfig.tsserver.setup{on_attach=custom_attach}
+
+-- vue
+lspconfig.vuels.setup{on_attach=custom_attach}
