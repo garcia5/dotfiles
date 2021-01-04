@@ -8,12 +8,12 @@ mapper("i", "jj", "<Esc>")
 mapper("n", "<Leader>no", ":nohl<CR>")
 
 -- FZF integration
-mapper("n", "<Leader>ff", "<cmd>:Files<CR>")         -- search all files, respecting .gitignore if one exists
-mapper("n", "<Leader>fb", "<cmd>:Buffers<CR>")       -- search open buffers
-mapper("n", "<Leader>fl", "<cmd>:Lines<CR>")         -- search lines in open buffers
-mapper("n", "<Leader>gg", "<cmd>:Rg<CR>")            -- search all lines in project
-mapper("n", "<Leader>fr", "<cmd>:References<CR>")    -- search references to symbol under cursor
-mapper("n", "<Leader>co", "<cmd>:Colors<CR>")        -- Fuzzy find colorschemes
+mapper("n", "<Leader>ff", "<cmd>Files<CR>")         -- search all files, respecting .gitignore if one exists
+mapper("n", "<Leader>fb", "<cmd>Buffers<CR>")       -- search open buffers
+mapper("n", "<Leader>fl", "<cmd>Lines<CR>")         -- search lines in open buffers
+mapper("n", "<Leader>gg", "<cmd>Rg<CR>")            -- search all lines in project
+mapper("n", "<Leader>fr", "<cmd>References<CR>")    -- search references to symbol under cursor
+mapper("n", "<Leader>co", "<cmd>Colors<CR>")        -- Fuzzy find colorschemes
 
 mapper("n", "<Leader>nt", ":call ToggleNetrw()<CR>") -- Toggle netrw
 
@@ -39,10 +39,12 @@ mapper("t", "<C-l>",     [[<C-\><C-n><C-w>l]])
 
 mapper("n", "<Leader>tn", ":vs | term<CR>") -- open new term in vertical split
 
--- Fugitive
-mapper("n", "<Leader>gs", "<cmd>:Gstatus<CR>")
-mapper("n", "<Leader>gd", "<cmd>:Gdiffsplit<CR>")
-mapper("n", "<Leader>gb", "<cmd>:Gblame<CR>")
-mapper("n", "<Leader>gc", "<cmd>:Gcommit<CR>")
-mapper("n", "<Leader>gp", "<cmd>:Gpush<CR>")
-mapper("n", "<Leader>gP", "<cmd>:Gpull<CR>")
+-- Fugitive/Git
+mapper("n" , "<Leader>gs" , "<cmd>Gstatus<CR>")
+mapper("n" , "<Leader>gd" , "<cmd>Gdiffsplit<CR>")
+mapper("n" , "<Leader>gb" , "<cmd>Gblame<CR>")
+mapper("n" , "<Leader>gc" , "<cmd>Gcommit<CR>")
+mapper("n" , "<Leader>gp" , "<cmd>Gpush<CR>")
+mapper("n" , "<Leader>gP" , "<cmd>Gpull<CR>")
+mapper("n" , "gn"         , "<cmd>GitGutterNextHunk<CR>")
+mapper("n" , "gN"         , "<cmd>GitGutterPrevHunk<CR>")

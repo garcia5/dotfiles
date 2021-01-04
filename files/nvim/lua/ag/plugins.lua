@@ -15,7 +15,7 @@ paq 'neovim/nvim-lsp'                 -- LSP
 paq 'neovim/nvim-lspconfig'           -- basic configurations for LSP client
 paq 'gfanto/fzf-lsp.nvim'             -- fuzzy search LSP objects with fzf
 paq 'nvim-lua/completion-nvim'        -- autocomplete
-paq 'nvim-treesitter/nvim-treesitter' -- treesitter
+paq {'nvim-treesitter/nvim-treesitter', hook=function() vim.cmd [[TSUpdate]] end} -- treesitter
 paq 'airblade/vim-gitgutter'          -- Git status in gutter
 paq 'tpope/vim-surround'              -- Surround
 paq 'tpope/vim-repeat'                -- ... and make them repeatable

@@ -10,7 +10,7 @@ end
 local custom_attach = function(client)
 
     completion.on_attach(client)
-    illuminate.on_attach(client)
+    --illuminate.on_attach(client) -- this throws errors, disable for now
     -- Tell illuminate how to illuminate
     vim.api.nvim_command [[ hi def link LspReferenceText CursorLine ]]
     vim.api.nvim_command [[ hi def link LspReferenceRead CursorLine ]]
@@ -37,47 +37,14 @@ end
 lspconfig.pyls.setup({
     on_attach=custom_attach,
     plugins={
-        configuration_sources={
-            "pylint", "yapf"
-        },
         pylint={
             enabled=true,
         },
         yapf={
             enabled=true
         },
-        black={
-            enabled=false
-        },
         pycodestyle={
-            enabled=false
-        },
-        rope_completion={
-            enabled=false
-        },
-        mccabe={
-            enabled=false
+            enabled=false,
         },
     }
-})
-
-lspconfig.vimls.setup({
-    on_attach=custom_attach,
-})
-
-lspconfig.sumneko_lua.setup({
-    cmd = {
-        "/Users/alexander/.cache/nvim/lspconfig/sumneko_lua/lua-language-server/bin/macOS/lua-language-server",
-        "-E",
-        "/Users/alexander/.cache/nvim/lspconfig/sumneko_lua/lua-language-server/main.lua"
-    },
-    on_attach=custom_attach,
-    settings = {
-      Lua = {
-        diagnostics = {
-          enable = true,
-          globals = { "vim" },
-        },
-      }
-    },
 })

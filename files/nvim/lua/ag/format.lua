@@ -1,8 +1,5 @@
-require 'format'.setup {
+require'format'.setup {
     python = {
-        {cmd={"black"}}
-    },
-    ["*"] = {
-        {cmd={[[sed -i 's/[ \t]*$//']]}}
+        {cmd={"yapf -i"}},
     }
 }
