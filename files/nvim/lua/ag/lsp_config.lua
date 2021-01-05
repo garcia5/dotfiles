@@ -6,7 +6,6 @@ local mapper = function(mode, key, result)
     vim.api.nvim_buf_set_keymap(0, mode, key, "<cmd>lua " .. result .. "<CR>", {noremap = true, silent = true})
 end
 
-
 local custom_attach = function(client)
 
     completion.on_attach(client)
@@ -33,35 +32,37 @@ end
 
 -- Set up clients
 -- python
--- TODO: Figure out how to show only what I want
--- this could mean either/or...
--- - turn off style warnings
--- - enable only syntax/unused warnings
 lspconfig.pyls.setup({
     on_attach=custom_attach,
     settings = {
         pyls = {
             configurationSources={"flake8"},
             plugins={
-                pylint={
-                    enabled=false,
-                    args={"--disable=R,C"},
-                    executable="/home/linuxbrew/.linuxbrew/bin/pylint"
+                -- Formatting
+                yapf={
+                    enabled=true
                 },
+                -- Error checking
                 pyflakes={
                     enabled=true
+                },
+                -- (Allegedly) refactoring, autocompletion
+                -- TODO: Figure out how to make use of this
+                rope_completion={
+                    enabled=true
+                },
+                -- And disable everything else
+                pylint={
+                    enabled=false,
+                    -- For reference only, pylint is actually pretty slow
+                    args={"--disable=R,C"},
+                    executable="/home/linuxbrew/.linuxbrew/bin/pylint"
                 },
                 pydocstyle={
                     enabled=false
                 },
                 pycodestyle={
                     enabled=false
-                },
-                rope_completion={
-                    enabled=false
-                },
-                yapf={
-                    enabled=true
                 },
                 mccabe={
                     enabled=false
@@ -79,3 +80,45 @@ lspconfig.tsserver.setup{on_attach=custom_attach}
 
 -- vue
 lspconfig.vuels.setup{on_attach=custom_attach}
+
+-- vim
+lspconfig.vimls.setup({
+    on_attach=custom_attach,
+})
+
+-- lua
+local system_name
+if vim.fn.has("mac") == 1 then
+  system_name = "macOS"
+elseif vim.fn.has("unix") == 1 then
+  system_name = "Linux"
+elseif vim.fn.has('win32') == 1 then
+  system_name = "Windows"
+else
+  print("Unsupported system for sumneko")
+end
+local sumneko_root_path = vim.fn.stdpath('cache')..'/lspconfig/sumneko_lua/lua-language-server'
+local sumneko_binary = sumneko_root_path.."/bin/"..system_name.."/lua-language-server"
+lspconfig.sumneko_lua.setup({
+    cmd = {
+        sumneko_binary,
+        "-E",
+        sumneko_root_path .. "/main.lua"
+    },
+    on_attach=custom_attach,
+    settings = {
+        Lua = {
+            diagnostics = {
+                enable = true,
+                globals = { "vim" },
+            },
+            workspace = {
+                -- Make the server aware of Neovim runtime files
+                library = {
+                    [vim.fn.expand('$VIMRUNTIME/lua')] = true,
+                    [vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true,
+                },
+            },
+        },
+    },
+})
