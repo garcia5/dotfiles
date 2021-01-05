@@ -31,53 +31,51 @@ local custom_attach = function(client)
     vim.bo.omnifunc = 'v:lua.vim.lsp.omnifunc'
 end
 
--- set up clients
-
+-- Set up clients
 -- python
+-- TODO: Figure out how to show only what I want
+-- this could mean either/or...
+-- - turn off style warnings
+-- - enable only syntax/unused warnings
 lspconfig.pyls.setup({
     on_attach=custom_attach,
-    plugins={
-        configuration_sources={
-            "pylint", "yapf"
-        },
-        pylint={
-            enabled=true,
-        },
-        yapf={
-            enabled=true
-        },
-        black={
-            enabled=false
-        },
-        pycodestyle={
-            enabled=false
-        },
-        rope_completion={
-            enabled=false
-        },
-        mccabe={
-            enabled=false
-        },
+    settings = {
+        pyls = {
+            configurationSources={"flake8"},
+            plugins={
+                pylint={
+                    enabled=false,
+                    args={"--disable=R,C"},
+                    executable="/home/linuxbrew/.linuxbrew/bin/pylint"
+                },
+                pyflakes={
+                    enabled=true
+                },
+                pydocstyle={
+                    enabled=false
+                },
+                pycodestyle={
+                    enabled=false
+                },
+                rope_completion={
+                    enabled=false
+                },
+                yapf={
+                    enabled=true
+                },
+                mccabe={
+                    enabled=false
+                },
+                preload={
+                    enabled=false
+                },
+            }
+        }
     }
 })
 
-lspconfig.vimls.setup({
-    on_attach=custom_attach,
-})
+-- typescript
+lspconfig.tsserver.setup{on_attach=custom_attach}
 
-lspconfig.sumneko_lua.setup({
-    cmd = {
-        "/Users/alexander/.cache/nvim/lspconfig/sumneko_lua/lua-language-server/bin/macOS/lua-language-server",
-        "-E",
-        "/Users/alexander/.cache/nvim/lspconfig/sumneko_lua/lua-language-server/main.lua"
-    },
-    on_attach=custom_attach,
-    settings = {
-      Lua = {
-        diagnostics = {
-          enable = true,
-          globals = { "vim" },
-        },
-      }
-    },
-})
+-- vue
+lspconfig.vuels.setup{on_attach=custom_attach}

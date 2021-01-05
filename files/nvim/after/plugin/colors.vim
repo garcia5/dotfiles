@@ -31,4 +31,4 @@ let g:airline_powerline_fonts               = 1
 let g:webdevicons_enable_airline_statusline = 1
 
 " Highlighting
-let g:Illuminate_ftblacklist = ['fzf', 'netrw', 'startify'] " Disable for non-normal buffers
+let g:Illuminate_ftblacklist = ['fzf', 'netrw', 'term'] " Disable for non-normal buffers

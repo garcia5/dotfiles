@@ -15,14 +15,13 @@ paq 'neovim/nvim-lsp'                 -- LSP
 paq 'neovim/nvim-lspconfig'           -- basic configurations for LSP client
 paq 'gfanto/fzf-lsp.nvim'             -- fuzzy search LSP objects with fzf
 paq 'nvim-lua/completion-nvim'        -- autocomplete
-paq 'nvim-treesitter/nvim-treesitter' -- treesitter
+paq {'nvim-treesitter/nvim-treesitter', hook=function() vim.cmd [[TSUpdate]] end} -- treesitter
 paq 'airblade/vim-gitgutter'          -- Git status in gutter
 paq 'tpope/vim-surround'              -- Surround
 paq 'tpope/vim-repeat'                -- ... and make them repeatable
 paq 'godlygeek/tabular'               -- Line it up
 paq 'lukas-reineke/format.nvim'       -- format on save
 paq 'tpope/vim-fugitive'              -- git integration
-paq 'mhinz/vim-startify'              -- that fancy start screen with the cow
 paq 'RRethy/vim-illuminate'           -- highlight occurrances of symbol under cursor
 
 -- Colorschemes
