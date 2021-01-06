@@ -1,6 +1,6 @@
 -- Essentials
 vim.g.mapleader         = " "
-vim.g.python3_host_prog = '/usr/local/bin/python3'
+vim.g.python3_host_prog = vim.fn.exepath('python3')
 vim.g.bulitin_lsp       = true
 
 require('ag') -- load my lua configs
