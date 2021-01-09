@@ -54,9 +54,6 @@ lspconfig.vuels.setup({
     },
 })
 
--- vim
-lspconfig.vimls.setup{on_attach=custom_attach}
-
 -- yaml
 lspconfig.yamlls.setup{on_attach=custom_attach}
 

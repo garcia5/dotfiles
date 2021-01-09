@@ -9,11 +9,9 @@ paq 'nvim-lua/plenary.nvim'             -- utility functions
 
 paq 'scrooloose/nerdcommenter'          -- Toggle comments
 paq 'vim-airline/vim-airline'           -- pretty status/tab line
-paq 'junegunn/fzf'                      -- make sure we always have a good FZF
-paq 'junegunn/fzf.vim'                  -- better fzf integration
+paq 'nvim-telescope/telescope.nvim'     -- Fuzzy find _all_ the things
 paq 'neovim/nvim-lsp'                   -- LSP
 paq 'neovim/nvim-lspconfig'             -- basic configurations for LSP client
-paq 'gfanto/fzf-lsp.nvim'               -- fuzzy search LSP objects with fzf
 paq 'nvim-lua/completion-nvim'          -- autocomplete
 paq {'nvim-treesitter/nvim-treesitter', -- treesitter
     hook=function()

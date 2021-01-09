@@ -14,3 +14,8 @@ inoremap <expr> { CharNext('\S') == '1' ? '{' : '{}<Left>'
 inoremap [<CR> []<Left><CR><CR><Up><Tab>
 inoremap (<CR> ()<Left><CR><CR><Up><Tab>
 inoremap {<CR> {}<Left><CR><CR><Up><Tab>
+
+" Don't do autopairs when I'm searching
+autocmd Filetype TelescopePrompt iunmap (
+autocmd Filetype TelescopePrompt iunmap [
+autocmd Filetype TelescopePrompt iunmap {
