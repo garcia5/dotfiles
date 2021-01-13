@@ -24,6 +24,7 @@ paq 'tpope/vim-repeat'                  -- ... and make them repeatable
 paq 'godlygeek/tabular'                 -- Line it up
 paq 'lukas-reineke/format.nvim'         -- format on save
 paq 'tpope/vim-fugitive'                -- git integration
+paq 'windwp/nvim-autopairs'
 
 -- Colorschemes
 paq 'gilgigilgil/anderson.vim'          -- anderson color scheme
