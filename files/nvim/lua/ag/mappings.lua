@@ -30,6 +30,9 @@ mapper("n", "<M-j>", ":noautocmd wincmd j<CR>")
 mapper("n", "<M-h>", ":noautocmd wincmd h<CR>")
 mapper("n", "<M-k>", ":noautocmd wincmd k<CR>")
 mapper("n", "<M-l>", ":noautocmd wincmd l<CR>")
+-- Move between open buffers
+mapper("n", "<C-n>", ":bn<CR>")
+mapper("n", "<C-p>", ":bp<CR>")
 
 -- Term
 mapper("t", "<Esc><Esc>",[[<C-\><C-n>]])

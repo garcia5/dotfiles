@@ -24,12 +24,12 @@ paq 'tpope/vim-repeat'                  -- ... and make them repeatable
 paq 'godlygeek/tabular'                 -- Line it up
 paq 'lukas-reineke/format.nvim'         -- format on save
 paq 'tpope/vim-fugitive'                -- git integration
-paq 'windwp/nvim-autopairs'             -- autopairs that JUST WORK
+paq 'cohama/lexima.vim'                 -- auto pairs that JUST WORK (for real this time)
 
 -- Colorschemes
-paq 'gilgigilgil/anderson.vim'          -- anderson color scheme
-paq 'srcery-colors/srcery-vim'          -- srecry color scheme
-paq 'phanviet/vim-monokai-pro'          -- monokai pro color scheme
+paq 'gilgigilgil/anderson.vim'          -- anderson
+paq 'srcery-colors/srcery-vim'          -- srecry
+paq 'phanviet/vim-monokai-pro'          -- monokai
 paq 'arzg/vim-corvine'                  -- corvine
 paq 'chriskempson/base16-vim'           -- pretty colors
 paq 'vim-airline/vim-airline-themes'    -- airline themes
