@@ -14,7 +14,7 @@ mapper("n", "<Leader>fl", "<cmd>lua require'telescope.builtin'.treesitter{}<CR>"
 mapper("n", "<Leader>gg", "<cmd>lua require'telescope.builtin'.live_grep{}<CR>")      -- search all lines in project
 mapper("n", "<Leader>fr", "<cmd>lua require'telescope.builtin'.lsp_references{}<CR>") -- search references to symbol under cursor
 mapper("n", "<Leader>co", "<cmd>lua require'telescope.builtin'.colorscheme{}<CR>")    -- Fuzzy find colorschemes
-mapper("n", "<Leader>cm", "<cmd>lua require'telescope.builtin'.commands{}<CR>")       -- command history
+mapper("n", "<Leader>cd", "<cmd>lua require'telescope.builtin'.commands{}<CR>")       -- command history
 
 mapper("n", "<Leader>nt", ":call ToggleNetrw()<CR>") -- Toggle netrw
 
