@@ -10,6 +10,8 @@ let g:netrw_altv         = 1
 let g:netrw_winsize      = 20
 " don't keep history
 let g:netrw_dirhistmax   = 0
+" don't show gitignored files
+let g:netrw_list_hide    = netrw_gitignore#Hide()
 
 " let it toggle
 let g:NetrwIsOpen        = 0
