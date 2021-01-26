@@ -19,3 +19,12 @@ Symlinks the associated configuration file to the one in this repo and creates a
   - use built-in file path completion as source
   - example [here](https://github.com/nvim-lua/completion-nvim/wiki/per-server-setup-by-lua#set-up-completion-nvim-by-lua)
 - enable [trigger on delete](https://github.com/nvim-lua/completion-nvim#trigger-on-delete)
+- add strictly necessary packages to brew-installed
+  - fzf
+  - ripgrep
+  - neovim --HEAD
+  - bat
+  - python3
+  - npm
+  - tree-sitter
+  - zsh
