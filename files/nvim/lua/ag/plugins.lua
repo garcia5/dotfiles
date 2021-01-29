@@ -3,7 +3,7 @@ local paq = require'paq-nvim'.paq       -- Import module and bind `paq` function
 
 paq{'savq/paq-nvim', opt=true}          -- Let Paq manage itself
 
--- Lua basics
+                                        -- Lua basics
 paq 'nvim-lua/popup.nvim'               -- popup windows
 paq 'nvim-lua/plenary.nvim'             -- utility functions
 
@@ -12,7 +12,7 @@ paq 'vim-airline/vim-airline'           -- pretty status/tab line
 paq 'nvim-telescope/telescope.nvim'     -- Fuzzy find _all_ the things
 paq 'neovim/nvim-lsp'                   -- LSP
 paq 'neovim/nvim-lspconfig'             -- basic configurations for LSP client
-paq 'nvim-lua/completion-nvim'          -- autocomplete
+paq 'hrsh7th/nvim-compe'                -- autocomplete?
 paq {'nvim-treesitter/nvim-treesitter', -- treesitter
     hook=function()
         vim.cmd [[TSUpdate]]
@@ -26,7 +26,7 @@ paq 'lukas-reineke/format.nvim'         -- format on save
 paq 'tpope/vim-fugitive'                -- git integration
 paq 'cohama/lexima.vim'                 -- auto pairs that JUST WORK (for real this time)
 
--- Colorschemes
+                                        -- Colorschemes
 paq 'gilgigilgil/anderson.vim'          -- anderson
 paq 'srcery-colors/srcery-vim'          -- srecry
 paq 'phanviet/vim-monokai-pro'          -- monokai

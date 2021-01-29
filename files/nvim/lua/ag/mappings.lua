@@ -6,6 +6,8 @@ end
 -- Essentials
 mapper("i", "jj", "<Esc>")
 mapper("n", "<Leader>no", ":nohl<CR>")
+mapper("n", "<BS>", "daw")
+mapper("n", "<CR>", ":e<CR>")
 
 -- Telescope integration
 mapper("n", "<Leader>ff", "<cmd>lua require'telescope.builtin'.find_files{}<CR>")     -- search all files, respecting .gitignore if one exists
@@ -31,9 +33,8 @@ mapper("n", "<M-h>", ":noautocmd wincmd h<CR>")
 mapper("n", "<M-k>", ":noautocmd wincmd k<CR>")
 mapper("n", "<M-l>", ":noautocmd wincmd l<CR>")
 -- Move between open buffers
-mapper("n", "<C-n>", ":bn<CR>")
-mapper("n", "<C-p>", ":bp<CR>")
-
+vim.api.nvim_set_keymap('n', '<C-n>', '<Plug>AirlineSelectNextTab', {silent = true})
+vim.api.nvim_set_keymap('n', '<C-p>', '<Plug>AirlineSelectPrevTab', {silent = true})
 -- Term
 mapper("t", "<Esc><Esc>",[[<C-\><C-n>]])
 mapper("t", "<C-j>",     [[<C-\><C-n><C-w>j]])
