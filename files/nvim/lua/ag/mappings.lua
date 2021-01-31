@@ -19,7 +19,6 @@ mapper("n", "<Leader>co", "<cmd>lua require'telescope.builtin'.colorscheme{}<CR>
 mapper("n", "<Leader>cd", "<cmd>lua require'telescope.builtin'.commands{}<CR>")       -- command history
 
 mapper("n", "<Leader>nt", ":call ToggleNetrw()<CR>") -- Toggle netrw
-
 mapper("n", "<Leader>z", ":call ToggleFocus()<CR>")  -- Toggle focus
 
 -- Movemint
@@ -33,8 +32,8 @@ mapper("n", "<M-h>", ":noautocmd wincmd h<CR>")
 mapper("n", "<M-k>", ":noautocmd wincmd k<CR>")
 mapper("n", "<M-l>", ":noautocmd wincmd l<CR>")
 -- Move between open buffers
-vim.api.nvim_set_keymap('n', '<C-n>', '<Plug>AirlineSelectNextTab', {silent = true})
-vim.api.nvim_set_keymap('n', '<C-p>', '<Plug>AirlineSelectPrevTab', {silent = true})
+vim.api.nvim_set_keymap("n", "<C-n>", "<Plug>AirlineSelectNextTab", {silent = true})
+vim.api.nvim_set_keymap("n", "<C-p>", "<Plug>AirlineSelectPrevTab", {silent = true})
 -- Term
 mapper("t", "<Esc><Esc>",[[<C-\><C-n>]])
 mapper("t", "<C-j>",     [[<C-\><C-n><C-w>j]])

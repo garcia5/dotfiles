@@ -1,12 +1,16 @@
 local lspconfig = require('lspconfig')
 local compe = require('compe')
 
-local mapper = function(mode, key, result)
-    vim.api.nvim_buf_set_keymap(0, mode, key, "<cmd>lua " .. result .. "<CR>", {noremap = true, silent = true})
+local mapper = function(mode, key, result, opts)
+    vim.api.nvim_buf_set_keymap(0, mode, key, result, opts)
+end
+
+local lsp_mapper = function(mode, key, result)
+    mapper(mode, key, "<cmd>lua " .. result .. "<CR>", {noremap = true, silent = true})
 end
 
 local custom_attach = function(client)
-
+    -- Only autocomplete when I have a language server running
     compe.setup({
         enabled = true,
         preselect = 'disable',
@@ -16,19 +20,19 @@ local custom_attach = function(client)
             vsnip = false,
             nvim_lsp = true,
         },
-    })
+    }, 0) -- Only current buffer
+
     -- Set up mappings (only apply when LSP client attached)
-    mapper("n" , "K"         , "vim.lsp.buf.hover()")
-    mapper("n" , "<c-]>"     , "vim.lsp.buf.definition()")
-    mapper("n" , "gR"        , "vim.lsp.buf.references()")
-    mapper("n" , "gr"        , "vim.lsp.buf.rename()")
-    mapper("n" , "H"         , "vim.lsp.buf.code_action()")
-    mapper("n" , "gin"       , "vim.lsp.buf.incoming_calls()")
-    mapper("n" , "<space>dn" , "vim.lsp.diagnostic.goto_next()")
-    mapper("n" , "<space>dp" , "vim.lsp.diagnostic.goto_prev()")
-    mapper("n" , "<space>da" , "vim.lsp.diagnostic.set_loclist()")
-    mapper("i" , "<C-h>"     , "vim.lsp.buf.signature_help()")
-    vim.cmd[[inoremap <silent><expr> <CR>      compe#confirm(lexima#expand('<LT>CR>', 'i'))]]
+    lsp_mapper("n" , "K"         , "vim.lsp.buf.hover()")
+    lsp_mapper("n" , "<c-]>"     , "vim.lsp.buf.definition()")
+    lsp_mapper("n" , "gR"        , "vim.lsp.buf.references()")
+    lsp_mapper("n" , "gr"        , "vim.lsp.buf.rename()")
+    lsp_mapper("n" , "H"         , "vim.lsp.buf.code_action()")
+    lsp_mapper("n" , "gin"       , "vim.lsp.buf.incoming_calls()")
+    lsp_mapper("n" , "<space>dn" , "vim.lsp.diagnostic.goto_next()")
+    lsp_mapper("n" , "<space>dp" , "vim.lsp.diagnostic.goto_prev()")
+    lsp_mapper("n" , "<space>da" , "vim.lsp.diagnostic.set_loclist()")
+    lsp_mapper("i" , "<C-h>"     , "vim.lsp.buf.signature_help()")
 
     -- Diagnostic text colors
     -- Errors in Red
