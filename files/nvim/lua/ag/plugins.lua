@@ -13,6 +13,8 @@ paq 'nvim-telescope/telescope.nvim'     -- Fuzzy find _all_ the things
 paq 'neovim/nvim-lsp'                   -- LSP
 paq 'neovim/nvim-lspconfig'             -- basic configurations for LSP client
 paq 'hrsh7th/nvim-compe'                -- autocomplete?
+paq 'hrsh7th/vim-vsnip'                 -- snippets
+paq 'hrsh7th/vim-vsnip-integ'           -- ... with better integration
 paq {'nvim-treesitter/nvim-treesitter', -- treesitter
     hook=function()
         vim.cmd [[TSUpdate]]
