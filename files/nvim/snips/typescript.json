@@ -1,0 +1,31 @@
+{
+    "Public Function": {
+        "prefix": ["public"],
+        "body": [
+            "public function(${1:args}) {",
+            "\t$0",
+            "}"
+        ],
+        "description": "public function"
+    },
+    "Private Function": {
+        "prefix": ["private"],
+        "body": [
+            "private function(${1:args}) {",
+            "\t$0",
+            "}"
+        ]
+        "description": "private function"
+    }
+    "Describe": {
+        "prefix": ["describe"],
+        "body": [
+            "describe('${1:function or module}', ${2:async} () => {",
+            "\tit('$3', ${4async} => {",
+            "\t\t$0",
+            "\t});",
+            "});"
+        ],
+        "description": "unit test"
+    }
+}

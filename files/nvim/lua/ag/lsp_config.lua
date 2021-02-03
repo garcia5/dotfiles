@@ -28,7 +28,7 @@ local custom_attach = function(client)
         {silent = true, expr = true, noremap = true}
     )
     -- Confirm completion
-    mapper("i", "<CR>"     , "compe#confirm(lexima#expand('<LT>CR>' , 'i'))",
+    mapper("i", "<C-y>"     , "compe#confirm()",
         {silent = true, expr = true, noremap = true}
     )
     -- Close completion menu
