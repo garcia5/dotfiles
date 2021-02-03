@@ -12,7 +12,6 @@ mapper("n", "<CR>", ":e<CR>")
 mapper("n" , "<Leader>nt" , ":call ToggleNetrw()<CR>") -- toggle netrw
 mapper("n" , "<Leader>z"  , ":call ToggleFocus()<CR>") -- toggle focus
 mapper("n" , "<Leader>tn" , ":vs | term<CR>")          -- open new term in vertical split
-mapper("n" , "Q"          , "<cmd>Sayonara<CR>")       -- Delete buffer without closing window
 
 -- Telescope integration
 mapper("n", "<Leader>ff", "<cmd>lua require'telescope.builtin'.find_files{}<CR>")     -- search all files, respecting .gitignore if one exists

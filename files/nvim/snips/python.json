@@ -10,5 +10,18 @@
             ""
         ],
         "description": "New python function"
+    },
+    "Static Function": {
+        "prefix": ["@static"],
+        "body": [
+            "@staticmethod",
+            "def ${1:func_name}(${2:args}) -> ${3:returns}:",
+            "\t\"\"\"",
+            "\t${4:docstring}",
+            "\t\"\"\"",
+            "\t$0",
+            ""
+        ],
+        "description": "New python static function"
     }
 }

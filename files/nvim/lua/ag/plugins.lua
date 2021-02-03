@@ -12,9 +12,9 @@ paq 'vim-airline/vim-airline'           -- pretty status/tab line
 paq 'nvim-telescope/telescope.nvim'     -- Fuzzy find _all_ the things
 paq 'neovim/nvim-lsp'                   -- LSP
 paq 'neovim/nvim-lspconfig'             -- basic configurations for LSP client
-paq 'hrsh7th/nvim-compe'                -- autocomplete?
+paq 'hrsh7th/nvim-compe'                -- autocomplete
 paq 'hrsh7th/vim-vsnip'                 -- snippets
-paq 'hrsh7th/vim-vsnip-integ'           -- ... with better integration
+paq 'hrsh7th/vim-vsnip-integ'           -- ... with compe integration
 paq {'nvim-treesitter/nvim-treesitter', -- treesitter
     hook=function()
         vim.cmd [[TSUpdate]]
@@ -27,7 +27,6 @@ paq 'godlygeek/tabular'                 -- Line it up
 paq 'lukas-reineke/format.nvim'         -- format on save
 paq 'tpope/vim-fugitive'                -- git integration
 paq 'cohama/lexima.vim'                 -- auto pairs that JUST WORK (for real this time)
-paq 'mhinz/vim-sayonara'                -- sensible buffer cleanup
 
 -- Colorschemes
 paq 'gilgigilgil/anderson.vim'          -- anderson
