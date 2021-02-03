@@ -35,4 +35,4 @@ vim.o.ignorecase    = true   -- case insensitive search...
 vim.o.smartcase     = true   -- unless I use caps
 vim.o.hlsearch      = true   -- highlight matching text
 vim.o.incsearch     = true   -- search while I type
-vim.o.wildignore    = 'term:///*'
+vim.o.wildignore    = 'term:///*,*/.git/index'

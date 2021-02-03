@@ -17,12 +17,26 @@ local custom_attach = function(client)
         source = {
             path = true,
             buffer = true,
-            vsnip = false,
+            vsnip = true,
             nvim_lsp = true,
         },
     }, 0) -- Only current buffer
 
-    -- Set up mappings (only apply when LSP client attached)
+    -- Compe mappings
+    -- Trigger completion
+    mapper("i", "<C-Space>", "compe#complete()",
+        {silent = true, expr = true, noremap = true}
+    )
+    -- Confirm completion
+    mapper("i", "<CR>"     , "compe#confirm(lexima#expand('<LT>CR>' , 'i'))",
+        {silent = true, expr = true, noremap = true}
+    )
+    -- Close completion menu
+    mapper("i", "<C-e>"    , "compe#close()",
+        {silent = true, expr = true, noremap = true}
+    )
+
+    -- LSP mappings (only apply when LSP client attached)
     lsp_mapper("n" , "K"         , "vim.lsp.buf.hover()")
     lsp_mapper("n" , "<c-]>"     , "vim.lsp.buf.definition()")
     lsp_mapper("n" , "gR"        , "vim.lsp.buf.references()")

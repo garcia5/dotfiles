@@ -8,6 +8,11 @@ mapper("i", "jj", "<Esc>")
 mapper("n", "<Leader>no", ":nohl<CR>")
 mapper("n", "<BS>", "daw")
 mapper("n", "<CR>", ":e<CR>")
+-- Other basic stuff
+mapper("n", "<Leader>nt", ":call ToggleNetrw()<CR>") -- Toggle netrw
+mapper("n", "<Leader>z", ":call ToggleFocus()<CR>")  -- Toggle focus
+mapper("n", "<Leader>tn", ":vs | term<CR>")          -- Open new term in vertical split
+mapper("n", "<Leader>q", "<cmd>Sayonara<CR>")        -- Delete the current buffer without messing up the window
 
 -- Telescope integration
 mapper("n", "<Leader>ff", "<cmd>lua require'telescope.builtin'.find_files{}<CR>")     -- search all files, respecting .gitignore if one exists
@@ -17,9 +22,6 @@ mapper("n", "<Leader>gg", "<cmd>lua require'telescope.builtin'.live_grep{}<CR>")
 mapper("n", "<Leader>fr", "<cmd>lua require'telescope.builtin'.lsp_references{}<CR>") -- search references to symbol under cursor
 mapper("n", "<Leader>co", "<cmd>lua require'telescope.builtin'.colorscheme{}<CR>")    -- Fuzzy find colorschemes
 mapper("n", "<Leader>cd", "<cmd>lua require'telescope.builtin'.commands{}<CR>")       -- command history
-
-mapper("n", "<Leader>nt", ":call ToggleNetrw()<CR>") -- Toggle netrw
-mapper("n", "<Leader>z", ":call ToggleFocus()<CR>")  -- Toggle focus
 
 -- Movemint
 mapper("n", "<C-j>", "<C-w>j")
@@ -40,8 +42,6 @@ mapper("t", "<C-j>",     [[<C-\><C-n><C-w>j]])
 mapper("t", "<C-h>",     [[<C-\><C-n><C-w>h]])
 mapper("t", "<C-k>",     [[<C-\><C-n><C-w>k]])
 mapper("t", "<C-l>",     [[<C-\><C-n><C-w>l]])
-
-mapper("n", "<Leader>tn", ":vs | term<CR>") -- open new term in vertical split
 
 -- Fugitive/Git
 mapper("n" , "<Leader>gs" , "<cmd>Gstatus<CR>")
