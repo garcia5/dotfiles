@@ -14,9 +14,9 @@
             "private function(${1:args}) {",
             "\t$0",
             "}"
-        ]
+        ],
         "description": "private function"
-    }
+    },
     "Describe": {
         "prefix": ["describe"],
         "body": [
