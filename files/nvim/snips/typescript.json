@@ -2,7 +2,7 @@
     "Public Function": {
         "prefix": ["public"],
         "body": [
-            "public function(${1:args}) {",
+            "public ${1:static }${2:async }${3:funcName}(${4:args}) {",
             "\t$0",
             "}"
         ],
@@ -11,7 +11,7 @@
     "Private Function": {
         "prefix": ["private"],
         "body": [
-            "private function(${1:args}) {",
+            "private ${1:static }${2:async }${3:funcName}(${4:args}) {",
             "\t$0",
             "}"
         ],
@@ -20,12 +20,19 @@
     "Describe": {
         "prefix": ["describe"],
         "body": [
-            "describe('${1:function or module}', ${2:async} () => {",
-            "\tit('$3', ${4async} => {",
-            "\t\t$0",
-            "\t});",
+            "describe('${1:function or module}', () => {",
+            "\t$0",
             "});"
         ],
-        "description": "unit test"
+        "description": "module or function test"
+    },
+    "It": {
+        "prefix": ["it"],
+        "body": [
+            "it('${1:does something}', ${2:async }() => {",
+            "\t$0",
+            "});"
+        ],
+        "description": "single test"
     }
 }
