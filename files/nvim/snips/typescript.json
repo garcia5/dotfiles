@@ -2,7 +2,7 @@
     "Public Function": {
         "prefix": ["public"],
         "body": [
-            "public ${1:static }${2:async }${3:funcName}(${4:args}) {",
+            "public ${1:static async }${3:funcName}(${4:args}) {",
             "\t$0",
             "}"
         ],
@@ -11,7 +11,7 @@
     "Private Function": {
         "prefix": ["private"],
         "body": [
-            "private ${1:static }${2:async }${3:funcName}(${4:args}) {",
+            "private ${1:static async }${3:funcName}(${4:args}) {",
             "\t$0",
             "}"
         ],

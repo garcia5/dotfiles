@@ -93,3 +93,6 @@ lspconfig.yamlls.setup{on_attach=custom_attach}
 
 -- bash
 lspconfig.bashls.setup{on_attach=custom_attach}
+
+-- terraform
+lspconfig.terraformls.setup{on_attach=custom_attach}
