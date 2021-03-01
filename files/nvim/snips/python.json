@@ -23,5 +23,38 @@
             ""
         ],
         "description": "New python static function"
+    },
+    "Class Method": {
+        "prefix": ["classmethod"],
+        "body": [
+            "@classmethod",
+            "def ${1:func_name}(cls, ${2:args}) -> ${3:returns}:",
+            "\t\"\"\"",
+            "\t${4:docstring}",
+            "\t\"\"\"",
+            "\t$0",
+            ""
+        ],
+        "description": "New classmethod"
+    },
+    "For": {
+        "prefix": ["for"],
+        "body": [
+            "for $1 in $2:",
+            "\t$0"
+        ],
+        "description": "for loop"
+    },
+    "Patch": {
+        "prefix": ["patch"],
+        "body": [
+            "@patch('${1:variable}')",
+            "def test_${2:function_to_test}(self, ${3:mocked}):",
+            "\t\"\"\"",
+            "\t${4:Test description}",
+            "\t\"\"\"",
+            "\t$0"
+        ],
+        "description": "New unittest"
     }
 }
