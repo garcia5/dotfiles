@@ -11,7 +11,7 @@ telescope.setup{
       '--smart-case'
     },
     prompt_position = "top",
-    prompt_prefix = "»",
+    prompt_prefix = "» ",
     selection_strategy = "reset",
     sorting_strategy = "ascending",
     layout_strategy = "horizontal",

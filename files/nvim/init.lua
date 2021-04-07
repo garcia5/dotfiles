@@ -17,6 +17,7 @@ vim.o.updatetime  = 100                                      -- stop typing quic
 vim.o.undofile    = true                                     -- keep track of my 'undo's between sessions
 vim.o.grepprg     = 'rg --vimgrep --smart-case --no-heading' -- search with rg
 vim.o.grepformat  = '%f:%l:%c:%m'                            -- filename:line number:column number:error message
+vim.o.mouse       = 'n'                                      -- use mouse to scroll around (hold shift to disable)
 
 -- Look and feel
 vim.wo.list                    = true                                               -- show list chars
@@ -37,4 +38,3 @@ vim.o.ignorecase    = true   -- case insensitive search...
 vim.o.smartcase     = true   -- unless I use caps
 vim.o.hlsearch      = true   -- highlight matching text
 vim.o.incsearch     = true   -- search while I type
-vim.o.wildignore    = 'term:///*,*/.git/index'

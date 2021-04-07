@@ -12,6 +12,7 @@ paq 'vim-airline/vim-airline'               -- pretty status/tab line
 paq 'nvim-telescope/telescope.nvim'         -- Fuzzy find _all_ the things
 paq 'neovim/nvim-lsp'                       -- LSP
 paq 'neovim/nvim-lspconfig'                 -- basic configurations for LSP client
+paq 'jose-elias-alvarez/nvim-lsp-ts-utils'  -- LSP enhancements for typescript
 paq 'hrsh7th/nvim-compe'                    -- autocomplete
 paq 'hrsh7th/vim-vsnip'                     -- snippets
 paq 'hrsh7th/vim-vsnip-integ'               -- ... with compe integration
