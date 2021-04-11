@@ -6,7 +6,7 @@ set background=dark
 if (v:false && filereadable(expand('~/.vimrc_background'))) " Match terminal color scheme
     source ~/.vimrc_background
 else
-    colorscheme base16-atelier-dune                         " Or just manually set colorscheme
+    colorscheme base16-atelier-plateau                      " Or just manually set colorscheme
 endif
 
 " Make FZF window match color scheme
