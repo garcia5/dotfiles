@@ -73,12 +73,25 @@ end
 
 -- Set up clients
 -- python
-lspconfig.pyright.setup{on_attach=custom_attach}
+lspconfig.pyright.setup({
+    on_attach=function(client)
+        custom_attach(client)
+        -- 'Organize imports keymap for pyright only'
+        mapper("n", "<Leader>ii", "<cmd>PyrightOrganizeImports<CR>",
+            {silent = true, noremap = true}
+        )
+    end,
+    settings={
+        pyright={
+            disableOrganizeImports = false
+        }
+    }
+})
 
 -- typescript
 lspconfig.tsserver.setup{
   on_attach=function(client)
-    require("nvim-lsp-ts-utils").setup {}
+    require("nvim-lsp-ts-utils").setup{}
     custom_attach(client)
   end
 }
@@ -87,14 +100,21 @@ lspconfig.tsserver.setup{
 lspconfig.vuels.setup({
     on_attach=custom_attach,
     settings={
-        vetur = {
-            completion = {
+        vetur={
+            completion={
                 autoImport = true,
                 tagCasing = "kebab",
-                useScaffoldSnippets = false,
+                useScaffoldSnippets = true,
             },
             useWorkspaceDependencies = true,
         },
+        format={
+            enable = true,
+            options={
+                useTabs = false,
+                tabSize = 2,
+            }
+        }
     },
 })
 
