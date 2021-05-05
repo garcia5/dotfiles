@@ -45,15 +45,15 @@
         ],
         "description": "for loop"
     },
-    "Patch": {
-        "prefix": ["patch"],
+    "Test": {
+        "prefix": ["def test", "test"],
         "body": [
-            "@patch('${1:variable}')",
-            "def test_${2:function_to_test}(self, ${3:mocked}):",
+            "def test_${1:to_test}(self, ${2:mocks, }*args):",
             "\t\"\"\"",
-            "\t${4:Test description}",
+            "\t${3:Test description}",
             "\t\"\"\"",
-            "\t$0"
+            "\t${0:raise NotImplementedError()}",
+            ""
         ],
         "description": "New unittest"
     }

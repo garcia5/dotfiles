@@ -24,6 +24,7 @@ mapper("n", "<Leader>gg", "<cmd>lua require'telescope.builtin'.live_grep{}<CR>")
 mapper("n", "<Leader>fr", "<cmd>lua require'telescope.builtin'.lsp_references{}<CR>")            -- search references to symbol under cursor
 mapper("n", "<Leader>co", "<cmd>lua require'telescope.builtin'.colorscheme{}<CR>")               -- colorschemes
 mapper("n", "<Leader>cd", "<cmd>lua require'telescope.builtin'.commands{}<CR>")                  -- command history
+mapper("n", "<Leader>gc", "<cmd>lua require'telescope.builtin'.git_branches{}<CR>")              -- checkout different branches
 
 -- Movemint
 mapper("n", "<C-j>", "<C-w>j")
@@ -48,11 +49,9 @@ mapper("t", "<C-k>",     [[<C-\><C-n><C-w>k]])
 mapper("t", "<C-l>",     [[<C-\><C-n><C-w>l]])
 
 -- Fugitive/Git
-mapper("n" , "<Leader>gs" , "<cmd>Gstatus<CR>")
+mapper("n" , "<Leader>gs" , "<cmd>Git<CR>")
 mapper("n" , "<Leader>gd" , "<cmd>Gdiffsplit<CR>")
-mapper("n" , "<Leader>gb" , "<cmd>Gblame<CR>")
-mapper("n" , "<Leader>gc" , "<cmd>Gcommit<CR>")
-mapper("n" , "<Leader>gp" , "<cmd>Git push<CR>")
-mapper("n" , "<Leader>gP" , "<cmd>Gpull<CR>")
-mapper("n" , "gn"         , "<cmd>GitGutterNextHunk<CR>")
-mapper("n" , "gN"         , "<cmd>GitGutterPrevHunk<CR>")
+mapper("n" , "<Leader>gp" , "<cmd>Gpull<CR>")
+mapper("n" , "<Leader>gb" , "<cmd>lua require'gitsigns'.blame_line()<CR>")
+mapper("n" , "[]"         , "<cmd>lua require'gitsigns'.next_hunk()<CR>")
+mapper("n" , "]["         , "<cmd>lua require'gitsigns'.prev_hunk()<CR>")

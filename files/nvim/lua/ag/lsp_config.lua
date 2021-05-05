@@ -1,5 +1,6 @@
 local lspconfig = require('lspconfig')
 local compe = require('compe')
+local trouble = require('trouble')
 
 local mapper = function(mode, key, result, opts)
     vim.api.nvim_buf_set_keymap(0, mode, key, result, opts)
@@ -39,6 +40,8 @@ local custom_attach = function(client)
     mapper("i", "<C-e>"    , "compe#close()",
         {silent = true, expr = true, noremap = true}
     )
+
+    trouble.setup{}
 
     -- LSP mappings (only apply when LSP client attached)
     lsp_mapper("n" , "K"         , "vim.lsp.buf.hover()")
@@ -84,6 +87,11 @@ lspconfig.pyright.setup({
     settings={
         pyright={
             disableOrganizeImports = false
+        },
+        python={
+            analysis={
+                useLibraryCodeForTypes = true
+            }
         }
     }
 })
