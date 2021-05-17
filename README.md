@@ -10,6 +10,8 @@ Symlinks the associated configuration file to the one in this repo and creates a
 
 ## TODO
 - `g` commands
+- figure out how to get colors for gitsigns working correctly
+  - currently only display correctly on manual refresh of colorscheme
 - add strictly necessary packages to brew-installed
   - fzf
   - ripgrep
