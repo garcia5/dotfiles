@@ -33,7 +33,6 @@ paq 'vim-airline/vim-airline-themes'        -- airline themes
 paq 'neovim/nvim-lsp'                       -- LSP
 paq 'folke/lsp-trouble.nvim'                -- Inline diagnostic info
 paq 'neovim/nvim-lspconfig'                 -- basic configurations for LSP client
-paq 'jose-elias-alvarez/nvim-lsp-ts-utils'  -- LSP enhancements for typescript
 paq{'nvim-treesitter/nvim-treesitter',      -- treesitter
     hook=function()
         vim.cmd [[TSUpdate]]
@@ -45,7 +44,6 @@ paq 'hrsh7th/nvim-compe'                    -- autocomplete
 paq 'hrsh7th/vim-vsnip'                     -- snippets
 paq 'hrsh7th/vim-vsnip-integ'               -- ... with compe integration
 paq 'tpope/vim-fugitive'                    -- git integration
-paq 'hashivim/vim-terraform'                -- terraform
 paq {'lukas-reineke/indent-blankline.nvim', -- indent guides
     branch='lua'
 }

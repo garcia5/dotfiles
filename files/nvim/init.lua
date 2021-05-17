@@ -6,8 +6,6 @@ vim.g.bulitin_lsp       = true
 require('ag') -- load my lua configs
 
 -- Behaviors
-vim.wo.number     = true                                     -- absolute numbers for easier screen sharing
-vim.wo.cursorline = true                                     -- highlight current line
 vim.o.belloff     = 'all'                                    -- NO BELLS!
 vim.o.completeopt = 'menu,menuone,noselect'                  -- ins-completion how ~I like it~ vsnip likes it
 vim.o.swapfile    = false                                    -- swap files annoy me
@@ -20,6 +18,9 @@ vim.o.grepformat  = '%f:%l:%c:%m'                            -- filename:line nu
 vim.o.mouse       = 'n'                                      -- use mouse to scroll around (hold shift to disable)
 
 -- Look and feel
+vim.wo.number                  = true                                               -- absolute numbers...
+vim.wo.relativenumber          = true                                               -- but only on the current line
+vim.wo.cursorline              = true                                               -- highlight current line
 vim.wo.list                    = true                                               -- show list chars
 vim.o.listchars                = 'tab:»·,eol:↵,nbsp:␣,extends:…,precedes:…,trail:·' -- these list chars
 vim.o.scrolloff                = 10                                                 -- padding between cursor and top/bottom of window

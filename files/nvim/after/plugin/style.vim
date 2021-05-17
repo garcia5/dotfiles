@@ -1,12 +1,11 @@
-" Let colors display properly
+" colors
 set termguicolors
 let base16colorspace=256
 set background=dark
+colorscheme srcery
 
 if (v:false && filereadable(expand('~/.vimrc_background'))) " Match terminal color scheme
     source ~/.vimrc_background
-else
-    colorscheme base16-atelier-plateau                      " Or just manually set colorscheme
 endif
 
 " Make FZF window match color scheme

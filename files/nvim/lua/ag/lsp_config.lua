@@ -79,7 +79,7 @@ end
 lspconfig.pyright.setup({
     on_attach=function(client)
         custom_attach(client)
-        -- 'Organize imports keymap for pyright only'
+        -- 'Organize imports' keymap for pyright only
         mapper("n", "<Leader>ii", "<cmd>PyrightOrganizeImports<CR>",
             {silent = true, noremap = true}
         )
@@ -97,12 +97,7 @@ lspconfig.pyright.setup({
 })
 
 -- typescript
-lspconfig.tsserver.setup{
-  on_attach=function(client)
-    require("nvim-lsp-ts-utils").setup{}
-    custom_attach(client)
-  end
-}
+lspconfig.tsserver.setup{on_attach=custom_attach}
 
 -- vue
 lspconfig.vuels.setup({
@@ -131,6 +126,3 @@ lspconfig.yamlls.setup{on_attach=custom_attach}
 
 -- bash
 lspconfig.bashls.setup{on_attach=custom_attach}
-
--- terraform
-lspconfig.terraformls.setup{on_attach=custom_attach}
