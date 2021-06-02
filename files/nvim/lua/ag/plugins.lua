@@ -19,7 +19,6 @@ paq 'nvim-telescope/telescope.nvim'         -- Fuzzy find _all_ the things
 
 -- Look and feel
 paq 'vim-airline/vim-airline'               -- pretty status/tab line
-paq 'lewis6991/gitsigns.nvim'               -- Git status in gutter
 
 -- Colorschemes
 paq 'gilgigilgil/anderson.vim'              -- anderson
@@ -34,7 +33,7 @@ paq 'neovim/nvim-lsp'                       -- LSP
 paq 'folke/lsp-trouble.nvim'                -- Inline diagnostic info
 paq 'neovim/nvim-lspconfig'                 -- basic configurations for LSP client
 paq{'nvim-treesitter/nvim-treesitter',      -- treesitter
-    hook=function()
+    run=function()
         vim.cmd [[TSUpdate]]
     end
 }

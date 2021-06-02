@@ -6,36 +6,43 @@ vim.g.bulitin_lsp       = true
 require('ag') -- load my lua configs
 
 -- Behaviors
-vim.o.belloff     = 'all'                                    -- NO BELLS!
-vim.o.completeopt = 'menu,menuone,noselect'                  -- ins-completion how ~I like it~ vsnip likes it
-vim.o.swapfile    = false                                    -- swap files annoy me
-vim.o.inccommand  = 'split'                                  -- preview %s commands in a split window as I type
-vim.o.hidden      = true                                     -- move away from unsaved buffers
-vim.o.updatetime  = 100                                      -- stop typing quickly
-vim.o.undofile    = true                                     -- keep track of my 'undo's between sessions
-vim.o.grepprg     = 'rg --vimgrep --smart-case --no-heading' -- search with rg
-vim.o.grepformat  = '%f:%l:%c:%m'                            -- filename:line number:column number:error message
-vim.o.mouse       = 'n'                                      -- use mouse to scroll around (hold shift to disable)
+vim.opt.belloff     = 'all'                           -- NO BELLS!
+vim.opt.completeopt = {'menu', 'menuone', 'noselect'} -- ins-completion how ~I like it~ vsnip likes it
+vim.opt.swapfile    = false                           -- swap files annoy me
+vim.opt.inccommand  = 'split'                         -- preview %s commands in a split window as I type
+vim.opt.hidden      = true                            -- move away from unsaved buffers
+vim.opt.updatetime  = 100                             -- stop typing quickly
+vim.opt.undofile    = true                            -- keep track of my 'undo's between sessions
+vim.opt.grepprg     = 'rg                             -- vimgrep                                            -- smart-case -- no-heading' -- search with rg
+vim.opt.grepformat  = '%f:%l:%c:%m'                   -- filename:line number:column number:error message
+vim.opt.mouse       = 'n'                             -- use mouse to scroll around (hold shift to disable)
 
 -- Look and feel
-vim.wo.number                  = true                                               -- absolute numbers...
-vim.wo.relativenumber          = true                                               -- but only on the current line
-vim.wo.cursorline              = true                                               -- highlight current line
-vim.wo.list                    = true                                               -- show list chars
-vim.o.listchars                = 'tab:»·,eol:↵,nbsp:␣,extends:…,precedes:…,trail:·' -- these list chars
-vim.o.scrolloff                = 10                                                 -- padding between cursor and top/bottom of window
-vim.wo.foldmethod              = 'marker'                                           -- fold on {{{...}}} by default
-vim.wo.foldlevel               = 99                                                 -- default to all folds open
-vim.g.foldlevelstart           = 99                                                 -- open files with all folds open
-vim.o.splitright               = true                                               -- prefer vsplitting to the right
-vim.o.splitbelow               = true                                               -- prefer splitting below
-vim.wo.wrap                    = false                                              -- don't wrap my text
-vim.g.python_recommended_style = 0                                                  -- I know how I like my python
+vim.opt.number                   = true     -- absolute numbers...
+vim.opt.relativenumber           = true     -- but only on the current line
+vim.opt.cursorline               = true     -- highlight current line
+vim.opt.list                     = true     -- show list chars
+vim.opt.listchars                = {        -- these list chars
+    tab                          = '»·',
+    eol                          = '↵',
+    nbsp                         = '␣',
+    extends                      = '…',
+    precedes                     = '…',
+    trail                        = '·',
+}
+vim.opt.scrolloff                = 10       -- padding between cursor and top/bottom of window
+vim.opt.foldmethod               = 'marker' -- fold on {{{...}}} by default
+vim.opt.foldlevel                = 99       -- default to all folds open
+vim.opt.foldlevelstart           = 99       -- open files with all folds open
+vim.opt.splitright               = true     -- prefer vsplitting to the right
+vim.opt.splitbelow               = true     -- prefer splitting below
+vim.opt.wrap                     = false    -- don't wrap my text
+vim.g.python_recommended_style   = 0        -- I know how I like my python
 
 -- Searching
-vim.cmd([[set path +=.,**]]) -- search from project root
-vim.o.wildmenu      = true   -- tab complete on command line
-vim.o.ignorecase    = true   -- case insensitive search...
-vim.o.smartcase     = true   -- unless I use caps
-vim.o.hlsearch      = true   -- highlight matching text
-vim.o.incsearch     = true   -- search while I type
+vim.opt.path:append('.,**')  -- search from project root
+vim.opt.wildmenu      = true -- tab complete on command line
+vim.opt.ignorecase    = true -- case insensitive search...
+vim.opt.smartcase     = true -- unless I use caps
+vim.opt.hlsearch      = true -- highlight matching text
+vim.opt.incsearch     = true -- search while I type
