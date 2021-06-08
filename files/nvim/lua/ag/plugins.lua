@@ -27,6 +27,7 @@ paq 'phanviet/vim-monokai-pro'              -- monokai
 paq 'arzg/vim-corvine'                      -- corvine
 paq 'chriskempson/base16-vim'               -- pretty colors
 paq 'vim-airline/vim-airline-themes'        -- airline themes
+paq 'shaunsingh/moonlight.nvim'             -- VSCode's moonlight theme in lua
 
 -- Neovim HEAD features
 paq 'neovim/nvim-lsp'                       -- LSP
@@ -40,6 +41,7 @@ paq{'nvim-treesitter/nvim-treesitter',      -- treesitter
 
 -- Other nice to have
 paq 'hrsh7th/nvim-compe'                    -- autocomplete
+paq 'ray-x/lsp_signature.nvim'              -- signature help
 paq 'hrsh7th/vim-vsnip'                     -- snippets
 paq 'hrsh7th/vim-vsnip-integ'               -- ... with compe integration
 paq 'tpope/vim-fugitive'                    -- git integration

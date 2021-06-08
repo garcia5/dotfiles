@@ -8,10 +8,10 @@ vim.opt.formatoptions:remove({
     '2',                       -- ... that's just weird
 })
 vim.opt.formatoptions:append({
-    --'c',                       -- Auto wrap comments
+    -- 'c',                       -- Auto wrap comments
     'r',                       -- Continue comments with <Enter>
-    --'q',                       -- Use gq to format comments to textwidth
-    --'j',                       -- Remove comment leader when joining lines
+    -- 'q',                       -- Use gq to format comments to textwidth
+    -- 'j',                       -- Remove comment leader when joining lines
 })
 
 vim.opt.autoindent  = true     -- continue indentation to new line

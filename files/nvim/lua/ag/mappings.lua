@@ -51,7 +51,4 @@ mapper("t", "<C-l>",     [[<C-\><C-n><C-w>l]])
 -- Fugitive/Git
 mapper("n" , "<Leader>gs" , "<cmd>Git<CR>")
 mapper("n" , "<Leader>gd" , "<cmd>Gdiffsplit<CR>")
-mapper("n" , "<Leader>gp" , "<cmd>Gpull<CR>")
-mapper("n" , "<Leader>gb" , "<cmd>lua require'gitsigns'.blame_line()<CR>")
-mapper("n" , "[]"         , "<cmd>lua require'gitsigns'.next_hunk()<CR>")
-mapper("n" , "]["         , "<cmd>lua require'gitsigns'.prev_hunk()<CR>")
+mapper("n" , "<Leader>gp" , "<cmd>Git pull<CR>")
