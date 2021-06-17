@@ -7,15 +7,15 @@ require('ag') -- load my lua configs
 
 -- Behaviors
 vim.opt.belloff     = 'all'                                     -- NO BELLS!
-vim.opt.completeopt = {'menu', 'menuone', 'noselect'}           -- ins-completion how ~I like it~ vsnip likes it
-vim.opt.swapfile    = false                                     -- swap files annoy me
+vim.opt.completeopt = {'menu', 'menuone', 'noselect'}           -- ins-completion how vsnip likes it
+vim.opt.swapfile    = false                                     -- no swap files
 vim.opt.inccommand  = 'split'                                   -- preview %s commands in a split window as I type
 vim.opt.hidden      = true                                      -- move away from unsaved buffers
 vim.opt.updatetime  = 100                                       -- stop typing quickly
 vim.opt.undofile    = true                                      -- keep track of my 'undo's between sessions
 vim.opt.grepprg     = 'rg --vimgrep --smart-case --no-heading'  -- search with rg
 vim.opt.grepformat  = '%f:%l:%c:%m'                             -- filename:line number:column number:error message
-vim.opt.mouse       = 'n'                                       -- use mouse to scroll around (hold shift to disable)
+vim.opt.mouse       = 'n'                                       -- use mouse to scroll around in normal mode (hold shift to disable)
 
 -- Look and feel
 vim.opt.number                   = true     -- absolute numbers...
@@ -23,12 +23,12 @@ vim.opt.relativenumber           = true     -- but only on the current line
 vim.opt.cursorline               = true     -- highlight current line
 vim.opt.list                     = true     -- show list chars
 vim.opt.listchars                = {        -- these list chars
-    tab                          = '»·',
-    eol                          = '↵',
-    nbsp                         = '␣',
-    extends                      = '…',
-    precedes                     = '…',
-    trail                        = '·',
+    tab      = '»·',
+    eol      = '↵',
+    nbsp     = '␣',
+    extends  = '…',
+    precedes = '…',
+    trail    = '·',
 }
 vim.opt.scrolloff                = 10       -- padding between cursor and top/bottom of window
 vim.opt.foldmethod               = 'marker' -- fold on {{{...}}} by default

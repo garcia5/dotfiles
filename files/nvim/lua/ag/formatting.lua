@@ -1,17 +1,14 @@
 -- Basic global formatting options
 vim.opt.textwidth = 80         -- Wrap here
 
--- TODO: figure out why some options throw an error
 vim.opt.formatoptions:remove({
     't',                       -- Don't auto wrap text
     'o',                       -- Do not continue comments with 'o' or 'O'
     '2',                       -- ... that's just weird
 })
 vim.opt.formatoptions:append({
-    -- 'c',                       -- Auto wrap comments
     'r',                       -- Continue comments with <Enter>
-    -- 'q',                       -- Use gq to format comments to textwidth
-    -- 'j',                       -- Remove comment leader when joining lines
+    'n',                       -- Allow formatting lists
 })
 
 vim.opt.autoindent  = true     -- continue indentation to new line

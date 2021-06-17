@@ -16,15 +16,13 @@ mapper("n" , "<Leader>bd" , ":bp | bd #<CR>")          -- delete the current buf
 -- get into dotfile editing mode
 mapper("n" , "<Leader><Leader>v", ":cd ~/dotfiles/files/<CR>'V")
 
--- Telescope integration
-mapper("n", "<Leader>ff", "<cmd>lua require'telescope.builtin'.find_files{}<CR>")                -- search all files, respecting .gitignore if one exists
-mapper("n", "<Leader>fb", "<cmd>lua require'telescope.builtin'.buffers{}<CR>")                   -- search open buffers
-mapper("n", "<Leader>fl", "<cmd>lua require'telescope.builtin'.current_buffer_fuzzy_find{}<CR>") -- search lines in current buffer
-mapper("n", "<Leader>gg", "<cmd>lua require'telescope.builtin'.live_grep{}<CR>")                 -- search all lines in project
-mapper("n", "<Leader>fr", "<cmd>lua require'telescope.builtin'.lsp_references{}<CR>")            -- search references to symbol under cursor
-mapper("n", "<Leader>co", "<cmd>lua require'telescope.builtin'.colorscheme{}<CR>")               -- colorschemes
-mapper("n", "<Leader>cd", "<cmd>lua require'telescope.builtin'.commands{}<CR>")                  -- command history
-mapper("n", "<Leader>gc", "<cmd>lua require'telescope.builtin'.git_branches{}<CR>")              -- checkout different branches
+-- FZF integration
+mapper("n", "<Leader>ff", "<cmd>:Files<CR>")   -- search all files, respecting .gitignore if one exists
+mapper("n", "<Leader>fb", "<cmd>:Buffers<CR>") -- search open buffers
+mapper("n", "<Leader>fl", "<cmd>:Lines<CR>")   -- search lines in open buffers
+mapper("n", "<Leader>gg", "<cmd>:Rg<CR>")      -- search all lines in project
+mapper("n", "<Leader>co", "<cmd>:Colors<CR>")  -- pick a colorscheme
+mapper("n", "<Leader>gc", "<cmd>:Commits<CR>") -- checkout a git commit
 
 -- Movemint
 mapper("n", "<C-j>", "<C-w>j")
@@ -49,6 +47,7 @@ mapper("t", "<C-k>",     [[<C-\><C-n><C-w>k]])
 mapper("t", "<C-l>",     [[<C-\><C-n><C-w>l]])
 
 -- Fugitive/Git
-mapper("n" , "<Leader>gs" , "<cmd>Git<CR>")
-mapper("n" , "<Leader>gd" , "<cmd>Gdiffsplit<CR>")
-mapper("n" , "<Leader>gp" , "<cmd>Git pull<CR>")
+mapper("n" , "<Leader>gs" , "<cmd>Git<CR>")            -- `git stats`
+mapper("n" , "<Leader>gd" , "<cmd>Gdiffsplit<CR>")     -- open a split diffing the current file
+mapper("n" , "<Leader>gp" , "<cmd>Git pull<CR>")       -- pull
+mapper("n" , "<Leader>gc" , "<cmd>Git branch -vv<CR>") -- all local && remote branches
