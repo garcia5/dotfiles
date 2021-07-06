@@ -21,8 +21,6 @@ prettier
 pwgen
 pyenv
 pylint
-python@2
-python@3.8
 rbenv
 readline
 ripgrep
