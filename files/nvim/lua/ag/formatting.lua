@@ -21,9 +21,12 @@ vim.opt.softtabstop = 4        -- <Tab> behaves as 4 spaces
 -- format.nvim configuration
 require'format'.setup {
     python = {
-        {cmd={"yapf -i --exclude **/mock*.py"}},
+        {cmd = {"yapf -i --exclude **/mock*.py"}},
     },
     typescript = {
-        {cmd={[[sed -Ei 's/[  ]+$//']]}},
+        {cmd = {[[sed -Ei 's/[  ]+$//']]}},
+    },
+    vue = {
+        {cmd = {[[sed -Ei 's/[  ]+$//']]}},
     },
 }

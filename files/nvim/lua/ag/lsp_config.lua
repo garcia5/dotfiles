@@ -1,7 +1,6 @@
 local lspconfig = require('lspconfig')
-local compe = require('compe')
 local trouble = require('trouble')
-local signature = require('lsp_signature')
+local compe = require('compe')
 
 local mapper = function(mode, key, result, opts)
     vim.api.nvim_buf_set_keymap(0, mode, key, result, opts)
@@ -11,8 +10,8 @@ local lsp_mapper = function(mode, key, result)
     mapper(mode, key, "<cmd>lua " .. result .. "<CR>", {noremap = true, silent = true})
 end
 
-local custom_attach = function(client)
-    -- Only autocomplete when I have a language server running
+local custom_attach = function(client, bufnr)
+    -- Only autocomplete in lsp
     compe.setup({
         enabled = true,
         preselect = 'disable',
@@ -27,7 +26,6 @@ local custom_attach = function(client)
             path            = {priority = 70},
         },
     }, 0) -- Only current buffer
-
     -- Compe mappings
     -- Trigger completion
     mapper("i", "<C-Space>", "compe#complete()",
@@ -43,9 +41,7 @@ local custom_attach = function(client)
     )
 
     -- load lsp trouble
-    trouble.setup{}
-    -- load signature help
-    signature.on_attach()
+    trouble.setup()
 
     -- LSP mappings (only apply when LSP client attached)
     lsp_mapper("n" , "K"         , "vim.lsp.buf.hover()")
@@ -62,38 +58,38 @@ local custom_attach = function(client)
 
     -- Diagnostic text colors
     -- Errors in Red
-    vim.cmd[[ hi LspDiagnosticsVirtualTextError guifg=Red ctermfg=Red ]]
+    vim.cmd[[ hi LspDiagnosticsVirtualTextError guifg = Red ctermfg = Red ]]
     -- Warnings in Yellow
-    vim.cmd[[ hi LspDiagnosticsVirtualTextWarning guifg=Yellow ctermfg=Yellow ]]
+    vim.cmd[[ hi LspDiagnosticsVirtualTextWarning guifg = Yellow ctermfg = Yellow ]]
     -- Info and Hints in White
-    vim.cmd[[ hi LspDiagnosticsVirtualTextInformation guifg=White ctermfg=White ]]
-    vim.cmd[[ hi LspDiagnosticsVirtualTextHint guifg=White ctermfg=White ]]
+    vim.cmd[[ hi LspDiagnosticsVirtualTextInformation guifg = White ctermfg = White ]]
+    vim.cmd[[ hi LspDiagnosticsVirtualTextHint guifg = White ctermfg = White ]]
     -- Underline the offending code
-    vim.cmd[[ hi LspDiagnosticsUnderlineError guifg=NONE ctermfg=NONE cterm=underline gui=underline ]]
-    vim.cmd[[ hi LspDiagnosticsUnderlineWarning guifg=NONE ctermfg=NONE cterm=underline gui=underline ]]
-    vim.cmd[[ hi LspDiagnosticsUnderlineInformation guifg=NONE ctermfg=NONE cterm=underline gui=underline ]]
-    vim.cmd[[ hi LspDiagnosticsUnderlineHint guifg=NONE ctermfg=NONE cterm=underline gui=underline ]]
+    vim.cmd[[ hi LspDiagnosticsUnderlineError guifg = NONE ctermfg = NONE cterm = underline gui = underline ]]
+    vim.cmd[[ hi LspDiagnosticsUnderlineWarning guifg = NONE ctermfg = NONE cterm = underline gui = underline ]]
+    vim.cmd[[ hi LspDiagnosticsUnderlineInformation guifg = NONE ctermfg = NONE cterm = underline gui = underline ]]
+    vim.cmd[[ hi LspDiagnosticsUnderlineHint guifg = NONE ctermfg = NONE cterm = underline gui = underline ]]
 
     -- use omnifunc
-    vim.bo.omnifunc = 'v:lua.vim.lsp.omnifunc'
+    vim.opt.omnifunc = 'v:lua.vim.lsp.omnifunc'
 end
 
 -- Set up clients
 -- python
 lspconfig.pyright.setup({
-    on_attach=function(client)
+    on_attach = function(client)
         custom_attach(client)
         -- 'Organize imports' keymap for pyright only
         mapper("n", "<Leader>ii", "<cmd>PyrightOrganizeImports<CR>",
             {silent = true, noremap = true}
         )
     end,
-    settings={
-        pyright={
+    settings = {
+        pyright = {
             disableOrganizeImports = false
         },
-        python={
-            analysis={
+        python = {
+            analysis = {
                 useLibraryCodeForTypes = true
             }
         }
@@ -101,32 +97,43 @@ lspconfig.pyright.setup({
 })
 
 -- typescript
-lspconfig.tsserver.setup{on_attach=custom_attach}
+lspconfig.tsserver.setup{on_attach = custom_attach}
 
 -- vue
 lspconfig.vuels.setup({
-    on_attach=custom_attach,
-    settings={
-        vetur={
-            completion={
+    on_attach = function(client, bufnr)
+        -- Tell vim that vls can handle formatting
+        client.resolved_capabilities.document_formatting = true
+        custom_attach(client, bufnr)
+    end,
+    settings = {
+        vetur = {
+            completion = {
                 autoImport = true,
                 tagCasing = "kebab",
                 useScaffoldSnippets = true,
             },
             useWorkspaceDependencies = true,
         },
-        format={
+        format = {
             enable = true,
-            options={
+            options = {
                 useTabs = false,
                 tabSize = 2,
-            }
-        }
+            },
+        },
+        validation = {
+            template = true,
+            script = true,
+            style = true,
+            templateProps = true,
+            interpolation = true
+        },
     },
 })
 
 -- yaml
-lspconfig.yamlls.setup{on_attach=custom_attach}
+lspconfig.yamlls.setup{on_attach = custom_attach}
 
 -- bash
-lspconfig.bashls.setup{on_attach=custom_attach}
+lspconfig.bashls.setup{on_attach = custom_attach}

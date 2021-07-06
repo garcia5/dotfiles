@@ -15,3 +15,11 @@ augroup end
 
 " exit vim if netrw is the last open buffer
 autocmd BufEnter * if winnr("$") == 1 && &filetype == 'netrw' | q | endif
+
+" Detect "TODO:" comments always
+augroup vimrc_todo
+    au!
+    au Syntax * syn match MyTodo /\v<(NOTE|TODO):/
+          \ containedin=.*Comment,vimCommentTitle
+augroup END
+hi def link MyTodo Todo

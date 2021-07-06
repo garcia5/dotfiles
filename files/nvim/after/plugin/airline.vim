@@ -5,3 +5,6 @@ let g:airline#extensions#nvimlsp#enabled    = 1
 let g:airline#extensions#scrollbar#enabled  = 0
 
 let g:airline#extensions#bufferline#excludes = ["index"]
+
+" Colorscheme
+let g:airline_theme = 'base16_phd'
