@@ -52,3 +52,6 @@ fzf-git-checkout() {
     fi
 }
 alias gc='fzf-git-checkout'
+
+# Others
+alias senv='while read LINE; do export "$LINE"; done < ./.ENV'

@@ -134,6 +134,11 @@ echo 'set completion-ignore-case On' >> ~/.inputrc
 export WINHOME=/mnt/c/Users/agarcia02
 alias gohome="cd $WINHOME"
 
+# Let gcc play with brew
+export LDFLAGS="-L$HOMEBREW_PREFIX/opt/zlib/lib -L$HOMEBREW_PREFIX/opt/bzip2/lib"
+export CPPFLAGS="-I$HOMEBREW_PREFIX/opt/zlib/include -I$HOMEBREW_PREFIX/opt/bzip2/include"
+export CFLAGS="-O2"
+
 # Look && feel
 parse_git_branch() {
     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
@@ -143,6 +148,8 @@ BASE16_SHELL="$HOME/.config/base16-shell/"
 [ -n "$PS1" ] && \
     [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
     eval "$("$BASE16_SHELL/profile_helper.sh")"
+# set colorscheme
+base16_phd
 
 # FZF
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
