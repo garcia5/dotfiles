@@ -27,6 +27,7 @@ paq 'arzg/vim-corvine'                            -- corvine
 paq 'chriskempson/base16-vim'                     -- pretty colors
 paq 'vim-airline/vim-airline-themes'              -- airline themes
 paq 'shaunsingh/moonlight.nvim'                   -- VSCode's moonlight theme in lua
+paq 'yashguptaz/calvera-dark.nvim'                -- calvera-dark: in lua w/ TS integration
 
 -- 0.5 features
 paq 'neovim/nvim-lsp'                             -- LSP

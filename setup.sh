@@ -81,7 +81,7 @@ function setup_nvim {
     backup_dir "$NVIM_HOME"
     ln -s "$DF_HOME/files/nvim" "$NVIM_HOME"
     brew install neovim
-    nvim -c "PaqInstall"
+    nvim +PaqInstall +qall
 }
 
 function setup_tmux {
