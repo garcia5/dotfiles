@@ -10,7 +10,7 @@ telescope.setup{
             '--column',
             '--smart-case'
         },
-        layout_confit = {
+        layout_config = {
             width = 0.75,
             prompt_position = "top",
             preview_cutoff = 120,
@@ -33,6 +33,13 @@ telescope.setup{
             override_file_sorter = true,
             override_generic_sorter = true,
             case_mode = "smart_case",
+        },
+    },
+    pickers = {
+        buffers = {
+            i = {
+                ["<C-d>"] = require("telescope.actions").delete_buffer,
+            },
         },
     },
 }

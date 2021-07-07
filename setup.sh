@@ -48,6 +48,9 @@ function setup_brew {
     # install essentials
     brew install gcc
     brew install fzf
+    # actually install fzf
+    $(brew --prefix)/opt/fzf/install
+    brew install bat
     brew install ripgrep
     brew install exa
     brew install pyenv
