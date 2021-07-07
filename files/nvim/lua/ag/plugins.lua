@@ -46,9 +46,7 @@ paq 'hrsh7th/nvim-compe'                          -- autocomplete
 paq 'hrsh7th/vim-vsnip'                           -- snippets
 paq 'hrsh7th/vim-vsnip-integ'                     -- ... with compe integration
 paq 'tpope/vim-fugitive'                          -- git integration
-paq{'lukas-reineke/indent-blankline.nvim',        -- indent guides
-    branch = 'lua'
-}
+paq 'lukas-reineke/indent-blankline.nvim'         -- indent guides
 paq{'nvim-telescope/telescope-fzf-native.nvim',   -- fzf sorting for telescope
     run = 'make'
 }

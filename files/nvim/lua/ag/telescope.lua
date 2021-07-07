@@ -10,17 +10,17 @@ telescope.setup{
             '--column',
             '--smart-case'
         },
-        prompt_position = "top",
+        layout_confit = {
+            width = 0.75,
+            prompt_position = "top",
+            preview_cutoff = 120,
+        },
         prompt_prefix = "» ",
         selection_strategy = "reset",
         sorting_strategy = "ascending",
         layout_strategy = "horizontal",
         shorten_path = true,
         winblend = 0, -- transparency
-        width = 0.75,
-        preview_cutoff = 120,
-        results_height = 1,
-        results_width = 0.8,
         border = {},
         borderchars = { '─', '│', '─', '│', '╭', '╮', '╯', '╰'},
         color_devicons = true,

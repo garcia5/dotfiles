@@ -10,8 +10,8 @@ function usage {
 
 function backup_file {
     file=$1
-    echo "backing up '$file' to '$file.backup'"
     if [ -e $file ]; then
+        echo "backing up '$file' to '$file.backup'"
         mv $file "$file.backup"
     fi
 }
@@ -39,10 +39,12 @@ function setup_brew {
 }
 
 function setup_bash {
-    file="$HOME/.bash_profile"
+    file="$HOME/.bashrc"
     backup_file $file
-    ln -s "$DF_HOME/files/.bash_profile" "$file"
-    echo "source $HOME/.bash_profile" >> ~/.bashrc
+    ln -s "$DF_HOME/files/.bashrc" "$file"
+    file="$HOME/.bash_aliases"
+    backup_file $file
+    ln -s "$DF_HOME/files/.bash_aliases" "$file"
 }
 
 function setup_nvim {
@@ -51,7 +53,7 @@ function setup_nvim {
     git clone https://github.com/savq/paq-nvim.git \
         "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/pack/paqs/opt/paq-nvim
     if [[ ! $(command -v nvim) ]]; then
-        brew install --HEAD neovim
+        brew install neovim
     fi
     backup_dir $dir
     ln -s "$DF_HOME/files/nvim" "$NVIM_HOME"
