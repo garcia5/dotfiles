@@ -131,13 +131,13 @@ set -o vi
 if [ ! -a ~/.inputrc ]; then echo '$include /etc/inputrc' > ~/.inputrc; fi
 # Add shell-option to ~/.inputrc to enable case-insensitive tab completion
 echo 'set completion-ignore-case On' >> ~/.inputrc
-
+export WINHOME=/mnt/c/Users/agarcia02
+alias gohome="cd $WINHOME"
 
 # Look && feel
 parse_git_branch() {
     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
 }
-
 export PS1="\[\033[32m\]\w\[\033[33m\]\$(parse_git_branch)\[\033[00m\] $ "
 BASE16_SHELL="$HOME/.config/base16-shell/"
 [ -n "$PS1" ] && \
