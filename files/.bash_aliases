@@ -1,5 +1,5 @@
 # Essentials
-alias ll='exa -halt'
+alias ll='exa -hal'
 alias la='exa -a'
 alias vim='nvim'
 alias claer='clear'
