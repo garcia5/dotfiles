@@ -10,16 +10,16 @@ telescope.setup{
             '--column',
             '--smart-case'
         },
-        layout_confit = {
+        layout_config = {
             width = 0.75,
-            prompt_position = "top",
+            prompt_position = "bottom",
             preview_cutoff = 120,
         },
         prompt_prefix = "» ",
         selection_strategy = "reset",
         sorting_strategy = "ascending",
         layout_strategy = "horizontal",
-        shorten_path = true,
+        --path_display = "shorten",
         winblend = 0, -- transparency
         border = {},
         borderchars = { '─', '│', '─', '│', '╭', '╮', '╯', '╰'},

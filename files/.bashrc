@@ -115,14 +115,15 @@ fi
 # My configs
 # === *** ===
 # Setup fds certificates
-export FDS_CERT=/mnt/c/ProgramData/DesktopSystems/Git/ca-bundle.crt
-export REQUESTS_CA_BUNDLE="$FDS_CERT"
-echo "cacert=$FDS_CERT" > ~/.curlrc
-export HOMEBREW_CURLRC=1
-export NODE_EXTRA_CA_CERT="$FDS_CERT"
-export NODE_EXTRA_CA_CERTS="$FDS_CERT"
-export SSL_CERT_FILE="$FDS_CERT"
-
+if [ "$USER" == "agarcia02" ]; then
+    export FDS_CERT=/mnt/c/ProgramData/DesktopSystems/Git/ca-bundle.crt
+    export REQUESTS_CA_BUNDLE="$FDS_CERT"
+    echo "cacert=$FDS_CERT" > ~/.curlrc
+    export HOMEBREW_CURLRC=1
+    export NODE_EXTRA_CA_CERT="$FDS_CERT"
+    export NODE_EXTRA_CA_CERTS="$FDS_CERT"
+    export SSL_CERT_FILE="$FDS_CERT"
+fi
 # Essentials
 export EDITOR='nvim'
 set -o vi
@@ -159,3 +160,6 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 # Pyenv default python
 export PYENV_VERSION="3.8.10"
+
+export PATH="$PATH:$HOME/lua-language-server/bin/Linux/"
+alias luamake=/home/agarcia/lua-language-server/3rd/luamake/luamake
