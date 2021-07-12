@@ -14,14 +14,14 @@ alias gl='git plog'
 g_push() {
     cur_branch=$(git branch --show-current)
     has_remote=$(git branch -a --list "$cur_branch" | wc -l)
-    if [ $has_remote ]; then
+    if [[ $has_remote ]]; then
         git push "$@"
     else
         echo "No remote branch found, creating one"
         git push --set-upstream origin "$cur_branch" "$@"
     fi
 }
-alias gpush=g_push
+alias gpush='g_push'
 fzf-git-branch() {
     git rev-parse HEAD > /dev/null 2>&1 || return
 
@@ -52,6 +52,7 @@ fzf-git-checkout() {
     fi
 }
 alias gc='fzf-git-checkout'
+alias lg='lazygit'
 
 # Others
 alias senv='while read LINE; do export "$LINE"; done < ./.env'
