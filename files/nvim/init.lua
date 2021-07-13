@@ -18,11 +18,11 @@ vim.opt.grepformat  = '%f:%l:%c:%m'                             -- filename:line
 vim.opt.mouse       = 'n'                                       -- use mouse to scroll around in normal mode (hold shift to disable)
 
 -- Look and feel
-vim.opt.number                   = true     -- absolute numbers...
-vim.opt.relativenumber           = true     -- but only on the current line
-vim.opt.cursorline               = true     -- highlight current line
-vim.opt.list                     = true     -- show list chars
-vim.opt.listchars                = {        -- these list chars
+vim.opt.number         = true     -- absolute numbers...
+vim.opt.relativenumber = true     -- but only on the current line
+vim.opt.cursorline     = true     -- highlight current line
+vim.opt.list           = true     -- show list chars
+vim.opt.listchars      = {        -- these list chars
     tab      = '»·',
     eol      = '↵',
     nbsp     = '␣',

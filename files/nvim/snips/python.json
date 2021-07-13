@@ -12,7 +12,7 @@
         "description": "New python function"
     },
     "Static Function": {
-        "prefix": ["static"],
+        "prefix": ["@static", "static"],
         "body": [
             "@staticmethod",
             "def ${1:func_name}(${2:args}) -> ${3:returns}:",
@@ -25,7 +25,7 @@
         "description": "New python static function"
     },
     "Class Method": {
-        "prefix": ["classmethod"],
+        "prefix": ["@class", "classmethod"],
         "body": [
             "@classmethod",
             "def ${1:func_name}(cls, ${2:args}) -> ${3:returns}:",

@@ -64,7 +64,7 @@ packer.startup(
         use "tpope/vim-fugitive"                        -- git integration
         use {
             "lukas-reineke/indent-blankline.nvim",      -- indent guides
-            ft = {"vue", "yaml"},
+            ft = {"vue", "yaml", "html", "json"},
         }
         use {
             "nvim-telescope/telescope-fzf-native.nvim", -- fzf sorting for telescope

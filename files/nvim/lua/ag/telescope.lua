@@ -11,28 +11,28 @@ telescope.setup{
             '--smart-case'
         },
         layout_config = {
-            width = 0.75,
+            width           = 0.75,
             prompt_position = "top",
-            preview_cutoff = 120,
+            preview_cutoff  = 120,
         },
-        prompt_prefix = "» ",
+        prompt_prefix      = "» ",
         selection_strategy = "reset",
-        sorting_strategy = "ascending",
-        layout_strategy = "horizontal",
-        path_display = {"shorten"},
-        winblend = 0, -- transparency
-        border = {},
-        borderchars = { '─', '│', '─', '│', '╭', '╮', '╯', '╰'},
-        color_devicons = true,
-        use_less = true,
+        sorting_strategy   = "ascending",
+        layout_strategy    = "horizontal",
+        path_display       = {"shorten"},
+        winblend           = 0, -- transparency
+        border             = {},
+        borderchars        = { '─', '│', '─', '│', '╭', '╮', '╯', '╰'},
+        color_devicons     = true,
+        use_less           = true,
         set_env = { ['COLORTERM'] = 'truecolor' }, -- default { }, currently unsupported for shells like cmd.exe / powershell.exe
     },
     extensions = {
         fzf = {
-            fuzzy = true,
-            override_file_sorter = true,
+            fuzzy                   = true,
+            override_file_sorter    = true,
             override_generic_sorter = true,
-            case_mode = "smart_case",
+            case_mode               = "smart_case",
         },
     },
     pickers = {
