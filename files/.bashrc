@@ -156,10 +156,9 @@ base16_phd
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 export FZF_DEFAULT_COMMAND='rg --files'
 export FZF_CTRL_T_COMMAND='rg --files'
-export FZF_DEFAULT_OPTS="--height 40% --reverse \
-    --preview '([[ -f {} ]] && (bat -n {} )) || \
-    ([[ -d {} ]] && (tree {} | less)) || \
-    echo {} 2> /dev/null | head -200'"
+export FZF_DEFAULT_OPTS="--height 40% --reverse"
+export FZF_CTRL_T_OPTS="$FZF_DEFAULT_OPTS \
+    --preview 'bat --color=always --line-range=:40 --style=numbers,changes {}'"
 
 # Node
 export NVM_DIR="$HOME/.nvm"
