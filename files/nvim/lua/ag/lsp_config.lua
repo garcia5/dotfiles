@@ -10,6 +10,21 @@ local lsp_mapper = function(mode, key, result)
     mapper(mode, key, "<cmd>lua " .. result .. "<CR>", {noremap = true, silent = true})
 end
 
+-- Display options
+vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
+    vim.lsp.handlers.hover,
+    {
+        border = "single",
+    }
+)
+
+vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
+    vim.lsp.handlers.signature_help,
+    {
+        border = "single",
+    }
+)
+
 local custom_attach = function(client, bufnr)
     -- Only autocomplete in lsp
     compe.setup({
@@ -49,8 +64,8 @@ local custom_attach = function(client, bufnr)
     lsp_mapper("n" , "<leader>r"  , "vim.lsp.buf.references()")
     lsp_mapper("n" , "H"          , "vim.lsp.buf.code_action()")
     lsp_mapper("n" , "gin"        , "vim.lsp.buf.incoming_calls()")
-    lsp_mapper("n" , "<leader>dn" , "vim.lsp.diagnostic.goto_next()")
-    lsp_mapper("n" , "<leader>dp" , "vim.lsp.diagnostic.goto_prev()")
+    lsp_mapper("n" , "<leader>dn" , "vim.lsp.diagnostic.goto_next({popup_opts = {border = 'single'}})")
+    lsp_mapper("n" , "<leader>dp" , "vim.lsp.diagnostic.goto_prev({popup_opts = {border = 'single'}})")
     lsp_mapper("n" , "<leader>da" , "vim.lsp.diagnostic.set_loclist()")
     lsp_mapper("i" , "<C-h>"      , "vim.lsp.buf.signature_help()")
 
