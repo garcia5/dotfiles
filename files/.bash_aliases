@@ -13,7 +13,7 @@ alias gd='git diff'
 alias gl='git plog'
 g_push() {
     cur_branch=$(git branch --show-current)
-    has_remote=$(git branch -a --list "$cur_branch" | wc -l)
+    has_remote=$(git branch -r --list "origin/$cur_branch")
     if [[ $has_remote ]]; then
         git push "$@"
     else
@@ -55,4 +55,4 @@ alias gc='fzf-git-checkout'
 alias lg='lazygit'
 
 # Others
-alias senv='while read LINE; do export "$LINE"; done < ./.env'
+alias senv='source env/bin/activate && while read LINE; do export "$LINE"; done < ./.env'

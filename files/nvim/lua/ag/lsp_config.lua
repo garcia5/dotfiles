@@ -44,17 +44,15 @@ local custom_attach = function(client, bufnr)
     trouble.setup()
 
     -- LSP mappings (only apply when LSP client attached)
-    lsp_mapper("n" , "K"         , "vim.lsp.buf.hover()")
-    lsp_mapper("n" , "<c-]>"     , "vim.lsp.buf.definition()")
-    lsp_mapper("n" , "gR"        , "vim.lsp.buf.references()")
-    lsp_mapper("n" , "gr"        , "vim.lsp.buf.rename()")
-    lsp_mapper("n" , "H"         , "vim.lsp.buf.code_action()")
-    lsp_mapper("n" , "gin"       , "vim.lsp.buf.incoming_calls()")
-    lsp_mapper("n" , "<space>dn" , "vim.lsp.diagnostic.goto_next()")
-    lsp_mapper("n" , "<space>dp" , "vim.lsp.diagnostic.goto_prev()")
-    lsp_mapper("n" , "<space>da" , "vim.lsp.diagnostic.set_loclist()")
-    lsp_mapper("i" , "<C-h>"     , "vim.lsp.buf.signature_help()")
-    lsp_mapper("n" , "<C-q>"     , "vim.lsp.stop_client(vim.lsp.buf_get_clients(0))")
+    lsp_mapper("n" , "K"          , "vim.lsp.buf.hover()")
+    lsp_mapper("n" , "<c-]>"      , "vim.lsp.buf.definition()")
+    lsp_mapper("n" , "<leader>r"  , "vim.lsp.buf.references()")
+    lsp_mapper("n" , "H"          , "vim.lsp.buf.code_action()")
+    lsp_mapper("n" , "gin"        , "vim.lsp.buf.incoming_calls()")
+    lsp_mapper("n" , "<leader>dn" , "vim.lsp.diagnostic.goto_next()")
+    lsp_mapper("n" , "<leader>dp" , "vim.lsp.diagnostic.goto_prev()")
+    lsp_mapper("n" , "<leader>da" , "vim.lsp.diagnostic.set_loclist()")
+    lsp_mapper("i" , "<C-h>"      , "vim.lsp.buf.signature_help()")
 
     -- Diagnostic text colors
     -- Errors in Red
@@ -77,8 +75,8 @@ end
 -- Set up clients
 -- python
 lspconfig.pyright.setup({
-    on_attach = function(client)
-        custom_attach(client)
+    on_attach = function(client, bufnr)
+        custom_attach(client, bufnr)
         -- 'Organize imports' keymap for pyright only
         mapper("n", "<Leader>ii", "<cmd>PyrightOrganizeImports<CR>",
             {silent = true, noremap = true}
