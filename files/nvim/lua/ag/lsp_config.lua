@@ -1,5 +1,4 @@
 local lspconfig = require('lspconfig')
-local trouble = require('trouble')
 local compe = require('compe')
 
 local mapper = function(mode, key, result, opts)
@@ -10,7 +9,7 @@ local lsp_mapper = function(mode, key, result)
     mapper(mode, key, "<cmd>lua " .. result .. "<CR>", {noremap = true, silent = true})
 end
 
--- Display options
+-- Give popup windows bordres
 vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
     vim.lsp.handlers.hover,
     {
@@ -40,7 +39,8 @@ local custom_attach = function(client, bufnr)
             buffer          = {priority = 80},
             path            = {priority = 70},
         },
-    }, 0) -- Only current buffer
+    }, bufnr) -- Only current buffer
+
     -- Compe mappings
     -- Trigger completion
     mapper("i", "<C-Space>", "compe#complete()",
@@ -55,9 +55,6 @@ local custom_attach = function(client, bufnr)
         {silent = true, expr = true, noremap = true}
     )
 
-    -- load lsp trouble
-    trouble.setup()
-
     -- LSP mappings (only apply when LSP client attached)
     lsp_mapper("n" , "K"          , "vim.lsp.buf.hover()")
     lsp_mapper("n" , "<c-]>"      , "vim.lsp.buf.definition()")
@@ -69,22 +66,8 @@ local custom_attach = function(client, bufnr)
     lsp_mapper("n" , "<leader>da" , "vim.lsp.diagnostic.set_loclist()")
     lsp_mapper("i" , "<C-h>"      , "vim.lsp.buf.signature_help()")
 
-    -- Diagnostic text colors
-    -- Errors in Red
-    vim.cmd[[ hi LspDiagnosticsVirtualTextError guifg = Red ctermfg = Red ]]
-    -- Warnings in Yellow
-    vim.cmd[[ hi LspDiagnosticsVirtualTextWarning guifg = Yellow ctermfg = Yellow ]]
-    -- Info and Hints in White
-    vim.cmd[[ hi LspDiagnosticsVirtualTextInformation guifg = White ctermfg = White ]]
-    vim.cmd[[ hi LspDiagnosticsVirtualTextHint guifg = White ctermfg = White ]]
-    -- Underline the offending code
-    vim.cmd[[ hi LspDiagnosticsUnderlineError guifg = NONE ctermfg = NONE cterm = underline gui = underline ]]
-    vim.cmd[[ hi LspDiagnosticsUnderlineWarning guifg = NONE ctermfg = NONE cterm = underline gui = underline ]]
-    vim.cmd[[ hi LspDiagnosticsUnderlineInformation guifg = NONE ctermfg = NONE cterm = underline gui = underline ]]
-    vim.cmd[[ hi LspDiagnosticsUnderlineHint guifg = NONE ctermfg = NONE cterm = underline gui = underline ]]
-
     -- use omnifunc
-    vim.opt.omnifunc = 'v:lua.vim.lsp.omnifunc'
+    vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 end
 
 -- Set up clients
@@ -152,7 +135,7 @@ lspconfig.yamlls.setup{on_attach = custom_attach}
 lspconfig.bashls.setup{on_attach = custom_attach}
 
 -- lua (optional)
-local lua_ls_path = vim.fn.expand('~/lua-langauge-server/')
+local lua_ls_path = vim.fn.expand('~/lua-language-server/')
 local lua_ls_bin = lua_ls_path .. 'bin/Linux/lua-language-server'
 if vim.fn.executable(lua_ls_bin) then
     lspconfig.sumneko_lua.setup({

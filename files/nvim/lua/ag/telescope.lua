@@ -27,14 +27,6 @@ telescope.setup{
         use_less           = true,
         set_env = { ['COLORTERM'] = 'truecolor' }, -- default { }, currently unsupported for shells like cmd.exe / powershell.exe
     },
-    extensions = {
-        fzf = {
-            fuzzy                   = true,
-            override_file_sorter    = true,
-            override_generic_sorter = true,
-            case_mode               = "smart_case",
-        },
-    },
     pickers = {
         buffers = {
             sort_lastused = true,
@@ -49,4 +41,3 @@ telescope.setup{
         },
     },
 }
-telescope.load_extension('fzf')
