@@ -34,6 +34,28 @@ packer.startup(
                 })
             end,
         }
+        use {
+            "hoob3rt/lualine.nvim",                 -- statusline
+             requires = {
+                "kyazdani42/nvim-web-devicons",
+                opt = true
+            },
+            config = function()
+                require"lualine".setup{
+                    theme = "auto",
+                    sections = {
+                        lualine_a = {"mode"},
+                        lualine_b = {"filename"},
+                        lualine_c = {"branch", "diff"},
+                        lualine_x = {
+                            {'diagnostics', sources = {'nvim_lsp'}},
+                        },
+                        lualine_y = {"filetype"},
+                        lualine_z = {"location"},
+                    },
+                }
+            end,
+        }
 
         -- Colorschemes
         use "srcery-colors/srcery-vim"       -- srecry
