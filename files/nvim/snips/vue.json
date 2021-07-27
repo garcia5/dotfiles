@@ -1,0 +1,11 @@
+{
+  "Tag": {
+    "prefix": ["tag"],
+    "body": [
+      "<${1:tag}${2: attrs}>",
+      "\t$0",
+      "</$1>"
+    ],
+    "description": "html tag"
+  }
+}

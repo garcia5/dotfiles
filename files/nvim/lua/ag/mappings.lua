@@ -34,11 +34,6 @@ mapper("n", "<M-j>", ":noautocmd wincmd j<CR>")
 mapper("n", "<M-h>", ":noautocmd wincmd h<CR>")
 mapper("n", "<M-k>", ":noautocmd wincmd k<CR>")
 mapper("n", "<M-l>", ":noautocmd wincmd l<CR>")
--- Move between open buffers
--- 'noremap' breaks these mappings because of ins-copmleteion defaults
--- (probably)
-vim.api.nvim_set_keymap("n", "<C-n>", "<Plug>AirlineSelectNextTab", {silent = true})
-vim.api.nvim_set_keymap("n", "<C-p>", "<Plug>AirlineSelectPrevTab", {silent = true})
 -- Term
 mapper("t", "<Esc><Esc>",[[<C-\><C-n>]])
 mapper("t", "<C-j>",     [[<C-\><C-n><C-w>j]])

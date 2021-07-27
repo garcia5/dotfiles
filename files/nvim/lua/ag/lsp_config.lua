@@ -84,11 +84,6 @@ lspconfig.pyright.setup({
         pyright = {
             disableOrganizeImports = false
         },
-        python = {
-            analysis = {
-                useLibraryCodeForTypes = true
-            }
-        }
     }
 })
 

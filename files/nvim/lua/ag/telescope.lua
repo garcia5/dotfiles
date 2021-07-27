@@ -22,14 +22,15 @@ telescope.setup{
         path_display       = {"shorten"},
         winblend           = 0, -- transparency
         border             = {},
-        borderchars        = { '─', '│', '─', '│', '╭', '╮', '╯', '╰'},
+        borderchars        = { '─', '│', '─', '│', '╭', '╮', '╯', '╰' },
         color_devicons     = true,
         use_less           = true,
         set_env = { ['COLORTERM'] = 'truecolor' }, -- default { }, currently unsupported for shells like cmd.exe / powershell.exe
     },
     pickers = {
         buffers = {
-            sort_lastused = true,
+            sort_mru = true,
+            ignore_current_buffer = true,
             mappings = {
                 i = {
                     ["<c-d>"] = require("telescope.actions").delete_buffer,

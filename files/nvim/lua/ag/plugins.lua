@@ -22,7 +22,6 @@ packer.startup(
         use "nvim-telescope/telescope.nvim" -- fuzzy find ALL the things
 
         -- Look and feel
-        use "vim-airline/vim-airline"                -- pretty status/tab line
         use {
             "lewis6991/gitsigns.nvim",               -- gitsigns
             requires = { "nvim-lua/plenary.nvim" },
@@ -41,7 +40,6 @@ packer.startup(
         use "phanviet/vim-monokai-pro"       -- monokai
         use "arzg/vim-corvine"               -- corvine
         use "chriskempson/base16-vim"        -- pretty colors
-        use "vim-airline/vim-airline-themes" -- airline themes
         use "shaunsingh/moonlight.nvim"      -- VSCode's moonlight theme in lua
         use "nxvu699134/vn-night.nvim"       -- dark theme w/ treesitter support
 
