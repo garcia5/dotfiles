@@ -2,7 +2,7 @@
 set termguicolors
 let base16colorspace=256
 set background=dark
-colorscheme vn-night
+colorscheme base16-tomorrow-night-eighties
 
 if (v:false && filereadable(expand('~/.vimrc_background'))) " Match terminal color scheme
     source ~/.vimrc_background
