@@ -114,8 +114,8 @@ fi
 # === *** ===
 # My configs
 # === *** ===
-# Setup fds certificates
 if [ "$USER" == "agarcia02" ]; then
+    # Setup fds certificates
     export FDS_CERT=/mnt/c/ProgramData/DesktopSystems/Git/ca-bundle.crt
     export REQUESTS_CA_BUNDLE="$FDS_CERT"
     echo "cacert=$FDS_CERT" > ~/.curlrc
@@ -127,24 +127,28 @@ fi
 # Essentials
 export EDITOR='nvim'
 set -o vi
+
 # If ~/.inputrc doesn't exist yet: First include the original /etc/inputrc
 # so it won't get overriden
 if [ ! -a ~/.inputrc ]; then echo '$include /etc/inputrc' > ~/.inputrc; fi
 # Add shell-option to ~/.inputrc to enable case-insensitive tab completion
 echo 'set completion-ignore-case On' >> ~/.inputrc
-export WINHOME=/mnt/c/Users/agarcia02
-alias gohome="cd $WINHOME"
+# NO BELLS
+echo 'set bell-style none' >> ~/.inputrc
 
 # Let gcc play with brew
-export LDFLAGS="-L$HOMEBREW_PREFIX/opt/zlib/lib -L$HOMEBREW_PREFIX/opt/bzip2/lib"
-export CPPFLAGS="-I$HOMEBREW_PREFIX/opt/zlib/include -I$HOMEBREW_PREFIX/opt/bzip2/include"
+export LDFLAGS="-L$(brew --prefix)/opt/zlib/lib -L$(brew --prefix)/opt/bzip2/lib"
+export CPPFLAGS="-I$(brew --prefix)/opt/zlib/include -I$(brew --prefix)/opt/bzip2/include"
 export CFLAGS="-O2"
 
 # Look && feel
+# PS1 helper
 parse_git_branch() {
     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
 }
+# green cwd, (yellow git branch name if any) $
 export PS1="\[\033[32m\]\w\[\033[33m\]\$(parse_git_branch)\[\033[00m\] $ "
+# Pick up base16_colors, set by running `base16_{color name}` in shell
 BASE16_SHELL="$HOME/.config/base16-shell/"
 [ -n "$PS1" ] && \
     [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
@@ -155,6 +159,7 @@ BASE16_SHELL="$HOME/.config/base16-shell/"
 export FZF_DEFAULT_COMMAND='rg --files'
 export FZF_CTRL_T_COMMAND='rg --files'
 export FZF_DEFAULT_OPTS="--height 40% --reverse"
+# Preview files (but not everything else) with bat
 export FZF_CTRL_T_OPTS="$FZF_DEFAULT_OPTS \
     --preview 'bat --color=always --line-range=:40 --style=numbers,changes {}'"
 
@@ -162,8 +167,10 @@ export FZF_CTRL_T_OPTS="$FZF_DEFAULT_OPTS \
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
 # Pyenv default python
 export PYENV_VERSION="3.8.10"
 
+# Lua ls
 export PATH="$PATH:$HOME/lua-language-server/bin/Linux/"
 alias luamake=/home/agarcia/lua-language-server/3rd/luamake/luamake

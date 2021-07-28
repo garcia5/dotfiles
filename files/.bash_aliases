@@ -5,7 +5,7 @@ alias vim='nvim'
 alias claer='clear'
 
 # Nav
-alias gohome='cd /mnt/c/Users/agarcia02/'
+alias gohome="cd /mnt/c/Users/$USER/"
 
 # Git
 alias gs='git status'

@@ -55,6 +55,7 @@ function setup_brew {
     brew install exa
     brew install pyenv
     brew install yarn
+    brew install neovim
 }
 
 function setup_bash {
@@ -70,18 +71,25 @@ function setup_bash {
     file="$HOME/.bash_aliases"
     backup_file $file
     ln -s "$DF_HOME/files/.bash_aliases" "$file"
+
+    # Color schemes
+    git clone https://github.com/chriskempson/base16-shell.git ~/.config/base16-shell
+
+    # Take care of essential apt packages
+    sudo apt-get update
+    # Things to make python happy
+    # TODO: make sure there aren't any others required
+    sudo apt-get install liblzma-dev
+    sudo apt-get install libsqlite3-dev
+    sudo apt-get install unixodbc-dev
 }
 
 function setup_nvim {
     setup_brew
-    # install package manager, paq-nvim
-    git clone https://github.com/savq/paq-nvim.git \
-        "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/pack/paqs/opt/paq-nvim
     mkdir -p "$HOME/.config"
     backup_dir "$NVIM_HOME"
     ln -s "$DF_HOME/files/nvim" "$NVIM_HOME"
-    brew install neovim
-    nvim +PaqInstall +qall
+    nvim +PackerSync +qall
 }
 
 function setup_tmux {
