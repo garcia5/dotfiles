@@ -42,27 +42,13 @@ packer.startup(
             end,
         }
         use {
-            "hoob3rt/lualine.nvim",                 -- statusline
+            "hoob3rt/lualine.nvim",                  -- statusline in lua
              requires = {
                 "kyazdani42/nvim-web-devicons",
                 opt = true
             },
-            config = function()
-                require"lualine".setup{
-                    theme = "auto",
-                    sections = {
-                        lualine_a = {"mode"},
-                        lualine_b = {"filename"},
-                        lualine_c = {"branch", "diff"},
-                        lualine_x = {
-                            {'diagnostics', sources = {'nvim_lsp'}},
-                        },
-                        lualine_y = {"filetype"},
-                        lualine_z = {"location"},
-                    },
-                }
-            end,
         }
+        use "folke/lsp-colors.nvim"                  -- LSP colors that aren't built in
 
         -- Colorschemes
         use "srcery-colors/srcery-vim"       -- srecry
