@@ -56,5 +56,12 @@
             ""
         ],
         "description": "New unittest"
+    },
+    "Printf": {
+        "prefix": ["printf"],
+        "body": [
+            "print(f'$0')"
+        ],
+        "description": "Formatted string"
     }
 }

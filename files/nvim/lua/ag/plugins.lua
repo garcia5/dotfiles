@@ -21,10 +21,6 @@ packer.startup(
         use "cohama/lexima.vim"             -- auto pairs that JUST WORK (for real this time)
         use "tpope/vim-surround"            -- surround
         use "tpope/vim-repeat"              -- ... and make them repeatable
-        use {
-            "godlygeek/tabular",            -- line it up
-            cmd = "Tab",
-        }
         use "lukas-reineke/format.nvim"     -- format on save
         use "nvim-telescope/telescope.nvim" -- fuzzy find ALL the things
 
@@ -80,6 +76,10 @@ packer.startup(
         use {
             "lukas-reineke/indent-blankline.nvim", -- indent guides
             ft = {"vue", "yaml", "html", "json"},
+        }
+        use {
+            "godlygeek/tabular",                   -- line it up
+            cmd = "Tab",
         }
     end
 )
