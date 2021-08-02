@@ -60,7 +60,7 @@ require'nvim-treesitter.configs'.setup {
     },
     refactor = {
         highlight_definitions = {
-            enable = true,
+            enable = false,
         },
         smart_rename = {
             enable = true,
