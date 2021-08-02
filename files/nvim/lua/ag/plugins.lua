@@ -53,6 +53,7 @@ packer.startup(
         use "chriskempson/base16-vim"        -- pretty colors
         use "shaunsingh/moonlight.nvim"      -- VSCode's moonlight theme in lua
         use "nxvu699134/vn-night.nvim"       -- dark theme w/ treesitter support
+        use "Murtaza-Udaipurwala/gruvqueen"  -- gruvbux, but in lua
 
         -- 0.5 features (lsp + treesitter)
         use "neovim/nvim-lsp"                             -- LSP
