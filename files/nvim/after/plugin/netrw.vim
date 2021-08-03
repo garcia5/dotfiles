@@ -30,5 +30,3 @@ function! ToggleNetrw()
         silent Lexplore
     endif
 endfunction
-" Navigate left instead of refreshing
-au Filetype netrw nmap <buffer> <silent> <C-l> <C-w>l

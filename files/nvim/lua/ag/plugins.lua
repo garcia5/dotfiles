@@ -17,16 +17,23 @@ packer.startup(
         use "nvim-lua/plenary.nvim"  -- utility functions
 
         -- Essentials
-        use "scrooloose/nerdcommenter"      -- toggle comments
-        use "cohama/lexima.vim"             -- auto pairs that JUST WORK (for real this time)
-        use "tpope/vim-surround"            -- surround
-        use "tpope/vim-repeat"              -- ... and make them repeatable
-        use "lukas-reineke/format.nvim"     -- format on save
-        use "nvim-telescope/telescope.nvim" -- fuzzy find ALL the things
+        use "scrooloose/nerdcommenter"               -- toggle comments
+        use {
+            "cohama/lexima.vim",                     -- auto pairs that JUST WORK (for real this time)
+            config = function ()
+                vim.g.lexima_no_default_rules = true
+                vim.fn['lexima#set_default_rules']()
+            end
+        }
+        use "tpope/vim-surround"                     -- surround
+        use "tpope/vim-repeat"                       -- ... and make them repeatable
+        use "lukas-reineke/format.nvim"              -- format on save
+        use "nvim-telescope/telescope.nvim"          -- fuzzy find ALL the things
 
         -- Look and feel
+        use "folke/lsp-colors.nvim"                  -- LSP colors that aren't built in
         use {
-            "lewis6991/gitsigns.nvim",               -- gitsigns
+            "lewis6991/gitsigns.nvim",               -- git signs in gutter + some useful keymaps
             requires = { "nvim-lua/plenary.nvim" },
             config = function()
                 require'gitsigns'.setup({
@@ -44,16 +51,15 @@ packer.startup(
                 opt = true
             },
         }
-        use "folke/lsp-colors.nvim"                  -- LSP colors that aren't built in
 
         -- Colorschemes
-        use "srcery-colors/srcery-vim"       -- srecry
-        use "phanviet/vim-monokai-pro"       -- monokai
-        use "arzg/vim-corvine"               -- corvine
-        use "chriskempson/base16-vim"        -- pretty colors
-        use "shaunsingh/moonlight.nvim"      -- VSCode's moonlight theme in lua
-        use "nxvu699134/vn-night.nvim"       -- dark theme w/ treesitter support
-        use "Murtaza-Udaipurwala/gruvqueen"  -- gruvbux, but in lua
+        use "srcery-colors/srcery-vim"      -- srecry
+        use "phanviet/vim-monokai-pro"      -- monokai
+        use "arzg/vim-corvine"              -- corvine
+        use "chriskempson/base16-vim"       -- pretty colors
+        use "shaunsingh/moonlight.nvim"     -- VSCode's moonlight theme in lua
+        use "nxvu699134/vn-night.nvim"      -- dark purple theme w/ treesitter support
+        use "Murtaza-Udaipurwala/gruvqueen" -- gruvbux, but in lua
 
         -- 0.5 features (lsp + treesitter)
         use "neovim/nvim-lsp"                             -- LSP
@@ -66,6 +72,7 @@ packer.startup(
         use "nvim-treesitter/nvim-treesitter-refactor"    -- nice refactoring helpers
 
         -- Other nice to have
+        use "tpope/vim-fugitive"                   -- git integration
         use {
             "hrsh7th/nvim-compe",                  -- autocomplete
             requires = {
@@ -73,14 +80,23 @@ packer.startup(
                 "hrsh7th/vim-vsnip-integ",
             },
         }
-        use "tpope/vim-fugitive"                   -- git integration
-        use {
-            "lukas-reineke/indent-blankline.nvim", -- indent guides
-            ft = {"vue", "yaml", "html", "json"},
-        }
         use {
             "godlygeek/tabular",                   -- line it up
             cmd = "Tab",
+        }
+        use {
+            "lukas-reineke/indent-blankline.nvim", -- indent guides
+            config = function()
+                require'indent_blankline'.setup{
+                    use_treesitter          = false,
+                    show_first_indent_level = false,
+                    filetype_exclude        = {'help', 'telescope', 'fugitive', 'netrw'},
+                    buftype_exclude         = {'terminal'},
+                    char                    = '▏',
+                    char_highlight          = 'comment',
+                    filetype                = {'yaml', 'vue', 'html', 'json'},
+                }
+            end,
         }
     end
 )
