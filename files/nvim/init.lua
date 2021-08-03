@@ -47,7 +47,6 @@ vim.opt.wrap                   = false    -- don't wrap my text
 vim.g.python_recommended_style = 0        -- I know how I like my python
 
 -- Searching
-vim.opt.path:append('.,**') -- search from project root
 vim.opt.wildmenu   = true   -- tab complete on command line
 vim.opt.ignorecase = true   -- case insensitive search...
 vim.opt.smartcase  = true   -- unless I use caps
