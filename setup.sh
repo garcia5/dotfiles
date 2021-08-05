@@ -44,18 +44,35 @@ function setup_brew {
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
     fi
 
+    echo "brew update"
     brew update
-    # install essentials
-    brew install gcc
-    brew install fzf
-    # actually install fzf
-    $(brew --prefix)/opt/fzf/install
-    brew install bat
-    brew install ripgrep
-    brew install exa
-    brew install pyenv
-    brew install yarn
-    brew install neovim
+    echo "brew upgrade"
+    brew upgrade
+}
+
+function install_packages {
+    APT_PACKAGES=('liblzma-dev' 'libsqlite3-dev' 'unixodbc-dev') # TODO: add to this
+    BREW_PACKAGES=('gcc' 'fzf' 'bat' 'ripgrep' 'exa' 'pyenv' 'yarn' 'neovim')
+
+    echo "installing from apt..."
+    echo "sudo apt-get update"
+    sudo apt-get update
+    for pkg in $APT_PACKAGES; do
+        echo "sudo apt-get install $pkg"
+        sudo apt-get install "$pkg"
+    done
+
+    has_brew=$(command -v brew)
+    if [[ $has_brew ]]; then
+        echo "installing from brew..."
+        brew update
+        for pkg in $BREW_PACKAGES; do
+            echo "brew install $pkg"
+            brew install "$pkg"
+        done
+        # Actually install fzf
+        $(brew --prefix)/opt/fzf/install
+    fi
 }
 
 function setup_bash {
@@ -74,14 +91,6 @@ function setup_bash {
 
     # Color schemes
     git clone https://github.com/chriskempson/base16-shell.git ~/.config/base16-shell
-
-    # Take care of essential apt packages
-    sudo apt-get update
-    # Things to make python happy
-    # TODO: make sure there aren't any others required
-    sudo apt-get install liblzma-dev
-    sudo apt-get install libsqlite3-dev
-    sudo apt-get install unixodbc-dev
 }
 
 function setup_nvim {
@@ -89,6 +98,7 @@ function setup_nvim {
     mkdir -p "$HOME/.config"
     backup_dir "$NVIM_HOME"
     ln -s "$DF_HOME/files/nvim" "$NVIM_HOME"
+    # Install all plugins
     nvim +PackerSync +qall
 }
 
@@ -109,7 +119,6 @@ for conf in "$@"; do
     case "$conf" in
         "bash")
             setup_bash
-            source "~/.bashrc"
             ;;
         "brew")
             setup_brew
@@ -130,12 +139,13 @@ for conf in "$@"; do
             setup_nvim
             setup_tmux
             setup_zsh
-            source "~/.bashrc"
+            source "~/.profile"
             ;;
         "*")
             usage
             ;;
     esac
 done
+source "~/.profile"
 echo "Done!"
 exit 0
