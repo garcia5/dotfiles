@@ -25,19 +25,17 @@ require'nvim-treesitter.configs'.setup {
         move = {
             enable = true,
             set_jumps = true, -- track in jumplist (<C-o>, <C-i>)
-            keymaps = {
-                goto_next_start = {
-                    ["]]"] = "@function.outer",
-                },
-                goto_next_end = {
-                    ["[]"] = "@function.outer",
-                },
-                goto_previous_start = {
-                    ["[["] = "@function.outer",
-                },
-                goto_previous_end = {
-                    ["]["] = "@function.outer",
-                },
+            goto_next_start = {
+                ["]]"] = "@function.outer",
+            },
+            goto_next_end = {
+                ["[]"] = "@function.outer",
+            },
+            goto_previous_start = {
+                ["[["] = "@function.outer",
+            },
+            goto_previous_end = {
+                ["]["] = "@function.outer",
             },
         },
         -- peek definitions from LSP
