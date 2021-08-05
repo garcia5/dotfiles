@@ -18,11 +18,6 @@ telescope.setup{
             '--column',
             '--smart-case'
         },
-        layout_config = {
-            width           = 0.75,
-            prompt_position = "top",
-            preview_cutoff  = 120,
-        },
         prompt_prefix      = "» ",
         selection_strategy = "reset",
         sorting_strategy   = "ascending",

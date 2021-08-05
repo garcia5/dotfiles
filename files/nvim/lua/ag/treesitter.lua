@@ -41,6 +41,7 @@ require'nvim-treesitter.configs'.setup {
         -- peek definitions from LSP
         lsp_interop = {
             enable = true,
+            border = 'single',
             peek_definition_code = {
                 ["<Leader>pf"] = "@function.outer",
                 ["<Leader>pc"] = "@class.outer",
@@ -58,7 +59,7 @@ require'nvim-treesitter.configs'.setup {
     },
     refactor = {
         highlight_definitions = {
-            enable = false,
+            enable = false, -- got annoying
         },
         smart_rename = {
             enable = true,
