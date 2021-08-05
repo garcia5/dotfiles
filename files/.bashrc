@@ -127,6 +127,8 @@ fi
 # Essentials
 export EDITOR='nvim'
 set -o vi
+# use bat for manpager
+export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 
 # If ~/.inputrc doesn't exist yet: First include the original /etc/inputrc
 # so it won't get overriden
@@ -169,7 +171,7 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # Pyenv default python
-export PYENV_VERSION="3.8.10"
+export PYENV_VERSION="3.8.11"
 
 # Lua ls
 export PATH="$PATH:$HOME/lua-language-server/bin/Linux/"
