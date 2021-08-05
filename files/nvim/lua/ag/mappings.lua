@@ -23,6 +23,9 @@ mapper("n", "<Leader>fr", "<cmd>lua require'telescope.builtin'.lsp_references{}<
 mapper("n", "<Leader>co", "<cmd>lua require'telescope.builtin'.colorscheme{}<CR>")               -- colorschemes
 mapper("n", "<Leader>cd", "<cmd>lua require'telescope.builtin'.commands{}<CR>")                  -- command history
 mapper("n", "<Leader>gc", "<cmd>lua require'telescope.builtin'.git_branches{}<CR>")              -- checkout different branches
+mapper("n", "<Leader>bb", "<cmd>lua require'telescope.builtin'.git_branches{}<CR>")              -- checkout different branches (alt mapping to try out)
+mapper("n", "<Leader>re", "<cmd>lua require'telescope.builtin'.git_commits{}<CR>")               -- checkout commits; <CR> to checkout, <C-r>[m, s, h] to reset [mixed, soft, hard]
+mapper("n", "<Leader>ss", "<cmd>lua require'telescope.builtin'.git_status{}<CR>")                -- edit modified files in git
 
 -- Movemint
 mapper("n", "<C-j>", "<C-w>j")
@@ -41,8 +44,8 @@ mapper("t", "<C-h>",     [[<C-\><C-n><C-w>h]])
 mapper("t", "<C-k>",     [[<C-\><C-n><C-w>k]])
 mapper("t", "<C-l>",     [[<C-\><C-n><C-w>l]])
 
--- Fugitive/Git
-mapper("n" , "<Leader>gs" , "<cmd>Git<CR>")            -- `git stats`
+-- FuGITive
+mapper("n" , "<Leader>gs" , "<cmd>Git<CR>")            -- `git status`
 mapper("n" , "<Leader>gd" , "<cmd>Gdiffsplit<CR>")     -- open a split diffing the current file
 mapper("n" , "<Leader>gp" , "<cmd>Git pull<CR>")       -- pull
 mapper("n" , "<Leader>gb" , "<cmd>Git branch -vv<CR>") -- all local && remote branches
