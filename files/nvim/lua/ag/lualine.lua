@@ -2,7 +2,7 @@ local lualine = require('lualine')
 local is_lualine_buf = function ()
     local cur_buftype = vim.opt.buftype:get()
     -- Don't load special status line things for these buffer types
-    local disable_for_buftypes = {'terminal', 'help', 'quickfix', 'nofile'}
+    local disable_for_buftypes = {'terminal', 'help', 'quickfix'}
 
     for _, buftype in ipairs(disable_for_buftypes) do
         if buftype == cur_buftype then return false end
@@ -17,19 +17,22 @@ lualine.setup{
         --| A | B | C                             X | Y | Z |--
         --+-------------------------------------------------+--
         lualine_a = {"mode"},
-        lualine_b = {{
+        lualine_b = {"branch", {
             "filename",
             path = 1, -- relative path
             condition = is_lualine_buf,
         }},
         lualine_c = {{
-            "branch", {
-                "diff",
-                symbols = {
-                    modified = '',
-                    removed = '',
-                    added = '',
-            }},
+            "diff",
+            symbols = {
+                modified = '',
+                removed = '',
+                added = '',
+            },
+            -- TODO: Read these values from the colorscheme __somehow__
+            color_removed = '#ea6962',
+            color_modified = '#7daea3',
+            color_added = '#a9b665',
             condition = is_lualine_buf,
         }},
         lualine_x = {{
