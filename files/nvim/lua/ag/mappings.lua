@@ -15,17 +15,17 @@ mapper("n" , "<Leader>tn" , ":vs | term<CR>")          -- open new term in verti
 mapper("n" , "<Leader>bd" , ":bp | bd #<CR>")          -- delete the current buffer
 
 -- Telescope integration
-mapper("n", "<Leader>ff", "<cmd>lua require'telescope.builtin'.find_files{}<CR>")                -- search all files, respecting .gitignore if one exists
-mapper("n", "<Leader>fb", "<cmd>lua require'telescope.builtin'.buffers{}<CR>")                   -- search open buffers
-mapper("n", "<Leader>fl", "<cmd>lua require'telescope.builtin'.current_buffer_fuzzy_find{}<CR>") -- search lines in current buffer
-mapper("n", "<Leader>gg", "<cmd>lua require'telescope.builtin'.live_grep{}<CR>")                 -- search all lines in project
-mapper("n", "<Leader>fr", "<cmd>lua require'telescope.builtin'.lsp_references{}<CR>")            -- search references to symbol under cursor
-mapper("n", "<Leader>co", "<cmd>lua require'telescope.builtin'.colorscheme{}<CR>")               -- colorschemes
-mapper("n", "<Leader>cd", "<cmd>lua require'telescope.builtin'.commands{}<CR>")                  -- command history
-mapper("n", "<Leader>gc", "<cmd>lua require'telescope.builtin'.git_branches{}<CR>")              -- checkout different branches
-mapper("n", "<Leader>bb", "<cmd>lua require'telescope.builtin'.git_branches{}<CR>")              -- checkout different branches (alt mapping to try out)
-mapper("n", "<Leader>re", "<cmd>lua require'telescope.builtin'.git_commits{}<CR>")               -- checkout commits; <CR> to checkout, <C-r>[m, s, h] to reset [mixed, soft, hard]
-mapper("n", "<Leader>ss", "<cmd>lua require'telescope.builtin'.git_status{}<CR>")                -- edit modified files in git
+mapper("n", "<Leader>ff", "<cmd>lua require'ag.telescope'.builtin('find_files')<CR>")                -- search all files, respecting .gitignore if one exists
+mapper("n", "<Leader>fb", "<cmd>lua require'ag.telescope'.builtin('buffers')<CR>")                   -- search open buffers
+mapper("n", "<Leader>fl", "<cmd>lua require'ag.telescope'.builtin('current_buffer_fuzzy_find')<CR>") -- search lines in current buffer
+mapper("n", "<Leader>gg", "<cmd>lua require'ag.telescope'.builtin('live_grep')<CR>")                 -- search all lines in project
+mapper("n", "<Leader>fr", "<cmd>lua require'ag.telescope'.builtin('lsp_references')<CR>")            -- search references to symbol under cursor
+mapper("n", "<Leader>co", "<cmd>lua require'ag.telescope'.builtin('colorscheme')<CR>")               -- colorschemes
+mapper("n", "<Leader>cd", "<cmd>lua require'ag.telescope'.builtin('commands')<CR>")                  -- command history
+mapper("n", "<Leader>gc", "<cmd>lua require'ag.telescope'.builtin('git_branches')<CR>")              -- checkout different branches
+mapper("n", "<Leader>bb", "<cmd>lua require'ag.telescope'.builtin('git_branches')<CR>")              -- checkout different branches (alt mapping to try out)
+mapper("n", "<Leader>re", "<cmd>lua require'ag.telescope'.builtin('git_commits')<CR>")               -- checkout commits; <CR> to checkout, <C-r>[m, s, h] to reset [mixed, soft, hard]
+mapper("n", "<Leader>ss", "<cmd>lua require'ag.telescope'.builtin('git_status')<CR>")                -- edit modified files in git
 
 -- Movemint
 mapper("n", "<C-j>", "<C-w>j")

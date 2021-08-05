@@ -1,5 +1,13 @@
 local telescope = require('telescope')
 
+local M = {}
+
+M.builtin = function (builtin_func)
+    local func = require('telescope.builtin')[builtin_func]
+    local theme = require('telescope.themes').get_ivy()
+    return func(theme)
+end
+
 telescope.setup{
     defaults = {
         vimgrep_arguments = {
@@ -24,7 +32,6 @@ telescope.setup{
         border             = {},
         borderchars        = { '─', '│', '─', '│', '╭', '╮', '╯', '╰' },
         color_devicons     = true,
-        use_less           = true,
         set_env = { ['COLORTERM'] = 'truecolor' }, -- default { }, currently unsupported for shells like cmd.exe / powershell.exe
     },
     pickers = {
@@ -42,3 +49,5 @@ telescope.setup{
         },
     },
 }
+
+return M
