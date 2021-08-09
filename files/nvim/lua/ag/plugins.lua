@@ -53,13 +53,25 @@ packer.startup(
         }
 
         -- Colorschemes
-        use "srcery-colors/srcery-vim"      -- srecry
-        use "phanviet/vim-monokai-pro"      -- monokai
-        use "arzg/vim-corvine"              -- corvine
-        use "chriskempson/base16-vim"       -- pretty colors
-        use "shaunsingh/moonlight.nvim"     -- VSCode's moonlight theme in lua
-        use "nxvu699134/vn-night.nvim"      -- dark purple theme w/ treesitter support
-        use "Murtaza-Udaipurwala/gruvqueen" -- gruvbux, but in lua
+        use "srcery-colors/srcery-vim"       -- srecry
+        use "phanviet/vim-monokai-pro"       -- monokai
+        use "arzg/vim-corvine"               -- corvine
+        use "chriskempson/base16-vim"        -- pretty colors
+        use "shaunsingh/moonlight.nvim"      -- VSCode's moonlight theme in lua
+        use "nxvu699134/vn-night.nvim"       -- dark purple theme w/ treesitter support
+        use {
+            "Murtaza-Udaipurwala/gruvqueen", -- gruvbux, but in lua
+            config = function ()
+                require'gruvqueen'.setup({
+                    disable_bold = false,
+                    italic_keywords = false,
+                    italic_functions = false,
+                    italic_variables = false,
+                    italic_comments = true,
+                    style = 'material',
+                })
+            end
+        }
 
         -- 0.5 features (lsp + treesitter)
         use "neovim/nvim-lsp"                             -- LSP
