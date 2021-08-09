@@ -62,10 +62,10 @@ require'nvim-treesitter.configs'.setup {
             enable = false, -- got annoying
         },
         smart_rename = {
-            enable = true,
-            keymaps = {
-                smart_rename = "gr",
-            },
+            enable = false,
+            --keymaps = {
+            --    smart_rename = "gr",
+            --},
         },
     },
 }
