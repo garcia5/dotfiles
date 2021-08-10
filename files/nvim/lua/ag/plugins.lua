@@ -62,14 +62,16 @@ packer.startup(
         use {
             "Murtaza-Udaipurwala/gruvqueen", -- gruvbux, but in lua
             config = function ()
-                require'gruvqueen'.setup({
-                    disable_bold = false,
-                    italic_keywords = false,
-                    italic_functions = false,
-                    italic_variables = false,
-                    italic_comments = true,
-                    style = 'material',
-                })
+                if vim.g.colors_name == 'gruvqueen' then
+                    require'gruvqueen'.setup({
+                        disable_bold = false,
+                        italic_keywords = false,
+                        italic_functions = false,
+                        italic_variables = false,
+                        italic_comments = true,
+                        style = 'material',
+                    })
+                end
             end
         }
 
@@ -112,5 +114,4 @@ packer.startup(
         }
     end
 )
--- NOTE
--- If :h <plugin> does not work, run :helptags ALL to add them
+-- NOTE: If :h <plugin> does not work, run :helptags ALL to add them
