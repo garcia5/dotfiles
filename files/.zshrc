@@ -1,7 +1,6 @@
-export DF_HOME="$HOME/dotfiles"
 export TERM="xterm-256color"
 # If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
@@ -40,7 +39,7 @@ HYPHEN_INSENSITIVE="true"
 # DISABLE_LS_COLORS="true"
 
 # Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
+DISABLE_AUTO_TITLE="true"
 
 # Uncomment the following line to enable command auto-correction.
 ENABLE_CORRECTION="true"
@@ -88,12 +87,6 @@ BASE16_SHELL="$HOME/.config/base16-shell/"
 # export MANPATH="/usr/local/man:$MANPATH"
 
  # PATH
-export PATH="/usr/local/opt/ruby/bin:$PATH"
-export PATH="/usr/local/bin:$PATH"
-export PATH="/usr/local/Cellar:$PATH"
-
-export HOMEBREW_PREFIX=`brew --prefix`
-
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
 
@@ -107,23 +100,33 @@ fi
 # vi mode
 bindkey -v
 
-# colors
-export TERM=screen-256color
-
 autoload -Uz compinit && compinit
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 
+# use bat for manpager
+export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+
+# Let gcc play with brew
+export LDFLAGS="-L$(brew --prefix)/opt/zlib/lib -L$(brew --prefix)/opt/bzip2/lib"
+export CPPFLAGS="-I$(brew --prefix)/opt/zlib/include -I$(brew --prefix)/opt/bzip2/include"
+export CFLAGS="-O2"
+
  # FZF things
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-export FZF_DEFAULT_OPTS="--height 40% --border --layout=reverse \
-  --preview='([[ -f {} ]] && (bat --style=numbers --color=always {} || cat {})) || \
-    ([[ -d {} ]] && (tree -C {} | less)) || \
-    echo {} 2> /dev/null | head -200'"
 export FZF_DEFAULT_COMMAND='rg --files --smart-case'
 export FZF_CTRL_T_COMMAND='rg --files --smart-case'
+export FZF_DEFAULT_OPTS="--height 40% --reverse"
+# Preview files (but not everything else) with bat
+export FZF_CTRL_T_OPTS="$FZF_DEFAULT_OPTS \
+    --preview 'bat --color=always --line-range=:40 --style=numbers,changes {}'"
 
-eval "$(rbenv init -)"
+# Node
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
+# Lua ls
+export PATH="$PATH:$HOME/lua-language-server/bin/Linux/"
+alias luamake=/home/agarcia/lua-language-server/3rd/luamake/luamake
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
@@ -135,15 +138,4 @@ eval "$(rbenv init -)"
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-alias la='ls -aG'
-alias ll="ls -halt"
-alias ls='ls -G'
-alias vim='nvim'
-alias python='python3'
-alias pip='pip3'
-
-alias gs='git status'
-alias gd='git diff'
-alias gpush='git push'
-
-alias claer='clear'
+source ~/.aliases
