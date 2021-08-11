@@ -107,7 +107,6 @@ function install_packages {
 
     echo ""
     echo "installing python"
-    if [[ $(python --version) ]]
     runcmd git clone https://github.com/momo-lab/xxenv-latest.git "$(pyenv root)"/plugins/xxenv-latest
     runcmd pyenv latest install --skip-existing
     if [[ "$PYENV_VERSION" ]]; then
