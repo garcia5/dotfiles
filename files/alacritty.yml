@@ -78,7 +78,7 @@ window:
   #title: Alacritty
 
   # Allow terminal applications to change Alacritty's window title.
-  #dynamic_title: true
+  dynamic_title: false
 
   # Window class (Linux/BSD only):
   #class:
@@ -419,10 +419,10 @@ live_config_reload: true
 #   - (macOS) /bin/bash --login
 #   - (Linux/BSD) user login shell
 #   - (Windows) powershell
-#shell:
-#  program: /bin/bash
-#  args:
-#    - --login
+shell:
+  program: /bin/zsh
+  args:
+    - --login
 
 # Startup directory
 #
@@ -832,7 +832,7 @@ key_bindings:
   #- { key: Q,              mods: Command,                    action: Quit                  }
   #- { key: W,              mods: Command,                    action: Quit                  }
   #- { key: N,              mods: Command,                    action: SpawnNewInstance      }
-  #- { key: F,              mods: Command|Control,            action: ToggleSimpleFullscreen }
+  - { key: F,              mods: Control,             action: ToggleSimpleFullscreen }
   #- { key: F,              mods: Command, mode: ~Search,     action: SearchForward         }
   #- { key: B,              mods: Command, mode: ~Search,     action: SearchBackward        }
 
