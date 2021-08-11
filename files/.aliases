@@ -4,9 +4,6 @@ alias la='exa -a'
 alias vim='nvim'
 alias claer='clear'
 
-# Nav
-alias gohome="cd /mnt/c/Users/$USER/"
-
 # Git
 alias gs='git status'
 alias gd='git diff'

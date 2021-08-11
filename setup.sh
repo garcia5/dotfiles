@@ -159,9 +159,9 @@ function setup_zsh {
 }
 
 function setup_alacritty {
-    file="$CONFIG_HOME"/alacritty/alacritty.yml
+    file="$CONFIG_HOME/alacritty/alacritty.yml"
     backup_file $file
-    ln -s "$DF_HOME/files/alacritty.yml"
+    ln -s "$DF_HOME/files/alacritty.yml" "$file"
 }
 
 for conf in "$@"; do
@@ -169,6 +169,7 @@ for conf in "$@"; do
     case "$conf" in
         "bash")
             setup_bash
+            source "$HOME/.profile"
             ;;
         "brew")
             setup_brew
@@ -195,7 +196,6 @@ for conf in "$@"; do
             setup_nvim
             setup_tmux
             setup_zsh
-            source "$HOME/.profile"
             ;;
         "*")
             usage

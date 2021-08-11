@@ -132,7 +132,7 @@ lspconfig.bashls.setup{on_attach = custom_attach}
 
 -- lua (optional)
 local lua_ls_path = vim.fn.expand('~/lua-language-server/')
-local lua_ls_bin = lua_ls_path .. 'bin/Linux/lua-language-server'
+local lua_ls_bin = lua_ls_path .. 'bin/macOS/lua-language-server'
 if vim.fn.executable(lua_ls_bin) then
     lspconfig.sumneko_lua.setup({
         on_attach = custom_attach,
