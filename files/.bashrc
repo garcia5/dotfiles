@@ -158,8 +158,8 @@ BASE16_SHELL="$HOME/.config/base16-shell/"
 
 # FZF
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
-export FZF_DEFAULT_COMMAND='rg --files'
-export FZF_CTRL_T_COMMAND='rg --files'
+export FZF_DEFAULT_COMMAND='rg --files --smart-case'
+export FZF_CTRL_T_COMMAND='rg --files --smart-case'
 export FZF_DEFAULT_OPTS="--height 40% --reverse"
 # Preview files (but not everything else) with bat
 export FZF_CTRL_T_OPTS="$FZF_DEFAULT_OPTS \
