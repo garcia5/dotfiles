@@ -8,7 +8,7 @@ export NVIM_HOME=$CONFIG_HOME/nvim
 export DF_HOME=$HOME/dotfiles
 
 function usage {
-    echo "USAGE: $0 [bash, brew, nvim, tmux, zsh, all]"
+    echo "USAGE: $0 [bash, brew, nvim, tmux, zsh, alacritty, all]"
 }
 
 function runcmd {
@@ -109,7 +109,7 @@ function install_packages {
     echo "installing python"
     runcmd git clone https://github.com/momo-lab/xxenv-latest.git "$(pyenv root)"/plugins/xxenv-latest
     runcmd pyenv latest install --skip-existing
-    if [[ "$PYENV_VERSION" ]]; then
+    if [[ "$PYENV_VERSION" != "" ]]; then
         # Also install defined version
         runcmd pyenv install --skip-existing "$PYENV_VERSION"
     fi
@@ -124,10 +124,10 @@ function setup_bash {
     file="$HOME/.bashrc"
     backup_file $file
     ln -s "$DF_HOME/files/.bashrc" "$file"
-    # .bashrc sources .bash_aliases
-    file="$HOME/.bash_aliases"
+    # .bashrc sources .aliases
+    file="$HOME/.aliases"
     backup_file $file
-    ln -s "$DF_HOME/files/.bash_aliases" "$file"
+    ln -s "$DF_HOME/files/.aliases" "$file"
 
     # Color schemes
     if [[ ! $(-d $HOME/.config/base16-shell) ]]; then
@@ -158,6 +158,12 @@ function setup_zsh {
     ln -s "$DF_HOME/files/.zshrc" "$file"
 }
 
+function setup_alacritty {
+    file="$CONFIG_HOME"/alacritty/alacritty.yml
+    backup_file $file
+    ln -s "$DF_HOME/files/alacritty.yml"
+}
+
 for conf in "$@"; do
     echo "setting up $conf..."
     case "$conf" in
@@ -178,7 +184,11 @@ for conf in "$@"; do
             setup_zsh
             source "$HOME/.zshrc"
             ;;
+        "alacritty")
+            setup_alacritty
+            ;;
         "all")
+            setup_alacritty
             setup_bash
             setup_brew
             install_packages

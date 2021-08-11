@@ -20,7 +20,7 @@ export PATH="$PYENV_ROOT/bin:$PATH"
 if [ -n "$BASH_VERSION" ]; then
     # include .bashrc if it exists
     if [ -f "$HOME/.bashrc" ]; then
-	. "$HOME/.bashrc"
+        . "$HOME/.bashrc"
     # more pyenv
     eval "$(pyenv init --path)"
     fi
