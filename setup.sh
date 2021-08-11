@@ -202,6 +202,5 @@ for conf in "$@"; do
             ;;
     esac
 done
-source "$HOME/.profile"
 echo "Done!"
 exit 0

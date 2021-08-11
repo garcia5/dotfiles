@@ -1,4 +1,3 @@
-export TERM="xterm-256color"
 # If you come from bash you might have to change your $PATH.
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 
@@ -110,7 +109,8 @@ export LDFLAGS="-L$(brew --prefix)/opt/zlib/lib -L$(brew --prefix)/opt/bzip2/lib
 export CPPFLAGS="-I$(brew --prefix)/opt/zlib/include -I$(brew --prefix)/opt/bzip2/include"
 export CFLAGS="-O2"
 
- # FZF things
+# FZF things
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_COMMAND='rg --files --smart-case'
 export FZF_CTRL_T_COMMAND='rg --files --smart-case'
 export FZF_DEFAULT_OPTS="--height 40% --reverse"
