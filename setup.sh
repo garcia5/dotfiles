@@ -138,7 +138,6 @@ function setup_bash {
 
 function setup_nvim {
     setup_brew
-    install_packages
     mkdir -p "$HOME/.config"
     backup_dir "$NVIM_HOME"
     ln -s "$DF_HOME/files/nvim" "$NVIM_HOME"
@@ -153,12 +152,21 @@ function setup_tmux {
 }
 
 function setup_zsh {
+    # get oh-my-zsh first
+    if [ ! -d "$HOME/.oh-my-zsh" ]; then
+        sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+    fi
     file="$HOME/.zshrc"
     backup_file $file
     ln -s "$DF_HOME/files/.zshrc" "$file"
+    # do aliases as well
+    file="$HOME/.aliases"
+    backup_file $file
+    ln -s "$DF_HOME/files/.aliases" "$file"
 }
 
 function setup_alacritty {
+    mkdir -p "$CONFIG_HOME/alacritty"
     file="$CONFIG_HOME/alacritty/alacritty.yml"
     backup_file $file
     ln -s "$DF_HOME/files/alacritty.yml" "$file"
@@ -190,7 +198,6 @@ for conf in "$@"; do
             ;;
         "all")
             setup_alacritty
-            setup_bash
             setup_brew
             install_packages
             setup_nvim
