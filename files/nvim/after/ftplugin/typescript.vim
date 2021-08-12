@@ -1,6 +1,6 @@
-set foldmethod=expr
-set foldexpr=nvim_treesitter#foldexpr()
+setlocal foldmethod=expr
+setlocal foldexpr=nvim_treesitter#foldexpr()
 
-set shiftwidth=2
-set tabstop=2
-set softtabstop=2
+setlocal shiftwidth=2
+setlocal tabstop=2
+setlocal softtabstop=2
