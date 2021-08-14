@@ -51,9 +51,9 @@ function setup_brew {
 }
 
 function install_packages {
-    APT_PACKAGES=( 'liblzma-dev' 'libsqlite3-dev' 'unixodbc-dev' ) # TODO: add to this
+    #APT_PACKAGES=( 'liblzma-dev' 'libsqlite3-dev' 'unixodbc-dev' ) # TODO: add to this
     # APT packages __should__ be taken care of by brew now
-    BREW_PACKAGES=( 'gcc' 'fzf' 'bat' 'ripgrep' 'exa' 'pyenv' 'yarn' 'neovim' 'xz' 'sqlite' 'unixodbc' 'tmux')
+    BREW_PACKAGES=( 'gcc' 'fzf' 'bat' 'ripgrep' 'exa' 'pyenv' 'yarn' 'neovim' 'xz' 'sqlite' 'unixodbc' 'tmux' 'ninja' )
 
     if [[ $(command -v apt-get) ]]; then
         echo ""
@@ -104,6 +104,16 @@ function install_packages {
             runcmd npm i -g "$pkg"
         fi
     done
+    YARN_PACKAGES=( 'yaml-language-server' )
+    if [[ $(command -v yarn) ]]; then
+        for pkg in ${YARN_PACKAGES[@]}; do
+            if [[ $(yarn global list | grep -c "$pkg") -ge 1 ]]; then
+                echo "$pkg already installed, skipping"
+            else
+                runcmd npm i -g "$pkg"
+            fi
+        done
+    fi
 
     echo ""
     echo "installing python"
@@ -141,8 +151,24 @@ function setup_nvim {
     mkdir -p "$HOME/.config"
     backup_dir "$NVIM_HOME"
     ln -s "$DF_HOME/files/nvim" "$NVIM_HOME"
-    # Install all plugins
-    runcmd nvim +PackerSync +qall
+    # Optionally install lua language server. Everything else is done in
+    # install_packages
+    read -p "Install sumneko_lua? (y/n) " install_sumneko
+    if [[ $install_sumneko == "y" ]]; then
+        local old_pwd=$(pwd)
+
+        # clone project
+        git clone https://github.com/sumneko/lua-language-server "$HOME/"
+        cd "$HOME/lua-language-server"
+        git submodule update --init --recursive
+        # build
+        cd 3rd/luamake
+        compile/install.sh
+        cd ../..
+        ./3rd/luamake/luamake/rebuild
+
+        cd "$old_pwd"
+    fi
 }
 
 function setup_tmux {

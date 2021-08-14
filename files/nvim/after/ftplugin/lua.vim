@@ -1,4 +1,4 @@
-setlocallocal foldmethod=expr
+setlocal foldmethod=expr
 setlocal foldexpr=nvim_treesitter#foldexpr()
 
 " Formatoptions, since the builtin lua.vim overwrites them
