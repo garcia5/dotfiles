@@ -8,6 +8,7 @@ mapper("i", "jj", "<Esc>")
 mapper("n", "<Leader>no", ":nohl<CR>")
 mapper("n", "<BS>", "daw")
 mapper("n", "<CR>", ":e<CR>")
+mapper("n", "<Leader><Leader>", "<C-^>")
 -- Other basics
 mapper("n" , "<Leader>nt" , ":call ToggleNetrw()<CR>") -- toggle netrw in left split
 mapper("n" , "<Leader>z"  , ":call ToggleFocus()<CR>") -- toggle focus on current window
