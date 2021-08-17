@@ -7,6 +7,8 @@ fi
 export NVIM_HOME=$CONFIG_HOME/nvim
 export DF_HOME=$HOME/dotfiles
 
+HAS_BREW=$(command -v brew)
+
 function usage {
     echo "USAGE: $0 [bash, brew, nvim, tmux, zsh, alacritty, all]"
 }
@@ -40,7 +42,7 @@ function backup_dir {
 }
 
 function setup_brew {
-    exists=$(command -v brew)
+    exists="$HAS_BREW"
     # no brew, install it
     if [[ ! $exists ]]; then
         echo "No brew installation found, installing..."
@@ -53,20 +55,11 @@ function setup_brew {
 function install_packages {
     #APT_PACKAGES=( 'liblzma-dev' 'libsqlite3-dev' 'unixodbc-dev' ) # TODO: add to this
     # APT packages __should__ be taken care of by brew now
-    BREW_PACKAGES=( 'gcc' 'fzf' 'bat' 'ripgrep' 'exa' 'pyenv' 'yarn' 'neovim' 'xz' 'sqlite' 'unixodbc' 'tmux' 'ninja' )
-
-    if [[ $(command -v apt-get) ]]; then
-        echo ""
-        echo "installing from apt..."
-        runcmd sudo apt-get update
-        for pkg in ${APT_PACKAGES[@]}; do
-            runcmd sudo apt-get install "$pkg"
-        done
-    fi
+    BREW_PACKAGES=( 'gcc' 'fzf' 'bat' 'ripgrep' 'exa' 'pyenv' 'yarn' 'neovim' 'xz' 'sqlite' 'unixodbc' 'tmux' 'ninja' 'zsh' )
 
     echo ""
     echo "installing from brew..."
-    if [[ ! $(command -v brew) ]]; then
+    if [[ ! "$HAS_BREW" ]]; then
         echo "installing brew first"
         setup_brew
     fi
@@ -147,7 +140,12 @@ function setup_bash {
 }
 
 function setup_nvim {
-    setup_brew
+    if [[ ! "$HAS_BREW" ]]; then
+        setup_brew
+    fi
+    if [[ ! $(command -v nvim) ]]; then
+        brew install neovim
+    fi
     mkdir -p "$HOME/.config"
     backup_dir "$NVIM_HOME"
     ln -s "$DF_HOME/files/nvim" "$NVIM_HOME"
@@ -178,9 +176,15 @@ function setup_tmux {
 }
 
 function setup_zsh {
+    if [[ ! "$HAS_BREW" ]]; then
+        setup_brew
+    fi
+    if [[ ! $(command -v zsh) ]]; then
+        brew install zsh
+    fi
     # get oh-my-zsh first
     if [ ! -d "$HOME/.oh-my-zsh" ]; then
-        sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+        sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
     fi
     file="$HOME/.zshrc"
     backup_file $file

@@ -112,6 +112,14 @@ packer.startup(
                 }
             end,
         }
+        use {
+            "editorconfig/editorconfig-vim",        -- .editorconfig support
+            config = function ()
+                vim.g.EditorConfig_exclude_patterns = {
+                    'fugitive://.*', 'term://.*'
+                }
+            end
+        }
     end
 )
 -- NOTE: If :h <plugin> does not work, run :helptags ALL to add them

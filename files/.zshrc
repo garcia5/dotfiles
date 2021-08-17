@@ -8,7 +8,7 @@ export ZSH=$HOME/.oh-my-zsh
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="bureau"
+ZSH_THEME="af-magic"
 #
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -41,7 +41,8 @@ HYPHEN_INSENSITIVE="true"
 DISABLE_AUTO_TITLE="true"
 
 # Uncomment the following line to enable command auto-correction.
-ENABLE_CORRECTION="true"
+ENABLE_CORRECTION="false"
+unsetopt correct_all
 
 # Uncomment the following line to display red dots whilst waiting for completion.
 COMPLETION_WAITING_DOTS="true"
@@ -68,10 +69,11 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
-  git
+    pip
+    pyenv
+    ripgrep
+    vi-mode
 )
-
-source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
@@ -88,8 +90,22 @@ else
   export EDITOR='nvim'
 fi
 
+if [[ -f ~/.dotdash ]]; then
+    source ~/.dotdash
+fi
+
 # vi mode
 bindkey -v
+
+# Brew
+# Autocomplete
+if type brew &>/dev/null; then
+  FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
+fi
+# Let gcc play with brew
+export LDFLAGS="-L$(brew --prefix)/opt/zlib/lib -L$(brew --prefix)/opt/bzip2/lib"
+export CPPFLAGS="-I$(brew --prefix)/opt/zlib/include -I$(brew --prefix)/opt/bzip2/include"
+export CFLAGS="-O2"
 
 autoload -Uz compinit && compinit
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
@@ -103,11 +119,6 @@ BASE16_SHELL="$HOME/.config/base16-shell/"
 
 # use bat for manpager
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
-
-# Let gcc play with brew
-export LDFLAGS="-L$(brew --prefix)/opt/zlib/lib -L$(brew --prefix)/opt/bzip2/lib"
-export CPPFLAGS="-I$(brew --prefix)/opt/zlib/include -I$(brew --prefix)/opt/bzip2/include"
-export CFLAGS="-O2"
 
 # FZF things
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
@@ -129,8 +140,6 @@ export NVM_DIR="$HOME/.nvm"
 # Lua ls
 export PATH="$PATH:$HOME/lua-language-server/bin/Linux/"
 alias luamake=/home/agarcia/lua-language-server/3rd/luamake/luamake
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
@@ -141,3 +150,5 @@ alias luamake=/home/agarcia/lua-language-server/3rd/luamake/luamake
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 source ~/.aliases
+
+source $ZSH/oh-my-zsh.sh

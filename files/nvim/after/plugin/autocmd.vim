@@ -40,3 +40,9 @@ augroup AutopairsDisable
     au FileType netrw           let b:lexima_disabled = 1
     au FileType fugitive        let b:lexima_disabled = 1
 augroup end
+
+" Disable editorconfig rules for special buffers
+augroup EditorConfigDisable
+    au!
+    au FileType gitcommit let b:EditorConfig_disable = 1
+augroup END

@@ -27,9 +27,12 @@ require'format'.setup {
         {cmd = {"yapf -i --exclude **/mock*.py"}},
     },
     typescript = {
-        {cmd = {[[sed -Ei 's/[ ]+$//']]}},
+        {cmd = {"prettier --write"}},
+    },
+    javascript = {
+        {cmd = {"prettier --write"}},
     },
     vue = {
-        {cmd = {[[sed -Ei 's/[ ]+$//']]}},
+        {cmd = {"prettier --write"}},
     },
 }
