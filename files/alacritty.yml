@@ -818,8 +818,8 @@ key_bindings:
   #- { key: K,              mods: Command, mode: ~Vi|~Search, chars: "\x0c"                 }
   #- { key: K,              mods: Command, mode: ~Vi|~Search, action: ClearHistory          }
   #- { key: Key0,           mods: Command,                    action: ResetFontSize         }
-  #- { key: Equals,         mods: Command,                    action: IncreaseFontSize      }
-  - { key: Plus,           mods: Command,                    action: IncreaseFontSize      }
+  - { key: Equals,         mods: Command,                    action: IncreaseFontSize      }
+  #- { key: Plus,           mods: Command,                    action: IncreaseFontSize      }
   #- { key: NumpadAdd,      mods: Command,                    action: IncreaseFontSize      }
   - { key: Minus,          mods: Command,                    action: DecreaseFontSize      }
   #- { key: NumpadSubtract, mods: Command,                    action: DecreaseFontSize      }
@@ -832,7 +832,7 @@ key_bindings:
   #- { key: Q,              mods: Command,                    action: Quit                  }
   #- { key: W,              mods: Command,                    action: Quit                  }
   - { key: N,              mods: Command,                    action: SpawnNewInstance      }
-  - { key: F,              mods: Control,                    action: ToggleSimpleFullscreen }
+  - { key: F,              mods: Control,                    action: ToggleSimpleFullscreen}
   #- { key: F,              mods: Command, mode: ~Search,     action: SearchForward         }
   #- { key: B,              mods: Command, mode: ~Search,     action: SearchBackward        }
 

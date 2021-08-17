@@ -102,10 +102,14 @@ bindkey -v
 if type brew &>/dev/null; then
   FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
 fi
+
 # Let gcc play with brew
 export LDFLAGS="-L$(brew --prefix)/opt/zlib/lib -L$(brew --prefix)/opt/bzip2/lib"
 export CPPFLAGS="-I$(brew --prefix)/opt/zlib/include -I$(brew --prefix)/opt/bzip2/include"
 export CFLAGS="-O2"
+
+# zsh
+source $ZSH/oh-my-zsh.sh
 
 autoload -Uz compinit && compinit
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
@@ -150,5 +154,3 @@ alias luamake=/home/agarcia/lua-language-server/3rd/luamake/luamake
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 source ~/.aliases
-
-source $ZSH/oh-my-zsh.sh

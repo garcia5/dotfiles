@@ -3,6 +3,7 @@ alias ll='exa -hal'
 alias la='exa -a'
 alias vim='nvim'
 alias claer='clear'
+alias cat='bat'
 
 # Git
 alias gs='git status'
