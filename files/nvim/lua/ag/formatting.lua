@@ -24,7 +24,7 @@ require'format'.setup {
         {cmd = {[[sed -Ei 's/[ ]+$//']]}},
     },
     python = {
-        {cmd = {"yapf -i --exclude **/mock*.py"}},
+        {cmd = {"autopep8 --in-place"}},
     },
     typescript = {
         {cmd = {"prettier --write"}},
