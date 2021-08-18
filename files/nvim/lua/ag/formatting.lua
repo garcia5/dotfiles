@@ -24,7 +24,7 @@ require'format'.setup {
         {cmd = {[[sed -Ei 's/[ ]+$//']]}},
     },
     python = {
-        {cmd = {"autopep8 --in-place"}},
+        {cmd = {"black"}},
     },
     typescript = {
         {cmd = {"prettier --write"}},
