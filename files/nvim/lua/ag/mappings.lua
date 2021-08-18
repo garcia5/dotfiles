@@ -13,6 +13,7 @@ mapper("n", "<Leader><Leader>", "<C-^>")
 mapper("n" , "<Leader>nt" , ":call ToggleNetrw()<CR>") -- toggle netrw in left split
 mapper("n" , "<Leader>z"  , ":call ToggleFocus()<CR>") -- toggle focus on current window
 mapper("n" , "<Leader>tn" , ":vs | term<CR>")          -- open new term in vertical split
+mapper("n" , "<Leader>ts" , ":sp | term<CR>")          -- open new term in horizontal split
 mapper("n" , "<Leader>bd" , ":bp | bd #<CR>")          -- delete the current buffer
 
 -- Telescope integration

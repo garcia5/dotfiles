@@ -21,7 +21,7 @@ vim.opt.mouse       = 'n'                                       -- use mouse to 
 -- Colors
 vim.opt.termguicolors    = true
 vim.opt.background       = 'dark'
-vim.cmd 'colorscheme gruvqueen'
+vim.cmd 'colorscheme nightfox'
 vim.cmd 'let base16colorspace=256'
 
 -- Look and feel

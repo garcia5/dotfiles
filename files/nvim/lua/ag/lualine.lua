@@ -11,7 +11,7 @@ local is_lualine_buf = function ()
 end
 
 lualine.setup{
-    theme = "auto",
+    theme = "nightfox",
     sections = {
         --+-------------------------------------------------+--
         --| A | B | C                             X | Y | Z |--
