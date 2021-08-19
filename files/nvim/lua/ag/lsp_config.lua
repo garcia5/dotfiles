@@ -72,6 +72,33 @@ local custom_attach = function(client, bufnr)
 end
 
 -- Set up clients
+-- general linter errors -- NOTE: not really needed since black formats on save
+-- anyway
+--lspconfig.diagnosticls.setup({
+--    on_attach = custom_attach,
+--    filetypes = {"python"},
+--    init_options = {
+--        filetypes = {
+--            python = {"flake8"}
+--        },
+--        linters = {
+--            flake8 = {
+--                sourceName = "flake8",
+--                command = "flake8",
+--                formatPattern = {
+--                    "^(\\d+):(\\d+):(\\w+):(\\w).+: (.*)$",
+--                    {
+--                        line = 1,
+--                        column = 2,
+--                        message = {"[", 3, "] ", 5},
+--                        security = 4
+--                    }
+--                },
+--            }
+--        }
+--    }
+--})
+
 -- python
 lspconfig.pyright.setup({
     on_attach = function(client, bufnr)
