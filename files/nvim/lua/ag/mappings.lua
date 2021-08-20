@@ -47,7 +47,9 @@ mapper("t", "<C-k>",     [[<C-\><C-n><C-w>k]])
 mapper("t", "<C-l>",     [[<C-\><C-n><C-w>l]])
 
 -- FuGITive
-mapper("n" , "<Leader>gs" , "<cmd>Git<CR>")            -- `git status`
-mapper("n" , "<Leader>gd" , "<cmd>Gdiffsplit<CR>")     -- open a split diffing the current file
-mapper("n" , "<Leader>gp" , "<cmd>Git pull<CR>")       -- pull
-mapper("n" , "<Leader>gb" , "<cmd>Git branch -vv<CR>") -- all local && remote branches
+mapper("n" , "<Leader>gs" , "<cmd>Git<CR>")                 -- `git status`
+mapper("n" , "<Leader>gd" , "<cmd>Gdiffsplit<CR>")          -- open a split diffing the current file
+mapper("n" , "<Leader>gp" , "<cmd>Git pull<CR>")            -- pull
+mapper("n" , "<Leader>gb" , "<cmd>Git branch -vv<CR>")      -- all local && remote branches
+mapper("n" , "ggr"        , "<cmd>Gitsigns reset_hunk<CR>") -- reset hunk under cursor
+mapper("n" , "ggs"        , "<cmd>Gitsigns stage_hunk<CR>") -- stage hunk under cursor

@@ -21,7 +21,14 @@ au BufEnter * if winnr("$") == 1 && &filetype == 'netrw' | q | endif
 " Detect "TODO:" comments
 augroup TodoHl
     au!
-    au Syntax * syn match MyTodo /\v<(NOTE|TODO):/
+    " Regex:
+    " \v          -- Magic mode, normal regex special characters
+    " <           -- Begingging of word
+    " \zs         -- Begin the syntax match group
+    " (NOTE|TODO) -- highlight these!
+    " \ze         -- End the syntax match group
+    " [ ]*\(.*\): -- Allow " (some text):" to still match
+    au Syntax * syn match MyTodo /\v<\zs(NOTE|TODO)\ze[ ]*\(.*\):/
           \ containedin=.*Comment,vimCommentTitle
 augroup END
 hi def link MyTodo Todo
