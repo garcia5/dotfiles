@@ -22,7 +22,7 @@ telescope.setup{
         selection_strategy = "reset",
         sorting_strategy   = "ascending",
         layout_strategy    = "horizontal",
-        path_display       = {"shorten"},
+        path_display       = {"absolute"},
         winblend           = 0, -- transparency
         border             = {},
         borderchars        = { '─', '│', '─', '│', '╭', '╮', '╯', '╰' },
