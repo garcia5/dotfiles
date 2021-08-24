@@ -10,8 +10,7 @@ local is_lualine_buf = function ()
     return true
 end
 
-lualine.setup{
-    theme = "nightfox",
+lualine.setup({
     sections = {
         --+-------------------------------------------------+--
         --| A | B | C                             X | Y | Z |--
@@ -29,10 +28,6 @@ lualine.setup{
                 removed = '',
                 added = '',
             },
-            -- TODO: Read these values from the colorscheme __somehow__
-            color_removed = '#ea6962',
-            color_modified = '#7daea3',
-            color_added = '#a9b665',
             condition = is_lualine_buf,
         }},
         lualine_x = {{
@@ -49,5 +44,6 @@ lualine.setup{
     options = {
         section_separators = {'', ''},
         component_separators = {'', ''},
+        theme = "catppuccino",
     }
-}
+})

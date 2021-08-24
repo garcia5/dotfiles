@@ -38,7 +38,11 @@ packer.startup(
             config = function()
                 require'gitsigns'.setup({
                     current_line_blame = false,
-                    current_line_blame_delay = 1000,
+                    current_line_blame_opts = {
+                        delay = 1000,
+                        virt_text = true,
+                        virt_text_pos = 'right_align',
+                    },
                     update_debounce = 200,
                     numhl = true,
                 })
@@ -53,26 +57,56 @@ packer.startup(
         }
 
         -- Colorschemes
-        use "srcery-colors/srcery-vim"       -- srecry
-        use "phanviet/vim-monokai-pro"       -- monokai
-        use "arzg/vim-corvine"               -- corvine
         use "chriskempson/base16-vim"        -- pretty colors
         use "shaunsingh/moonlight.nvim"      -- VSCode's moonlight theme in lua
         use "nxvu699134/vn-night.nvim"       -- dark purple theme w/ treesitter support
         use "EdenEast/nightfox.nvim"         -- another lua colorscheme
         use {
+            "Pocco81/Catppuccino.nvim",      -- another another lua colorscheme
+            config = function ()
+                if vim.g.colors_name ~= 'catppuccino' then
+                    return
+                end
+                local catp = require('catppuccino')
+                catp.setup({
+                    colorscheme = "catppuccino",
+                    styles = {
+                        comments = "italic",
+                        functions = "NONE",
+                        keywords = "NONE",
+                    },
+                    integrations = {
+                        telescope = true,
+                        treesitter = true,
+                        native_lsp = {
+                            enabled = true,
+                            styles = {
+                                errors = "italic",
+                                warnings = "italic",
+                                information = "italic",
+                                hints = "italic",
+                            },
+                        },
+                        gitsigns = true,
+                    },
+                })
+                catp.load()
+            end
+        }
+        use {
             "Murtaza-Udaipurwala/gruvqueen", -- gruvbux, but in lua
             config = function ()
-                if vim.g.colors_name == 'gruvqueen' then
-                    require'gruvqueen'.setup({
-                        disable_bold = false,
-                        italic_keywords = false,
-                        italic_functions = false,
-                        italic_variables = false,
-                        italic_comments = true,
-                        style = 'material',
-                    })
+                if vim.g.colors_name ~= 'gruvqueen' then
+                    return
                 end
+                require'gruvqueen'.setup({
+                    disable_bold = false,
+                    italic_keywords = false,
+                    italic_functions = false,
+                    italic_variables = false,
+                    italic_comments = true,
+                    style = 'material',
+                })
             end
         }
 
