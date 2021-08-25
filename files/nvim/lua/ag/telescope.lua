@@ -35,10 +35,17 @@ telescope.setup{
             ignore_current_buffer = true,
             mappings = {
                 i = {
-                    ["<c-d>"] = require("telescope.actions").delete_buffer,
+                    ["<c-d>"] = "delete_buffer",
                 },
                 n = {
-                    ["<c-d>"] = require("telescope.actions").delete_buffer,
+                    ["<c-d>"] = "delete_buffer",
+                },
+            },
+        },
+        live_grep = {
+            mappings = {
+                i = {
+                    ["<c-l>"] = "smart_add_to_qflist"
                 },
             },
         },

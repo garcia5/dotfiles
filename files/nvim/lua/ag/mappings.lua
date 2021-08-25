@@ -10,7 +10,7 @@ mapper("n", "<BS>", "daw")
 mapper("n", "<CR>", ":e<CR>")
 mapper("n", "<Leader><Leader>", "<C-^>")
 -- Other basics
-mapper("n" , "<Leader>nt" , ":call ToggleNetrw()<CR>") -- toggle netrw in left split
+mapper("n" , "<Leader>nt" , ":NvimTreeToggle<CR>")     -- toggle file browser in left split
 mapper("n" , "<Leader>z"  , ":call ToggleFocus()<CR>") -- toggle focus on current window
 mapper("n" , "<Leader>tn" , ":vs | term<CR>")          -- open new term in vertical split
 mapper("n" , "<Leader>ts" , ":sp | term<CR>")          -- open new term in horizontal split

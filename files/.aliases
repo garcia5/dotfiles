@@ -53,4 +53,9 @@ alias gc='fzf-git-checkout'
 alias lg='lazygit'
 
 # Others
-alias senv='source env/bin/activate && while read LINE; do export "$LINE"; done < ./.env'
+source-envfile() {
+    while read LINE; do
+        export "$LINE"
+    done < "$1"
+}
+alias senv='source venv/bin/activate && source-envfile Envfile'

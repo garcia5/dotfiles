@@ -23,16 +23,18 @@ require'format'.setup {
     lua = {
         {cmd = {[[sed -Ei 's/[ ]+$//']]}},
     },
-    python = {
-        {cmd = {"black"}},
-    },
-    typescript = {
-        {cmd = {"prettier --write"}},
-    },
-    javascript = {
-        {cmd = {"prettier --write"}},
-    },
-    vue = {
-        {cmd = {"prettier --write"}},
-    },
+    -- TODO: these do things differently than the pre-commit hooks, figure out
+    --python = {
+    --    {cmd = {"black"}},
+    --},
+    -- why
+    --typescript = {
+    --    {cmd = {"prettier --write"}},
+    --},
+    --javascript = {
+    --    {cmd = {"prettier --write"}},
+    --},
+    --vue = {
+    --    {cmd = {"prettier --write"}},
+    --},
 }

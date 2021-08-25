@@ -37,7 +37,7 @@ packer.startup(
             requires = { "nvim-lua/plenary.nvim" },
             config = function()
                 require'gitsigns'.setup({
-                    current_line_blame = false,
+                    current_line_blame = true,
                     current_line_blame_opts = {
                         delay = 1000,
                         virt_text = true,
@@ -155,6 +155,7 @@ packer.startup(
                 }
             end
         }
+        use "kyazdani42/nvim-tree.lua"          -- no more netrw
     end
 )
 -- NOTE: If :h <plugin> does not work, run :helptags ALL to add them
