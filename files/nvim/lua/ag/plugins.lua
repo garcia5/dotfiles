@@ -37,7 +37,7 @@ packer.startup(
             requires = { "nvim-lua/plenary.nvim" },
             config = function()
                 require'gitsigns'.setup({
-                    current_line_blame = true,
+                    current_line_blame = false,
                     current_line_blame_opts = {
                         delay = 1000,
                         virt_text = true,
@@ -69,7 +69,7 @@ packer.startup(
                 end
                 local catp = require('catppuccino')
                 catp.setup({
-                    colorscheme = "catppuccino",
+                    colorscheme = "dark_catppuccino",
                     styles = {
                         comments = "italic",
                         functions = "NONE",
@@ -121,22 +121,22 @@ packer.startup(
         use "nvim-treesitter/nvim-treesitter-refactor"    -- nice refactoring helpers
 
         -- Other nice to have
-        use "tpope/vim-fugitive"                   -- git integration
+        use "tpope/vim-fugitive"                                                          -- git integration
         use {
-            "hrsh7th/nvim-compe",                  -- autocomplete
+            "hrsh7th/nvim-compe",                                                         -- autocomplete
             requires = {
-                "hrsh7th/vim-vsnip",               -- ...w/ snippet integration
+                "hrsh7th/vim-vsnip",                                                      -- ...w/ snippet integration
                 "hrsh7th/vim-vsnip-integ",
             },
         }
         use {
-            "godlygeek/tabular",                   -- line it up
+            "godlygeek/tabular",                                                          -- line it up
             cmd = "Tab",
         }
         use {
-            "lukas-reineke/indent-blankline.nvim", -- indent guides
+            "lukas-reineke/indent-blankline.nvim",                                        -- indent guides
             config = function()
-                require'indent_blankline'.setup{
+                require'indent_blankline'.setup({
                     use_treesitter          = false,
                     show_first_indent_level = false,
                     filetype_exclude        = {'help', 'telescope', 'fugitive', 'netrw'},
@@ -144,18 +144,23 @@ packer.startup(
                     char                    = '▏',
                     char_highlight          = 'comment',
                     filetype                = {'yaml', 'vue', 'html', 'json'},
-                }
+                })
             end,
         }
         use {
-            "editorconfig/editorconfig-vim",        -- .editorconfig support
+            "editorconfig/editorconfig-vim",                                              -- .editorconfig support
             config = function ()
                 vim.g.EditorConfig_exclude_patterns = {
                     'fugitive://.*', 'term://.*'
                 }
             end
         }
-        use "kyazdani42/nvim-tree.lua"          -- no more netrw
+        use {
+            "kyazdani42/nvim-tree.lua",                                                   -- no more netrw
+            config = function ()
+                vim.g.nvim_tree_side = 'right'
+            end
+        }
     end
 )
 -- NOTE: If :h <plugin> does not work, run :helptags ALL to add them
