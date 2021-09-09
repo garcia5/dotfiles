@@ -19,22 +19,23 @@ vim.opt.tabstop     = 4        -- <Tab> appears as 4 spaces
 vim.opt.softtabstop = 4        -- <Tab> behaves as 4 spaces when editing
 
 -- format.nvim configuration
-require'format'.setup {
-    lua = {
-        {cmd = {[[sed -Ei 's/[ ]+$//']]}},
+require'format'.setup({
+    ['*'] = {
+        {cmd = {"sed -Ei 's/[ \t]*$//'"}},
     },
     -- TODO: these do things differently than the pre-commit hooks, figure out
-    --python = {
-    --    {cmd = {"black"}},
-    --},
     -- why
+    --
+    --python = {
+    --    {cmd = {"autopep8 --in-place"}},
+    --},
     --typescript = {
-    --    {cmd = {"prettier --write"}},
+    --    {cmd = {"prettier --write", "eslint --fix"}},
     --},
     --javascript = {
-    --    {cmd = {"prettier --write"}},
+    --    {cmd = {"prettier --write", "eslint --fix"}},
     --},
     --vue = {
-    --    {cmd = {"prettier --write"}},
+    --    {cmd = {"prettier --write", "eslint --fix"}},
     --},
-}
+})
