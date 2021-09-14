@@ -3,7 +3,6 @@ alias ll='exa -hal'
 alias la='exa -a'
 alias vim='nvim'
 alias claer='clear'
-alias cat='bat'
 
 # Git
 alias gs='git status'
@@ -52,3 +51,5 @@ source-envfile() {
     done < "$1"
 }
 alias senv='source venv/bin/activate && export LOCAL_SECRETS=secrets.json'
+
+alias sqlize='python ~/sqlize.py | pbcopy'

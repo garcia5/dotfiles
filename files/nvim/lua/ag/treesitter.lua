@@ -27,15 +27,19 @@ require'nvim-treesitter.configs'.setup {
             set_jumps = true, -- track in jumplist (<C-o>, <C-i>)
             goto_next_start = {
                 ["]]"] = "@function.outer",
+                ["))"] = "@class.outer",
             },
             goto_next_end = {
                 ["[]"] = "@function.outer",
+                ["()"] = "@class.outer",
             },
             goto_previous_start = {
                 ["[["] = "@function.outer",
+                ["(("] = "@class.outer",
             },
             goto_previous_end = {
                 ["]["] = "@function.outer",
+                [")("] = "@class.outer",
             },
         },
         -- peek definitions from LSP

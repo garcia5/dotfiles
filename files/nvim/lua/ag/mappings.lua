@@ -9,6 +9,7 @@ mapper("n", "<Leader>no", ":nohl<CR>")
 mapper("n", "<BS>", "daw")
 mapper("n", "<CR>", ":e<CR>")
 mapper("n", "<Leader><Leader>", "<C-^>")
+mapper("n", "Y", "y$")
 -- Other basics
 mapper("n" , "<Leader>nt" , ":NvimTreeToggle<CR>")     -- toggle file browser in left split
 mapper("n" , "<Leader>z"  , ":call ToggleFocus()<CR>") -- toggle focus on current window
@@ -40,15 +41,18 @@ mapper("n", "<M-h>", ":noautocmd wincmd h<CR>")
 mapper("n", "<M-k>", ":noautocmd wincmd k<CR>")
 mapper("n", "<M-l>", ":noautocmd wincmd l<CR>")
 -- Term
-mapper("t", "<Esc><Esc>",[[<C-\><C-n>]])
-mapper("t", "<C-j>",     [[<C-\><C-n><C-w>j]])
-mapper("t", "<C-h>",     [[<C-\><C-n><C-w>h]])
-mapper("t", "<C-k>",     [[<C-\><C-n><C-w>k]])
-mapper("t", "<C-l>",     [[<C-\><C-n><C-w>l]])
+mapper("t", "<Esc><Esc>", [[<C-\><C-n>]])
+mapper("t", "<C-j>",      [[<C-\><C-n><C-w>j]])
+mapper("t", "<C-h>",      [[<C-\><C-n><C-w>h]])
+mapper("t", "<C-k>",      [[<C-\><C-n><C-w>k]])
+mapper("t", "<C-l>",      [[<C-\><C-n><C-w>l]])
 
--- FuGITive
-mapper("n" , "<Leader>gs" , "<cmd>Git<CR>")                  -- `git status`
-mapper("n" , "<Leader>gd" , "<cmd>Gdiffsplit<CR>")           -- open a split diffing the current file
-mapper("n" , "<Leader>gp" , "<cmd>Git pull<CR>")             -- pull
-mapper("n" , "<Leader>gb" , "<cmd>Git branch -vv<CR>")       -- all local && remote branches
-mapper("n" , "<Leader>rh" , "<cmd>Gitsigns reset_hunk<CR>")  -- reset hunk under cursor
+-- Git things
+mapper("n", "<Leader>gs", "<cmd>Git<CR>")                   -- `git status`
+mapper("n", "<Leader>gd", "<cmd>Gdiffsplit<CR>")            -- open a split diffing the current file
+mapper("n", "<Leader>gp", "<cmd>Git pull<CR>")              -- pull
+mapper("n", "<Leader>gb", "<cmd>Git branch -vv<CR>")        -- all local && remote branches
+mapper("n", "<Leader>rh", "<cmd>Gitsigns reset_hunk<CR>")   -- reset hunk under cursor
+mapper("n", "<Leader>gn", "<cmd>Gitsigns next_hunk<CR>")    -- move to next hunk
+mapper("n", "<Leader>gp", "<cmd>Gitsigns prev_hunk<CR>")    -- move to prev hunk
+mapper("n", "="         , "<cmd>Gitsigns preview_hunk<CR>") -- diff of hunk under cursor

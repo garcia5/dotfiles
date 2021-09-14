@@ -8,7 +8,7 @@ M.builtin = function (builtin_func)
     return func(theme)
 end
 
-telescope.setup{
+telescope.setup({
     defaults = {
         vimgrep_arguments = {
             'rg',
@@ -22,7 +22,7 @@ telescope.setup{
         selection_strategy = "reset",
         sorting_strategy   = "ascending",
         layout_strategy    = "horizontal",
-        path_display       = {"absolute"},
+        path_display       = {"smart"},
         winblend           = 0, -- transparency
         border             = {},
         borderchars        = { '─', '│', '─', '│', '╭', '╮', '╯', '╰' },
@@ -50,6 +50,6 @@ telescope.setup{
             },
         },
     },
-}
+})
 
 return M

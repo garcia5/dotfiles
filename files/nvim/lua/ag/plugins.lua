@@ -123,20 +123,20 @@ packer.startup(
         -- Other nice to have
         use "tpope/vim-fugitive"                                                          -- git integration
         use "p00f/nvim-ts-rainbow"                                                        -- rainbow braces
-        use {
-            "andweeb/presence.nvim",                                                      -- discord for shits
-            --config = function ()
-            --    require'presence':setup({
-            --        editing_text        = ":thinking:",
-            --        file_explorer_text  = "",
-            --        git_commit_text     = "",
-            --        plugin_manager_text = "",
-            --        reading_text        = "",
-            --        workspace_text      = "",
-            --        line_number_text    = "",
-            --    })
-            --end
-        }
+        --use {
+        --    "andweeb/presence.nvim",                                                      -- discord for shits
+        --    config = function ()
+        --        require'presence':setup({
+        --            editing_text        = ":thinking:",
+        --            file_explorer_text  = "",
+        --            git_commit_text     = "",
+        --            plugin_manager_text = "",
+        --            reading_text        = "",
+        --            workspace_text      = "",
+        --            line_number_text    = "",
+        --        })
+        --    end
+        --}
         use {
             "hrsh7th/nvim-compe",                                                         -- autocomplete
             requires = {
