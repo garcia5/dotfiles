@@ -9,13 +9,15 @@ mapper("n", "<Leader>no", ":nohl<CR>")
 mapper("n", "<BS>", "daw")
 mapper("n", "<CR>", ":e<CR>")
 mapper("n", "<Leader><Leader>", "<C-^>")
-mapper("n", "Y", "y$")
 -- Other basics
-mapper("n" , "<Leader>nt" , ":NvimTreeToggle<CR>")     -- toggle file browser in left split
-mapper("n" , "<Leader>z"  , ":call ToggleFocus()<CR>") -- toggle focus on current window
-mapper("n" , "<Leader>tn" , ":vs | term<CR>")          -- open new term in vertical split
-mapper("n" , "<Leader>ts" , ":sp | term<CR>")          -- open new term in horizontal split
-mapper("n" , "<Leader>bd" , ":bp | bd #<CR>")          -- delete the current buffer
+mapper("n", "<Leader>nt", ":NvimTreeToggle<CR>")     -- toggle file browser in left split
+mapper("n", "<Leader>z" , ":call ToggleFocus()<CR>") -- toggle focus on current window
+mapper("n", "<Leader>tn", ":vs | term<CR>")          -- open new term in vertical split
+mapper("n", "<Leader>ts", ":sp | term<CR>")          -- open new term in horizontal split
+mapper("n", "<Leader>bd", ":bp | bd #<CR>")          -- delete the current buffer
+mapper("n", "Y"         , "y$")                      -- yank to the end of the line (like D or C)
+mapper("n", "n"         , "nzz")                     -- center jumping to next match
+mapper("n", "N"         , "Nzz")                     -- center jumping to prev match
 
 -- Telescope integration
 mapper("n", "<Leader>ff", "<cmd>lua require'ag.telescope'.builtin('find_files')<CR>")                -- search all files, respecting .gitignore if one exists
@@ -26,7 +28,6 @@ mapper("n", "<Leader>fr", "<cmd>lua require'ag.telescope'.builtin('lsp_reference
 mapper("n", "<Leader>co", "<cmd>lua require'ag.telescope'.builtin('colorscheme')<CR>")               -- colorschemes
 mapper("n", "<Leader>cd", "<cmd>lua require'ag.telescope'.builtin('commands')<CR>")                  -- command history
 mapper("n", "<Leader>gc", "<cmd>lua require'ag.telescope'.builtin('git_branches')<CR>")              -- checkout different branches
-mapper("n", "<Leader>bb", "<cmd>lua require'ag.telescope'.builtin('git_branches')<CR>")              -- checkout different branches (alt mapping to try out)
 mapper("n", "<Leader>re", "<cmd>lua require'ag.telescope'.builtin('git_commits')<CR>")               -- checkout commits; <CR> to checkout, <C-r>[m, s, h] to reset [mixed, soft, hard]
 mapper("n", "<Leader>ss", "<cmd>lua require'ag.telescope'.builtin('git_status')<CR>")                -- edit modified files in git
 
@@ -48,11 +49,10 @@ mapper("t", "<C-k>",      [[<C-\><C-n><C-w>k]])
 mapper("t", "<C-l>",      [[<C-\><C-n><C-w>l]])
 
 -- Git things
-mapper("n", "<Leader>gs", "<cmd>Git<CR>")                   -- `git status`
+mapper("n", "<Leader>gs", ":tab Git<CR>")                   -- `git status` in a new tab to save screen real estate
 mapper("n", "<Leader>gd", "<cmd>Gdiffsplit<CR>")            -- open a split diffing the current file
 mapper("n", "<Leader>gp", "<cmd>Git pull<CR>")              -- pull
-mapper("n", "<Leader>gb", "<cmd>Git branch -vv<CR>")        -- all local && remote branches
 mapper("n", "<Leader>rh", "<cmd>Gitsigns reset_hunk<CR>")   -- reset hunk under cursor
-mapper("n", "<Leader>gn", "<cmd>Gitsigns next_hunk<CR>")    -- move to next hunk
-mapper("n", "<Leader>gp", "<cmd>Gitsigns prev_hunk<CR>")    -- move to prev hunk
+mapper("n", "<Leader>gn", "<cmd>Gitsigns next_hunk<CR>zz")  -- move to next hunk and center it
+mapper("n", "<Leader>gp", "<cmd>Gitsigns prev_hunk<CR>zz")  -- move to prev hunk and center it
 mapper("n", "="         , "<cmd>Gitsigns preview_hunk<CR>") -- diff of hunk under cursor
