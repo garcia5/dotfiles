@@ -21,7 +21,7 @@ vim.opt.mouse       = 'n'                                       -- use mouse to 
 -- Colors
 vim.opt.termguicolors    = true
 vim.opt.background       = 'dark'
-vim.cmd 'colorscheme catppuccino'
+vim.cmd 'colorscheme moonlight'
 vim.cmd 'let base16colorspace=256'
 
 -- Look and feel

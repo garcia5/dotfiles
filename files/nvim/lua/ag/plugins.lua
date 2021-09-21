@@ -122,21 +122,6 @@ packer.startup(
 
         -- Other nice to have
         use "tpope/vim-fugitive"                                                          -- git integration
-        use "p00f/nvim-ts-rainbow"                                                        -- rainbow braces
-        --use {
-        --    "andweeb/presence.nvim",                                                      -- discord for shits
-        --    config = function ()
-        --        require'presence':setup({
-        --            editing_text        = ":thinking:",
-        --            file_explorer_text  = "",
-        --            git_commit_text     = "",
-        --            plugin_manager_text = "",
-        --            reading_text        = "",
-        --            workspace_text      = "",
-        --            line_number_text    = "",
-        --        })
-        --    end
-        --}
         use {
             "hrsh7th/nvim-compe",                                                         -- autocomplete
             requires = {
@@ -150,15 +135,16 @@ packer.startup(
         }
         use {
             "lukas-reineke/indent-blankline.nvim",                                        -- indent guides
-            config = function()
+            config = function ()
+                vim.cmd [[highlight IndentBlanklineIndent guifg=#3c425d]]
                 require'indent_blankline'.setup({
-                    use_treesitter          = false,
-                    show_first_indent_level = false,
-                    filetype_exclude        = {'help', 'telescope', 'fugitive', 'netrw'},
-                    buftype_exclude         = {'terminal'},
-                    char                    = '▏',
-                    char_highlight          = 'comment',
-                    filetype                = {'yaml', 'vue', 'html', 'json'},
+                    show_trailing_blankline_indent = false,
+                    use_treesitter                 = true,
+                    show_first_indent_level        = false,
+                    buftype_exclude                = {'terminal'},
+                    filetype                       = {'yaml', 'vue', 'html', 'json', 'lua'},
+                    show_current_context           = true,
+                    char_highlight_list            = {'IndentBlanklineIndent'}
                 })
             end,
         }
