@@ -18,6 +18,8 @@ mapper("n", "<Leader>bd", ":bp | bd #<CR>")          -- delete the current buffe
 mapper("n", "Y"         , "y$")                      -- yank to the end of the line (like D or C)
 mapper("n", "n"         , "nzz")                     -- center jumping to next match
 mapper("n", "N"         , "Nzz")                     -- center jumping to prev match
+mapper("n", "<Down>"    , [["pdd"pp]])               -- move line down
+mapper("n", "<Up>"      , [["pddk"pP]])              -- move line up
 
 -- Telescope integration
 mapper("n", "<Leader>ff", "<cmd>lua require'ag.telescope'.builtin('find_files')<CR>")                -- search all files, respecting .gitignore if one exists
@@ -29,7 +31,7 @@ mapper("n", "<Leader>co", "<cmd>lua require'ag.telescope'.builtin('colorscheme')
 mapper("n", "<Leader>cd", "<cmd>lua require'ag.telescope'.builtin('commands')<CR>")                  -- command history
 mapper("n", "<Leader>gc", "<cmd>lua require'ag.telescope'.builtin('git_branches')<CR>")              -- checkout different branches
 mapper("n", "<Leader>re", "<cmd>lua require'ag.telescope'.builtin('git_commits')<CR>")               -- checkout commits; <CR> to checkout, <C-r>[m, s, h] to reset [mixed, soft, hard]
-mapper("n", "<Leader>ss", "<cmd>lua require'ag.telescope'.builtin('git_status')<CR>")                -- edit modified files in git
+mapper("n", "<Leader>qf", "<cmd>lua require'ag.telescope'.builtin('quickfix')<CR>")                  -- jump to items in quickfix list
 
 -- Movemint
 mapper("n", "<C-j>", "<C-w>j")
