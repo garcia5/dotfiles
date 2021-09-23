@@ -93,22 +93,6 @@ packer.startup(
                 catp.load()
             end
         }
-        use {
-            "Murtaza-Udaipurwala/gruvqueen", -- gruvbux, but in lua
-            config = function ()
-                if vim.g.colors_name ~= 'gruvqueen' then
-                    return
-                end
-                require'gruvqueen'.setup({
-                    disable_bold = false,
-                    italic_keywords = false,
-                    italic_functions = false,
-                    italic_variables = false,
-                    italic_comments = true,
-                    style = 'material',
-                })
-            end
-        }
 
         -- 0.5 features (lsp + treesitter)
         use "neovim/nvim-lsp"                             -- LSP
@@ -121,20 +105,30 @@ packer.startup(
         use "nvim-treesitter/nvim-treesitter-refactor"    -- nice refactoring helpers
 
         -- Other nice to have
-        use "tpope/vim-fugitive"                                                          -- git integration
+        use "tpope/vim-fugitive"                                                             -- git integration
         use {
-            "hrsh7th/nvim-compe",                                                         -- autocomplete
+            "kwkarlwang/bufresize.nvim",                                                     -- maintain buffer ratios on terminal resize
+            config = function ()
+                require'bufresize'.setup()
+            end
+        }
+        use "hrsh7th/vim-vsnip"                                                              -- snippets
+        use {
+            "hrsh7th/nvim-cmp",                                                              -- autocomplete
             requires = {
-                "hrsh7th/vim-vsnip",                                                      -- ...w/ snippet integration
-                "hrsh7th/vim-vsnip-integ",
+                "hrsh7th/cmp-nvim-lsp",
+                "hrsh7th/cmp-buffer",
+                "hrsh7th/cmp-path",
+                "hrsh7th/cmp-vsnip",
+                "onsails/lspkind-nvim",
             },
         }
         use {
-            "godlygeek/tabular",                                                          -- line it up
+            "godlygeek/tabular",                                                             -- line it up
             cmd = "Tab",
         }
         use {
-            "lukas-reineke/indent-blankline.nvim",                                        -- indent guides
+            "lukas-reineke/indent-blankline.nvim",                                           -- indent guides
             config = function ()
                 vim.cmd [[highlight IndentBlanklineIndent guifg=#3c425d]]
                 require'indent_blankline'.setup({
@@ -149,7 +143,7 @@ packer.startup(
             end,
         }
         use {
-            "editorconfig/editorconfig-vim",                                              -- .editorconfig support
+            "editorconfig/editorconfig-vim",                                                 -- .editorconfig support
             config = function ()
                 vim.g.EditorConfig_exclude_patterns = {
                     'fugitive://.*', 'term://.*'
@@ -157,7 +151,7 @@ packer.startup(
             end
         }
         use {
-            "kyazdani42/nvim-tree.lua",                                                   -- no more netrw
+            "kyazdani42/nvim-tree.lua",                                                      -- no more netrw
             config = function ()
                 vim.g.nvim_tree_side = 'left'
             end

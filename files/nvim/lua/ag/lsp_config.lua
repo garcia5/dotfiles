@@ -1,5 +1,5 @@
 local lspconfig = require('lspconfig')
-local compe = require('compe')
+local cmp_capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
 
 local mapper = function(mode, key, result, opts)
     vim.api.nvim_buf_set_keymap(0, mode, key, result, opts)
@@ -25,35 +25,44 @@ vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
 )
 
 local custom_attach = function(client, bufnr)
-    -- Only autocomplete in lsp
-    compe.setup({
-        enabled = true,
-        preselect = 'disable',
-        source = {
-            -- Passing a dict enables the completion source
-            -- Menu is sorted by priority highest -> lowest
-            vsnip           = {priority = 100},
-            nvim_lsp        = {priority = 90},
-            nvim_treesitter = {priority = 86},
-            nvim_lua        = {priority = 85},
-            buffer          = {priority = 80},
-            path            = {priority = 70},
+    -- Autocomplete
+    local cmp = require("cmp")
+    cmp.setup({
+        snippet = {
+            expand = function(args)
+                vim.fn["vsnip#anonymous"](args.body)
+            end,
         },
-    }, bufnr) -- Only current buffer
-
-    -- Compe mappings
-    -- Trigger completion
-    mapper("i", "<C-Space>", "compe#complete()",
-        {silent = true, expr = true, noremap = true}
-    )
-    -- Confirm completion
-    mapper("i", "<C-y>"     , "compe#confirm()",
-        {silent = true, expr = true, noremap = true}
-    )
-    -- Close completion menu
-    mapper("i", "<C-e>"    , "compe#close()",
-        {silent = true, expr = true, noremap = true}
-    )
+        sources = {
+            { name = 'vsnip' },
+            { name = 'nvim_lsp' },
+            { name = 'path' },
+            { name = 'buffer' },
+        },
+        mapping = {
+            ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+            ['<C-f>'] = cmp.mapping.scroll_docs(4),
+            ['<C-Space>'] = cmp.mapping.complete(),
+            ['<C-e>'] = cmp.mapping.close(),
+            ['<C-y>'] = cmp.mapping.confirm({
+                behavior = cmp.ConfirmBehavior.Replace,
+                select = true,
+            })
+        },
+        formatting = {
+            -- Show where the completion opts are coming from
+            format = function (entry, vim_item)
+                vim_item.kind = require("lspkind").presets.default[vim_item.kind] .. " " .. vim_item.kind
+                vim_item.menu = ({
+                    vsnip    = "[VSnip]",
+                    nvim_lsp = "[LSP]",
+                    path     = "[Path]",
+                    buffer   = "[Buffer]",
+                })[entry.source.name]
+                return vim_item
+            end
+        }
+    })
 
     -- LSP mappings (only apply when LSP client attached)
     lsp_mapper("n" , "K"          , "vim.lsp.buf.hover()")
@@ -73,6 +82,7 @@ end
 
 -- Set up clients
 lspconfig.diagnosticls.setup({
+    capabilities=cmp_capabilities,
     on_attach = custom_attach,
     filetypes = {"python"},
     init_options = {
@@ -106,6 +116,7 @@ lspconfig.diagnosticls.setup({
 
 -- python
 lspconfig.pyright.setup({
+    capabilities=cmp_capabilities,
     on_attach = function(client, bufnr)
         custom_attach(client, bufnr)
         -- 'Organize imports' keymap for pyright only
@@ -121,10 +132,14 @@ lspconfig.pyright.setup({
 })
 
 -- typescript
-lspconfig.tsserver.setup{on_attach = custom_attach}
+lspconfig.tsserver.setup({
+    capabilities=cmp_capabilities,
+    on_attach = custom_attach
+})
 
 -- vue
 lspconfig.vuels.setup({
+    capabilities=cmp_capabilities,
     on_attach = function(client, bufnr)
         -- Tell vim that vls can handle formatting
         client.resolved_capabilities.document_formatting = true
@@ -157,16 +172,23 @@ lspconfig.vuels.setup({
 })
 
 -- yaml
-lspconfig.yamlls.setup{on_attach = custom_attach}
+lspconfig.yamlls.setup({
+    capabilities=cmp_capabilities,
+    on_attach = custom_attach,
+})
 
 -- bash
-lspconfig.bashls.setup{on_attach = custom_attach}
+lspconfig.bashls.setup({
+    capabilities=cmp_capabilities,
+    on_attach = custom_attach
+})
 
 -- lua (optional)
 local lua_ls_path = vim.fn.expand('~/lua-language-server/')
 local lua_ls_bin = lua_ls_path .. 'bin/macOS/lua-language-server'
 if vim.fn.executable(lua_ls_bin) then
     lspconfig.sumneko_lua.setup({
+        capabilities=cmp_capabilities,
         on_attach = custom_attach,
         cmd = { lua_ls_bin, '-E',  lua_ls_path .. 'main.lua'},
         settings = {
