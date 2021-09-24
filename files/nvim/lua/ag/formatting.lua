@@ -12,6 +12,7 @@ vim.opt.formatoptions:append({
 })
 
 vim.opt.autoindent  = true     -- continue indentation to new line
+vim.opt.smartindent = true     -- add extra indent when it makes sense
 vim.opt.smarttab    = true     -- <Tab> at the start of a line behaves as expected
 vim.opt.expandtab   = true     -- <Tab> inserts spaces
 vim.opt.shiftwidth  = 4        -- >>, << shift line by 4 spaces
