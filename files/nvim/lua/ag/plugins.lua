@@ -153,7 +153,13 @@ packer.startup(
         use {
             "kyazdani42/nvim-tree.lua",                                                      -- no more netrw
             config = function ()
-                vim.g.nvim_tree_side = 'left'
+                require'nvim-tree'.setup({
+                    lsp_diagnostics = true,
+                    view = {
+                        side = 'left',
+                        auto_resize = true,
+                    },
+                })
             end
         }
     end

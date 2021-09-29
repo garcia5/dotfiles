@@ -18,9 +18,18 @@ vim.opt.grepprg     = 'rg --vimgrep --smart-case --no-heading'  -- search with r
 vim.opt.grepformat  = '%f:%l:%c:%m'                             -- filename:line number:column number:error message
 vim.opt.mouse       = 'n'                                       -- use mouse to scroll around in normal mode (hold shift to disable)
 
+-- Indentation
+vim.opt.autoindent  = true     -- continue indentation to new line
+vim.opt.smartindent = true     -- add extra indent when it makes sense
+vim.opt.smarttab    = true     -- <Tab> at the start of a line behaves as expected
+vim.opt.expandtab   = true     -- <Tab> inserts spaces
+vim.opt.shiftwidth  = 4        -- >>, << shift line by 4 spaces
+vim.opt.tabstop     = 4        -- <Tab> appears as 4 spaces
+vim.opt.softtabstop = 4        -- <Tab> behaves as 4 spaces when editing
+
 -- Colors
-vim.opt.termguicolors    = true
-vim.opt.background       = 'dark'
+vim.opt.termguicolors = true
+vim.opt.background    = 'dark'
 vim.cmd 'colorscheme moonlight'
 vim.cmd 'let base16colorspace=256'
 
