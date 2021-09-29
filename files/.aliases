@@ -50,6 +50,5 @@ source-envfile() {
         export "$LINE"
     done < "$1"
 }
-alias senv='source venv/bin/activate && export LOCAL_SECRETS=secrets.json'
 
 alias sqlize='python ~/sqlize.py | pbcopy'
