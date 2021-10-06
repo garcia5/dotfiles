@@ -46,21 +46,11 @@ local custom_attach = function(client, bufnr)
             ['<C-e>'] = cmp.mapping.close(),
             ['<C-y>'] = cmp.mapping.confirm({
                 behavior = cmp.ConfirmBehavior.Replace,
-                select = true,
             })
         },
         formatting = {
             -- Show where the completion opts are coming from
-            format = function (entry, vim_item)
-                vim_item.kind = require("lspkind").presets.default[vim_item.kind] .. " " .. vim_item.kind
-                vim_item.menu = ({
-                    vsnip    = "[VSnip]",
-                    nvim_lsp = "[LSP]",
-                    path     = "[Path]",
-                    buffer   = "[Buffer]",
-                })[entry.source.name]
-                return vim_item
-            end
+            format = require('lspkind').cmp_format({with_text = true})
         }
     })
 
@@ -83,10 +73,13 @@ end
 -- Set up clients
 lspconfig.diagnosticls.setup({
     on_attach = custom_attach,
-    filetypes = {"python"},
+    filetypes = {"python", "javascript", "typescript", "vue"},
     init_options = {
         filetypes = {
             python = "flake8",
+            javascript = "eslint_d",
+            typescript = "eslint_d",
+            vue = "eslint_d",
         },
         linters = {
             flake8 = {
@@ -107,6 +100,30 @@ lspconfig.diagnosticls.setup({
                     F = 'error',
                     C = 'error',
                     N = 'error',
+                },
+            },
+            eslint_d = {
+                sourceName = 'eslint_d',
+                command = 'eslint_d',
+                debounce = 100,
+                args = {'--stdin', '--stdin-filename', '%filepath', '--format', 'json'},
+                parseJson = {
+                    errorsRoot = '[0].messages',
+                    line = 'line',
+                    column = 'column',
+                    endLine = 'endLine',
+                    endColumn = 'endColumn',
+                    message = '[eslint] ${message} [${ruleId}]',
+                    security = 'severity',
+                },
+                securities = {[2] = 'error', [1] = 'warning'},
+                rootPatterns = {
+                    '.eslintrc',
+                    '.eslintrc.cjs',
+                    '.eslintrc.js',
+                    '.eslintrc.json',
+                    '.eslintrc.yaml',
+                    '.eslintrc.yml',
                 },
             },
         },
