@@ -29,7 +29,6 @@ mapper("n", "<Leader>fl", "<cmd>lua require'ag.telescope'.builtin('current_buffe
 mapper("n", "<Leader>gg", "<cmd>lua require'ag.telescope'.builtin('live_grep')<CR>")                 -- search all lines in project
 mapper("n", "<Leader>fr", "<cmd>lua require'ag.telescope'.builtin('lsp_references')<CR>")            -- search references to symbol under cursor
 mapper("n", "<Leader>co", "<cmd>lua require'ag.telescope'.builtin('colorscheme')<CR>")               -- colorschemes
-mapper("n", "<Leader>cd", "<cmd>lua require'ag.telescope'.builtin('commands')<CR>")                  -- command history
 mapper("n", "<Leader>gc", "<cmd>lua require'ag.telescope'.builtin('git_branches')<CR>")              -- checkout different branches
 mapper("n", "<Leader>re", "<cmd>lua require'ag.telescope'.builtin('git_commits')<CR>")               -- checkout commits; <CR> to checkout, <C-r>[m, s, h] to reset [mixed, soft, hard]
 mapper("n", "<Leader>qf", "<cmd>lua require'ag.telescope'.builtin('quickfix')<CR>")                  -- jump to items in quickfix list

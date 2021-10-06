@@ -118,7 +118,6 @@ packer.startup(
             requires = {
                 "hrsh7th/cmp-nvim-lsp",
                 "hrsh7th/cmp-buffer",
-                "hrsh7th/cmp-path",
                 "hrsh7th/cmp-vsnip",
                 "onsails/lspkind-nvim",
             },
@@ -154,7 +153,7 @@ packer.startup(
             "kyazdani42/nvim-tree.lua",                                                      -- no more netrw
             config = function ()
                 require'nvim-tree'.setup({
-                    lsp_diagnostics = true,
+                    lsp_diagnostics = false,
                     view = {
                         side = 'left',
                         auto_resize = true,
