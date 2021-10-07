@@ -1,4 +1,4 @@
-require'nvim-treesitter.configs'.setup {
+require'nvim-treesitter.configs'.setup({
     -- one of "all", "maintained" (parsers with maintainers), or a list of
     -- languages
     ensure_installed = "maintained",
@@ -7,7 +7,7 @@ require'nvim-treesitter.configs'.setup {
         enable = true,
     },
     indent = {
-        enable = true,
+        enable = false,
     },
     -- custom text objects
     textobjects = {
@@ -75,4 +75,7 @@ require'nvim-treesitter.configs'.setup {
     rainbow = {
         enable = true
     },
-}
+    context_commentstring = {
+        enable = true,
+    },
+})
