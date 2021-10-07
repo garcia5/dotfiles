@@ -17,7 +17,7 @@ packer.startup(
         use "nvim-lua/plenary.nvim"  -- utility functions
 
         -- Essentials
-        use "scrooloose/nerdcommenter"               -- toggle comments
+        use "tpope/vim-commentary"                   -- toggle comments
         use {
             "cohama/lexima.vim",                     -- auto pairs that JUST WORK (for real this time)
             config = function ()
@@ -74,8 +74,16 @@ packer.startup(
                         comments = "italic",
                         functions = "NONE",
                         keywords = "NONE",
+                        strings = "NONE",
+                        variables = "NONE"
                     },
                     integrations = {
+                        gitsigns = true,
+                        gitgutter = true,
+                        indent_blankline = {
+                            enabled = false,
+                            colored_indent_levels = true,
+                        },
                         telescope = true,
                         treesitter = true,
                         native_lsp = {
@@ -87,7 +95,6 @@ packer.startup(
                                 hints = "italic",
                             },
                         },
-                        gitsigns = true,
                     },
                 })
                 catp.load()
@@ -106,6 +113,7 @@ packer.startup(
 
         -- Other nice to have
         use "tpope/vim-fugitive"                                                             -- git integration
+        use "JoosepAlviste/nvim-ts-context-commentstring"
         use {
             "kwkarlwang/bufresize.nvim",                                                     -- maintain buffer ratios on terminal resize
             config = function ()
@@ -129,7 +137,7 @@ packer.startup(
         use {
             "lukas-reineke/indent-blankline.nvim",                                           -- indent guides
             config = function ()
-                vim.cmd [[highlight IndentBlanklineIndent guifg=#3c425d]]
+                --vim.cmd [[highlight IndentBlanklineIndent guifg=#3c425d]]
                 require'indent_blankline'.setup({
                     show_trailing_blankline_indent = false,
                     use_treesitter                 = true,
@@ -137,7 +145,7 @@ packer.startup(
                     buftype_exclude                = {'terminal'},
                     filetype                       = {'yaml', 'vue', 'html', 'json', 'lua'},
                     show_current_context           = true,
-                    char_highlight_list            = {'IndentBlanklineIndent'}
+                    --char_highlight_list            = {'IndentBlanklineIndent'}
                 })
             end,
         }

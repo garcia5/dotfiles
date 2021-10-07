@@ -21,6 +21,12 @@ mapper("n", "n"         , "nzz")                     -- center jumping to next m
 mapper("n", "N"         , "Nzz")                     -- center jumping to prev match
 mapper("n", "<Down>"    , [["pdd"pp]])               -- move line down
 mapper("n", "<Up>"      , [["pddk"pP]])              -- move line up
+mapper("n", "<C-e>"     , "3<C-e>")                  -- scroll down more quickly
+mapper("n", "<C-y>"     , "3<C-y>")                  -- scroll up more quickly
+
+-- Commenting
+mapper("n", "<Leader>ci", "gcc")
+mapper("v", "<Leader>ci", "gc")
 
 -- Telescope integration
 mapper("n", "<Leader>ff", "<cmd>lua require'ag.telescope'.builtin('find_files')<CR>")                -- search all files, respecting .gitignore if one exists
