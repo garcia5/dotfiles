@@ -27,7 +27,7 @@ packer.startup(
         }
         use "tpope/vim-surround"                     -- surround
         use "tpope/vim-repeat"                       -- ... and make them repeatable
-        use "lukas-reineke/format.nvim"              -- format on save
+        -- use "lukas-reineke/format.nvim"              -- format on save
         use "nvim-telescope/telescope.nvim"          -- fuzzy find ALL the things
 
         -- Look and feel

@@ -9,7 +9,7 @@ alias c='clear'
 alias gs='git status'
 alias gd='git diff'
 alias gl='git plog'
-g_push() {
+gpush() {
     cur_branch=$(git branch --show-current)
     has_remote=$(git branch -r --list "origin/$cur_branch")
     if [[ $has_remote ]]; then
@@ -19,7 +19,6 @@ g_push() {
         git push --set-upstream origin "$cur_branch" "$@"
     fi
 }
-alias gpush='g_push'
 fzf-git-branch() {
     git rev-parse HEAD > /dev/null 2>&1 || return
 
@@ -47,9 +46,9 @@ alias lg='lazygit'
 
 # Others
 source-envfile() {
-    while read LINE; do
-        export "$LINE"
-    done < "$1"
+    set -a
+    source "$1"
+    set +a
 }
 
 alias sqlize='python ~/sqlize.py | pbcopy'

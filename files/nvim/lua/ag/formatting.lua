@@ -12,6 +12,7 @@ vim.opt.formatoptions:append({
 })
 
 -- format.nvim configuration
+--[[
 require'format'.setup({
     ['*'] = {
         {cmd = {"sed -Ei 's/[ \t]*$//'"}},
@@ -32,3 +33,4 @@ require'format'.setup({
     --    {cmd = {"prettier --write", "eslint --fix"}},
     --},
 })
+--]]

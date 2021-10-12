@@ -9,6 +9,7 @@ mapper("n", "<Leader>no", ":nohl<CR>")
 mapper("n", "<BS>", "daw")
 mapper("n", "<CR>", ":e<CR>")
 mapper("n", "<Leader><Leader>", "<C-^>")
+mapper("n", ":W", ":w")
 -- Other basics
 mapper("n", "<Leader>nt", ":NvimTreeToggle<CR>")     -- toggle file browser in left split
 mapper("n", "<Leader>nf", ":NvimTreeFindFile<CR>")   -- open file browser in left split with the current file focused

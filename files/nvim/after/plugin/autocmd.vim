@@ -1,8 +1,15 @@
 " Format on save
-augroup OnSave
+" augroup OnSave
+"     au!
+"     au BufWritePre *.py,*.ts,*.vue FormatWrite
+" augroup end
+
+" My dotfiles
+augroup MyScripts
     au!
-    au BufWritePre *.py,*.ts,*.vue FormatWrite
-augroup end
+    au BufEnter .aliases set ft=bash
+    au BufEnter .dotdash set ft=bash
+augroup END
 
 " Terminal setup
 augroup term
