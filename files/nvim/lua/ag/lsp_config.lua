@@ -204,7 +204,7 @@ local lua_ls_path = vim.fn.expand('~/lua-language-server/')
 local lua_ls_bin = lua_ls_path .. 'bin/macOS/lua-language-server'
 if vim.fn.executable(lua_ls_bin) then
     lspconfig.sumneko_lua.setup({
-        capabilities=cmp_capabilities,
+        capabilities = cmp_capabilities,
         on_attach = custom_attach,
         cmd = {lua_ls_bin, '-E',  lua_ls_path .. 'main.lua'},
         settings = {

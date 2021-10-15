@@ -80,10 +80,6 @@ packer.startup(
                     integrations = {
                         gitsigns = true,
                         gitgutter = true,
-                        indent_blankline = {
-                            enabled = false,
-                            colored_indent_levels = true,
-                        },
                         telescope = true,
                         treesitter = true,
                         native_lsp = {
@@ -133,21 +129,6 @@ packer.startup(
         use {
             "godlygeek/tabular",                                                             -- line it up
             cmd = "Tab",
-        }
-        use {
-            "lukas-reineke/indent-blankline.nvim",                                           -- indent guides
-            config = function ()
-                --vim.cmd [[highlight IndentBlanklineIndent guifg=#3c425d]]
-                require'indent_blankline'.setup({
-                    show_trailing_blankline_indent = false,
-                    use_treesitter                 = true,
-                    show_first_indent_level        = false,
-                    buftype_exclude                = {'terminal'},
-                    filetype                       = {'yaml', 'vue', 'html', 'json', 'lua'},
-                    show_current_context           = true,
-                    --char_highlight_list            = {'IndentBlanklineIndent'}
-                })
-            end,
         }
         use {
             "editorconfig/editorconfig-vim",                                                 -- .editorconfig support
