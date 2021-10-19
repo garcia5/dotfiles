@@ -31,9 +31,9 @@ packer.startup(
         use "nvim-telescope/telescope.nvim"          -- fuzzy find ALL the things
 
         -- Look and feel
-        use "folke/lsp-colors.nvim"                  -- LSP colors that aren't built in
+        use "folke/lsp-colors.nvim"                    -- LSP colors that aren't built in
         use {
-            "lewis6991/gitsigns.nvim",               -- git signs in gutter + some useful keymaps
+            "lewis6991/gitsigns.nvim",                 -- git signs in gutter + some useful keymaps
             requires = { "nvim-lua/plenary.nvim" },
             config = function()
                 require'gitsigns'.setup({
@@ -49,7 +49,7 @@ packer.startup(
             end,
         }
         use {
-            "hoob3rt/lualine.nvim",                  -- statusline in lua
+            "hoob3rt/lualine.nvim",                    -- statusline in lua
              requires = {
                 "kyazdani42/nvim-web-devicons",
                 opt = true

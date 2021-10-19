@@ -40,7 +40,6 @@ vim.opt.cursorline             = true     -- highlight current line
 vim.opt.list                   = true     -- show list chars
 vim.opt.listchars              = {        -- these list chars
     tab      = '»·',
-    eol      = '↵',
     nbsp     = '␣',
     extends  = '…',
     precedes = '…',
