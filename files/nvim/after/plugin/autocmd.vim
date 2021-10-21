@@ -30,7 +30,7 @@ augroup TodoHl
     au!
     " Regex:
     " \v          -- Magic mode, normal regex special characters
-    " <           -- Begingging of word
+    " <           -- Beginning of word
     " \zs         -- Begin the syntax match group
     " (NOTE|TODO) -- highlight these!
     " \ze         -- End the syntax match group
@@ -42,9 +42,6 @@ hi def link MyTodo Todo
 
 " Auto-apply plugin changes
 au BufWritePost plugins.lua source <afile> | PackerCompile
-"
-" Navigate left instead of refreshing netrw
-au Filetype netrw nmap <buffer> <silent> <C-l> <C-w>l
 
 " Don't autopair in special buffers
 augroup AutopairsDisable

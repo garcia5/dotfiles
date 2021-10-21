@@ -61,20 +61,6 @@ require'nvim-treesitter.configs'.setup({
             },
         },
     },
-    refactor = {
-        highlight_definitions = {
-            enable = false, -- got annoying
-        },
-        smart_rename = {
-            enable = false,
-            --keymaps = {
-            --    smart_rename = "gr",
-            --},
-        },
-    },
-    rainbow = {
-        enable = true
-    },
     context_commentstring = {
         enable = true,
     },

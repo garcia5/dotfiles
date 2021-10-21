@@ -71,30 +71,30 @@ packer.startup(
                 catp.setup({
                     colorscheme = "dark_catppuccino",
                     styles = {
-                        comments = "italic",
+                        comments  = "italic",
                         functions = "NONE",
-                        keywords = "NONE",
-                        strings = "NONE",
+                        keywords  = "NONE",
+                        strings   = "NONE",
                         variables = "NONE"
                     },
                     integrations = {
-                        gitsigns = true,
-                        gitgutter = true,
-                        telescope = true,
+                        gitsigns   = true,
+                        gitgutter  = true,
+                        telescope  = true,
                         treesitter = true,
                         native_lsp = {
                             enabled = true,
                             styles = {
-                                errors = "italic",
-                                warnings = "italic",
+                                errors      = "italic",
+                                warnings    = "italic",
                                 information = "italic",
-                                hints = "italic",
+                                hints       = "italic",
                             },
                         },
                     },
                 })
                 catp.load()
-            end
+            end,
         }
 
         -- 0.5 features (lsp + treesitter)
@@ -105,20 +105,38 @@ packer.startup(
             run = ":TSUpdate",
         }
         use "nvim-treesitter/nvim-treesitter-textobjects" -- custom text objects from treesitter
-        use "nvim-treesitter/nvim-treesitter-refactor"    -- nice refactoring helpers
 
         -- Other nice to have
-        use "tpope/vim-fugitive"                                                             -- git integration
-        use "JoosepAlviste/nvim-ts-context-commentstring"
         use {
-            "kwkarlwang/bufresize.nvim",                                                     -- maintain buffer ratios on terminal resize
+            "tpope/vim-fugitive",                          -- git integration
+            cmd = "Git",
+        }
+        use {
+            "JoosepAlviste/nvim-ts-context-commentstring", -- commenting in vue files "just works"
+            ft = {
+                "vue",
+                "typescript",
+                "javascript",
+            },
+        }
+        use {
+            "kwkarlwang/bufresize.nvim",                   -- maintain buffer ratios on terminal resize
             config = function ()
                 require'bufresize'.setup()
             end
         }
-        use "hrsh7th/vim-vsnip"                                                              -- snippets
         use {
-            "hrsh7th/nvim-cmp",                                                              -- autocomplete
+            "hrsh7th/vim-vsnip",                           -- snippets
+            ft = {
+                'python',
+                'javascript',
+                'typescript',
+                'vue',
+                'lua',
+            },
+        }
+        use {
+            "hrsh7th/nvim-cmp",                            -- autocomplete
             requires = {
                 "hrsh7th/cmp-nvim-lsp",
                 "hrsh7th/cmp-buffer",
@@ -127,11 +145,11 @@ packer.startup(
             },
         }
         use {
-            "godlygeek/tabular",                                                             -- line it up
+            "godlygeek/tabular",                           -- line it up
             cmd = "Tab",
         }
         use {
-            "editorconfig/editorconfig-vim",                                                 -- .editorconfig support
+            "editorconfig/editorconfig-vim",               -- .editorconfig support
             config = function ()
                 vim.g.EditorConfig_exclude_patterns = {
                     'fugitive://.*', 'term://.*'
@@ -139,7 +157,7 @@ packer.startup(
             end
         }
         use {
-            "kyazdani42/nvim-tree.lua",                                                      -- no more netrw
+            "kyazdani42/nvim-tree.lua",                    -- no more netrw
             config = function ()
                 require'nvim-tree'.setup({
                     lsp_diagnostics = false,
@@ -148,7 +166,11 @@ packer.startup(
                         auto_resize = true,
                     },
                 })
-            end
+            end,
+            cmd = {
+                "NvimTreeToggle",
+                "NvimTreeFindFile",
+            },
         }
     end
 )
