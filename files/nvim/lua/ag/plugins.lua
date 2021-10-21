@@ -70,6 +70,7 @@ packer.startup(
                 local catp = require('catppuccino')
                 catp.setup({
                     colorscheme = "dark_catppuccino",
+                    transparency = true,
                     styles = {
                         comments  = "italic",
                         functions = "NONE",

@@ -36,7 +36,7 @@ vim.cmd 'let base16colorspace=256'
 -- Look and feel
 vim.opt.number                 = true     -- absolute numbers...
 vim.opt.relativenumber         = true     -- but only on the current line
-vim.opt.cursorline             = true     -- highlight current line
+vim.opt.cursorline             = false    -- don't highlight current line
 vim.opt.list                   = true     -- show list chars
 vim.opt.listchars              = {        -- these list chars
     tab      = '»·',
