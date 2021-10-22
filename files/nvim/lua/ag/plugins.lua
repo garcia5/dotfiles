@@ -49,7 +49,7 @@ packer.startup(
             end,
         }
         use {
-            "hoob3rt/lualine.nvim",                    -- statusline in lua
+            "nvim-lualine/lualine.nvim",               -- statusline in lua
              requires = {
                 "kyazdani42/nvim-web-devicons",
                 opt = true
@@ -161,7 +161,6 @@ packer.startup(
             "kyazdani42/nvim-tree.lua",                    -- no more netrw
             config = function ()
                 require'nvim-tree'.setup({
-                    lsp_diagnostics = false,
                     view = {
                         side = 'left',
                         auto_resize = true,

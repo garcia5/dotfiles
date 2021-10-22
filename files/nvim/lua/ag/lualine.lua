@@ -41,9 +41,22 @@ lualine.setup({
             condition = is_lualine_buf,
         }},
     },
+    tabline = {
+        lualine_a = {'buffers'},
+        lualine_b = {},
+        lualine_c = {},
+        lualine_x = {},
+        lualine_y = {},
+        lualine_z = {'tabs'}
+    },
     options = {
-        section_separators = {'', ''},
-        component_separators = {'', ''},
+        section_separators = { left = '', right = ''},
+        component_separators = { left = '', right = ''},
         theme = "catppuccino",
-    }
+    },
+    extensions = {
+        'quickfix',
+        'fugitive',
+        'nvim-tree',
+    },
 })
