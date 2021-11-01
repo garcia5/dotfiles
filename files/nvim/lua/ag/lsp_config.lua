@@ -169,6 +169,9 @@ lspconfig.vuels.setup({
                 useScaffoldSnippets = true,
             },
             useWorkspaceDependencies = true,
+            experimental = {
+                templateInterpolationService = true,
+            }
         },
         format = {
             enable  = true,
@@ -182,7 +185,7 @@ lspconfig.vuels.setup({
             script        = true,
             style         = true,
             templateProps = true,
-            interpolation = true
+            interpolation = true,
         },
     },
 })
