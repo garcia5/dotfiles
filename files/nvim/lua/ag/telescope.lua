@@ -58,6 +58,15 @@ telescope.setup({
             },
         },
     },
+    extensions = {
+        dash = {
+            file_type_keywords = {
+                python = {'django', 'python'},
+                vue = {'vue', 'typescript', 'javascript'},
+                lua = {'lua'},
+            }
+        },
+    },
 })
 
 return M

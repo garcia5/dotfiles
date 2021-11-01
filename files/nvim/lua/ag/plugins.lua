@@ -7,7 +7,7 @@ end
 
 -- Init setup
 vim.cmd "packadd packer.nvim" -- load packer
-local packer = require "packer"
+local packer = require("packer")
 
 packer.startup(
     function(use)
@@ -21,13 +21,11 @@ packer.startup(
         use {
             "cohama/lexima.vim",                     -- auto pairs that JUST WORK (for real this time)
             config = function ()
-                vim.g.lexima_no_default_rules = true
-                vim.fn['lexima#set_default_rules']()
+                vim.g.lexima_accept_pum_with_enter = false
             end
         }
         use "tpope/vim-surround"                     -- surround
         use "tpope/vim-repeat"                       -- ... and make them repeatable
-        -- use "lukas-reineke/format.nvim"              -- format on save
         use "nvim-telescope/telescope.nvim"          -- fuzzy find ALL the things
 
         -- Look and feel
@@ -43,7 +41,7 @@ packer.startup(
                         virt_text = true,
                         virt_text_pos = 'right_align',
                     },
-                    update_debounce = 200,
+                    update_debounce = 500,
                     numhl = true,
                 })
             end,
@@ -86,7 +84,7 @@ packer.startup(
                         native_lsp = {
                             enabled = true,
                             styles = {
-                                errors      = "italic",
+                                errors      = "bold",
                                 warnings    = "italic",
                                 information = "italic",
                                 hints       = "italic",
@@ -108,6 +106,7 @@ packer.startup(
         use "nvim-treesitter/nvim-treesitter-textobjects" -- custom text objects from treesitter
 
         -- Other nice to have
+        use "editorconfig/editorconfig-vim"                -- .editorconfig support
         use {
             "tpope/vim-fugitive",                          -- git integration
             cmd = "Git",
@@ -150,14 +149,6 @@ packer.startup(
             cmd = "Tab",
         }
         use {
-            "editorconfig/editorconfig-vim",               -- .editorconfig support
-            config = function ()
-                vim.g.EditorConfig_exclude_patterns = {
-                    'fugitive://.*', 'term://.*'
-                }
-            end
-        }
-        use {
             "kyazdani42/nvim-tree.lua",                    -- no more netrw
             config = function ()
                 require'nvim-tree'.setup({
@@ -172,6 +163,15 @@ packer.startup(
                 "NvimTreeFindFile",
             },
         }
+        use {
+            'mrjones2014/dash.nvim',                       -- ez open documentation
+            run = 'make install',
+            config = function ()
+                vim.cmd [[ command! Dash Telescope dash search ]]
+            end,
+            cmd = 'Dash',
+        }
+
     end
 )
 -- NOTE: If :h <plugin> does not work, run :helptags ALL to add them

@@ -24,6 +24,8 @@ mapper("n", "<Down>"    , [["pdd"pp]])               -- move line down
 mapper("n", "<Up>"      , [["pddk"pP]])              -- move line up
 mapper("n", "<C-e>"     , "3<C-e>")                  -- scroll down more quickly
 mapper("n", "<C-y>"     , "3<C-y>")                  -- scroll up more quickly
+mapper("n", "<Leader>bn", ":bn<CR>")                 -- next buffer
+mapper("n", "<Leader>bp", ":bp<CR>")                 -- prev buffer
 
 -- Commenting
 mapper("n", "<Leader>ci", "gcc")
@@ -39,6 +41,7 @@ mapper("n", "<Leader>co", "<cmd>lua require'ag.telescope'.builtin('colorscheme')
 mapper("n", "<Leader>gc", "<cmd>lua require'ag.telescope'.builtin('git_branches')<CR>")              -- checkout different branches
 mapper("n", "<Leader>re", "<cmd>lua require'ag.telescope'.builtin('git_commits')<CR>")               -- checkout commits; <CR> to checkout, <C-r>[m, s, h] to reset [mixed, soft, hard]
 mapper("n", "<Leader>qf", "<cmd>lua require'ag.telescope'.builtin('quickfix')<CR>")                  -- jump to items in quickfix list
+mapper("n", "<Leader>do", "<cmd>Dash<CR>")
 
 -- Movemint
 mapper("n", "<C-j>", "<C-w>j")
