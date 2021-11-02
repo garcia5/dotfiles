@@ -25,34 +25,8 @@ vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
 )
 
 local custom_attach = function(client, bufnr)
-    -- Autocomplete
-    local cmp = require("cmp")
-    cmp.setup({
-        snippet = {
-            expand = function(args)
-                vim.fn["vsnip#anonymous"](args.body)
-            end,
-        },
-        sources = {
-            { name = 'vsnip' },
-            { name = 'nvim_lsp' },
-            { name = 'path' },
-            { name = 'buffer' },
-        },
-        mapping = {
-            ['<C-d>']     = cmp.mapping.scroll_docs(-4),
-            ['<C-f>']     = cmp.mapping.scroll_docs(4),
-            ['<C-Space>'] = cmp.mapping.complete(),
-            ['<C-e>']     = cmp.mapping.close(),
-            ['<C-y>']     = cmp.mapping.confirm({
-                behavior = cmp.ConfirmBehavior.Replace,
-            })
-        },
-        formatting = {
-            -- Show where the completion opts are coming from
-            format = require('lspkind').cmp_format({with_text = true})
-        }
-    })
+    -- Load autocomplete engine/settings
+    require('ag.cmp_config')
 
     -- LSP mappings (only apply when LSP client attached)
     lsp_mapper("n", "K"         , "vim.lsp.buf.hover()")
@@ -142,9 +116,15 @@ lspconfig.pyright.setup({
     end,
     settings = {
         pyright = {
-            disableOrganizeImports = false
+            disableOrganizeImports = false,
+            analysis = {
+                useLibraryCodeForTypes = true,
+                autoSearchPaths = true,
+                diagnosticMode = "workspace",
+                autoImportCompletions = true,
+            },
         },
-    }
+    },
 })
 
 -- typescript
