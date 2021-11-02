@@ -139,9 +139,11 @@ packer.startup(
             "hrsh7th/nvim-cmp",                            -- autocomplete
             requires = {
                 "hrsh7th/cmp-nvim-lsp",
+                "hrsh7th/cmp-nvim-lua",
                 "hrsh7th/cmp-buffer",
                 "hrsh7th/cmp-vsnip",
                 "onsails/lspkind-nvim",
+                "lukas-reineke/cmp-under-comparator",
             },
         }
         use {

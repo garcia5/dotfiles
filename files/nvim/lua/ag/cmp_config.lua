@@ -7,6 +7,7 @@ cmp.setup({
     },
     sources = {
         { name = 'vsnip' },
+        { name = 'nvim_lua' },
         { name = 'nvim_lsp', max_item_count = 20 }, -- tsserver likes to send back _everything_
         { name = 'path' },
         { name = 'buffer',   keyword_length = 5 }, -- don't complete from buffer right away
@@ -27,6 +28,7 @@ cmp.setup({
             with_text = true,
             menu = {
                 vsnip = "[vsnip]",
+                nvim_lua = "[nvim]",
                 nvim_lsp = "[LSP]",
                 path = "[path]",
                 buffer = "[buffer]",
@@ -36,5 +38,17 @@ cmp.setup({
     experimental = {
         native_menu = false,
         ghost_text = true,
+    },
+    sorting = {
+        comparators = {
+            cmp.config.compare.offset,
+            cmp.config.compare.exact,
+            cmp.config.compare.score,
+            require("cmp-under-comparator").under,
+            cmp.config.compare.kind,
+            cmp.config.compare.sort_text,
+            cmp.config.compare.length,
+            cmp.config.compare.order,
+        },
     },
 })
