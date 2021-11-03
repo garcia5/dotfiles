@@ -1,4 +1,5 @@
 local dap = require('dap')
+local dapui = require('dapui')
 
 local get_python_path = function ()
     local venv_path = os.getenv('VIRTUAL_ENV')
@@ -14,6 +15,18 @@ local arg_parser = function (prompt)
         return vim.split(args, ' ')
     end
 end
+
+local start_with_ui = function ()
+    dap.continue()
+    dapui.open()
+end
+
+-- Configure UI
+dapui.setup({
+    tray = {
+        elements = {},
+    },
+})
 
 -- Configure debuggers
 dap.adapters.python = {
@@ -55,3 +68,7 @@ vim.fn.sign_define('DapStopped', {
     linehl='',
     numhl='',
 })
+
+return {
+    start_with_ui = start_with_ui,
+}

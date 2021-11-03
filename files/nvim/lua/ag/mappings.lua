@@ -70,7 +70,10 @@ mapper("n", "<Leader>gp", "<cmd>Gitsigns prev_hunk<CR>zz")  -- move to prev hunk
 mapper("n", "="         , "<cmd>Gitsigns preview_hunk<CR>") -- diff of hunk under cursor
 
 -- DAP
-mapper("n", "<C-g>", "<cmd>lua require('dap').continue()<CR>")  -- start/resume debugging
+mapper("n", "<C-g>", "<cmd>lua require('ag.debug').start_with_ui()<CR>")  -- start/resume debugging
 mapper("n", "<C-b>", "<cmd>lua require('dap').toggle_breakpoint()<CR>")
 mapper("n", "<C-s>", "<cmd>lua require('dap').step_into()<CR>")
 mapper("n", "<C-d>", "<cmd>lua require('dap').step_over()<CR>")
+mapper("n", "<C-p>", "<cmd>lua require('dap').repl.open()<CR>")
+mapper("n", "<C-i>", "<cmd>lua require('dapui').float_element('scopes')<CR>")
+mapper("n", "<Leader>dc", "<cmd>lua require('dapui').toggle()<CR>")
