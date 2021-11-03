@@ -68,3 +68,9 @@ mapper("n", "<Leader>rh", "<cmd>Gitsigns reset_hunk<CR>")   -- reset hunk under 
 mapper("n", "<Leader>gn", "<cmd>Gitsigns next_hunk<CR>zz")  -- move to next hunk and center it
 mapper("n", "<Leader>gp", "<cmd>Gitsigns prev_hunk<CR>zz")  -- move to prev hunk and center it
 mapper("n", "="         , "<cmd>Gitsigns preview_hunk<CR>") -- diff of hunk under cursor
+
+-- DAP
+mapper("n", "<C-g>", "<cmd>lua require('dap').continue()<CR>")  -- start/resume debugging
+mapper("n", "<C-b>", "<cmd>lua require('dap').toggle_breakpoint()<CR>")
+mapper("n", "<C-s>", "<cmd>lua require('dap').step_into()<CR>")
+mapper("n", "<C-d>", "<cmd>lua require('dap').step_over()<CR>")

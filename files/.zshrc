@@ -136,6 +136,7 @@ export FZF_CTRL_T_OPTS="$FZF_DEFAULT_OPTS \
 
 # Python
 eval "$(pyenv init -)"
+export PYENV_VERSION=3.10.0
 
 # Node
 export NVM_DIR="$HOME/.nvm"

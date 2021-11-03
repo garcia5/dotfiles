@@ -105,6 +105,11 @@ packer.startup(
         }
         use "nvim-treesitter/nvim-treesitter-textobjects" -- custom text objects from treesitter
 
+        -- Debuggers
+        use {
+            "mfussenegger/nvim-dap",
+        }
+
         -- Other nice to have
         use "editorconfig/editorconfig-vim"                -- .editorconfig support
         use {
