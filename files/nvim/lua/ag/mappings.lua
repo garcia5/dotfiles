@@ -70,10 +70,12 @@ mapper("n", "<Leader>gp", "<cmd>Gitsigns prev_hunk<CR>zz")  -- move to prev hunk
 mapper("n", "="         , "<cmd>Gitsigns preview_hunk<CR>") -- diff of hunk under cursor
 
 -- DAP
-mapper("n", "<C-g>", "<cmd>lua require('ag.debug').start_with_ui()<CR>")  -- start/resume debugging
-mapper("n", "<C-b>", "<cmd>lua require('dap').toggle_breakpoint()<CR>")
+mapper("n", "<Leader>ds", "<cmd>lua require('ag.debug').start_with_ui()<CR>")                                   -- start/resume debugging
+mapper("n", "<Leader>bp", "<cmd>lua require('dap').toggle_breakpoint()<CR>")                                    -- set persistent breakpoint
+mapper("n", "<Leader>bc", "<cmd>lua require('dap').set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>") -- conditional breakpoint
+mapper("n", "<C-g>", "<cmd>lua require('dap').continue()<CR>")
 mapper("n", "<C-s>", "<cmd>lua require('dap').step_into()<CR>")
 mapper("n", "<C-d>", "<cmd>lua require('dap').step_over()<CR>")
 mapper("n", "<C-p>", "<cmd>lua require('dap').repl.open()<CR>")
-mapper("n", "<C-i>", "<cmd>lua require('dapui').float_element('scopes')<CR>")
-mapper("n", "<Leader>dc", "<cmd>lua require('dapui').toggle()<CR>")
+mapper("n", "<C-i>", "<cmd>lua require('dapui').float_element('scopes')<CR>")                                   -- show local/global variable info in floating window
+mapper("n", "<Leader>dc", "<cmd>lua require('dapui').toggle()<CR>")                                             -- toggle on/off pretty ui
