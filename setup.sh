@@ -91,8 +91,9 @@ function install_packages {
         runcmd nvm install node
     fi
     NPM_PACKAGES=( 'bash-language-server' 'pyright' 'vls' 'typescript-language-server' )
+    npm_installed=$(npm -g list)
     for pkg in ${NPM_PACKAGES[@]}; do
-        if [[ $(npm -g list | grep -c "$pkg") -ge 1 ]]; then
+        if [[ $(echo "$npm_installed" | grep -c "$pkg") -ge 1 ]]; then
             echo "$pkg already installed, skipping"
         else
             runcmd npm i -g "$pkg"
@@ -100,11 +101,12 @@ function install_packages {
     done
     YARN_PACKAGES=( 'yaml-language-server' )
     if [[ $(command -v yarn) ]]; then
+        yarn_installed=$(yarn global list)
         for pkg in ${YARN_PACKAGES[@]}; do
-            if [[ $(yarn global list | grep -c "$pkg") -ge 1 ]]; then
+            if [[ $(echo "$yarn_installed" | grep -c "$pkg") -ge 1 ]]; then
                 echo "$pkg already installed, skipping"
             else
-                runcmd npm i -g "$pkg"
+                runcmd yarn global add "$pkg"
             fi
         done
     fi
