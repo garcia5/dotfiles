@@ -1,3 +1,9 @@
+" Formatopts for ALL
+augroup ForceFormatoptions
+    au!
+    au BufEnter * if &buftype != 'terminal' | set formatoptions=lcrqj | endif
+augroup end
+
 " Format on save
 augroup Format
     au!
@@ -21,9 +27,6 @@ augroup term
     " Quit if only the terminal is left to avoid confusion
     au BufEnter * if winnr("$") == 1 && &buftype == 'terminal' | q | endif
 augroup end
-
-" exit vim if netrw is the last open buffer
-au BufEnter * if winnr("$") == 1 && &filetype == 'netrw' | q | endif
 
 " Detect "TODO:" comments
 augroup TodoHl
