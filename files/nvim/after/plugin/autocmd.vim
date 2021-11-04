@@ -1,8 +1,8 @@
 " Format on save
-" augroup OnSave
-"     au!
-"     au BufWritePre *.py,*.ts,*.vue FormatWrite
-" augroup end
+augroup Format
+    au!
+    au BufWritePost *.lua FormatWrite
+augroup end
 
 " My dotfiles
 augroup MyScripts
@@ -50,6 +50,7 @@ augroup AutopairsDisable
     au FileType Term            let b:lexima_disabled = 1
     au FileType netrw           let b:lexima_disabled = 1
     au FileType fugitive        let b:lexima_disabled = 1
+    au FileType dap-repl        let b:lexima_disabled = 1
 augroup end
 
 " Disable editorconfig rules for special buffers
