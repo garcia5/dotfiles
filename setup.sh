@@ -10,7 +10,7 @@ export DF_HOME=$HOME/dotfiles
 HAS_BREW=$(command -v brew)
 
 function usage {
-    echo "USAGE: $0 [bash, brew, nvim, tmux, zsh, alacritty, all]"
+    echo "USAGE: $0 [bash, brew, nvim, tmux, zsh, alacritty, packages, all]"
 }
 
 function runcmd {
@@ -63,9 +63,10 @@ function install_packages {
         echo "installing brew first"
         setup_brew
     fi
-    brew update
+    runcmd brew update
+    brew_installed=$(brew list)
     for pkg in ${BREW_PACKAGES[@]}; do
-        if [[ $(brew list | grep -c "$pkg") -ge 1 ]]; then
+        if [[ $(echo "$brew_installed" | grep -c "$pkg") -ge 1 ]]; then
             echo "$pkg already installed, skipping"
         else
             runcmd brew install "$pkg"
@@ -116,6 +117,15 @@ function install_packages {
         # Also install defined version
         runcmd pyenv install --skip-existing "$PYENV_VERSION"
     fi
+
+    echo ""
+    echo "installing from pip"
+    echo "setting up debugpy"
+    cur_pwd=$(pwd)
+    runcmd "mkdir -p ~/.virtualenvs && cd ~/.virtualenvs"
+    runcmd python -m venv debugpy
+    runcmd debugpy/bin/python -m pip install debugpy
+    cd "$cur_pwd"
 }
 
 function setup_bash {
@@ -233,6 +243,9 @@ for conf in "$@"; do
             setup_nvim
             setup_tmux
             setup_zsh
+            ;;
+        "install_packages")
+            install_packages
             ;;
         "*")
             usage
