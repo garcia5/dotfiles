@@ -1,5 +1,6 @@
 local lspconfig = require("lspconfig")
 local cmp_capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities())
+local Input = require("nui.input")
 
 local mapper = function(mode, key, result, opts)
     vim.api.nvim_buf_set_keymap(0, mode, key, result, opts)
@@ -26,6 +27,40 @@ vim.lsp.handlers["textDocument/signatureHelp"] =
     }
 )
 
+-- Use fancy floating rename window
+local rename_opts = {
+    relative = "cursor",
+    position = {
+        row = 1,
+        col = 0
+    },
+    size = 20,
+    border = {
+        style = "rounded",
+        highlight = "FloatBorder",
+        text = {
+            top = "[Rename]",
+            top_align = "center"
+        }
+    },
+    win_options = {
+        winhighlight = "Normal:Normal"
+    }
+}
+
+local rename_input = function()
+    local current = vim.fn.expand("<cword>")
+    return Input(
+        rename_opts,
+        {
+            default_value = current,
+            on_submit = function(value)
+                vim.lsp.buf.rename(value)
+            end
+        }
+    )
+end
+
 local custom_attach = function(client, bufnr)
     -- Load autocomplete engine/settings
     require("ag.completion")
@@ -36,7 +71,7 @@ local custom_attach = function(client, bufnr)
     lsp_mapper("n", "K", "vim.lsp.buf.hover()")
     lsp_mapper("n", "<c-]>", "vim.lsp.buf.definition()")
     lsp_mapper("n", "<leader>gr", "vim.lsp.buf.references()")
-    lsp_mapper("n", "gr", "vim.lsp.buf.rename()")
+    lsp_mapper("n", "gr", "require('ag.lsp_config').renamer():mount()")
     lsp_mapper("n", "H", "vim.lsp.buf.code_action()")
     lsp_mapper("n", "<leader>dn", "vim.lsp.diagnostic.goto_next({popup_opts = {border = 'single'}})")
     lsp_mapper("n", "<leader>dp", "vim.lsp.diagnostic.goto_prev({popup_opts = {border = 'single'}})")
@@ -44,14 +79,19 @@ local custom_attach = function(client, bufnr)
     lsp_mapper("i", "<C-h>", "vim.lsp.buf.signature_help()")
 
     -- use omnifunc
-    vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+    vim.bo.omnifunc = "v:lua.vim.lsp.omnifunc"
 end
 
 -- Set up clients
 lspconfig.diagnosticls.setup(
     {
         on_attach = custom_attach,
-        filetypes = {"python", "javascript", "typescript", "vue"},
+        filetypes = {
+            "python",
+            "javascript",
+            "typescript",
+            "vue"
+        },
         init_options = {
             filetypes = {
                 python = "flake8",
@@ -63,14 +103,25 @@ lspconfig.diagnosticls.setup(
                 flake8 = {
                     sourceName = "flake8",
                     command = "flake8",
-                    args = {[[--format = %(row)d,%(col)d,%(code).1s,%(code)s: %(text)s]], "-"},
+                    args = {
+                        [[--format = %(row)d,%(col)d,%(code).1s,%(code)s: %(text)s]],
+                        "-"
+                    },
                     debounce = 100,
                     offsetLine = 0,
                     offsetColumn = 0,
                     formatLines = 1,
                     formatPattern = {
                         [[(\d+),(\d+),([A-Z]),(.*)(\r|\n)*$]],
-                        {line = 1, column = 2, security = 3, message = {"[flake8] ", 4}}
+                        {
+                            line = 1,
+                            column = 2,
+                            security = 3,
+                            message = {
+                                "[flake8] ",
+                                4
+                            }
+                        }
                     },
                     securities = {
                         W = "warning",
@@ -84,7 +135,13 @@ lspconfig.diagnosticls.setup(
                     sourceName = "eslint_d",
                     command = "eslint_d",
                     debounce = 100,
-                    args = {"--stdin", "--stdin-filename", "%filepath", "--format", "json"},
+                    args = {
+                        "--stdin",
+                        "--stdin-filename",
+                        "%filepath",
+                        "--format",
+                        "json"
+                    },
                     parseJson = {
                         errorsRoot = "[0].messages",
                         line = "line",
@@ -94,7 +151,10 @@ lspconfig.diagnosticls.setup(
                         message = "[eslint] ${message} [${ruleId}]",
                         security = "severity"
                     },
-                    securities = {[2] = "error", [1] = "warning"},
+                    securities = {
+                        [2] = "error",
+                        [1] = "warning"
+                    },
                     rootPatterns = {
                         ".eslintrc",
                         ".eslintrc.cjs",
@@ -116,7 +176,15 @@ lspconfig.pyright.setup(
         on_attach = function(client, bufnr)
             custom_attach(client, bufnr)
             -- 'Organize imports' keymap for pyright only
-            mapper("n", "<Leader>ii", "<cmd>PyrightOrganizeImports<CR>", {silent = true, noremap = true})
+            mapper(
+                "n",
+                "<Leader>ii",
+                "<cmd>PyrightOrganizeImports<CR>",
+                {
+                    silent = true,
+                    noremap = true
+                }
+            )
         end,
         settings = {
             pyright = {
@@ -203,15 +271,25 @@ if vim.fn.executable(lua_ls_bin) then
         {
             capabilities = cmp_capabilities,
             on_attach = custom_attach,
-            cmd = {lua_ls_bin, "-E", lua_ls_path .. "main.lua"},
+            cmd = {
+                lua_ls_bin,
+                "-E",
+                lua_ls_path .. "main.lua"
+            },
             settings = {
                 Lua = {
                     diagnostics = {
                         -- Get the language server to recognize the `vim` global
-                        globals = {"vim"}
+                        globals = {
+                            "vim"
+                        }
                     }
                 }
             }
         }
     )
 end
+
+return {
+    renamer = rename_input
+}

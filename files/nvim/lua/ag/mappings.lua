@@ -66,7 +66,7 @@ mapper("n", "<Leader>gp", "<cmd>Gitsigns prev_hunk<CR>zz") -- move to prev hunk 
 mapper("n", "=", "<cmd>Gitsigns preview_hunk<CR>") -- diff of hunk under cursor
 
 -- DAP
-mapper("n", "<Leader>ds", "<cmd>lua require('ag.debug').start_with_ui()<CR>") -- start/resume debugging
+mapper("n", "<Leader>dS", "<cmd>lua require('ag.debug').start_with_ui()<CR>") -- start/resume debugging
 mapper("n", "<Leader>db", "<cmd>lua require('dap').toggle_breakpoint()<CR>") -- set persistent breakpoint
 mapper("n", "<Leader>bc", "<cmd>lua require('dap').set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>") -- conditional breakpoint
 mapper("n", "<Leader>dc", "<cmd>lua require('dap').continue()<CR>")

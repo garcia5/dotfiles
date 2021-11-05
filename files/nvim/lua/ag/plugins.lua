@@ -55,6 +55,7 @@ packer.startup(
                 opt = true
             }
         }
+        use "MunifTanjim/nui.nvim" -- UI components
 
         -- Colorschemes
         use "chriskempson/base16-vim" -- pretty colors

@@ -29,19 +29,19 @@ augroup term
 augroup end
 
 " Detect "TODO:" comments
-augroup TodoHl
-    au!
-    " Regex:
-    " \v          -- Magic mode, normal regex special characters
-    " <           -- Beginning of word
-    " \zs         -- Begin the syntax match group
-    " (NOTE|TODO) -- highlight these!
-    " \ze         -- End the syntax match group
-    " [ ]*\(.*\): -- Allow " (some text):" to still match
-    au Syntax * syn match MyTodo /\v<\zs(NOTE|TODO)\ze[ ]*\(.*\):/
-          \ containedin=.*Comment,vimCommentTitle
-augroup END
-hi def link MyTodo Todo
+" this doesn't work quite right
+" augroup TodoHl
+"     au!
+"     " Regex:
+"     " \v          -- Magic mode, normal regex special characters
+"     " <           -- Beginning of word
+"     " \zs         -- Begin the syntax match group
+"     " (NOTE|TODO) -- highlight these!
+"     " \ze         -- End the syntax match group
+"     au Syntax * syn match MyTodo /\v<\zs(NOTE|TODO)\ze/
+"           \ containedin=.*Comment,vimCommentTitle
+" augroup END
+" hi def link MyTodo Todo
 
 " Auto-apply plugin changes
 au BufWritePost plugins.lua source <afile> | PackerCompile
@@ -60,4 +60,9 @@ augroup end
 augroup EditorConfigDisable
     au!
     au FileType gitcommit let b:EditorConfig_disable = 1
+augroup END
+
+augroup DockerfileMatch
+    au!
+    au BufEnter Dockerfile.* set ft=dockerfile
 augroup END
