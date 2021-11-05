@@ -3,10 +3,10 @@ local telescope = require("telescope")
 local M = {}
 
 -- Lets me globally apply themes
-M.builtin = function(builtin_func)
+M.builtin = function(builtin_func, opts)
     local func = require("telescope.builtin")[builtin_func]
     --local theme = require('telescope.themes').get_ivy()
-    return func()
+    return func(opts)
 end
 
 telescope.setup(
@@ -14,6 +14,7 @@ telescope.setup(
         defaults = {
             vimgrep_arguments = {
                 "rg",
+                "--color=never",
                 "--no-heading",
                 "--with-filename",
                 "--line-number",
