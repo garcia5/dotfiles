@@ -70,10 +70,6 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
     git
-    pip
-    pyenv
-    ripgrep
-    vi-mode
 )
 
 # User configuration
@@ -116,10 +112,10 @@ autoload -Uz compinit && compinit
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 
 # Base16 Shell
-BASE16_SHELL="$HOME/.config/base16-shell/"
-[ -n "$PS1" ] && \
-    [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
-        eval "$("$BASE16_SHELL/profile_helper.sh")"
+# BASE16_SHELL="$HOME/.config/base16-shell/"
+# [ -n "$PS1" ] && \
+#     [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
+#         eval "$("$BASE16_SHELL/profile_helper.sh")"
 
 
 # use bat for manpager
@@ -128,7 +124,7 @@ export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 # FZF things
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_COMMAND='rg --files --smart-case'
-export FZF_CTRL_T_COMMAND='rg --files --smart-case'
+export FZF_CTRL_T_COMMAND="rg --files --smart-case --hidden -g '!*.git'"
 export FZF_DEFAULT_OPTS="--height 40% --reverse"
 # Preview files (but not everything else) with bat
 export FZF_CTRL_T_OPTS="$FZF_DEFAULT_OPTS \
