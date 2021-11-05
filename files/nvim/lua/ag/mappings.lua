@@ -14,8 +14,8 @@ mapper("n", ":W", ":w")
 mapper("n", "<Leader>nt", ":NvimTreeToggle<CR>") -- toggle file browser in left split
 mapper("n", "<Leader>nf", ":NvimTreeFindFile<CR>") -- open file browser in left split with the current file focused
 mapper("n", "<Leader>z", ":call ToggleFocus()<CR>") -- toggle focus on current window
-mapper("n", "<Leader>tn", ":vs | term<CR>") -- open new term in vertical split
-mapper("n", "<Leader>ts", ":sp | term<CR>") -- open new term in horizontal split
+mapper("n", "<Leader>tn", ":call termcmd#vert()<CR>") -- open new term in vertical split
+mapper("n", "<Leader>ts", ":call termcmd#horiz()<CR>") -- open new term in horizontal split
 mapper("n", "<Leader>bd", ":bdelete<CR>") -- delete the current buffer
 mapper("n", "Y", "y$") -- yank to the end of the line (like D or C)
 mapper("n", "n", "nzz") -- center jumping to next match
