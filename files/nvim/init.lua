@@ -46,7 +46,8 @@ vim.opt.listchars = {
     trail = "·"
 }
 vim.opt.scrolloff = 10 -- padding between cursor and top/bottom of window
-vim.opt.foldmethod = "marker" -- fold on {{{...}}} by default (overridden by treesitter when applicable)
+vim.opt.foldmethod = "expr" -- use function to determine folds
+vim.opt.foldexpr = "nvim_treesitter#foldexpr()" -- use treesitter for folding
 vim.opt.foldlevel = 0 -- allow folding the whole way down
 vim.opt.foldlevelstart = 99 -- open files with all folds open
 vim.opt.splitright = true -- prefer vsplitting to the right
