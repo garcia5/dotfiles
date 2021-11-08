@@ -31,6 +31,17 @@ packer.startup(
         -- Look and feel
         use "folke/lsp-colors.nvim" -- LSP colors that aren't built in
         use {
+            "junegunn/rainbow_parentheses.vim", -- rainbow braces
+            config = function()
+                vim.g["rainbow#pairs"] = {
+                    {"[", "]"},
+                    {"{", "}"},
+                    {"(", ")"}
+                }
+                vim.g["rainbow#blacklist"] = {145} -- disable white
+            end
+        }
+        use {
             "lewis6991/gitsigns.nvim", -- git signs in gutter + some useful keymaps
             requires = {"nvim-lua/plenary.nvim"},
             config = function()
@@ -85,14 +96,12 @@ packer.startup(
                             gitgutter = true,
                             telescope = true,
                             treesitter = true,
-                            native_lsp = {
+                            nvimtree = {
                                 enabled = true,
-                                styles = {
-                                    errors = "bold",
-                                    warnings = "italic",
-                                    information = "italic",
-                                    hints = "italic"
-                                }
+                                show_root = true
+                            },
+                            native_lsp = {
+                                enabled = true
                             }
                         }
                     }
@@ -183,7 +192,7 @@ packer.startup(
             "mrjones2014/dash.nvim", -- ez open documentation
             run = "make install",
             config = function()
-                vim.cmd [[ command! Dash Telescope dash search ]]
+                vim.cmd [[ command! Dash Telescope dash search ]] -- create command to lazy load on
             end,
             cmd = "Dash"
         }

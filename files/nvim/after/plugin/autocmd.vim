@@ -1,8 +1,5 @@
 " Formatopts for ALL
-augroup ForceFormatoptions
-    au!
-    au BufEnter * if &buftype != 'terminal' | set formatoptions=lcrqj | endif
-augroup end
+au BufEnter * if &buftype != 'terminal' | set formatoptions=lcrqj | endif
 
 " Format on save
 augroup Format
@@ -16,6 +13,9 @@ augroup MyScripts
     au BufEnter .aliases set ft=bash
     au BufEnter .dotdash set ft=bash
 augroup END
+
+" Enable Rainbow Braces
+autocmd BufReadPost * if exists (':RainbowParentheses') | RainbowParentheses | endif
 
 " Terminal setup
 augroup term
