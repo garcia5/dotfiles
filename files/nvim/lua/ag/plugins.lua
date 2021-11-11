@@ -98,7 +98,7 @@ packer.startup(
                             treesitter = true,
                             nvimtree = {
                                 enabled = true,
-                                show_root = true
+                                show_root = false
                             },
                             native_lsp = {
                                 enabled = true

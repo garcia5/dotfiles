@@ -1,5 +1,5 @@
 " Formatopts for ALL
-au BufEnter * if &buftype != 'terminal' | set formatoptions=lcrqj | endif
+au BufEnter * if &buftype != 'terminal' && &ft != 'gitcommit' | set formatoptions=lcrqj | endif
 
 " Format on save
 augroup Format
