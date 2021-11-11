@@ -48,6 +48,7 @@ local rename_opts = {
     }
 }
 
+-- TODO: why isn't this working?
 local rename_input = function()
     local current = vim.fn.expand("<cword>")
     return Input(
@@ -71,7 +72,7 @@ local custom_attach = function(client, bufnr)
     lsp_mapper("n", "K", "vim.lsp.buf.hover()")
     lsp_mapper("n", "<c-]>", "vim.lsp.buf.definition()")
     lsp_mapper("n", "<leader>gr", "vim.lsp.buf.references()")
-    lsp_mapper("n", "gr", "require('ag.lsp_config').renamer():mount()")
+    lsp_mapper("n", "gr", "vim.lsp.buf.rename()")
     lsp_mapper("n", "H", "vim.lsp.buf.code_action()")
     lsp_mapper("n", "<leader>dn", "vim.lsp.diagnostic.goto_next({popup_opts = {border = 'single'}})")
     lsp_mapper("n", "<leader>dp", "vim.lsp.diagnostic.goto_prev({popup_opts = {border = 'single'}})")
@@ -87,17 +88,11 @@ lspconfig.diagnosticls.setup(
     {
         on_attach = custom_attach,
         filetypes = {
-            "python",
-            "javascript",
-            "typescript",
-            "vue"
+            "python"
         },
         init_options = {
             filetypes = {
-                python = "flake8",
-                javascript = "eslint_d",
-                typescript = "eslint_d",
-                vue = "eslint_d"
+                python = "flake8"
             },
             linters = {
                 flake8 = {
@@ -129,39 +124,6 @@ lspconfig.diagnosticls.setup(
                         F = "error",
                         C = "error",
                         N = "error"
-                    }
-                },
-                eslint_d = {
-                    sourceName = "eslint_d",
-                    command = "eslint_d",
-                    debounce = 100,
-                    args = {
-                        "--stdin",
-                        "--stdin-filename",
-                        "%filepath",
-                        "--format",
-                        "json"
-                    },
-                    parseJson = {
-                        errorsRoot = "[0].messages",
-                        line = "line",
-                        column = "column",
-                        endLine = "endLine",
-                        endColumn = "endColumn",
-                        message = "[eslint] ${message} [${ruleId}]",
-                        security = "severity"
-                    },
-                    securities = {
-                        [2] = "error",
-                        [1] = "warning"
-                    },
-                    rootPatterns = {
-                        ".eslintrc",
-                        ".eslintrc.cjs",
-                        ".eslintrc.js",
-                        ".eslintrc.json",
-                        ".eslintrc.yaml",
-                        ".eslintrc.yml"
                     }
                 }
             }
@@ -196,6 +158,16 @@ lspconfig.pyright.setup(
                     autoImportCompletions = true
                 }
             }
+        }
+    }
+)
+
+-- eslint
+lspconfig.eslint.setup(
+    {
+        on_attach = custom_attach,
+        settings = {
+            packageManager = "yarn"
         }
     }
 )

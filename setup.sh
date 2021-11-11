@@ -90,7 +90,7 @@ function install_packages {
         echo "installing node"
         runcmd nvm install node
     fi
-    NPM_PACKAGES=( 'bash-language-server' 'pyright' 'vls' 'typescript-language-server' )
+    NPM_PACKAGES=( 'bash-language-server' 'pyright' 'vls' 'typescript-language-server' 'vscode-langservers-extracted')
     npm_installed=$(npm -g list)
     for pkg in ${NPM_PACKAGES[@]}; do
         if [[ $(echo "$npm_installed" | grep -c "$pkg") -ge 1 ]]; then
