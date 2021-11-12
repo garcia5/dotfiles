@@ -74,15 +74,14 @@ packer.startup(
         use "nxvu699134/vn-night.nvim" -- dark purple theme w/ treesitter support
         use "EdenEast/nightfox.nvim" -- another lua colorscheme
         use {
-            "Pocco81/Catppuccino.nvim", -- another another lua colorscheme
+            "catppuccin/nvim", -- another another lua colorscheme
             config = function()
-                if vim.g.colors_name ~= "catppuccino" then
+                if vim.g.colors_name ~= "catppuccin" then
                     return
                 end
-                local catp = require("catppuccino")
+                local catp = require("catppuccin")
                 catp.setup(
                     {
-                        colorscheme = "dark_catppuccino",
                         transparency = true,
                         styles = {
                             comments = "italic",
@@ -93,7 +92,6 @@ packer.startup(
                         },
                         integrations = {
                             gitsigns = true,
-                            gitgutter = true,
                             telescope = true,
                             treesitter = true,
                             nvimtree = {

@@ -31,9 +31,9 @@ lualine.setup(
                 {
                     "diff",
                     symbols = {
-                        modified = "",
-                        removed = "",
-                        added = ""
+                        modified = "~",
+                        removed = "-",
+                        added = "+"
                     },
                     condition = is_lualine_buf
                 }
@@ -64,7 +64,7 @@ lualine.setup(
         options = {
             section_separators = {left = "", right = ""},
             component_separators = {left = "", right = ""},
-            theme = "catppuccino"
+            theme = "catppuccin"
         },
         extensions = {
             "quickfix",
