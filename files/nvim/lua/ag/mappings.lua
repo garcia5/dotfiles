@@ -27,6 +27,7 @@ mapper("n", "<C-y>", "3<C-y>") -- scroll up more quickly
 mapper("n", "<Leader>bn", ":bn<CR>") -- next buffer
 mapper("n", "<Leader>bp", ":bp<CR>") -- prev buffer
 mapper("n", "+", "=") -- new format mapping
+mapper("n", "<Leader>nn", ":set number!") -- toggle line numbers (off by default)
 
 -- Telescope integration
 mapper("n", "<Leader>ff", "<cmd>lua require('ag.telescope').builtin('find_files')<CR>") -- search all files, respecting .gitignore if one exists
