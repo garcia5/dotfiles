@@ -33,8 +33,8 @@ vim.cmd "colorscheme catppuccin"
 vim.cmd "let base16colorspace=256"
 
 -- Look and feel
-vim.opt.number = true -- absolute numbers...
-vim.opt.relativenumber = true -- but only on the current line
+vim.opt.number = false -- no numbers?
+vim.opt.relativenumber = false -- no numbers?
 vim.opt.cursorline = false -- don't highlight current line
 vim.opt.list = true -- show list chars
 vim.opt.listchars = {

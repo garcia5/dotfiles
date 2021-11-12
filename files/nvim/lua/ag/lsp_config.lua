@@ -27,6 +27,15 @@ vim.lsp.handlers["textDocument/signatureHelp"] =
     }
 )
 
+-- Hide inline diagnostic virtual text
+vim.lsp.handlers["textDocument/publishDiagnostics"] =
+    vim.lsp.with(
+    vim.lsp.diagnostic.on_publish_diagnostics,
+    {
+        virtual_text = false
+    }
+)
+
 -- Use fancy floating rename window
 local rename_opts = {
     relative = "cursor",
