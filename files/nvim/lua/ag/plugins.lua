@@ -87,7 +87,7 @@ packer.startup(
                             comments = "italic",
                             functions = "NONE",
                             keywords = "NONE",
-                            strings = "NONE",
+                            strings = "italic",
                             variables = "NONE"
                         },
                         integrations = {
