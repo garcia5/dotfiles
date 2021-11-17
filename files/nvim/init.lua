@@ -1,6 +1,7 @@
 -- Essentials
 vim.g.mapleader = " "
 vim.g.python3_host_skip_check = 1
+vim.g.python3_host_prog = "/Users/agarcia/py3nvim/bin/python"
 vim.g.bulitin_lsp = true
 
 require("ag") -- load my lua configs

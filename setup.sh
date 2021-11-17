@@ -8,6 +8,7 @@ export NVIM_HOME=$CONFIG_HOME/nvim
 export DF_HOME=$HOME/dotfiles
 
 HAS_BREW=$(command -v brew)
+HAS_PYENV=$(command -v pyenv)
 
 function usage {
     echo "USAGE: $0 [bash, brew, nvim, tmux, zsh, alacritty, packages, all]"
@@ -161,6 +162,14 @@ function setup_nvim {
     mkdir -p "$HOME/.config"
     backup_dir "$NVIM_HOME"
     ln -s "$DF_HOME/files/nvim" "$NVIM_HOME"
+    # Set up neovim python virtualenv
+    if [[ ! $(-d $HOME/py3nvim) ]]; then
+        runcmd python -m venv "$HOME/py3nvim"
+        runcmd source "$HOME/py3nvim/bin/activate"
+        runcmd pip install --upgrade pip
+        runcmd pip install pynvim
+        runcmd deactivate
+    fi
     # Optionally install lua language server. Everything else is done in
     # install_packages
     read -p "Install sumneko_lua? (y/n) " install_sumneko

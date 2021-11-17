@@ -1,13 +1,12 @@
 local lspconfig = require("lspconfig")
 local cmp_capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities())
-local Input = require("nui.input")
 
-local mapper = function(mode, key, result, opts)
+local local_mapper = function(mode, key, result, opts)
     vim.api.nvim_buf_set_keymap(0, mode, key, result, opts)
 end
 
 local lsp_mapper = function(mode, key, result)
-    mapper(mode, key, "<cmd>lua " .. result .. "<CR>", {noremap = true, silent = true})
+    local_mapper(mode, key, "<cmd>lua " .. result .. "<CR>", {noremap = true, silent = true})
 end
 
 -- Give popup windows bordres
@@ -35,41 +34,6 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] =
         virtual_text = false
     }
 )
-
--- Use fancy floating rename window
-local rename_opts = {
-    relative = "cursor",
-    position = {
-        row = 1,
-        col = 0
-    },
-    size = 20,
-    border = {
-        style = "rounded",
-        highlight = "FloatBorder",
-        text = {
-            top = "[Rename]",
-            top_align = "center"
-        }
-    },
-    win_options = {
-        winhighlight = "Normal:Normal"
-    }
-}
-
--- TODO: why isn't this working?
-local rename_input = function()
-    local current = vim.fn.expand("<cword>")
-    return Input(
-        rename_opts,
-        {
-            default_value = current,
-            on_submit = function(value)
-                vim.lsp.buf.rename(value)
-            end
-        }
-    )
-end
 
 local custom_attach = function(client, bufnr)
     -- Load autocomplete engine/settings
@@ -147,7 +111,7 @@ lspconfig.pyright.setup(
         on_attach = function(client, bufnr)
             custom_attach(client, bufnr)
             -- 'Organize imports' keymap for pyright only
-            mapper(
+            local_mapper(
                 "n",
                 "<Leader>ii",
                 "<cmd>PyrightOrganizeImports<CR>",

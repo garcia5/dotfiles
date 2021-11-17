@@ -2,8 +2,8 @@
 alias ll='exa -hal'
 alias la='exa -a'
 alias vim='nvim'
+alias v='nvim'
 alias claer='clear'
-alias c='clear'
 
 # Git
 alias gs='git status'

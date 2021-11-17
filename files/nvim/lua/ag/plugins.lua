@@ -66,7 +66,6 @@ packer.startup(
                 opt = true
             }
         }
-        use "MunifTanjim/nui.nvim" -- UI components
 
         -- Colorschemes
         use "chriskempson/base16-vim" -- pretty colors
@@ -152,7 +151,10 @@ packer.startup(
                 "typescript",
                 "vue",
                 "lua"
-            }
+            },
+            config = function()
+                vim.g.vsnip_snippet_dir = vim.fn.expand("~/.config/nvim/snips")
+            end
         }
         use {
             "hrsh7th/nvim-cmp", -- autocomplete
