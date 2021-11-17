@@ -45,7 +45,7 @@ packer.startup(
             "lewis6991/gitsigns.nvim", -- git signs in gutter + some useful keymaps
             requires = {"nvim-lua/plenary.nvim"},
             config = function()
-                require "gitsigns".setup(
+                require("gitsigns").setup(
                     {
                         current_line_blame = false,
                         current_line_blame_opts = {
@@ -54,7 +54,7 @@ packer.startup(
                             virt_text_pos = "right_align"
                         },
                         update_debounce = 500,
-                        numhl = true
+                        numhl = false
                     }
                 )
             end
@@ -81,7 +81,8 @@ packer.startup(
                 local catp = require("catppuccin")
                 catp.setup(
                     {
-                        transparency = true,
+                        transparent_background = true,
+                        term_colors = true,
                         styles = {
                             comments = "italic",
                             functions = "NONE",

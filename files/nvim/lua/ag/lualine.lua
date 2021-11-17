@@ -24,7 +24,7 @@ lualine.setup(
                 {
                     "filename",
                     path = 1, -- relative path
-                    condition = is_lualine_buf
+                    cond = is_lualine_buf
                 }
             },
             lualine_c = {
@@ -35,21 +35,21 @@ lualine.setup(
                         removed = "-",
                         added = "+"
                     },
-                    condition = is_lualine_buf
+                    cond = is_lualine_buf
                 }
             },
             lualine_x = {
                 {
                     "diagnostics",
                     sources = {"nvim_lsp"},
-                    condition = is_lualine_buf
+                    cond = is_lualine_buf
                 }
             },
             lualine_y = {"filetype"},
             lualine_z = {
                 {
                     "location",
-                    condition = is_lualine_buf
+                    cond = is_lualine_buf
                 }
             }
         },
