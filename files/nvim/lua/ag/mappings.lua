@@ -12,7 +12,7 @@ mapper("n", "<Leader><Leader>", "<C-^>")
 mapper("n", ":W", ":w")
 -- Other basics
 mapper("n", "<Leader>nt", ":NvimTreeToggle<CR>") -- toggle file browser in left split
-mapper("n", "<Leader>nf", ":NvimTreeFindFile<CR>") -- open file browser in left split with the current file focused
+mapper("n", "<Leader>nf", ":NvimTreeFindFileToggle<CR>") -- open file browser in left split with the current file focused
 mapper("n", "<Leader>z", ":call ToggleFocus()<CR>") -- toggle focus on current window
 mapper("n", "<Leader>tn", ":call termcmd#vert()<CR>") -- open new term in vertical split
 mapper("n", "<Leader>ts", ":call termcmd#horiz()<CR>") -- open new term in horizontal split

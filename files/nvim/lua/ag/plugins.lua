@@ -141,7 +141,7 @@ packer.startup(
         use {
             "kwkarlwang/bufresize.nvim", -- maintain buffer ratios on terminal resize
             config = function()
-                require "bufresize".setup()
+                require("bufresize").setup()
             end
         }
         use {
@@ -175,8 +175,10 @@ packer.startup(
         use {
             "kyazdani42/nvim-tree.lua", -- no more netrw
             config = function()
-                require "nvim-tree".setup(
+                require("nvim-tree").setup(
                     {
+                        auto_close = true,
+                        hijack_cursor = true,
                         view = {
                             side = "left",
                             auto_resize = true
@@ -186,7 +188,7 @@ packer.startup(
             end,
             cmd = {
                 "NvimTreeToggle",
-                "NvimTreeFindFile"
+                "NvimTreeFindFileToggle"
             }
         }
         use {

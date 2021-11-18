@@ -66,3 +66,9 @@ augroup DockerfileMatch
     au!
     au BufEnter Dockerfile.* set ft=dockerfile
 augroup END
+
+" Show cursorline for file explorer
+augroup NvimTree
+    au!
+    au BufEnter * if &ft == "NvimTree" | setlocal cursorline | endif
+augroup END
