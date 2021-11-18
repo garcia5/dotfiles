@@ -85,10 +85,7 @@ lspconfig.diagnosticls.setup(
                             line = 1,
                             column = 2,
                             security = 3,
-                            message = {
-                                "[flake8] ",
-                                4
-                            }
+                            message = {"[flake8] ", 4}
                         }
                     },
                     securities = {
@@ -216,11 +213,7 @@ if vim.fn.executable(lua_ls_bin) then
         {
             capabilities = cmp_capabilities,
             on_attach = custom_attach,
-            cmd = {
-                lua_ls_bin,
-                "-E",
-                lua_ls_path .. "main.lua"
-            },
+            cmd = {lua_ls_bin, "-E", lua_ls_path .. "main.lua"},
             settings = {
                 Lua = {
                     diagnostics = {
@@ -234,7 +227,3 @@ if vim.fn.executable(lua_ls_bin) then
         }
     )
 end
-
-return {
-    renamer = rename_input
-}
