@@ -19,9 +19,14 @@ packer.startup(
         -- Essentials
         use "tpope/vim-commentary" -- toggle comments
         use {
-            "cohama/lexima.vim", -- auto pairs that JUST WORK (for real this time)
+            "windwp/nvim-autopairs",
             config = function()
-                vim.g.lexima_accept_pum_with_enter = false
+                require("nvim-autopairs").setup(
+                    {
+                        disable_filetype = {"TelescopePrompt", "dap-repl", "fugitive"},
+                        map_cr = true -- send closing symbol to its own line
+                    }
+                )
             end
         }
         use "tpope/vim-surround" -- surround
@@ -125,7 +130,12 @@ packer.startup(
         }
 
         -- Other nice to have
-        use "editorconfig/editorconfig-vim" -- .editorconfig support
+        use {
+            "editorconfig/editorconfig-vim", -- .editorconfig support
+            config = function()
+                vim.g.EditorConfig_exclude_patterns = {"fugitive://.*"}
+            end
+        }
         use {
             "tpope/vim-fugitive", -- git integration
             cmd = "Git"

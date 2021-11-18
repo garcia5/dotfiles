@@ -46,16 +46,6 @@ augroup end
 " Auto-apply plugin changes
 au BufWritePost plugins.lua source <afile> | PackerCompile
 
-" Don't autopair in special buffers
-augroup AutopairsDisable
-    au!
-    au FileType TelescopePrompt let b:lexima_disabled = 1
-    au FileType Term            let b:lexima_disabled = 1
-    au FileType netrw           let b:lexima_disabled = 1
-    au FileType fugitive        let b:lexima_disabled = 1
-    au FileType dap-repl        let b:lexima_disabled = 1
-augroup end
-
 " Disable editorconfig rules for special buffers
 augroup EditorConfigDisable
     au!
