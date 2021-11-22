@@ -53,13 +53,6 @@ telescope.setup(
                         ["<c-b>"] = "preview_scrolling_down"
                     }
                 }
-            },
-            live_grep = {
-                mappings = {
-                    i = {
-                        ["<c-l>"] = "smart_add_to_qflist"
-                    }
-                }
             }
         },
         extensions = {
