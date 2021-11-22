@@ -45,10 +45,12 @@ telescope.setup(
                 ignore_current_buffer = true,
                 mappings = {
                     i = {
-                        ["<c-d>"] = "delete_buffer"
+                        ["<c-d>"] = "delete_buffer", -- this overrides the built in preview scroller
+                        ["<c-b>"] = "preview_scrolling_down"
                     },
                     n = {
-                        ["<c-d>"] = "delete_buffer"
+                        ["<c-d>"] = "delete_buffer", -- this overrides the built in preview scroller
+                        ["<c-b>"] = "preview_scrolling_down"
                     }
                 }
             },
@@ -69,9 +71,17 @@ telescope.setup(
                     lua = {"lua"},
                     bash = {"bash"}
                 }
+            },
+            fzf = {
+                fuzzy = true, -- let me make typos in file names please
+                override_generic_sorter = true, -- override the generic sorter
+                override_file_sorter = true, -- override the file sorter
+                case_mode = "smart_case" -- or "ignore_case" or "respect_case"
             }
         }
     }
 )
+
+require("telescope").load_extension("fzf")
 
 return M

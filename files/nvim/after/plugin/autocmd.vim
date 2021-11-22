@@ -14,9 +14,6 @@ augroup MyScripts
     au BufEnter .dotdash set ft=bash
 augroup END
 
-" Enable Rainbow Braces
-autocmd BufReadPost * if exists (':RainbowParentheses') | RainbowParentheses | endif
-
 " Terminal setup
 augroup term
     au TermOpen * startinsert

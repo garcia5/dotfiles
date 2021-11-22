@@ -36,17 +36,6 @@ packer.startup(
         -- Look and feel
         use "folke/lsp-colors.nvim" -- LSP colors that aren't built in
         use {
-            "junegunn/rainbow_parentheses.vim", -- rainbow braces
-            config = function()
-                vim.g["rainbow#pairs"] = {
-                    {"[", "]"},
-                    {"{", "}"},
-                    {"(", ")"}
-                }
-                vim.g["rainbow#blacklist"] = {145} -- disable white
-            end
-        }
-        use {
             "lewis6991/gitsigns.nvim", -- git signs in gutter + some useful keymaps
             requires = {"nvim-lua/plenary.nvim"},
             config = function()
@@ -229,6 +218,10 @@ packer.startup(
             cmd = {
                 "FormatWrite"
             }
+        }
+        use {
+            "nvim-telescope/telescope-fzf-native.nvim", -- fzf-like searching for telescope
+            run = "make"
         }
     end
 )
