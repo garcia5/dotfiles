@@ -217,10 +217,9 @@ function setup_zsh {
 }
 
 function setup_alacritty {
-    mkdir -p "$CONFIG_HOME/alacritty"
-    file="$CONFIG_HOME/alacritty/alacritty.yml"
-    backup_file $file
-    ln -s "$DF_HOME/files/alacritty.yml" "$file"
+    backup_dir "$CONFIG_HOME/alacritty/"
+    mkdir -p "$CONFIG_HOME/alacritty/"
+    ln -s "$DF_HOME/files/alacritty/" "$CONFIG_HOME/alacritty/"
 }
 
 for conf in "$@"; do
