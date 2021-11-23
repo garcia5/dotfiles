@@ -10,16 +10,15 @@ mapper("n", "<BS>", "daw")
 mapper("n", "<CR>", ":e<CR>")
 mapper("n", "<Leader><Leader>", "<C-^>")
 mapper("n", ":W", ":w")
+
 -- Other basics
 mapper("n", "<Leader>nt", ":NvimTreeToggle<CR>") -- toggle file browser in left split
 mapper("n", "<Leader>nf", ":NvimTreeFindFileToggle<CR>") -- open file browser in left split with the current file focused
 mapper("n", "<Leader>z", ":call ToggleFocus()<CR>") -- toggle focus on current window
 mapper("n", "<Leader>tn", ":call termcmd#vert()<CR>") -- open new term in vertical split
 mapper("n", "<Leader>ts", ":call termcmd#horiz()<CR>") -- open new term in horizontal split
-mapper("n", "<Leader>bd", ":bdelete<CR>") -- delete the current buffer
+mapper("n", "<Leader>bd", ":bp | bd #<CR>") -- delete the current buffer
 mapper("n", "Y", "y$") -- yank to the end of the line (like D or C)
-mapper("n", "n", "nzz") -- center jumping to next match
-mapper("n", "N", "Nzz") -- center jumping to prev match
 mapper("n", "<Down>", [["pdd"pp]]) -- move line down
 mapper("n", "<Up>", [["pddk"pP]]) -- move line up
 mapper("n", "<C-e>", "3<C-e>") -- scroll down more quickly
@@ -27,7 +26,8 @@ mapper("n", "<C-y>", "3<C-y>") -- scroll up more quickly
 mapper("n", "<Leader>bn", ":bn<CR>") -- next buffer
 mapper("n", "<Leader>bp", ":bp<CR>") -- prev buffer
 mapper("n", "+", "=") -- new format mapping
-mapper("n", "<Leader>nn", ":set number!") -- toggle line numbers (off by default)
+mapper("n", "<Leader>nn", ":set number!<CR>") -- toggle line numbers
+mapper("n", "<Leader>ou", "<cmd>AerialToggle!<CR>") -- toggle code outline, powered by tree-sitter
 
 -- Telescope integration
 mapper("n", "<Leader>ff", "<cmd>lua require('ag.telescope').builtin('find_files')<CR>") -- search all files, respecting .gitignore if one exists

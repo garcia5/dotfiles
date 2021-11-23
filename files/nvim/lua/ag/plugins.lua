@@ -184,11 +184,7 @@ packer.startup(
                         }
                     }
                 )
-            end,
-            cmd = {
-                "NvimTreeToggle",
-                "NvimTreeFindFileToggle"
-            }
+            end
         }
         use {
             "mrjones2014/dash.nvim", -- ez open documentation
@@ -222,6 +218,22 @@ packer.startup(
         use {
             "nvim-telescope/telescope-fzf-native.nvim", -- fzf-like searching for telescope
             run = "make"
+        }
+        use {
+            "stevearc/aerial.nvim", -- code outline
+            config = function()
+                vim.g.aerial = {
+                    backends = {"treesitter"},
+                    max_width = 40,
+                    min_width = 20,
+                    close_behavior = "close"
+                }
+                require("aerial").register_attach_cb(
+                    function(bufnr)
+                        vim.api.nvim_buf_set_keymap(bufnr, "n", "q", ":q<CR>", {silent = true}) -- use q to exit
+                    end
+                )
+            end
         }
     end
 )

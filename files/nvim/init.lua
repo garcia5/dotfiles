@@ -36,6 +36,7 @@ vim.cmd "let base16colorspace=256"
 -- Look and feel
 vim.opt.number = false -- no numbers?
 vim.opt.relativenumber = false -- no numbers?
+vim.opt.signcolumn = "yes" -- always show the sign column
 vim.opt.cursorline = false -- don't highlight current line
 vim.opt.list = true -- show list chars
 vim.opt.listchars = {

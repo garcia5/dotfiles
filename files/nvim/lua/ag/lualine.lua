@@ -2,7 +2,7 @@ local lualine = require("lualine")
 local is_lualine_buf = function()
     local cur_buftype = vim.opt.buftype:get()
     -- Don't load special status line things for these buffer types
-    local disable_for_buftypes = {"terminal", "help", "quickfix", "nofile"}
+    local disable_for_buftypes = {"terminal", "help"}
 
     for _, buftype in ipairs(disable_for_buftypes) do
         if buftype == cur_buftype then
@@ -64,7 +64,8 @@ lualine.setup(
         options = {
             section_separators = {left = "", right = ""},
             component_separators = {left = "", right = ""},
-            theme = "catppuccin"
+            theme = "catppuccin",
+            disabled_filetypes = {"aerial", "TelescopePrompt", "help"}
         },
         extensions = {
             "quickfix",
