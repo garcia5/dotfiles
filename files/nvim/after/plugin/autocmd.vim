@@ -59,3 +59,8 @@ augroup NvimTree
     au!
     au BufEnter * if &ft == "NvimTree" | setlocal cursorline | endif
 augroup END
+
+augroup KittyConfig
+    au!
+    au BufReadPost kitty.conf setlocal foldlevel=0 " open kitty config with all folds closed
+augroup END
