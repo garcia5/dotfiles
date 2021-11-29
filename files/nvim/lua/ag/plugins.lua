@@ -165,7 +165,40 @@ packer.startup(
                 "hrsh7th/cmp-vsnip",
                 "onsails/lspkind-nvim",
                 "lukas-reineke/cmp-under-comparator"
-            }
+            },
+            config = function()
+                -- Use highlight groups!
+                vim.cmd [[
+                highlight! default link CmpItemAbbrMatch Boolean
+                highlight! default link CmpItemAbbrMatchFuzzy Boolean
+                highlight! default link CmpItemKindText TSEmphasis
+                highlight! default link CmpItemKindMethod TSKeywordFunction
+                highlight! default link CmpItemKindFunction TSKeywordFunction
+                highlight! default link CmpItemKindConstructor TSConstructor
+                highlight! default link CmpItemKindField TSField
+                highlight! default link CmpItemKindVariable TSVariable
+                highlight! default link CmpItemKindClass Structure
+                highlight! default link CmpItemKindInterface Structure
+                highlight! default link CmpItemKindModule Structure
+                highlight! default link CmpItemKindProperty TSProperty
+                highlight! default link CmpItemKindUnit Boolean
+                highlight! default link CmpItemKindValue Character
+                highlight! default link CmpItemKindEnum Structure
+                highlight! default link CmpItemKindKeyword TSKeywordOperator
+                highlight! default link CmpItemKindSnippet TSPunctSpecial
+                highlight! default link CmpItemKindColor Constant
+                highlight! default link CmpItemKindFile String
+                highlight! default link CmpItemKindReference TSTextReference
+                highlight! default link CmpItemKindFolder String
+                highlight! default link CmpItemKindEnumMember TSField
+                highlight! default link CmpItemKindConstant Constant
+                highlight! default link CmpItemKindStruct Structure
+                highlight! default link CmpItemKindEvent Conditional
+                highlight! default link CmpItemKindOperator Operator
+                highlight! default link CmpItemKindTypeParameter TSParameter
+                ]]
+            end,
+            module = "cmp"
         }
         use {
             "godlygeek/tabular", -- line it up
