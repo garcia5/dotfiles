@@ -140,7 +140,7 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # Lua ls
-export PATH="$PATH:$HOME/lua-language-server/bin/Linux/"
+export PATH="$PATH:$HOME/lua-language-server/bin/macOS/"
 alias luamake=/home/agarcia/lua-language-server/3rd/luamake/luamake
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
