@@ -65,3 +65,9 @@ augroup KittyConfig
     au!
     au BufReadPost kitty.conf setlocal foldlevel=0 " open kitty config with all folds closed
 augroup END
+
+" Aerial specific mapping
+augroup Aerial
+    au!
+    au FileType aerial nnoremap <buffer> q :q<CR>
+augroup END

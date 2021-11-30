@@ -171,6 +171,7 @@ packer.startup(
                 vim.cmd [[
                 highlight! default link CmpItemAbbrMatch Boolean
                 highlight! default link CmpItemAbbrMatchFuzzy Boolean
+
                 highlight! default link CmpItemKindText TSEmphasis
                 highlight! default link CmpItemKindMethod TSKeywordFunction
                 highlight! default link CmpItemKindFunction TSKeywordFunction
@@ -261,11 +262,6 @@ packer.startup(
                     min_width = 20,
                     close_behavior = "close"
                 }
-                require("aerial").register_attach_cb(
-                    function(bufnr)
-                        vim.api.nvim_buf_set_keymap(bufnr, "n", "q", ":q<CR>", {silent = true}) -- use q to exit
-                    end
-                )
             end
         }
     end
