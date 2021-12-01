@@ -103,7 +103,6 @@ packer.startup(
         }
 
         -- 0.5 features (lsp + treesitter)
-        use "neovim/nvim-lsp" -- LSP
         use "neovim/nvim-lspconfig" -- basic configurations for LSP client
         use {
             "nvim-treesitter/nvim-treesitter", -- treesitter

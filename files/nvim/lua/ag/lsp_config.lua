@@ -9,12 +9,12 @@ local lsp_mapper = function(mode, key, result)
     local_mapper(mode, key, "<cmd>lua " .. result .. "<CR>", {noremap = true, silent = true})
 end
 
--- Give popup windows bordres
+-- Give floating windows borders
 vim.lsp.handlers["textDocument/hover"] =
     vim.lsp.with(
     vim.lsp.handlers.hover,
     {
-        border = "single"
+        border = "rounded"
     }
 )
 
@@ -22,16 +22,37 @@ vim.lsp.handlers["textDocument/signatureHelp"] =
     vim.lsp.with(
     vim.lsp.handlers.signature_help,
     {
-        border = "single"
+        border = "rounded"
     }
 )
 
--- Hide inline diagnostic virtual text
-vim.lsp.handlers["textDocument/publishDiagnostics"] =
-    vim.lsp.with(
-    vim.lsp.diagnostic.on_publish_diagnostics,
+-- Configure diagnostic display
+vim.diagnostic.config(
     {
-        virtual_text = false
+        virtual_text = {
+            severity = vim.diagnostic.severity.ERROR,
+            source = "if_many"
+        },
+        float = {
+            severity_sort = true,
+            source = "if_many",
+            border = "rounded",
+            header = {
+                "",
+                "LspDiagnosticsDefaultWarning"
+            },
+            prefix = function(diagnostic)
+                local diag_to_format = {
+                    [vim.diagnostic.severity.ERROR] = {"Error", "LspDiagnosticsDefaultError"},
+                    [vim.diagnostic.severity.WARN] = {"Warning", "LspDiagnosticsDefaultWarning"},
+                    [vim.diagnostic.severity.INFO] = {"Info", "LspDiagnosticsDefaultInfo"},
+                    [vim.diagnostic.severity.HINT] = {"Hint", "LspDiagnosticsDefaultHint"}
+                }
+                local res = diag_to_format[diagnostic.severity]
+                return string.format("%s: ", res[1]), res[2]
+            end
+        },
+        severity_sort = true
     }
 )
 
@@ -47,13 +68,17 @@ local custom_attach = function(client, bufnr)
     lsp_mapper("n", "<leader>gr", "vim.lsp.buf.references()")
     lsp_mapper("n", "gr", "vim.lsp.buf.rename()")
     lsp_mapper("n", "H", "vim.lsp.buf.code_action()")
-    lsp_mapper("n", "<leader>dn", "vim.lsp.diagnostic.goto_next({popup_opts = {border = 'single'}})")
-    lsp_mapper("n", "<leader>dp", "vim.lsp.diagnostic.goto_prev({popup_opts = {border = 'single'}})")
-    lsp_mapper("n", "<leader>da", "vim.lsp.diagnostic.set_loclist()")
     lsp_mapper("i", "<C-h>", "vim.lsp.buf.signature_help()")
 
+    -- diagnostics
+    lsp_mapper("n", "<leader>dk", "vim.diagnostic.open_float()") -- diagnostic(s) on current line
+    lsp_mapper("n", "<leader>dn", "vim.diagnostic.goto_next()") -- move to next diagnostic in buffer
+    lsp_mapper("n", "<leader>dp", "vim.diagnostic.goto_prev()") -- move to prev diagnostic in buffer
+    lsp_mapper("n", "<leader>da", "vim.diagnostic.setqflist()") -- show all buffer diagnostics in qflist
+
     -- use omnifunc
-    vim.bo.omnifunc = "v:lua.vim.lsp.omnifunc"
+    vim.bo[bufnr].omnifunc = "v:lua.vim.lsp.omnifunc"
+    vim.bo[bufnr].formatexpr = "v:lua.vim.lsp.formatexpr"
 end
 
 -- Set up clients
