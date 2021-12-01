@@ -352,10 +352,9 @@ hints:
      binding:
        key: U
        mods: Control|Shift
-   - regex: "\\w{4}-\\d{1,4}"
-     # command: open-jira #TODO: figure out how to get this working
-     action: copy
-     post_processing: false
+   - regex: "[A-Z]{4}-\\d{1,4}"
+     command: open-jira # TODO: figure out how to get this working
+     post_processing: true
      binding:
        key: J
        mods: Control|Shift
