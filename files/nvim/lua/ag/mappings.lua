@@ -18,7 +18,6 @@ mapper("n", "<Leader>z", ":call ToggleFocus()<CR>") -- toggle focus on current w
 mapper("n", "<Leader>tn", ":call termcmd#vert()<CR>") -- open new term in vertical split
 mapper("n", "<Leader>ts", ":call termcmd#horiz()<CR>") -- open new term in horizontal split
 mapper("n", "<Leader>bd", ":bp | bd #<CR>") -- delete the current buffer
-mapper("n", "Y", "y$") -- yank to the end of the line (like D or C)
 mapper("n", "<Down>", [["pdd"pp]]) -- move line down
 mapper("n", "<Up>", [["pddk"pP]]) -- move line up
 mapper("n", "<C-e>", "3<C-e>") -- scroll down more quickly

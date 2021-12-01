@@ -11,7 +11,6 @@ vim.opt.belloff = "all" -- NO BELLS!
 vim.opt.completeopt = {"menu", "menuone", "noselect"} -- ins-completion how vsnip likes it
 vim.opt.swapfile = false -- no swap files
 vim.opt.inccommand = "split" -- preview %s commands in a split window as I type
-vim.opt.hidden = true -- move away from unsaved buffers
 vim.opt.updatetime = 100 -- stop typing quickly
 vim.opt.undofile = true -- keep track of my 'undo's between sessions
 vim.opt.grepprg = "rg --vimgrep --smart-case --no-heading" -- search with rg
