@@ -23,7 +23,7 @@ augroup term
     " Enter insert mode any time I enter the terminal
     au BufEnter * if &buftype == 'terminal' | startinsert | endif
     " Quit if only the terminal is left to avoid confusion
-    au BufEnter * if winnr("$") == 1 && &buftype == 'terminal' | q | endif
+    au BufEnter * if winnr("$") == 1 && &buftype == "terminal" | q | endif
 augroup end
 
 " Detect "TODO:" comments
@@ -58,7 +58,10 @@ augroup END
 " Show cursorline for file explorer
 augroup NvimTree
     au!
+    " Highlight current line (here only)
     au BufEnter * if &ft == "NvimTree" | setlocal cursorline | endif
+    " Quit if NvimTree is the only thing open
+    au BufEnter * if winnr("$") == 1 && &ft == "NvimTree" | q | endif
 augroup END
 
 augroup KittyConfig

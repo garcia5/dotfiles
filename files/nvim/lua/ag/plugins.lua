@@ -65,7 +65,21 @@ packer.startup(
         use "chriskempson/base16-vim" -- pretty colors
         use "shaunsingh/moonlight.nvim" -- VSCode's moonlight theme in lua
         use "nxvu699134/vn-night.nvim" -- dark purple theme w/ treesitter support
-        use "EdenEast/nightfox.nvim" -- another lua colorscheme
+        use {
+            "EdenEast/nightfox.nvim", -- another lua colorscheme
+            config = function()
+                if string.match(vim.g.colors_name, ".+fox$") == nil then
+                    return
+                end
+                local nightfox = require("nightfox")
+                nightfox.setup(
+                    {
+                        transparent = true
+                    }
+                )
+                nightfox.load()
+            end
+        }
         use {
             "catppuccin/nvim", -- another another lua colorscheme
             config = function()
@@ -214,6 +228,10 @@ packer.startup(
                         view = {
                             side = "left",
                             auto_resize = true
+                        },
+                        git = {
+                            enable = true,
+                            ignore = false
                         }
                     }
                 )

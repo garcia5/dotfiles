@@ -64,7 +64,7 @@ lualine.setup(
         options = {
             section_separators = {left = "", right = ""},
             component_separators = {left = "", right = ""},
-            theme = "catppuccin",
+            theme = "nightfox",
             disabled_filetypes = {"aerial", "TelescopePrompt", "help"}
         },
         extensions = {

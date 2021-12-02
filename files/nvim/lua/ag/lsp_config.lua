@@ -49,7 +49,7 @@ vim.diagnostic.config(
                     [vim.diagnostic.severity.HINT] = {"Hint", "LspDiagnosticsDefaultHint"}
                 }
                 local res = diag_to_format[diagnostic.severity]
-                return string.format("%s: ", res[1]), res[2]
+                return string.format("(%s) ", res[1]), res[2]
             end
         },
         severity_sort = true
