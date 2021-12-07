@@ -15,6 +15,7 @@ require("nvim-treesitter.configs").setup(
             -- change/delete/select in function or class
             select = {
                 enable = true,
+                lookahead = true,
                 keymaps = {
                     ["af"] = "@function.outer",
                     ["if"] = "@function.inner",

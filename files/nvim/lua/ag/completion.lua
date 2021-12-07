@@ -9,18 +9,19 @@ cmp.setup(
         sources = {
             {name = "vsnip"},
             {name = "nvim_lua"},
-            {name = "nvim_lsp", max_item_count = 20}, -- tsserver likes to send back _everything_
+            {name = "nvim_lsp", max_item_count = 25}, -- tsserver likes to send back _everything_
             {name = "path"},
             {name = "buffer", keyword_length = 5} -- don't complete from buffer right away
         },
         mapping = {
             ["<C-f>"] = cmp.mapping.scroll_docs(-4),
             ["<C-d>"] = cmp.mapping.scroll_docs(4),
-            ["<C-Space>"] = cmp.mapping.complete(),
+            ["<C-r>"] = cmp.mapping.complete({reason = cmp.ContextReason.Manual}),
             ["<C-e>"] = cmp.mapping.close(),
             ["<C-y>"] = cmp.mapping.confirm(
                 {
-                    behavior = cmp.ConfirmBehavior.Replace
+                    behavior = cmp.ConfirmBehavior.Replace,
+                    select = true -- use first result if none explicitly selected
                 }
             )
         },
