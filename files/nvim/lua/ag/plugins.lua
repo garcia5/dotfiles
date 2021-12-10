@@ -68,24 +68,20 @@ packer.startup(
         use {
             "EdenEast/nightfox.nvim", -- another lua colorscheme
             config = function()
-                if string.match(vim.g.colors_name, ".+fox$") == nil then
-                    return
-                end
                 local nightfox = require("nightfox")
                 nightfox.setup(
                     {
                         transparent = true
                     }
                 )
-                nightfox.load()
+                if string.match(vim.g.colors_name, ".+fox$") ~= nil then
+                    nightfox.load()
+                end
             end
         }
         use {
             "catppuccin/nvim", -- another another lua colorscheme
             config = function()
-                if vim.g.colors_name ~= "catppuccin" then
-                    return
-                end
                 local catp = require("catppuccin")
                 catp.setup(
                     {
@@ -112,7 +108,9 @@ packer.startup(
                         }
                     }
                 )
-                catp.load()
+                if vim.g.colors_name == "catppuccin" then
+                    catp.load()
+                end
             end
         }
 
