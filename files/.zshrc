@@ -149,7 +149,7 @@ if [ -f "$nvmrc_path" ]; then
 
     if [ "$nvmrc_node_version" = "N/A" ]; then
         nvm install
-    else
+    elif [ "$nvmrc_node_version" != $(nvm version) ]; then
         nvm use
     fi
 fi
