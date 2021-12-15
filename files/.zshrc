@@ -108,8 +108,9 @@ export CFLAGS="-O2"
 # zsh
 source $ZSH/oh-my-zsh.sh
 
-autoload -Uz compinit && compinit
+autoload -Uz compinit && compinit # completion
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+autoload -U add-zsh-hook # hooks
 
 # Base16 Shell
 # BASE16_SHELL="$HOME/.config/base16-shell/"
@@ -132,12 +133,28 @@ export FZF_CTRL_T_OPTS="$FZF_DEFAULT_OPTS \
 
 # Python
 eval "$(pyenv init -)"
-export PYENV_VERSION=3.9.7
+pyenv global 3.9.7
 
 # Node
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+# Automatically use nvm version specified in .nvmrc (if any)
+# Intentionally not very flexible to avoid calling nvm we change directory
+load-nvmrc() {
+local nvmrc_path=".nvmrc"
+
+if [ -f "$nvmrc_path" ]; then
+    local nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
+
+    if [ "$nvmrc_node_version" = "N/A" ]; then
+        nvm install
+    else
+        nvm use
+    fi
+fi
+}
+add-zsh-hook chpwd load-nvmrc
 
 # Lua ls
 export PATH="$PATH:$HOME/lua-language-server/bin/macOS/"
