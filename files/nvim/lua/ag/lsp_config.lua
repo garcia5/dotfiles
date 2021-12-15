@@ -6,55 +6,45 @@ local local_mapper = function(mode, key, result, opts)
 end
 
 local lsp_mapper = function(mode, key, result)
-    local_mapper(mode, key, "<cmd>lua " .. result .. "<CR>", {noremap = true, silent = true})
+    local_mapper(mode, key, "<cmd>lua " .. result .. "<CR>", { noremap = true, silent = true })
 end
 
 -- Give floating windows borders
-vim.lsp.handlers["textDocument/hover"] =
-    vim.lsp.with(
-    vim.lsp.handlers.hover,
-    {
-        border = "rounded"
-    }
-)
+vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+    border = "rounded",
+})
 
-vim.lsp.handlers["textDocument/signatureHelp"] =
-    vim.lsp.with(
-    vim.lsp.handlers.signature_help,
-    {
-        border = "rounded"
-    }
-)
+vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
+    border = "rounded",
+})
 
 -- Configure diagnostic display
-vim.diagnostic.config(
-    {
-        virtual_text = {
-            severity = vim.diagnostic.severity.ERROR,
-            source = "if_many"
+vim.diagnostic.config({
+    virtual_text = {
+        severity = vim.diagnostic.severity.ERROR,
+        source = "if_many",
+    },
+    float = {
+        severity_sort = true,
+        source = "if_many",
+        border = "rounded",
+        header = {
+            "",
+            "LspDiagnosticsDefaultWarning",
         },
-        float = {
-            severity_sort = true,
-            source = "if_many",
-            border = "rounded",
-            header = {
-                "",
-                "LspDiagnosticsDefaultWarning"
-            },
-            prefix = function(diagnostic)
-                local diag_to_format = {
-                    [vim.diagnostic.severity.ERROR] = {"Error", "LspDiagnosticsDefaultError"},
-                    [vim.diagnostic.severity.WARN] = {"Warning", "LspDiagnosticsDefaultWarning"},
-                    [vim.diagnostic.severity.INFO] = {"Info", "LspDiagnosticsDefaultInfo"},
-                    [vim.diagnostic.severity.HINT] = {"Hint", "LspDiagnosticsDefaultHint"}
-                }
-                local res = diag_to_format[diagnostic.severity]
-                return string.format("(%s) ", res[1]), res[2]
-            end
-        },
-        severity_sort = true
-    }
-)
+        prefix = function(diagnostic)
+            local diag_to_format = {
+                [vim.diagnostic.severity.ERROR] = { "Error", "LspDiagnosticsDefaultError" },
+                [vim.diagnostic.severity.WARN] = { "Warning", "LspDiagnosticsDefaultWarning" },
+                [vim.diagnostic.severity.INFO] = { "Info", "LspDiagnosticsDefaultInfo" },
+                [vim.diagnostic.severity.HINT] = { "Hint", "LspDiagnosticsDefaultHint" },
+            }
+            local res = diag_to_format[diagnostic.severity]
+            return string.format("(%s) ", res[1]), res[2]
+        end,
+    },
+    severity_sort = true,
+})
 
 local custom_attach = function(client, bufnr)
     -- Load autocomplete engine/settings
@@ -67,7 +57,6 @@ local custom_attach = function(client, bufnr)
     lsp_mapper("n", "<c-]>", "vim.lsp.buf.definition()")
     lsp_mapper("n", "<leader>gr", "vim.lsp.buf.references()")
     lsp_mapper("n", "gr", "vim.lsp.buf.rename()")
-    lsp_mapper("n", "H", "vim.lsp.buf.code_action()")
     lsp_mapper("i", "<C-h>", "vim.lsp.buf.signature_help()")
 
     -- diagnostics
@@ -82,173 +71,134 @@ local custom_attach = function(client, bufnr)
 end
 
 -- Set up clients
-lspconfig.diagnosticls.setup(
-    {
-        on_attach = custom_attach,
-        filetypes = {
-            "python"
-        },
-        init_options = {
-            filetypes = {
-                python = "flake8"
-            },
-            linters = {
-                flake8 = {
-                    sourceName = "flake8",
-                    command = "flake8",
-                    args = {
-                        [[--format = %(row)d,%(col)d,%(code).1s,%(code)s: %(text)s]],
-                        "-"
-                    },
-                    debounce = 100,
-                    offsetLine = 0,
-                    offsetColumn = 0,
-                    formatLines = 1,
-                    formatPattern = {
-                        [[(\d+),(\d+),([A-Z]),(.*)(\r|\n)*$]],
-                        {
-                            line = 1,
-                            column = 2,
-                            security = 3,
-                            message = {"[flake8] ", 4}
-                        }
-                    },
-                    securities = {
-                        W = "warning",
-                        E = "error",
-                        F = "error",
-                        C = "error",
-                        N = "error"
-                    }
-                }
-            }
-        }
-    }
-)
+local null_ls = require("null-ls")
+null_ls.setup({
+    sources = {
+        --#formatters
+        null_ls.builtins.formatting.stylua,
+        --#diagnostics/linters
+        null_ls.builtins.diagnostics.flake8,
+    },
+})
 
 -- python
-lspconfig.pyright.setup(
-    {
-        capabilities = cmp_capabilities,
-        on_attach = function(client, bufnr)
-            custom_attach(client, bufnr)
-            -- 'Organize imports' keymap for pyright only
-            local_mapper(
-                "n",
-                "<Leader>ii",
-                "<cmd>PyrightOrganizeImports<CR>",
-                {
-                    silent = true,
-                    noremap = true
-                }
-            )
-        end,
-        settings = {
-            pyright = {
-                disableOrganizeImports = false,
-                analysis = {
-                    useLibraryCodeForTypes = true,
-                    autoSearchPaths = true,
-                    diagnosticMode = "workspace",
-                    autoImportCompletions = true
-                }
-            }
-        }
-    }
-)
+lspconfig.pyright.setup({
+    capabilities = cmp_capabilities,
+    on_attach = function(client, bufnr)
+        custom_attach(client, bufnr)
+        -- 'Organize imports' keymap for pyright only
+        local_mapper("n", "<Leader>ii", "<cmd>PyrightOrganizeImports<CR>", {
+            silent = true,
+            noremap = true,
+        })
+    end,
+    settings = {
+        pyright = {
+            disableOrganizeImports = false,
+            analysis = {
+                useLibraryCodeForTypes = true,
+                autoSearchPaths = true,
+                diagnosticMode = "workspace",
+                autoImportCompletions = true,
+            },
+        },
+    },
+})
 
 -- eslint
-lspconfig.eslint.setup(
-    {
-        on_attach = custom_attach,
-        settings = {
-            packageManager = "yarn"
-        }
-    }
-)
+lspconfig.eslint.setup({
+    on_attach = custom_attach,
+    settings = {
+        packageManager = "yarn",
+    },
+})
 
 -- typescript
-lspconfig.tsserver.setup(
-    {
-        capabilities = cmp_capabilities,
-        on_attach = custom_attach
-    }
-)
+lspconfig.tsserver.setup({
+    capabilities = cmp_capabilities,
+    on_attach = function(client, bufnr)
+        local ts_utils = require("nvim-lsp-ts-utils")
+        ts_utils.setup({
+            update_imports_on_move = true,
+            require_confirmation_on_move = true,
+        })
+
+        ts_utils.setup_client(client)
+
+        -- TS specific mappings
+        local_mapper("n", "<Leader>ii", "<cmd>TSLspOrganize<CR>", { silent = true }) -- organize imports
+        local_mapper("n", "<Leader>R", "<cmd>TSLspRenameFile<CR>", { silent = true }) -- rename file AND update references to it
+
+        custom_attach(client, bufnr)
+    end,
+})
 
 -- vue
-lspconfig.vuels.setup(
-    {
-        capabilities = cmp_capabilities,
-        on_attach = function(client, bufnr)
-            -- Tell vim that vls can handle formatting
-            client.resolved_capabilities.document_formatting = true
-            custom_attach(client, bufnr)
-        end,
-        settings = {
-            vetur = {
-                completion = {
-                    autoImport = true,
-                    tagCasing = "kebab",
-                    useScaffoldSnippets = true
-                },
-                useWorkspaceDependencies = true,
-                experimental = {
-                    templateInterpolationService = true
-                }
+lspconfig.vuels.setup({
+    capabilities = cmp_capabilities,
+    on_attach = function(client, bufnr)
+        -- Tell vim that vls can handle formatting
+        client.resolved_capabilities.document_formatting = true
+        custom_attach(client, bufnr)
+    end,
+    settings = {
+        vetur = {
+            completion = {
+                autoImport = true,
+                tagCasing = "kebab",
+                useScaffoldSnippets = true,
             },
-            format = {
-                enable = true,
-                options = {
-                    useTabs = false,
-                    tabSize = 2
-                }
+            useWorkspaceDependencies = true,
+            experimental = {
+                templateInterpolationService = true,
             },
-            validation = {
-                template = true,
-                script = true,
-                style = true,
-                templateProps = true,
-                interpolation = true
-            }
-        }
-    }
-)
+        },
+        format = {
+            enable = true,
+            options = {
+                useTabs = false,
+                tabSize = 2,
+            },
+        },
+        validation = {
+            template = true,
+            script = true,
+            style = true,
+            templateProps = true,
+            interpolation = true,
+        },
+    },
+})
 
 -- yaml
-lspconfig.yamlls.setup(
-    {
-        capabilities = cmp_capabilities,
-        on_attach = custom_attach
-    }
-)
+lspconfig.yamlls.setup({
+    capabilities = cmp_capabilities,
+    on_attach = custom_attach,
+})
 
 -- bash
-lspconfig.bashls.setup(
-    {
-        capabilities = cmp_capabilities,
-        on_attach = custom_attach
-    }
-)
+lspconfig.bashls.setup({
+    capabilities = cmp_capabilities,
+    on_attach = custom_attach,
+})
 
 -- lua (optional)
 local lua_ls_path = vim.fn.expand("~/lua-language-server/")
 local lua_ls_bin = lua_ls_path .. "bin/macOS/lua-language-server"
 if vim.fn.executable(lua_ls_bin) then
-    lspconfig.sumneko_lua.setup(
-        {
-            capabilities = cmp_capabilities,
-            on_attach = custom_attach,
-            cmd = {lua_ls_bin, "-E", lua_ls_path .. "main.lua"},
-            settings = {
-                Lua = {
-                    diagnostics = {
-                        -- Get the language server to recognize the `vim` global
-                        globals = {
-                            "vim"
-                        }
-                    }
-                }
-            }
-        }
-    )
+    lspconfig.sumneko_lua.setup({
+        capabilities = cmp_capabilities,
+        on_attach = custom_attach,
+        cmd = { lua_ls_bin, "-E", lua_ls_path .. "main.lua" },
+        settings = {
+            Lua = {
+                diagnostics = {
+                    -- Get the language server to recognize the `vim` global
+                    globals = {
+                        "vim",
+                    },
+                },
+            },
+        },
+    })
 end

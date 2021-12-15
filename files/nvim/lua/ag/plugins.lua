@@ -116,6 +116,7 @@ packer.startup(
 
         -- 0.5 features (lsp + treesitter)
         use "neovim/nvim-lspconfig" -- basic configurations for LSP client
+        use "jose-elias-alvarez/null-ls.nvim" -- bridge between LSP client and external formatters/linters, not full fledged language servers
         use {
             "nvim-treesitter/nvim-treesitter", -- treesitter
             run = ":TSUpdate"
@@ -148,6 +149,14 @@ packer.startup(
                 "javascript"
             }
         }
+        use {
+            "jose-elias-alvarez/nvim-lsp-ts-utils",
+            ft = {
+                "vue",
+                "typescript",
+                "javascript"
+            }
+        } -- helpers for typescript development
         use {
             "kwkarlwang/bufresize.nvim", -- maintain buffer ratios on terminal resize
             config = function()
@@ -242,27 +251,6 @@ packer.startup(
                 vim.cmd [[ command! Dash Telescope dash search ]] -- create command to lazy load on
             end,
             cmd = "Dash"
-        }
-        use {
-            "lukas-reineke/format.nvim",
-            config = function()
-                require("format").setup(
-                    {
-                        lua = {
-                            {
-                                cmd = {
-                                    function(file)
-                                        return string.format("luafmt -l %s -w replace %s", vim.bo.textwidth, file)
-                                    end
-                                }
-                            }
-                        }
-                    }
-                )
-            end,
-            cmd = {
-                "FormatWrite"
-            }
         }
         use {
             "nvim-telescope/telescope-fzf-native.nvim", -- fzf-like searching for telescope

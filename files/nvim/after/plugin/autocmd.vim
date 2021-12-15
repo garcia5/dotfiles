@@ -4,7 +4,8 @@ au BufEnter * if &buftype != 'terminal' && &ft != 'gitcommit' | set formatoption
 " Format on save
 augroup Format
     au!
-    au BufWritePost *.lua FormatWrite
+    au BufWritePre *.lua lua vim.lsp.buf.formatting_sync()
+    au BufWritePre *.ts lua vim.lsp.buf.formatting_sync()
 augroup end
 
 " My dotfiles
