@@ -1,6 +1,6 @@
 -- Mapping helper
 local mapper = function(mode, key, result)
-    vim.api.nvim_set_keymap(mode, key, result, {noremap = true, silent = true})
+    vim.api.nvim_set_keymap(mode, key, result, { noremap = true, silent = true })
 end
 
 -- Essentials
@@ -30,16 +30,22 @@ mapper("n", "<Leader>nn", ":set number!<CR>") -- toggle line numbers
 mapper("n", "<Leader>ou", "<cmd>AerialToggle!<CR>") -- toggle code outline, powered by tree-sitter
 
 -- Telescope integration
-mapper("n", "<Leader>ff", "<cmd>lua require('ag.telescope').builtin('find_files')<CR>") -- search all files, respecting .gitignore if one exists
-mapper("n", "<Leader>fb", "<cmd>lua require('ag.telescope').builtin('buffers')<CR>") -- search open buffers
-mapper("n", "<Leader>fl", "<cmd>lua require('ag.telescope').builtin('current_buffer_fuzzy_find')<CR>") -- search lines in current buffer
-mapper("n", "<Leader>gg", "<cmd>lua require('ag.telescope').builtin('live_grep')<CR>") -- search all lines in project
-mapper("n", "<Leader>fr", "<cmd>lua require('ag.telescope').builtin('lsp_references')<CR>") -- search references to symbol under cursor
-mapper("n", "<Leader>co", "<cmd>lua require('ag.telescope').builtin('colorscheme')<CR>") -- colorschemes
-mapper("n", "<Leader>gc", "<cmd>lua require('ag.telescope').builtin('git_branches')<CR>") -- checkout different branches
-mapper("n", "<Leader>re", "<cmd>lua require('ag.telescope').builtin('git_commits')<CR>") -- checkout commits; <CR> to checkout, <C-r>[m, s, h] to reset [mixed, soft, hard]
-mapper("n", "<Leader>qf", "<cmd>lua require('ag.telescope').builtin('quickfix')<CR>") -- jump to items in quickfix list
-mapper("n", "<Leader>do", "<cmd>Dash<CR>")
+mapper("n", "<Leader>ff", "<cmd>lua require('telescope.builtin').find_files()<CR>") -- search all files, respecting .gitignore if one exists
+mapper("n", "<Leader>fb", "<cmd>lua require('telescope.builtin').buffers()<CR>") -- search open buffers
+mapper("n", "<Leader>fl", "<cmd>lua require('telescope.builtin').current_buffer_fuzzy_find()<CR>") -- search lines in current buffer
+mapper("n", "<Leader>gg", "<cmd>lua require('telescope.builtin').live_grep()<CR>") -- search all lines in project
+mapper("n", "<Leader>fr", "<cmd>lua require('telescope.builtin').lsp_references()<CR>") -- search references to symbol under cursor
+mapper("n", "<Leader>co", "<cmd>lua require('telescope.builtin').colorscheme()<CR>") -- colorschemes
+mapper("n", "<Leader>gc", "<cmd>lua require('telescope.builtin').git_branches()<CR>") -- checkout different branches
+mapper("n", "<Leader>re", "<cmd>lua require('telescope.builtin').git_commits()<CR>") -- checkout commits; <CR> to checkout, <C-r>[m, s, h] to reset [mixed, soft, hard]
+mapper("n", "<Leader>qf", "<cmd>lua require('telescope.builtin').quickfix()<CR>") -- jump to items in quickfix list
+mapper("n", "H", "<cmd>lua require('telescope.builtin').lsp_code_actions(require('telescope.themes').get_cursor())<CR>") -- code actions
+mapper(
+    "v",
+    "H",
+    "<cmd>lua require('telescope.builtin').lsp_range_code_actions(require('telescope.themes').get_cursor())<CR>"
+) -- code actions (but in visual mode)
+mapper("n", "<Leader>do", "<cmd>Dash<CR>") -- search documentation
 
 -- Movemint
 mapper("n", "<C-j>", "<C-w>j")
