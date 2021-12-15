@@ -8,7 +8,7 @@ require("ag") -- load my lua configs
 
 -- Behaviors
 vim.opt.belloff = "all" -- NO BELLS!
-vim.opt.completeopt = {"menu", "menuone", "noselect"} -- ins-completion how vsnip likes it
+vim.opt.completeopt = { "menu", "menuone", "noselect" } -- ins-completion how vsnip likes it
 vim.opt.swapfile = false -- no swap files
 vim.opt.inccommand = "nosplit" -- preview %s commands live as I type
 vim.opt.updatetime = 100 -- stop typing quickly
@@ -29,8 +29,8 @@ vim.opt.softtabstop = 4 -- <Tab> behaves as 4 spaces when editing
 -- Colors
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
-vim.cmd "colorscheme catppuccin"
-vim.cmd "let base16colorspace=256"
+vim.cmd("colorscheme catppuccin")
+vim.cmd("let base16colorspace=256")
 
 -- Look and feel
 vim.opt.number = false -- no numbers?
@@ -44,7 +44,7 @@ vim.opt.listchars = {
     nbsp = "␣",
     extends = "…",
     precedes = "…",
-    trail = "·"
+    trail = "·",
 }
 vim.opt.scrolloff = 10 -- padding between cursor and top/bottom of window
 vim.opt.foldmethod = "expr" -- use function to determine folds

@@ -22,19 +22,17 @@ local start_with_ui = function()
 end
 
 -- Configure UI
-dapui.setup(
-    {
-        tray = {
-            elements = {}
-        }
-    }
-)
+dapui.setup({
+    tray = {
+        elements = {},
+    },
+})
 
 -- Configure debuggers
 dap.adapters.python = {
     type = "executable",
     command = get_python_path(),
-    args = {"-m", "debugpy.adapter"}
+    args = { "-m", "debugpy.adapter" },
 }
 
 -- Python launch configurations
@@ -45,7 +43,7 @@ dap.configurations.python = {
         name = "Django command",
         program = "manage.py",
         args = arg_parser("python manage.py "),
-        console = "integratedTerminal"
+        console = "integratedTerminal",
     },
     {
         type = "python",
@@ -53,17 +51,17 @@ dap.configurations.python = {
         name = "Run file",
         program = "${workspaceFolder}/${file}",
         args = arg_parser("Run with arguments: "),
-        console = "integratedTerminal"
-    }
+        console = "integratedTerminal",
+    },
 }
 
 -- Look and feel
-vim.fn.sign_define("DapBreakpoint", {text = "🔴", texthl = "", linehl = "", numhl = ""})
-vim.fn.sign_define("DapBreakpointCondition", {text = "🟡", texthl = "", linehl = "", numhl = ""})
-vim.fn.sign_define("DapBreakpointRejected", {text = "⭕️", texthl = "", linehl = "", numhl = ""})
-vim.fn.sign_define("DapStopped", {text = "👉", texthl = "", linehl = "", numhl = ""})
-vim.fn.sign_define("DapLogPoint", {text = "📄", texthl = "", linehl = "", numhl = ""})
+vim.fn.sign_define("DapBreakpoint", { text = "🔴", texthl = "", linehl = "", numhl = "" })
+vim.fn.sign_define("DapBreakpointCondition", { text = "🟡", texthl = "", linehl = "", numhl = "" })
+vim.fn.sign_define("DapBreakpointRejected", { text = "⭕️", texthl = "", linehl = "", numhl = "" })
+vim.fn.sign_define("DapStopped", { text = "👉", texthl = "", linehl = "", numhl = "" })
+vim.fn.sign_define("DapLogPoint", { text = "📄", texthl = "", linehl = "", numhl = "" })
 
 return {
-    start_with_ui = start_with_ui
+    start_with_ui = start_with_ui,
 }
