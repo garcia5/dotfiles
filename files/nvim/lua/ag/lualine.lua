@@ -53,10 +53,22 @@ lualine.setup({
         },
     },
     tabline = {
-        lualine_a = { "buffers" },
+        lualine_a = {
+            {
+                "buffers",
+                max_length = vim.o.columns / 3, -- take up at most 1/2 of the window
+            },
+        },
         lualine_b = {},
         lualine_c = {},
-        lualine_x = {},
+        lualine_x = {
+            {
+                "aerial",
+                sep = " ) ",
+                depth = nil,
+                cond = is_lualine_buf,
+            },
+        },
         lualine_y = {},
         lualine_z = { "tabs" },
     },

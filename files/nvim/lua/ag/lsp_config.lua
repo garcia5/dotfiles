@@ -50,7 +50,7 @@ local custom_attach = function(client, bufnr)
     -- Load autocomplete engine/settings
     require("ag.completion")
     -- Load debuggers
-    require("ag.debug")
+    -- require("ag.debug")
 
     -- LSP mappings (only apply when LSP client attached)
     lsp_mapper("n", "K", "vim.lsp.buf.hover()")

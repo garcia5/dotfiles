@@ -90,6 +90,7 @@ packer.startup(function(use)
                     gitsigns = true,
                     telescope = true,
                     treesitter = true,
+                    cmp = true,
                     nvimtree = {
                         enabled = true,
                         show_root = false,
@@ -114,12 +115,12 @@ packer.startup(function(use)
     })
     use("nvim-treesitter/nvim-treesitter-textobjects") -- custom text objects from treesitter
 
-    -- Debuggers
-    use("mfussenegger/nvim-dap")
-    use({
-        "rcarriga/nvim-dap-ui",
-        requires = "mfussenegger/nvim-dap",
-    })
+    -- Debuggers (still haven't figured out how to use this...)
+    -- use("mfussenegger/nvim-dap")
+    -- use({
+    --     "rcarriga/nvim-dap-ui",
+    --     requires = "mfussenegger/nvim-dap",
+    -- })
 
     -- Other nice to have
     use({
@@ -178,6 +179,10 @@ packer.startup(function(use)
             "lukas-reineke/cmp-under-comparator",
         },
         config = function()
+            if vim.g.colors_name == "catppuccin" then
+                -- catppuccin sets these automatically
+                return
+            end
             -- Use highlight groups!
             vim.cmd([[
                 highlight! default link CmpItemAbbrMatch Boolean
