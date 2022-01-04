@@ -91,7 +91,7 @@ function install_packages {
         echo "installing node"
         runcmd nvm install node
     fi
-    NPM_PACKAGES=( 'bash-language-server' 'pyright' 'vls' 'typescript-language-server' 'vscode-langservers-extracted')
+    NPM_PACKAGES=( 'bash-language-server' 'pyright' 'vls' 'typescript-language-server' 'vscode-langservers-extracted' 'neovim' 'yaml-language-server' )
     npm_installed=$(npm -g list)
     for pkg in ${NPM_PACKAGES[@]}; do
         if [[ $(echo "$npm_installed" | grep -c "$pkg") -ge 1 ]]; then
@@ -100,17 +100,6 @@ function install_packages {
             runcmd npm i -g "$pkg"
         fi
     done
-    YARN_PACKAGES=( 'yaml-language-server' )
-    if [[ $(command -v yarn) ]]; then
-        yarn_installed=$(yarn global list)
-        for pkg in ${YARN_PACKAGES[@]}; do
-            if [[ $(echo "$yarn_installed" | grep -c "$pkg") -ge 1 ]]; then
-                echo "$pkg already installed, skipping"
-            else
-                runcmd yarn global add "$pkg"
-            fi
-        done
-    fi
 
     echo ""
     echo "installing python"
@@ -120,15 +109,6 @@ function install_packages {
         # Also install defined version
         runcmd pyenv install --skip-existing "$PYENV_VERSION"
     fi
-
-    echo ""
-    echo "installing from pip"
-    echo "setting up debugpy"
-    cur_pwd=$(pwd)
-    runcmd "mkdir -p ~/.virtualenvs && cd ~/.virtualenvs"
-    runcmd python -m venv debugpy
-    runcmd debugpy/bin/python -m pip install debugpy
-    cd "$cur_pwd"
 }
 
 function setup_bash {

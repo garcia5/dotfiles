@@ -1,3 +1,6 @@
+vim.opt.foldmethod = "expr" -- use function to determine folds
+vim.opt.foldexpr = "nvim_treesitter#foldexpr()" -- use treesitter for folding
+
 require("nvim-treesitter.configs").setup({
     -- one of "all", "maintained" (parsers with maintainers), or a list of
     -- languages

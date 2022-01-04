@@ -28,7 +28,12 @@ packer.startup(function(use)
     })
     use("tpope/vim-surround") -- surround
     use("tpope/vim-repeat") -- ... and make them repeatable
-    use("nvim-telescope/telescope.nvim") -- fuzzy find ALL the things
+    use({
+        "nvim-telescope/telescope.nvim", -- fuzzy find ALL the things
+        config = function()
+            require("ag.telescope")
+        end,
+    })
 
     -- Look and feel
     use("folke/lsp-colors.nvim") -- LSP colors that aren't built in
@@ -54,6 +59,9 @@ packer.startup(function(use)
             "kyazdani42/nvim-web-devicons",
             opt = true,
         },
+        config = function()
+            require("ag.lualine")
+        end,
     })
 
     -- Colorschemes
@@ -179,6 +187,7 @@ packer.startup(function(use)
             "lukas-reineke/cmp-under-comparator",
         },
         config = function()
+            require("ag.completion")
             if vim.g.colors_name == "catppuccin" then
                 -- catppuccin sets these automatically
                 return
@@ -253,12 +262,12 @@ packer.startup(function(use)
     use({
         "stevearc/aerial.nvim", -- code outline
         config = function()
-            vim.g.aerial = {
+            require("aerial").setup({
                 backends = { "treesitter" },
                 max_width = 40,
                 min_width = 20,
                 close_behavior = "close",
-            }
+            })
         end,
     })
 end)

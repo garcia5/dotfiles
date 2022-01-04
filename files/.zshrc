@@ -169,3 +169,5 @@ alias luamake=/home/agarcia/lua-language-server/3rd/luamake/luamake
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 source ~/.aliases
+
+eval $(thefuck --alias)

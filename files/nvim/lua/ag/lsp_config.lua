@@ -1,5 +1,6 @@
 local lspconfig = require("lspconfig")
 local cmp_capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities())
+cmp_capabilities.textDocument.completion.completionItem.snippetSupport = true -- tell language servers we can handle snippets
 
 local local_mapper = function(mode, key, result, opts)
     vim.api.nvim_buf_set_keymap(0, mode, key, result, opts)
@@ -47,11 +48,6 @@ vim.diagnostic.config({
 })
 
 local custom_attach = function(client, bufnr)
-    -- Load autocomplete engine/settings
-    require("ag.completion")
-    -- Load debuggers
-    -- require("ag.debug")
-
     -- LSP mappings (only apply when LSP client attached)
     lsp_mapper("n", "K", "vim.lsp.buf.hover()")
     lsp_mapper("n", "<c-]>", "vim.lsp.buf.definition()")
