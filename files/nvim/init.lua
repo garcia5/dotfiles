@@ -53,6 +53,7 @@ vim.opt.splitright = true -- prefer vsplitting to the right
 vim.opt.splitbelow = true -- prefer splitting below
 vim.opt.wrap = false -- don't wrap my text
 vim.opt.textwidth = 120 -- wrap here for comments by default
+vim.opt.cursorline = true -- hightlight line cursor is on
 
 -- Searching
 vim.opt.wildmenu = true -- tab complete on command line

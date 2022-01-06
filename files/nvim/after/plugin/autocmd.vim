@@ -20,6 +20,7 @@ augroup term
     au TermOpen * startinsert
     au TermOpen * setlocal nonumber
     au TermOpen * setlocal norelativenumber
+    au TermOpen * setlocal nocursorline
     au TermOpen * setlocal signcolumn=no
     " Enter insert mode any time I enter the terminal
     au BufEnter * if &buftype == 'terminal' | startinsert | endif

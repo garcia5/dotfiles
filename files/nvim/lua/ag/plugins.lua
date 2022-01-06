@@ -63,6 +63,7 @@ packer.startup(function(use)
             require("ag.lualine")
         end,
     })
+    use("p00f/nvim-ts-rainbow") -- rainbow braces (and tags) powered by treesitter
 
     -- Colorschemes
     use("chriskempson/base16-vim") -- pretty colors
@@ -106,6 +107,7 @@ packer.startup(function(use)
                     native_lsp = {
                         enabled = true,
                     },
+                    ts_rainbow = true,
                 },
             })
             if vim.g.colors_name == "catppuccin" then
@@ -150,13 +152,13 @@ packer.startup(function(use)
         },
     })
     use({
-        "jose-elias-alvarez/nvim-lsp-ts-utils",
+        "jose-elias-alvarez/nvim-lsp-ts-utils", -- helpers for typescript development
         ft = {
             "vue",
             "typescript",
             "javascript",
         },
-    }) -- helpers for typescript development
+    })
     use({
         "kwkarlwang/bufresize.nvim", -- maintain buffer ratios on terminal resize
         config = function()
