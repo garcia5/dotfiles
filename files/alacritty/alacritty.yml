@@ -353,7 +353,8 @@ hints:
        key: U
        mods: Control|Shift
    - regex: "[A-Z]{4}-\\d{1,4}"
-     command: open-jira # TODO: figure out how to get this working
+     command:
+       program: /Users/agarcia/bin/open-jira
      post_processing: true
      binding:
        key: J
