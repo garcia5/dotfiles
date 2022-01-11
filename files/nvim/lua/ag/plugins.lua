@@ -84,35 +84,7 @@ packer.startup(function(use)
     use({
         "catppuccin/nvim", -- another another lua colorscheme
         config = function()
-            local catp = require("catppuccin")
-            catp.setup({
-                transparent_background = true,
-                term_colors = true,
-                styles = {
-                    comments = "italic",
-                    functions = "NONE",
-                    keywords = "NONE",
-                    strings = "italic",
-                    variables = "NONE",
-                },
-                integrations = {
-                    gitsigns = true,
-                    telescope = true,
-                    treesitter = true,
-                    cmp = true,
-                    nvimtree = {
-                        enabled = true,
-                        show_root = false,
-                    },
-                    native_lsp = {
-                        enabled = true,
-                    },
-                    ts_rainbow = true,
-                },
-            })
-            if vim.g.colors_name == "catppuccin" then
-                catp.load()
-            end
+            require("ag.catppuccin")
         end,
     })
 
@@ -269,6 +241,25 @@ packer.startup(function(use)
                 max_width = 40,
                 min_width = 20,
                 close_behavior = "close",
+                manage_folds = false,
+                link_folds_to_tree = false,
+                link_tree_to_folds = false,
+                treesitter = {
+                    update_delay = 100,
+                },
+                filter_kind = {
+                    "Class",
+                    "Constructor",
+                    "Enum",
+                    "Function",
+                    "Interface",
+                    "Method",
+                    "Module",
+                    "Namespace",
+                    "Object",
+                    "Package",
+                    "Struct",
+                },
             })
         end,
     })

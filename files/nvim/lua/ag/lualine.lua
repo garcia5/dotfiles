@@ -18,15 +18,13 @@ lualine.setup({
         --| A | B | C                             X | Y | Z |--
         --+-------------------------------------------------+--
         lualine_a = { "mode" },
-        lualine_b = {
-            "branch",
+        lualine_b = { "branch" },
+        lualine_c = {
             {
                 "filename",
-                path = 1, -- relative path
+                path = 0, -- just file name
                 cond = is_lualine_buf,
             },
-        },
-        lualine_c = {
             {
                 "diff",
                 symbols = {
@@ -56,7 +54,7 @@ lualine.setup({
         lualine_a = {
             {
                 "buffers",
-                max_length = vim.o.columns / 3, -- take up at most 1/2 of the window
+                max_length = vim.o.columns / 3, -- take up at most 1/3 of the window
             },
         },
         lualine_b = {},
@@ -75,7 +73,7 @@ lualine.setup({
     options = {
         section_separators = { left = "", right = "" },
         component_separators = { left = "", right = "" },
-        theme = "nightfox",
+        theme = "catppuccin",
         disabled_filetypes = { "aerial", "TelescopePrompt", "help" },
     },
     extensions = {
