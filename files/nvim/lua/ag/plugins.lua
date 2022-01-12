@@ -31,7 +31,7 @@ packer.startup(function(use)
     use({
         "nvim-telescope/telescope.nvim", -- fuzzy find ALL the things
         config = function()
-            require("ag.telescope")
+            require("ag.plugin-conf.telescope")
         end,
     })
 
@@ -60,7 +60,7 @@ packer.startup(function(use)
             opt = true,
         },
         config = function()
-            require("ag.lualine")
+            require("ag.plugin-conf.lualine")
         end,
     })
     use("p00f/nvim-ts-rainbow") -- rainbow braces (and tags) powered by treesitter
@@ -84,7 +84,7 @@ packer.startup(function(use)
     use({
         "catppuccin/nvim", -- another another lua colorscheme
         config = function()
-            require("ag.catppuccin")
+            require("ag.plugin-conf.catppuccin")
         end,
     })
 
@@ -164,7 +164,7 @@ packer.startup(function(use)
             "lukas-reineke/cmp-under-comparator", -- better ordering for things with underscores
         },
         config = function()
-            require("ag.completion")
+            require("ag.plugin-conf.completion")
             if vim.g.colors_name == "catppuccin" then
                 -- catppuccin sets these automatically
                 return
