@@ -153,12 +153,15 @@ packer.startup(function(use)
     use({
         "hrsh7th/nvim-cmp", -- autocomplete
         requires = {
+            -- completion sources
             "hrsh7th/cmp-nvim-lsp",
+            "hrsh7th/cmp-nvim-lsp-signature-help",
             "hrsh7th/cmp-nvim-lua",
             "hrsh7th/cmp-buffer",
             "hrsh7th/cmp-vsnip",
-            "onsails/lspkind-nvim",
-            "lukas-reineke/cmp-under-comparator",
+            -- complements
+            "onsails/lspkind-nvim", -- add the nice source + completion item kind to the menu
+            "lukas-reineke/cmp-under-comparator", -- better ordering for things with underscores
         },
         config = function()
             require("ag.completion")
@@ -215,8 +218,8 @@ packer.startup(function(use)
                     auto_resize = true,
                 },
                 git = {
-                    enable = true,
-                    ignore = false,
+                    enable = true, -- show git statuses
+                    ignore = false, -- still show .gitignored files
                 },
             })
         end,

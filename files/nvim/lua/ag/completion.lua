@@ -9,7 +9,7 @@ cmp.setup({
         { name = "vsnip" },
         { name = "nvim_lua" },
         { name = "nvim_lsp", max_item_count = 25 }, -- tsserver likes to send back _everything_
-        { name = "path" },
+        { name = "nvim_lsp_signature_help" },
         { name = "buffer", keyword_length = 5 }, -- don't complete from buffer right away
     },
     mapping = {
@@ -33,6 +33,7 @@ cmp.setup({
                 nvim_lsp = "[LSP]",
                 path = "[path]",
                 buffer = "[buffer]",
+                nvim_lsp_signature_help = "[param]",
             },
         }),
     },
