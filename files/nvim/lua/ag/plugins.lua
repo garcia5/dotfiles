@@ -50,6 +50,14 @@ packer.startup(function(use)
                 },
                 update_debounce = 500,
                 numhl = false,
+                keymaps = {
+                    noremap = true,
+                    ["n ="] = "<cmd>Gitsigns preview_hunk<CR>",
+                    ["n <Leader>rh"] = "<cmd>Gitsigns reset_hunk<CR>",
+                    ["n <Leader>sh"] = "<cmd>Gitsigns stage_hunk<CR>",
+                    ["n <Leader>gn"] = "<cmd>Gitsigns next_hunk<CR>",
+                    ["n <Leader>gp"] = "<cmd>Gitsigns prev_hunk<CR>",
+                },
             })
         end,
     })
@@ -130,7 +138,7 @@ packer.startup(function(use)
     })
     use({
         "tpope/vim-fugitive", -- git integration
-        cmd = "Git",
+        cmd = { "Git", "Gdiffsplit" },
     })
     use({
         "JoosepAlviste/nvim-ts-context-commentstring", -- commenting in vue files "just works"

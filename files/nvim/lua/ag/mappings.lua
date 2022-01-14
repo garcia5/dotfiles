@@ -67,15 +67,10 @@ mapper("t", "<C-l>", [[<C-\><C-n><C-w>l]])
 -- Git things
 mapper("n", "<Leader>gs", ":tab Git<CR>") -- `git status` in a new tab to save screen real estate
 mapper("n", "<Leader>gd", "<cmd>Gdiffsplit<CR>") -- open a split diffing the current file
-mapper("n", "<Leader>gp", "<cmd>Git pull<CR>") -- pull
-mapper("n", "<Leader>rh", "<cmd>Gitsigns reset_hunk<CR>") -- reset hunk under cursor
-mapper("n", "<Leader>gn", "<cmd>Gitsigns next_hunk<CR>zz") -- move to next hunk and center it
-mapper("n", "<Leader>gp", "<cmd>Gitsigns prev_hunk<CR>zz") -- move to prev hunk and center it
-mapper("n", "=", "<cmd>Gitsigns preview_hunk<CR>") -- diff of hunk under cursor
 
 -- DAP
-mapper("n", "<Leader>dr", "<cmd>lua require('dap').continue()<CR>")
+mapper("n", "<Leader>dr", "<cmd>lua require('dap').continue()<CR>") -- start debugging session/continue execution
 mapper("n", "<Leader>db", "<cmd>lua require('dap').toggle_breakpoint()<CR>")
-mapper("n", "<Leader>dk", "<cmd>lua require('dap.ui.widgets').hover()<CR>")
+mapper("n", "<Leader>dk", "<cmd>lua require('dap.ui.widgets').hover()<CR>") -- inspect variable
 mapper("n", "<Leader>di", "<cmd>lua require('dap').step_into()<CR>")
 mapper("n", "<Leader>do", "<cmd>lua require('dap').step_over()<CR>")

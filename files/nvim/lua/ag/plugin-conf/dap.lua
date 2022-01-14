@@ -1,6 +1,5 @@
 local dap = require("dap")
 
--- typescript + nest
 dap.adapters.node2 = {
     type = "executable",
     command = "node",
