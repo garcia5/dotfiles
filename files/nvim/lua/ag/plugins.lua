@@ -64,6 +64,22 @@ packer.startup(function(use)
         end,
     })
     use("p00f/nvim-ts-rainbow") -- rainbow braces (and tags) powered by treesitter
+    use({
+        "mhinz/vim-startify",
+        config = function()
+            vim.g.startify_session_dir = "~/.sesh/"
+            vim.g.startify_commands = {
+                { f = { "Find Files", "Telescope find_files" } },
+                { g = { "Live Grep", "Telescope live_grep" } },
+            }
+            vim.g.startify_lists = {
+                { type = "sessions", header = { "    Sessions" } },
+                { type = "dir", header = { "    MRU" .. vim.fn.getcwd() } },
+                { type = "files", header = { "    MRU" } },
+                { type = "commands", header = { "    Commands" } },
+            }
+        end,
+    }) -- start menu
 
     -- Colorschemes
     use("chriskempson/base16-vim") -- pretty colors

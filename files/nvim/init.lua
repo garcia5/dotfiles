@@ -11,7 +11,6 @@ vim.opt.belloff = "all" -- NO BELLS!
 vim.opt.completeopt = { "menu", "menuone", "noselect" } -- ins-completion how vsnip likes it
 vim.opt.swapfile = false -- no swap files
 vim.opt.inccommand = "nosplit" -- preview %s commands live as I type
-vim.opt.updatetime = 100 -- stop typing quickly
 vim.opt.undofile = true -- keep track of my 'undo's between sessions
 vim.opt.grepprg = "rg --vimgrep --smart-case --no-heading" -- search with rg
 vim.opt.grepformat = "%f:%l:%c:%m" -- filename:line number:column number:error message
@@ -33,9 +32,9 @@ vim.cmd("colorscheme catppuccin")
 vim.cmd("let base16colorspace=256")
 
 -- Look and feel
-vim.opt.number = false -- no numbers?
+vim.opt.number = true -- numbers?
 vim.opt.relativenumber = false -- no numbers?
-vim.opt.signcolumn = "yes" -- always show the sign column
+vim.opt.signcolumn = "auto" -- show the sign column if necessary
 vim.opt.cursorline = false -- don't highlight current line
 vim.opt.list = true -- show list chars
 vim.opt.listchars = {
