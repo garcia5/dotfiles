@@ -97,12 +97,13 @@ packer.startup(function(use)
     })
     use("nvim-treesitter/nvim-treesitter-textobjects") -- custom text objects from treesitter
 
-    -- Debuggers (still haven't figured out how to use this...)
-    -- use("mfussenegger/nvim-dap")
-    -- use({
-    --     "rcarriga/nvim-dap-ui",
-    --     requires = "mfussenegger/nvim-dap",
-    -- })
+    -- Debuggers
+    use({
+        "mfussenegger/nvim-dap",
+        config = function()
+            require("ag.plugin-conf.dap")
+        end,
+    })
 
     -- Other nice to have
     use({
