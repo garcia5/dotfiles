@@ -40,11 +40,6 @@ mapper("n", "<Leader>gc", "<cmd>lua require('telescope.builtin').git_branches()<
 mapper("n", "<Leader>re", "<cmd>lua require('telescope.builtin').git_commits()<CR>") -- checkout commits; <CR> to checkout, <C-r>[m, s, h] to reset [mixed, soft, hard]
 mapper("n", "<Leader>qf", "<cmd>lua require('telescope.builtin').quickfix()<CR>") -- jump to items in quickfix list
 mapper("n", "H", "<cmd>lua require('telescope.builtin').lsp_code_actions(require('telescope.themes').get_cursor())<CR>") -- code actions
-mapper(
-    "v",
-    "H",
-    "<cmd>lua require('telescope.builtin').lsp_range_code_actions(require('telescope.themes').get_cursor())<CR>"
-) -- code actions (but in visual mode)
 mapper("n", "<Leader>do", "<cmd>Dash<CR>") -- search documentation
 
 -- Movemint
@@ -71,6 +66,5 @@ mapper("n", "<Leader>gd", "<cmd>Gdiffsplit<CR>") -- open a split diffing the cur
 -- DAP
 mapper("n", "<Leader>dr", "<cmd>lua require('dap').continue()<CR>") -- start debugging session/continue execution
 mapper("n", "<Leader>db", "<cmd>lua require('dap').toggle_breakpoint()<CR>")
-mapper("n", "<Leader>dk", "<cmd>lua require('dap.ui.widgets').hover()<CR>") -- inspect variable
 mapper("n", "<Leader>di", "<cmd>lua require('dap').step_into()<CR>")
 mapper("n", "<Leader>do", "<cmd>lua require('dap').step_over()<CR>")

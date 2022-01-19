@@ -76,15 +76,17 @@ packer.startup(function(use)
         "mhinz/vim-startify",
         config = function()
             vim.g.startify_session_dir = "~/.sesh/"
+            vim.g.startify_change_to_dir = 0 -- don't go to the selected file's directory
+            vim.g.startify_change_to_vcs_root = 1 -- go to project root
+            vim.g.startify_change_cmd = "cd" -- ... and do it for the whole vim instance
             vim.g.startify_commands = {
                 { f = { "Find Files", "Telescope find_files" } },
                 { g = { "Live Grep", "Telescope live_grep" } },
             }
             vim.g.startify_lists = {
-                { type = "sessions", header = { "    Sessions" } },
-                { type = "dir", header = { "    MRU" .. vim.fn.getcwd() } },
-                { type = "files", header = { "    MRU" } },
                 { type = "commands", header = { "    Commands" } },
+                { type = "sessions", header = { "    Sessions" } },
+                { type = "dir", header = { "    MRU " .. vim.fn.getcwd() } },
             }
         end,
     }) -- start menu
@@ -124,6 +126,13 @@ packer.startup(function(use)
     -- Debuggers
     use({
         "mfussenegger/nvim-dap",
+        config = function()
+            require("ag.plugin-conf.dap")
+        end,
+    })
+    use({
+        "rcarriga/nvim-dap-ui",
+        requires = { "mfussenegger/nvim-dap" },
         config = function()
             require("ag.plugin-conf.dap")
         end,
