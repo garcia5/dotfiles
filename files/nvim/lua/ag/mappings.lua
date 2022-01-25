@@ -68,3 +68,4 @@ mapper("n", "<Leader>dr", "<cmd>lua require('dap').continue()<CR>") -- start deb
 mapper("n", "<Leader>db", "<cmd>lua require('dap').toggle_breakpoint()<CR>")
 mapper("n", "<Leader>di", "<cmd>lua require('dap').step_into()<CR>")
 mapper("n", "<Leader>do", "<cmd>lua require('dap').step_over()<CR>")
+mapper("n", "<Leader>dq", "<cmd>lua require('dap').close()<CR>")

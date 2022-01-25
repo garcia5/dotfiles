@@ -248,6 +248,7 @@ packer.startup(function(use)
                 auto_close = true,
                 hijack_cursor = true,
                 view = {
+                    width = 40,
                     side = "left",
                     auto_resize = true,
                 },
