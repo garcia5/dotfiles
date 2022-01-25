@@ -50,14 +50,15 @@ packer.startup(function(use)
                 },
                 update_debounce = 500,
                 numhl = false,
-                keymaps = {
-                    noremap = true,
-                    ["n ="] = "<cmd>Gitsigns preview_hunk<CR>",
-                    ["n <Leader>rh"] = "<cmd>Gitsigns reset_hunk<CR>",
-                    ["n <Leader>sh"] = "<cmd>Gitsigns stage_hunk<CR>",
-                    ["n <Leader>gn"] = "<cmd>Gitsigns next_hunk<CR>",
-                    ["n <Leader>gp"] = "<cmd>Gitsigns prev_hunk<CR>",
-                },
+                attach_to_untracked = false,
+                on_attach = function(bufnr)
+                    local keymap_opts = { silent = true, noremap = true }
+                    vim.api.nvim_buf_set_keymap(bufnr, "n", "=", "<cmd>Gitsigns preview_hunk<CR>", keymap_opts)
+                    vim.api.nvim_buf_set_keymap(bufnr, "n", "<Leader>rh", "<cmd>Gitsigns reset_hunk<CR>", keymap_opts)
+                    vim.api.nvim_buf_set_keymap(bufnr, "n", "<Leader>sh", "<cmd>Gitsigns stage_hunk<CR>", keymap_opts)
+                    vim.api.nvim_buf_set_keymap(bufnr, "n", "<Leader>gn", "<cmd>Gitsigns next_hunk<CR>", keymap_opts)
+                    vim.api.nvim_buf_set_keymap(bufnr, "n", "<Leader>gp", "<cmd>Gitsigns prev_hunk<CR>", keymap_opts)
+                end,
             })
         end,
     })

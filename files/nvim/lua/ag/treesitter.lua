@@ -4,7 +4,23 @@ vim.opt.foldexpr = "nvim_treesitter#foldexpr()" -- use treesitter for folding
 require("nvim-treesitter.configs").setup({
     -- one of "all", "maintained" (parsers with maintainers), or a list of
     -- languages
-    ensure_installed = "maintained",
+    ensure_installed = {
+        "javascript",
+        "jsonc",
+        "comment",
+        "jsdoc",
+        "tsx",
+        "html",
+        "vue",
+        "typescript",
+        "python",
+        "regex",
+        "bash",
+        "lua",
+        "css",
+        "scss",
+        "yaml",
+    },
     highlight = {
         -- false will disable the whole extension
         enable = true,
