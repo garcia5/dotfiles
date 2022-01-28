@@ -16,7 +16,35 @@ packer.startup(function(use)
     use("nvim-lua/plenary.nvim") -- utility functions
 
     -- Essentials
-    use("tpope/vim-commentary") -- toggle comments
+    use({
+        "numToStr/Comment.nvim", -- "smart" (ts powered) commenting
+        config = function()
+            require("Comment").setup({
+                pre_hook = function(ctx)
+                    -- Use commentstring plugins for vue SFCs
+                    if vim.bo.filetype == "vue" then
+                        local U = require("Comment.utils")
+
+                        -- Detemine whether to use linewise or blockwise commentstring
+                        local type = ctx.ctype == U.ctype.line and "__default" or "__multiline"
+
+                        -- Determine the location where to calculate commentstring from
+                        local location = nil
+                        if ctx.ctype == U.ctype.block then
+                            location = require("ts_context_commentstring.utils").get_cursor_location()
+                        elseif ctx.cmotion == U.cmotion.v or ctx.cmotion == U.cmotion.V then
+                            location = require("ts_context_commentstring.utils").get_visual_start_location()
+                        end
+
+                        return require("ts_context_commentstring.internal").calculate_commentstring({
+                            key = type,
+                            location = location,
+                        })
+                    end
+                end,
+            })
+        end,
+    })
     use({
         "windwp/nvim-autopairs",
         config = function()
@@ -74,7 +102,7 @@ packer.startup(function(use)
     })
     use("p00f/nvim-ts-rainbow") -- rainbow braces (and tags) powered by treesitter
     use({
-        "mhinz/vim-startify",
+        "mhinz/vim-startify", -- start menu
         config = function()
             vim.g.startify_session_dir = "~/.sesh/"
             vim.g.startify_change_to_dir = 0 -- don't go to the selected file's directory
@@ -90,7 +118,17 @@ packer.startup(function(use)
                 { type = "dir", header = { "    MRU " .. vim.fn.getcwd() } },
             }
         end,
-    }) -- start menu
+    })
+    use({
+        "j-hui/fidget.nvim", -- LSP progress indicator
+        config = function()
+            require("fidget").setup({
+                text = {
+                    spinner = "dots_scrolling",
+                },
+            })
+        end,
+    })
 
     -- Colorschemes
     use("chriskempson/base16-vim") -- pretty colors

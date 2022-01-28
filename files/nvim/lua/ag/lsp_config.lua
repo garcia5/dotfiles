@@ -130,40 +130,9 @@ lspconfig.tsserver.setup({
 })
 
 -- vue
-lspconfig.vuels.setup({
+lspconfig.volar.setup({
+    on_attach = custom_attach,
     capabilities = cmp_capabilities,
-    on_attach = function(client, bufnr)
-        -- Tell vim that vls can handle formatting
-        client.resolved_capabilities.document_formatting = true
-        custom_attach(client, bufnr)
-    end,
-    settings = {
-        vetur = {
-            completion = {
-                autoImport = true,
-                tagCasing = "kebab",
-                useScaffoldSnippets = true,
-            },
-            useWorkspaceDependencies = true,
-            experimental = {
-                templateInterpolationService = true,
-            },
-        },
-        format = {
-            enable = true,
-            options = {
-                useTabs = false,
-                tabSize = 2,
-            },
-        },
-        validation = {
-            template = true,
-            script = true,
-            style = true,
-            templateProps = true,
-            interpolation = true,
-        },
-    },
 })
 
 -- yaml

@@ -5,10 +5,16 @@ au BufEnter * if &buftype != 'terminal' && &ft != 'gitcommit' | set formatoption
 augroup Format
     au!
     au BufWritePre *.lua lua vim.lsp.buf.formatting_sync()
-    au BufWritePre *.ts EslintFixAll
-    au BufWritePre *.js EslintFixAll
-    au BufWritePre *.vue EslintFixAll
+    au BufWritePre *.ts call WebDevFormat()
+    au BufWritePre *.js call WebDevFormat()
+    au BufWritePre *.vue call WebDevFormat()
 augroup end
+
+function! WebDevFormat() abort
+    " let language server try first, before eslint fixes minor issues
+    lua vim.lsp.buf.formatting_sync()
+    EslintFixAll
+endfunction
 
 " My dotfiles
 augroup MyScripts
