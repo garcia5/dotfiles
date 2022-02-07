@@ -12,7 +12,7 @@ augroup end
 
 function! WebDevFormat() abort
     " let language server try first, before eslint fixes minor issues
-    lua vim.lsp.buf.formatting_sync()
+    lua vim.lsp.buf.formatting_seq_sync()
     EslintFixAll
 endfunction
 

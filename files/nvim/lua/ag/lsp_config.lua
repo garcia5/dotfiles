@@ -53,7 +53,6 @@ local custom_attach = function(client, bufnr)
     lsp_mapper("n", "<c-]>", "vim.lsp.buf.definition()")
     lsp_mapper("n", "<leader>gr", "vim.lsp.buf.references()")
     lsp_mapper("n", "gr", "vim.lsp.buf.rename()")
-    lsp_mapper("i", "<C-h>", "vim.lsp.buf.signature_help()")
 
     -- diagnostics
     lsp_mapper("n", "<leader>dk", "vim.diagnostic.open_float()") -- diagnostic(s) on current line
@@ -72,6 +71,7 @@ null_ls.setup({
     sources = {
         --#formatters
         null_ls.builtins.formatting.stylua,
+        null_ls.builtins.formatting.prettier,
         --#diagnostics/linters
         null_ls.builtins.diagnostics.flake8,
     },
@@ -130,9 +130,43 @@ lspconfig.tsserver.setup({
 })
 
 -- vue
-lspconfig.volar.setup({
-    on_attach = custom_attach,
+lspconfig.vuels.setup({
     capabilities = cmp_capabilities,
+    on_attach = function(client, bufnr)
+        custom_attach(client, bufnr)
+    end,
+    settings = {
+        vetur = {
+            completion = {
+                autoImport = true,
+                tagCasing = "kebab",
+                useScaffoldSnippets = true,
+            },
+            useWorkspaceDependencies = true,
+            experimental = {
+                templateInterpolationService = true,
+            },
+        },
+        format = {
+            enable = false, -- delegated to prettier via null_ls
+            options = {
+                useTabs = false,
+                tabSize = 2,
+            },
+            defaultFormatter = {
+                ts = "prettier",
+            },
+            scriptInitialIndent = false,
+            styleInitialIndent = false,
+        },
+        validation = {
+            template = true,
+            script = true,
+            style = true,
+            templateProps = true,
+            interpolation = true,
+        },
+    },
 })
 
 -- yaml
