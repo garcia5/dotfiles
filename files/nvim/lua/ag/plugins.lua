@@ -46,6 +46,13 @@ packer.startup(function(use)
         end,
     })
     use({
+        "windwp/nvim-ts-autotag", -- auto close html tags
+        ft = {
+            "html",
+            "vue",
+        },
+    })
+    use({
         "windwp/nvim-autopairs",
         config = function()
             require("nvim-autopairs").setup({
@@ -117,16 +124,6 @@ packer.startup(function(use)
                 { type = "sessions", header = { "    Sessions" } },
                 { type = "dir", header = { "    MRU " .. vim.fn.getcwd() } },
             }
-        end,
-    })
-    use({
-        "j-hui/fidget.nvim", -- LSP progress indicator
-        config = function()
-            require("fidget").setup({
-                text = {
-                    spinner = "dots_scrolling",
-                },
-            })
         end,
     })
 

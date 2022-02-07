@@ -1,4 +1,5 @@
 local cmp = require("cmp")
+local cmp_autopairs = require("nvim-autopairs.completion.cmp")
 cmp.setup({
     snippet = {
         expand = function(args)
@@ -15,7 +16,7 @@ cmp.setup({
     mapping = {
         ["<C-f>"] = cmp.mapping.scroll_docs(-4),
         ["<C-d>"] = cmp.mapping.scroll_docs(4),
-        ["<C-r>"] = cmp.mapping.complete({ reason = cmp.ContextReason.Manual }),
+        ["<C-h>"] = cmp.mapping.complete({ reason = cmp.ContextReason.Manual }),
         ["<C-e>"] = cmp.mapping.close(),
         ["<C-y>"] = cmp.mapping.confirm({
             behavior = cmp.ConfirmBehavior.Replace,
@@ -54,3 +55,5 @@ cmp.setup({
         },
     },
 })
+-- Help cmp play nice with autopairs
+cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done({ map_char = { tex = "" } }))

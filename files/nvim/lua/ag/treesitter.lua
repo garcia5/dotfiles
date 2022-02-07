@@ -88,4 +88,8 @@ require("nvim-treesitter.configs").setup({
         enable = true,
         extended_mode = true, -- Also highlight non-bracket delimiters like html tags
     },
+    autotag = {
+        enable = true,
+        filetypes = { "html", "vue" },
+    },
 })
