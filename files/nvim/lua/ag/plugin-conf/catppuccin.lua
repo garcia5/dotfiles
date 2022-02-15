@@ -23,6 +23,10 @@ catp.setup({
             enabled = true,
         },
         ts_rainbow = true,
+        indent_blankline = {
+            enabled = true,
+            colored_indent_levels = false,
+        },
     },
 })
 catp.load()

@@ -53,7 +53,7 @@ packer.startup(function(use)
         },
     })
     use({
-        "windwp/nvim-autopairs",
+        "windwp/nvim-autopairs", -- auto close sybmols
         config = function()
             require("nvim-autopairs").setup({
                 disable_filetype = { "TelescopePrompt", "dap-repl", "fugitive" },
@@ -145,8 +145,21 @@ packer.startup(function(use)
     })
     use({
         "catppuccin/nvim", -- another another lua colorscheme
+        as = "catppuccin",
         config = function()
             require("ag.plugin-conf.catppuccin")
+        end,
+    })
+    use({
+        "lukas-reineke/indent-blankline.nvim", -- indent guides
+        config = function()
+            vim.g.indent_blankline_filetype_exclude = {
+                "lspinfo",
+                "packer",
+                "checkhealth",
+                "help",
+                "startify",
+            }
         end,
     })
 
@@ -320,19 +333,6 @@ packer.startup(function(use)
                 link_tree_to_folds = false,
                 treesitter = {
                     update_delay = 100,
-                },
-                filter_kind = {
-                    "Class",
-                    "Constructor",
-                    "Enum",
-                    "Function",
-                    "Interface",
-                    "Method",
-                    "Module",
-                    "Namespace",
-                    "Object",
-                    "Package",
-                    "Struct",
                 },
             })
         end,
