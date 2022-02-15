@@ -54,7 +54,7 @@ lualine.setup({
         lualine_a = {
             {
                 "buffers",
-                max_length = vim.o.columns / 3, -- take up at most 1/3 of the window
+                max_length = vim.o.columns / 2, -- take up at most 1/2 of the window
             },
         },
         lualine_b = {},
@@ -77,6 +77,7 @@ lualine.setup({
         disabled_filetypes = { "aerial", "TelescopePrompt", "help" },
     },
     extensions = {
+        "aerial",
         "quickfix",
         "fugitive",
         "nvim-tree",

@@ -19,7 +19,7 @@ cmp.setup({
         ["<C-h>"] = cmp.mapping.complete({ reason = cmp.ContextReason.Manual }),
         ["<C-e>"] = cmp.mapping.close(),
         ["<C-y>"] = cmp.mapping.confirm({
-            behavior = cmp.ConfirmBehavior.Replace,
+            behavior = cmp.ConfirmBehavior.Insert,
             select = true, -- use first result if none explicitly selected
         }),
     },
@@ -55,5 +55,5 @@ cmp.setup({
         },
     },
 })
--- Help cmp play nice with autopairs
+-- Help cmp play nice with autopairs, auto-insert parentheses when accepting completion for a function call
 cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done({ map_char = { tex = "" } }))

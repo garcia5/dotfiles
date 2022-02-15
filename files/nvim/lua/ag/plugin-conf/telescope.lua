@@ -20,6 +20,9 @@ telescope.setup({
             "--column",
             "--smart-case",
         },
+        file_ignore_patterns = {
+            "%.png",
+        },
         prompt_prefix = "» ",
         selection_caret = " ",
         selection_strategy = "reset",
