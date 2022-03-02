@@ -70,6 +70,9 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
     git
+    copypath
+    ripgrep
+    zsh-interactive-cd
 )
 
 # User configuration
