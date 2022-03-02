@@ -186,6 +186,10 @@ packer.startup(function(use)
             require("ag.plugin-conf.dap")
         end,
     })
+    use({
+        "nvim-telescope/telescope-dap.nvim", -- telescope picker for dap actions/configuraitons
+        requires = { "mfussenegger/nvim-dap", "nvim-telescope/telescope.nvim" },
+    })
 
     -- Other nice to have
     use({
@@ -307,14 +311,6 @@ packer.startup(function(use)
                 },
             })
         end,
-    })
-    use({
-        "mrjones2014/dash.nvim", -- ez open documentation
-        run = "make install",
-        config = function()
-            vim.cmd([[ command! Dash Telescope dash search ]]) -- create command to lazy load on
-        end,
-        cmd = "Dash",
     })
     use({
         "nvim-telescope/telescope-fzf-native.nvim", -- fzf-like searching for telescope

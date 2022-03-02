@@ -40,7 +40,7 @@ mapper("n", "<Leader>gc", "<cmd>lua require('telescope.builtin').git_branches()<
 mapper("n", "<Leader>re", "<cmd>lua require('telescope.builtin').git_commits()<CR>") -- checkout commits; <CR> to checkout, <C-r>[m, s, h] to reset [mixed, soft, hard]
 mapper("n", "<Leader>qf", "<cmd>lua require('telescope.builtin').quickfix()<CR>") -- jump to items in quickfix list
 mapper("n", "H", "<cmd>lua require('telescope.builtin').lsp_code_actions(require('telescope.themes').get_cursor())<CR>") -- code actions
-mapper("n", "<Leader>do", "<cmd>Dash<CR>") -- search documentation
+mapper("n", "<Leader>dd", "<cmd>Telescope dap commands<CR>") -- debugger actions
 
 -- Movemint
 mapper("n", "<C-j>", "<C-w>j")
@@ -48,10 +48,10 @@ mapper("n", "<C-h>", "<C-w>h")
 mapper("n", "<C-k>", "<C-w>k")
 mapper("n", "<C-l>", "<C-w>l")
 -- Move without firing 'BufEnter' autocommands
-mapper("n", "<M-j>", ":noautocmd wincmd j<CR>")
-mapper("n", "<M-h>", ":noautocmd wincmd h<CR>")
-mapper("n", "<M-k>", ":noautocmd wincmd k<CR>")
-mapper("n", "<M-l>", ":noautocmd wincmd l<CR>")
+mapper("n", "∆", ":noautocmd wincmd j<CR>") -- ∆ == <M-j>
+mapper("n", "˙", ":noautocmd wincmd h<CR>") -- ˙ == <M-h>
+mapper("n", "˚", ":noautocmd wincmd k<CR>") -- ˚ == <M-k>
+mapper("n", "¬", ":noautocmd wincmd l<CR>") -- ¬ == <M-l>
 -- Term
 mapper("t", "<Esc><Esc>", [[<C-\><C-n>]])
 mapper("t", "<C-j>", [[<C-\><C-n><C-w>j]])
@@ -68,4 +68,4 @@ mapper("n", "<Leader>dr", "<cmd>lua require('dap').continue()<CR>") -- start deb
 mapper("n", "<Leader>db", "<cmd>lua require('dap').toggle_breakpoint()<CR>")
 mapper("n", "<Leader>di", "<cmd>lua require('dap').step_into()<CR>")
 mapper("n", "<Leader>do", "<cmd>lua require('dap').step_over()<CR>")
-mapper("n", "<Leader>dq", "<cmd>lua require('dap').close()<CR>")
+mapper("n", "<Leader>dq", ":call dap#shutdown()<CR>") -- custom shtudown handler that closes dapui, event listeners aren't working

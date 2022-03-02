@@ -44,6 +44,7 @@ end
 dap.listeners.after["event_stopped"]["dapui_config"] = function()
     dapui.open("sidebar")
 end
+-- TODO: these aren't closing the ui on `lua require('dap').close()` or `.terminate()`!
 dap.listeners.before["event_terminated"]["dapui_config"] = function()
     dapui.close()
 end
