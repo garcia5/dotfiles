@@ -104,8 +104,8 @@ if type brew &>/dev/null; then
 fi
 
 # Let gcc play with brew
-export LDFLAGS="-L$(brew --prefix)/opt/zlib/lib -L$(brew --prefix)/opt/bzip2/lib"
-export CPPFLAGS="-I$(brew --prefix)/opt/zlib/include -I$(brew --prefix)/opt/bzip2/include"
+export LDFLAGS="-L$(brew --prefix)/opt/zlib/lib -L$(brew --prefix)/opt/bzip2/lib -L$(brew --prefix)/lib"
+export CPPFLAGS="-I$(brew --prefix)/opt/zlib/include -I$(brew --prefix)/opt/bzip2/include -I$(brew --prefix)/include"
 export CFLAGS="-O2"
 
 # zsh
@@ -136,7 +136,7 @@ export FZF_CTRL_T_OPTS="$FZF_DEFAULT_OPTS \
 
 # Python
 eval "$(pyenv init -)"
-pyenv global 3.10.0
+pyenv global 3.9.10
 
 # Node
 export NVM_DIR="$HOME/.nvm"
@@ -161,7 +161,7 @@ add-zsh-hook chpwd load-nvmrc
 
 # Lua ls
 export PATH="$PATH:$HOME/lua-language-server/bin/macOS/"
-alias luamake=/home/agarcia/lua-language-server/3rd/luamake/luamake
+alias luamake=/Users/agarcia/lua-language-server/3rd/luamake/luamake
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
