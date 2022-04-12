@@ -2,8 +2,7 @@ vim.opt.foldmethod = "expr" -- use function to determine folds
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()" -- use treesitter for folding
 
 require("nvim-treesitter.configs").setup({
-    -- one of "all", "maintained" (parsers with maintainers), or a list of
-    -- languages
+    -- either "all" or a list of languages
     ensure_installed = {
         "javascript",
         "jsonc",
@@ -26,7 +25,7 @@ require("nvim-treesitter.configs").setup({
         enable = true,
     },
     indent = {
-        enable = false,
+        enable = false, -- buggy :/
     },
     -- custom text objects
     textobjects = {

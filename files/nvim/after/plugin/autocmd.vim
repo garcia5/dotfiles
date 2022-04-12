@@ -30,6 +30,7 @@ augroup term
     au TermOpen * setlocal norelativenumber
     au TermOpen * setlocal nocursorline
     au TermOpen * setlocal signcolumn=no
+    au TermOpen * let b:indent_blankline_enabled=v:false
     " Enter insert mode any time I enter the terminal
     au BufEnter * if &buftype == 'terminal' | startinsert | endif
     " Quit if only the terminal is left to avoid confusion

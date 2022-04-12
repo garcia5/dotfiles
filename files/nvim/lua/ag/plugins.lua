@@ -56,10 +56,10 @@ packer.startup(function(use)
         "windwp/nvim-autopairs", -- auto close sybmols
         config = function()
             require("nvim-autopairs").setup({
-                disable_filetype = { "TelescopePrompt", "dap-repl", "fugitive" },
                 map_cr = true, -- send closing symbol to its own line
             })
         end,
+        disable_filetype = { "TelescopePrompt", "dap-repl", "fugitive" },
     })
     use("tpope/vim-surround") -- surround
     use("tpope/vim-repeat") -- ... and make them repeatable
@@ -136,7 +136,7 @@ packer.startup(function(use)
         config = function()
             local nightfox = require("nightfox")
             nightfox.setup({
-                transparent = true,
+                options = { transparent = true },
             })
             if string.match(vim.g.colors_name, ".+fox$") ~= nil then
                 nightfox.load()
@@ -160,6 +160,8 @@ packer.startup(function(use)
                 "help",
                 "startify",
             }
+            vim.g.indent_blankline_use_treesitter = true
+            vim.g.indent_blankline_disable_with_nolist = true
         end,
     })
 
@@ -298,7 +300,6 @@ packer.startup(function(use)
         "kyazdani42/nvim-tree.lua", -- no more netrw
         config = function()
             require("nvim-tree").setup({
-                auto_close = true,
                 hijack_cursor = true,
                 view = {
                     width = 40,

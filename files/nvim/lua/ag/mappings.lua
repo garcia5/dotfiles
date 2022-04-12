@@ -28,6 +28,7 @@ mapper("n", "<Leader>bp", ":bp<CR>") -- prev buffer
 mapper("n", "+", "=") -- new format mapping
 mapper("n", "<Leader>nn", ":set number!<CR>") -- toggle line numbers
 mapper("n", "<Leader>ou", "<cmd>AerialToggle!<CR>") -- toggle code outline, powered by tree-sitter
+mapper("n", "<Leader>rr", "<cmd>lua vim.lsp.stop_client(vim.lsp.get_active_clients())<CR>:e<CR>") -- restart language servers
 
 -- Telescope integration
 mapper("n", "<Leader>ff", "<cmd>lua require('telescope.builtin').find_files()<CR>") -- search all files, respecting .gitignore if one exists
@@ -48,10 +49,10 @@ mapper("n", "<C-h>", "<C-w>h")
 mapper("n", "<C-k>", "<C-w>k")
 mapper("n", "<C-l>", "<C-w>l")
 -- Move without firing 'BufEnter' autocommands
-mapper("n", "∆", ":noautocmd wincmd j<CR>") -- ∆ == <M-j>
-mapper("n", "˙", ":noautocmd wincmd h<CR>") -- ˙ == <M-h>
-mapper("n", "˚", ":noautocmd wincmd k<CR>") -- ˚ == <M-k>
-mapper("n", "¬", ":noautocmd wincmd l<CR>") -- ¬ == <M-l>
+mapper("n", "<M-j>", ":noautocmd wincmd j<CR>")
+mapper("n", "<M-h>", ":noautocmd wincmd h<CR>")
+mapper("n", "<M-k>", ":noautocmd wincmd k<CR>")
+mapper("n", "<M-l>", ":noautocmd wincmd l<CR>")
 -- Term
 mapper("t", "<Esc><Esc>", [[<C-\><C-n>]])
 mapper("t", "<C-j>", [[<C-\><C-n><C-w>j]])
