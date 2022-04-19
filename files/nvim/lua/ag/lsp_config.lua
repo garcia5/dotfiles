@@ -71,7 +71,7 @@ null_ls.setup({
     sources = {
         --#formatters
         null_ls.builtins.formatting.stylua,
-        null_ls.builtins.formatting.prettier,
+        null_ls.builtins.formatting.prettierd,
         --#diagnostics/linters
         null_ls.builtins.diagnostics.flake8,
     },

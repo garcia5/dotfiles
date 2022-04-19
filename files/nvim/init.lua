@@ -53,9 +53,6 @@ vim.opt.splitbelow = true -- prefer splitting below
 vim.opt.wrap = false -- don't wrap my text
 vim.opt.textwidth = 120 -- wrap here for comments by default
 vim.opt.cursorline = true -- hightlight line cursor is on
-if vim.fn.has("nvim-0.7.0") == 1 then
-    vim.opt.laststatus = 3 -- single global statusline
-end
 
 -- Searching
 vim.opt.wildmenu = true -- tab complete on command line

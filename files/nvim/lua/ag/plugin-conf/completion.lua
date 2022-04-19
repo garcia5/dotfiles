@@ -11,7 +11,7 @@ cmp.setup({
         { name = "nvim_lua" },
         { name = "nvim_lsp", max_item_count = 25 }, -- tsserver likes to send back _everything_
         { name = "nvim_lsp_signature_help" },
-        { name = "buffer", keyword_length = 5 }, -- don't complete from buffer right away
+        { name = "buffer", keyword_length = 3 }, -- don't complete from buffer right away
     },
     mapping = {
         ["<C-f>"] = cmp.mapping.scroll_docs(-4),
@@ -22,6 +22,8 @@ cmp.setup({
             behavior = cmp.ConfirmBehavior.Insert,
             select = true, -- use first result if none explicitly selected
         }),
+        ["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
+        ["<C-p>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
     },
     preselect = cmp.PreselectMode.None,
     formatting = {

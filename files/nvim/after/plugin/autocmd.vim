@@ -1,18 +1,21 @@
 " Formatopts for ALL
 au BufEnter * if &buftype != 'terminal' && &ft != 'gitcommit' | set formatoptions=lcrqj | endif
 
+" Force global statusline
+au VimEnter * set laststatus=3
+
 " Format on save
 augroup Format
     au!
     au BufWritePre *.lua lua vim.lsp.buf.formatting_sync()
-    au BufWritePre *.ts call WebDevFormat()
-    au BufWritePre *.js call WebDevFormat()
-    au BufWritePre *.vue call WebDevFormat()
+    au BufWritePre *.ts EslintFixAll
+    au BufWritePre *.js EslintFixAll
+    au BufWritePre *.vue call VueFormat()
 augroup end
 
-function! WebDevFormat() abort
+function! VueFormat() abort
     " let language server try first, before eslint fixes minor issues
-    lua vim.lsp.buf.formatting_seq_sync()
+    lua vim.lsp.buf.formatting_sync()
     EslintFixAll
 endfunction
 
