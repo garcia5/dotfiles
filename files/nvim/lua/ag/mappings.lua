@@ -1,6 +1,6 @@
 -- Mapping helper
 local mapper = function(mode, key, result)
-    vim.api.nvim_set_keymap(mode, key, result, { noremap = true, silent = true })
+    vim.keymap.set(mode, key, result, { noremap = true, silent = true })
 end
 
 -- Essentials
@@ -31,16 +31,17 @@ mapper("n", "<Leader>ou", "<cmd>AerialToggle!<CR>") -- toggle code outline, powe
 mapper("n", "<Leader>rr", "<cmd>lua vim.lsp.stop_client(vim.lsp.get_active_clients())<CR>:e<CR>") -- restart language servers
 
 -- Telescope integration
-mapper("n", "<Leader>ff", "<cmd>lua require('telescope.builtin').find_files()<CR>") -- search all files, respecting .gitignore if one exists
-mapper("n", "<Leader>fb", "<cmd>lua require('telescope.builtin').buffers()<CR>") -- search open buffers
-mapper("n", "<Leader>fl", "<cmd>lua require('telescope.builtin').current_buffer_fuzzy_find()<CR>") -- search lines in current buffer
-mapper("n", "<Leader>gg", "<cmd>lua require('telescope.builtin').live_grep()<CR>") -- search all lines in project
-mapper("n", "<Leader>fr", "<cmd>lua require('telescope.builtin').lsp_references()<CR>") -- search references to symbol under cursor
-mapper("n", "<Leader>co", "<cmd>lua require('telescope.builtin').colorscheme()<CR>") -- colorschemes
-mapper("n", "<Leader>gc", "<cmd>lua require('telescope.builtin').git_branches()<CR>") -- checkout different branches
-mapper("n", "<Leader>re", "<cmd>lua require('telescope.builtin').git_commits()<CR>") -- checkout commits; <CR> to checkout, <C-r>[m, s, h] to reset [mixed, soft, hard]
-mapper("n", "<Leader>qf", "<cmd>lua require('telescope.builtin').quickfix()<CR>") -- jump to items in quickfix list
-mapper("n", "H", "<cmd>lua require('telescope.builtin').lsp_code_actions(require('telescope.themes').get_cursor())<CR>") -- code actions
+local telescope = require("telescope.builtin")
+mapper("n", "<Leader>ff", telescope.find_files) -- search all files, respecting .gitignore if one exists
+mapper("n", "<Leader>fb", telescope.buffers) -- search open buffers
+mapper("n", "<Leader>fl", telescope.current_buffer_fuzzy_find) -- search lines in current buffer
+mapper("n", "<Leader>gg", telescope.live_grep) -- search all lines in project
+mapper("n", "<Leader>fr", telescope.lsp_references) -- search references to symbol under cursor
+mapper("n", "<Leader>co", telescope.colorscheme) -- colorschemes
+mapper("n", "<Leader>gc", telescope.git_branches) -- checkout different branches
+mapper("n", "<Leader>re", telescope.git_commits) -- checkout commits; <CR> to checkout, <C-r>[m, s, h] to reset [mixed, soft, hard]
+mapper("n", "<Leader>qf", telescope.quickfix) -- jump to items in quickfix list
+mapper("n", "H", vim.lsp.buf.code_action) -- code actions
 mapper("n", "<Leader>dd", "<cmd>Telescope dap commands<CR>") -- debugger actions
 
 -- Movemint
@@ -65,8 +66,9 @@ mapper("n", "<Leader>gs", ":tab Git<CR>") -- `git status` in a new tab to save s
 mapper("n", "<Leader>gd", "<cmd>Gdiffsplit<CR>") -- open a split diffing the current file
 
 -- DAP
-mapper("n", "<Leader>dr", "<cmd>lua require('dap').continue()<CR>") -- start debugging session/continue execution
-mapper("n", "<Leader>db", "<cmd>lua require('dap').toggle_breakpoint()<CR>")
-mapper("n", "<Leader>di", "<cmd>lua require('dap').step_into()<CR>")
-mapper("n", "<Leader>do", "<cmd>lua require('dap').step_over()<CR>")
+local dap = require("dap")
+mapper("n", "<Leader>dr", dap.continue) -- start debugging session/continue execution
+mapper("n", "<Leader>db", dap.toggle_breakpoint)
+mapper("n", "<Leader>di", dap.step_into)
+mapper("n", "<Leader>do", dap.step_over)
 mapper("n", "<Leader>dq", ":call dap#shutdown()<CR>") -- custom shtudown handler that closes dapui, event listeners aren't working

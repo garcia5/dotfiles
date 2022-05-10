@@ -87,12 +87,12 @@ packer.startup(function(use)
                 numhl = false,
                 attach_to_untracked = false,
                 on_attach = function(bufnr)
-                    local keymap_opts = { silent = true, noremap = true }
-                    vim.api.nvim_buf_set_keymap(bufnr, "n", "=", "<cmd>Gitsigns preview_hunk<CR>", keymap_opts)
-                    vim.api.nvim_buf_set_keymap(bufnr, "n", "<Leader>rh", "<cmd>Gitsigns reset_hunk<CR>", keymap_opts)
-                    vim.api.nvim_buf_set_keymap(bufnr, "n", "<Leader>sh", "<cmd>Gitsigns stage_hunk<CR>", keymap_opts)
-                    vim.api.nvim_buf_set_keymap(bufnr, "n", "<Leader>gn", "<cmd>Gitsigns next_hunk<CR>", keymap_opts)
-                    vim.api.nvim_buf_set_keymap(bufnr, "n", "<Leader>gp", "<cmd>Gitsigns prev_hunk<CR>", keymap_opts)
+                    local keymap_opts = { silent = true, noremap = true, buffer = bufnr }
+                    vim.keymap.set("n", "=", "<cmd>Gitsigns preview_hunk<CR>", keymap_opts)
+                    vim.keymap.set("n", "<Leader>rh", "<cmd>Gitsigns reset_hunk<CR>", keymap_opts)
+                    vim.keymap.set("n", "<Leader>sh", "<cmd>Gitsigns stage_hunk<CR>", keymap_opts)
+                    vim.keymap.set("n", "<Leader>gn", "<cmd>Gitsigns next_hunk<CR>", keymap_opts)
+                    vim.keymap.set("n", "<Leader>gp", "<cmd>Gitsigns prev_hunk<CR>", keymap_opts)
                 end,
             })
         end,
@@ -241,6 +241,20 @@ packer.startup(function(use)
         },
         config = function()
             vim.g.vsnip_snippet_dir = vim.fn.expand("~/.config/nvim/snips")
+            vim.keymap.set({ "i", "s" }, "<C-j>", function()
+                if vim.fn["vsnip#jumpable"](1) then
+                    return "<Plug>(vsnip-jump-next)"
+                else
+                    return "<C-j>"
+                end
+            end, { silent = true, expr = true })
+            vim.keymap.set({ "i", "s" }, "<C-k>", function()
+                if vim.fn["vsnip#jumpable"](-1) then
+                    return "<Plug>(vsnip-jump-prev)"
+                else
+                    return "<C-k>"
+                end
+            end, { silent = true, expr = true })
         end,
     })
     use({
@@ -308,7 +322,6 @@ packer.startup(function(use)
                 view = {
                     width = 40,
                     side = "left",
-                    auto_resize = true,
                 },
                 git = {
                     enable = true, -- show git statuses

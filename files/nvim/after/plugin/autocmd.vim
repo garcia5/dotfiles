@@ -1,20 +1,27 @@
 " Formatopts for ALL
 au BufEnter * if &buftype != 'terminal' && &ft != 'gitcommit' | set formatoptions=lcrqj | endif
 
-" Force global statusline
-au VimEnter * set laststatus=3
-
 " Format on save
 augroup Format
     au!
     au BufWritePre *.lua lua vim.lsp.buf.formatting_sync()
-    au BufWritePre *.ts EslintFixAll
+    au BufWritePre *.ts call TsFormat()
     au BufWritePre *.js EslintFixAll
     au BufWritePre *.vue call VueFormat()
 augroup end
 
 function! VueFormat() abort
     " let language server try first, before eslint fixes minor issues
+    lua vim.lsp.buf.formatting_sync()
+    EslintFixAll
+endfunction
+
+function! TsFormat() abort
+    lua vim.lsp.buf.formatting_seq_sync(nil, nil, {"tsserver", "null-ls"})
+    EslintFixAll
+endfunction
+
+function! JsFormat() abort
     lua vim.lsp.buf.formatting_sync()
     EslintFixAll
 endfunction
@@ -39,21 +46,6 @@ augroup term
     " Quit if only the terminal is left to avoid confusion
     au BufEnter * if winnr("$") == 1 && &buftype == "terminal" | q | endif
 augroup end
-
-" Detect "TODO:" comments
-" this doesn't work quite right
-" augroup TodoHl
-"     au!
-"     " Regex:
-"     " \v          -- Magic mode, normal regex special characters
-"     " <           -- Beginning of word
-"     " \zs         -- Begin the syntax match group
-"     " (NOTE|TODO) -- highlight these!
-"     " \ze         -- End the syntax match group
-"     au Syntax * syn match MyTodo /\v<\zs(NOTE|TODO)\ze/
-"           \ containedin=.*Comment,vimCommentTitle
-" augroup END
-" hi def link MyTodo Todo
 
 " Auto-apply plugin changes
 au BufWritePost plugins.lua source <afile> | PackerCompile

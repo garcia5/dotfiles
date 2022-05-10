@@ -2,14 +2,6 @@ local lspconfig = require("lspconfig")
 local cmp_capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities())
 cmp_capabilities.textDocument.completion.completionItem.snippetSupport = true -- tell language servers we can handle snippets
 
-local local_mapper = function(mode, key, result, opts)
-    vim.api.nvim_buf_set_keymap(0, mode, key, result, opts)
-end
-
-local lsp_mapper = function(mode, key, result)
-    local_mapper(mode, key, "<cmd>lua " .. result .. "<CR>", { noremap = true, silent = true })
-end
-
 -- Give floating windows borders
 vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
     border = "rounded",
@@ -48,17 +40,18 @@ vim.diagnostic.config({
 })
 
 local custom_attach = function(client, bufnr)
+    local keymap_opts = { buffer = bufnr, silent = true, noremap = true }
     -- LSP mappings (only apply when LSP client attached)
-    lsp_mapper("n", "K", "vim.lsp.buf.hover()")
-    lsp_mapper("n", "<c-]>", "vim.lsp.buf.definition()")
-    lsp_mapper("n", "<leader>gr", "vim.lsp.buf.references()")
-    lsp_mapper("n", "gr", "vim.lsp.buf.rename()")
+    vim.keymap.set("n", "K", vim.lsp.buf.hover, keymap_opts)
+    vim.keymap.set("n", "<c-]>", vim.lsp.buf.definition, keymap_opts)
+    vim.keymap.set("n", "<leader>gr", vim.lsp.buf.references, keymap_opts)
+    vim.keymap.set("n", "gr", vim.lsp.buf.rename, keymap_opts)
 
     -- diagnostics
-    lsp_mapper("n", "<leader>dk", "vim.diagnostic.open_float()") -- diagnostic(s) on current line
-    lsp_mapper("n", "<leader>dn", "vim.diagnostic.goto_next()") -- move to next diagnostic in buffer
-    lsp_mapper("n", "<leader>dp", "vim.diagnostic.goto_prev()") -- move to prev diagnostic in buffer
-    lsp_mapper("n", "<leader>da", "vim.diagnostic.setqflist()") -- show all buffer diagnostics in qflist
+    vim.keymap.set("n", "<leader>dk", vim.diagnostic.open_float, keymap_opts) -- diagnostic(s) on current line
+    vim.keymap.set("n", "<leader>dn", vim.diagnostic.goto_next, keymap_opts) -- move to next diagnostic in buffer
+    vim.keymap.set("n", "<leader>dp", vim.diagnostic.goto_prev, keymap_opts) -- move to prev diagnostic in buffer
+    vim.keymap.set("n", "<leader>da", vim.diagnostic.setqflist, keymap_opts) -- show all buffer diagnostics in qflist
 
     -- use omnifunc
     vim.bo[bufnr].omnifunc = "v:lua.vim.lsp.omnifunc"
@@ -83,7 +76,8 @@ lspconfig.pyright.setup({
     on_attach = function(client, bufnr)
         custom_attach(client, bufnr)
         -- 'Organize imports' keymap for pyright only
-        local_mapper("n", "<Leader>ii", "<cmd>PyrightOrganizeImports<CR>", {
+        vim.keymap.set("n", "<Leader>ii", "<cmd>PyrightOrganizeImports<CR>", {
+            buffer = bufnr,
             silent = true,
             noremap = true,
         })
@@ -122,8 +116,8 @@ lspconfig.tsserver.setup({
         ts_utils.setup_client(client)
 
         -- TS specific mappings
-        local_mapper("n", "<Leader>ii", "<cmd>TSLspOrganize<CR>", { silent = true }) -- organize imports
-        local_mapper("n", "<Leader>R", "<cmd>TSLspRenameFile<CR>", { silent = true }) -- rename file AND update references to it
+        vim.keymap.set("n", "<Leader>ii", "<cmd>TSLspOrganize<CR>", { buffer = bufnr, silent = true, noremap = true }) -- organize imports
+        vim.keymap.set("n", "<Leader>R", "<cmd>TSLspRenameFile<CR>", { buffer = bufnr, silent = true, noremap = true }) -- rename file AND update references to it
 
         custom_attach(client, bufnr)
     end,

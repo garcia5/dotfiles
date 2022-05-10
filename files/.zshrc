@@ -104,9 +104,9 @@ if type brew &>/dev/null; then
 fi
 
 # Let gcc play with brew
-export LDFLAGS="-L$(brew --prefix)/opt/zlib/lib -L$(brew --prefix)/opt/bzip2/lib -L$(brew --prefix)/lib"
-export CPPFLAGS="-I$(brew --prefix)/opt/zlib/include -I$(brew --prefix)/opt/bzip2/include -I$(brew --prefix)/include"
-export CFLAGS="-O2"
+export LDFLAGS="-L$(brew --prefix)/opt/zlib/lib -L$(brew --prefix)/opt/bzip2/lib -L$(brew --prefix openssl)/lib"
+export CPPFLAGS="-I$(brew --prefix)/opt/zlib/include -I$(brew --prefix)/opt/bzip2/include -I$(brew --prefix openssl)/include"
+export CFLAGS="-I$(brew --prefix openssl)/include -I$(brew --prefix bzip2)/include -I$(brew --prefix readline)/include -I$(xcrun --show-sdk-path)/usr/include"
 
 # zsh
 source $ZSH/oh-my-zsh.sh
@@ -124,6 +124,7 @@ autoload -U add-zsh-hook # hooks
 
 # use bat for manpager
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+export BAT_THEME="Dracula"
 
 # FZF things
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
