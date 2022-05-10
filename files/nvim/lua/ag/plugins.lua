@@ -126,6 +126,10 @@ packer.startup(function(use)
             }
         end,
     })
+    use({
+        "nvim-telescope/telescope-ui-select.nvim", -- Use telescope to override vim.ui.select
+        requires = { "nvim-telescope/telescope.nvim" },
+    })
 
     -- Colorschemes
     use("chriskempson/base16-vim") -- pretty colors
