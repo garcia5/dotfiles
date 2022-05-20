@@ -8,7 +8,7 @@ export ZSH=$HOME/.oh-my-zsh
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="af-magic"
+ZSH_THEME="half-life"
 #
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -72,6 +72,7 @@ plugins=(
     git
     copypath
     ripgrep
+    zsh-vi-mode
     zsh-interactive-cd
 )
 
@@ -79,7 +80,7 @@ plugins=(
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
- # PATH
+# PATH
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
 
@@ -89,13 +90,6 @@ if [[ -n $SSH_CONNECTION ]]; then
 else
   export EDITOR='nvim'
 fi
-
-if [[ -f ~/.dotdash ]]; then
-    source ~/.dotdash
-fi
-
-# vi mode
-bindkey -v
 
 # Brew
 # Autocomplete
@@ -114,6 +108,12 @@ source $ZSH/oh-my-zsh.sh
 autoload -Uz compinit && compinit # completion
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 autoload -U add-zsh-hook # hooks
+
+# vi mode
+# make sure fzf keybindings still apply
+zvm_after_init() {
+    [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+}
 
 # Base16 Shell
 # BASE16_SHELL="$HOME/.config/base16-shell/"
@@ -144,7 +144,7 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 # Automatically use nvm version specified in .nvmrc (if any)
-# Intentionally not very flexible to avoid calling nvm we change directory
+# Intentionally not very flexible to avoid calling nvm every time we change directory
 load-nvmrc() {
 local nvmrc_path=".nvmrc"
 
@@ -173,5 +173,11 @@ alias luamake=/Users/agarcia/lua-language-server/3rd/luamake/luamake
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 source ~/.aliases
+if [[ -f ~/.dotdash ]]; then
+    source ~/.dotdash
+fi
+
 
 eval $(thefuck --alias)
+
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
