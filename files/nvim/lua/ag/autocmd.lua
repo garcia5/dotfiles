@@ -21,13 +21,13 @@ au("BufEnter", {
 local format_on_save = function()
     local lang = vim.opt.filetype:get()
 
-    if lang == "ts" then
+    if lang == "typescript" then
         vim.lsp.buf.formatting_seq_sync(nil, nil, { "tsserver", "null-ls" })
     else
         vim.lsp.buf.formatting_seq_sync()
     end
 
-    if vim.fn.exists("EslintFixAll") == 1 then
+    if lang == "typescript" or lang == "javascript" or lang == "vue" then
         vim.cmd("EslintFixAll")
     end
 end
@@ -43,11 +43,10 @@ au("TermOpen", {
     pattern = "*",
     callback = function()
         vim.cmd("startinsert")
-        vim.bo.number = false
-        vim.bo.relativenumber = false
-        vim.bo.cursorline = false
-        vim.bo.signcolumn = false
-        vim.bo.indent_blankline_enabled = false
+        vim.opt_local.number = false
+        vim.opt_local.relativenumber = false
+        vim.opt_local.cursorline = false
+        vim.opt_local.signcolumn = "no"
     end,
 })
 au("BufEnter", {
@@ -66,12 +65,14 @@ au("BufEnter", {
 
 au("FileType", {
     pattern = "gitcommit",
-    command = "vim.bo.EditorConfig_disable = true",
+    command = "let b:EditorConfig_disable = 1",
 })
 
 au("BufEnter", {
     pattern = "Dockerfile.*",
-    command = "vim.bo.filetype = 'Dockerfile'",
+    callback = function()
+        vim.opt_local.filetype = "Dockerfile"
+    end,
 })
 
 local nvim_tree_group = augroup("NvimTree", { clear = true })
@@ -80,14 +81,16 @@ au("FileType", {
     pattern = "NvimTree",
     callback = function()
         exit_if_last()
-        vim.bo.cursorline = true
+        vim.opt_local.cursorline = true
     end,
 })
 
 -- Open kitty with all folds closed
 au("BufReadPost", {
     pattern = "kitty.conf",
-    command = "vim.bo.foldlevel = 0",
+    callback = function()
+        vim.opt_local.foldlevel = 0
+    end,
 })
 
 -- Aerial specific mapping
