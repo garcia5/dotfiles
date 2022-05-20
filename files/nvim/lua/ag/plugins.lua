@@ -118,11 +118,12 @@ packer.startup(function(use)
             vim.g.startify_commands = {
                 { f = { "Find Files", "Telescope find_files" } },
                 { g = { "Live Grep", "Telescope live_grep" } },
+                { c = { "Checkout Branch", "Telescope git_branches" } },
             }
+            vim.g.startify_files_number = 5 -- show 5 most recent files
             vim.g.startify_lists = {
-                { type = "commands", header = { "    Commands" } },
-                { type = "sessions", header = { "    Sessions" } },
-                { type = "dir", header = { "    MRU " .. vim.fn.getcwd() } },
+                { type = "commands", header = { "    Commands" } }, -- Commands from above
+                { type = "dir", header = { "    MRU " .. vim.fn.getcwd() } }, -- MRU files from CWD
             }
         end,
     })
@@ -216,14 +217,7 @@ packer.startup(function(use)
             "javascript",
         },
     })
-    use({
-        "jose-elias-alvarez/nvim-lsp-ts-utils", -- helpers for typescript development
-        ft = {
-            "vue",
-            "typescript",
-            "javascript",
-        },
-    })
+    use("jose-elias-alvarez/nvim-lsp-ts-utils") -- helpers for typescript development })
     use({
         "kwkarlwang/bufresize.nvim", -- maintain buffer ratios on terminal resize
         config = function()
@@ -351,5 +345,6 @@ packer.startup(function(use)
             })
         end,
     })
+    use("b0o/schemastore.nvim") -- json schema provider
 end)
 -- NOTE: If :h <plugin> does not work, run :helptags ALL to add them

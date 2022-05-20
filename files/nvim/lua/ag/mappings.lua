@@ -31,17 +31,22 @@ mapper("n", "<Leader>ou", "<cmd>AerialToggle!<CR>") -- toggle code outline, powe
 mapper("n", "<Leader>rr", "<cmd>lua vim.lsp.stop_client(vim.lsp.get_active_clients())<CR>:e<CR>") -- restart language servers
 
 -- Telescope integration
-local telescope = require("telescope.builtin")
-mapper("n", "<Leader>ff", telescope.find_files) -- search all files, respecting .gitignore if one exists
-mapper("n", "<Leader>fb", telescope.buffers) -- search open buffers
-mapper("n", "<Leader>fl", telescope.current_buffer_fuzzy_find) -- search lines in current buffer
-mapper("n", "<Leader>gg", telescope.live_grep) -- search all lines in project
-mapper("n", "<Leader>fr", telescope.lsp_references) -- search references to symbol under cursor
-mapper("n", "<Leader>co", telescope.colorscheme) -- colorschemes
-mapper("n", "<Leader>gc", telescope.git_branches) -- checkout different branches
-mapper("n", "<Leader>re", telescope.git_commits) -- checkout commits; <CR> to checkout, <C-r>[m, s, h] to reset [mixed, soft, hard]
-mapper("n", "<Leader>qf", telescope.quickfix) -- jump to items in quickfix list
-mapper("n", "H", vim.lsp.buf.code_action) -- code actions
+local telescope_builtin = require("telescope.builtin")
+
+mapper("n", "<Leader>ff", telescope_builtin.find_files) -- search all files, respecting .gitignore if one exists
+mapper("n", "<Leader>fb", telescope_builtin.buffers) -- search open buffers
+mapper("n", "<Leader>fl", telescope_builtin.current_buffer_fuzzy_find) -- search lines in current buffer
+mapper("n", "<Leader>gg", telescope_builtin.live_grep) -- search all lines in project
+mapper("n", "<Leader>fr", telescope_builtin.lsp_references) -- search references to symbol under cursor
+mapper("n", "<Leader>co", telescope_builtin.colorscheme) -- colorschemes
+mapper("n", "<Leader>gc", telescope_builtin.git_branches) -- checkout different branches
+mapper("n", "<Leader>re", telescope_builtin.git_commits) -- checkout commits; <CR> to checkout, <C-r>[m, s, h] to reset [mixed, soft, hard]
+-- jump to items in quickfix list
+mapper("n", "<Leader>qf", function()
+    -- open picker at bottom of window to match where the quickfix list already is
+    telescope_builtin.quickfix(require("telescope.themes").get_ivy())
+end)
+mapper("n", "H", vim.lsp.buf.code_action) -- code actions (handled by telescope-ui-select)
 mapper("n", "<Leader>dd", "<cmd>Telescope dap commands<CR>") -- debugger actions
 
 -- Movemint

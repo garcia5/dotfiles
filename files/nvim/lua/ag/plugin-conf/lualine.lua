@@ -13,7 +13,7 @@ lualine.setup({
         lualine_c = {
             {
                 "filename",
-                path = 0, -- just file name
+                path = 1, -- full file path, doesn't take up too much room b/c laststatus = 3
                 cond = is_lualine_buf,
             },
             {

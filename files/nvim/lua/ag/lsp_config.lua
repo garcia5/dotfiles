@@ -1,4 +1,5 @@
 local lspconfig = require("lspconfig")
+
 local cmp_capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities())
 cmp_capabilities.textDocument.completion.completionItem.snippetSupport = true -- tell language servers we can handle snippets
 
@@ -14,7 +15,10 @@ vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.s
 -- Configure diagnostic display
 vim.diagnostic.config({
     virtual_text = {
+        -- Only display errors w/ virtual text
         severity = vim.diagnostic.severity.ERROR,
+        -- Prepend with diagnostic source if there is more than one attached to the buffer
+        -- (e.g. (eslint) Error: blah blah blah)
         source = "if_many",
     },
     float = {
@@ -106,11 +110,29 @@ lspconfig.eslint.setup({
 -- typescript
 lspconfig.tsserver.setup({
     capabilities = cmp_capabilities,
+    -- required to enable inlay hints
+    init_options = require("nvim-lsp-ts-utils").init_options,
     on_attach = function(client, bufnr)
         local ts_utils = require("nvim-lsp-ts-utils")
         ts_utils.setup({
-            update_imports_on_move = true,
-            require_confirmation_on_move = true,
+            update_imports_on_move = false,
+            enable_import_on_completion = true,
+            auto_inlay_hints = false, -- doesn't _qutie_ work
+            inlay_hints_highlight = "Comment",
+            inlay_hints_format = {
+                Type = {
+                    highlight = "Comment",
+                    text = function(text)
+                        return "->" .. text
+                    end,
+                },
+                Parameter = {
+                    highlight = "Comment",
+                },
+                Enum = {
+                    highlight = "Comment",
+                },
+            },
         })
 
         ts_utils.setup_client(client)
@@ -175,23 +197,33 @@ lspconfig.bashls.setup({
     on_attach = custom_attach,
 })
 
--- lua (optional)
+-- lua
 local lua_ls_path = vim.fn.expand("~/lua-language-server/")
 local lua_ls_bin = lua_ls_path .. "bin/macOS/lua-language-server"
-if vim.fn.executable(lua_ls_bin) then
-    lspconfig.sumneko_lua.setup({
-        capabilities = cmp_capabilities,
-        on_attach = custom_attach,
-        cmd = { lua_ls_bin, "-E", lua_ls_path .. "main.lua" },
-        settings = {
-            Lua = {
-                diagnostics = {
-                    -- Get the language server to recognize the `vim` global
-                    globals = {
-                        "vim",
-                    },
+lspconfig.sumneko_lua.setup({
+    capabilities = cmp_capabilities,
+    on_attach = custom_attach,
+    cmd = { lua_ls_bin, "-E", lua_ls_path .. "main.lua" },
+    settings = {
+        Lua = {
+            diagnostics = {
+                -- Get the language server to recognize the `vim` global
+                globals = {
+                    "vim",
                 },
             },
         },
-    })
-end
+    },
+})
+
+-- json w/ common schemas
+lspconfig.jsonls.setup({
+    capabilities = cmp_capabilities,
+    on_attach = custom_attach,
+    settings = {
+        json = {
+            schemas = require("schemastore").json.schemas(),
+            validate = { enable = true },
+        },
+    },
+})

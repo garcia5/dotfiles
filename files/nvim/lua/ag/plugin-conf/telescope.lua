@@ -1,14 +1,5 @@
 local telescope = require("telescope")
 
-local M = {}
-
--- Lets me globally apply themes
-M.builtin = function(builtin_func, opts)
-    local func = require("telescope.builtin")[builtin_func]
-    --local theme = require('telescope.themes').get_ivy()
-    return func(opts)
-end
-
 telescope.setup({
     defaults = {
         vimgrep_arguments = {
@@ -58,15 +49,6 @@ telescope.setup({
         },
     },
     extensions = {
-        dash = {
-            file_type_keywords = {
-                python = { "django", "python3" },
-                vue = { "vue", "typescript" },
-                typescript = { "typescript", "nodejs" },
-                lua = { "lua" },
-                bash = { "bash" },
-            },
-        },
         fzf = {
             fuzzy = true, -- let me make typos in file names please
             override_generic_sorter = true, -- override the generic sorter
@@ -82,5 +64,3 @@ telescope.setup({
 telescope.load_extension("fzf")
 telescope.load_extension("dap")
 telescope.load_extension("ui-select")
-
-return M
