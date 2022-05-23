@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Essentials
 alias ll='exa -hal'
 alias la='exa -a'
@@ -7,7 +9,8 @@ alias claer='clear'
 # Git
 alias gs='git status'
 alias gd='git diff'
-alias gl='git plog'
+alias gl='glols' # git plugin for zsh
+
 gpush() {
     cur_branch=$(git branch --show-current)
     has_remote=$(git branch -r --list "origin/$cur_branch")
@@ -18,29 +21,32 @@ gpush() {
         git push --set-upstream origin "$cur_branch" "$@"
     fi
 }
+
+is-git-repo() {
+    git rev-parse HEAD > /dev/null 2>&1
+}
+
 fzf-git-branch() {
-    git rev-parse HEAD > /dev/null 2>&1 || return
+    is-git-repo || return
 
-    git branch --color=always --all --sort=-committerdate |
-        grep -v HEAD |
-        fzf --height 50% --ansi --no-multi --preview-window right:65% \
-        --preview 'git log -n 50 --color=always --date=short --pretty="format:%C(auto)%cd %h%d %s" $(sed "s/.* //" <<< {})' |
-        sed "s/.* //"
+    FZF_DEFAULT_COMMAND="git branch --all --color=always --sort=-committerdate | grep -v HEAD | sed 's/^..//' | cut -d' ' -f1"
+    fzf \
+        --height 50% \
+        --ansi \
+        --header "Enter (checkout) / Ctrl-a (checkout -b) / Ctrl-t (checkout --track) / Ctrl-d (delete)" \
+        --bind "enter:execute:git checkout {..}" \
+        --bind "enter:+accept" \
+        --bind "ctrl-a:execute:git checkout -b {q}" \
+        --bind "ctrl-a:+accept" \
+        --bind "ctrl-t:execute:git checkout --track {..}" \
+        --bind "ctrl-t:+accept" \
+        --bind "ctrl-d:execute:git branch -d {..}" \
+        --bind "ctrl-d:+accept" \
+        --preview-window right:50% \
+        --preview 'git log -n 50 --color=always --date=short --pretty="format:%C(auto)%cd %h%d %s" $(sed "s/.* //" <<< {})'
 }
-fzf-git-checkout() {
-    git rev-parse HEAD > /dev/null 2>&1 || return
 
-    local branch
-
-    branch=$(fzf-git-branch)
-    if [[ "$branch" = "" ]]; then
-        echo "No branch selected."
-        return
-    fi
-
-    git checkout $branch
-}
-alias gc='fzf-git-checkout'
+alias gc='fzf-git-branch'
 alias lg='lazygit'
 
 # Others
