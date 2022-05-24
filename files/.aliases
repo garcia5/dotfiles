@@ -29,9 +29,9 @@ is-git-repo() {
 fzf-git-branch() {
     is-git-repo || return
 
-    FZF_DEFAULT_COMMAND="git branch --all --color=always --sort=-committerdate | grep -v HEAD | sed 's/^..//' | cut -d' ' -f1"
-    fzf \
-        --height 50% \
+    git branch --all --color=always --sort=-committerdate | grep -v HEAD | sed 's/^..//' | cut -d' ' -f1 |
+    fzf-tmux \
+        -p 80%,60%\
         --ansi \
         --header "Enter (checkout) / Ctrl-a (checkout -b) / Ctrl-t (checkout --track) / Ctrl-d (delete)" \
         --bind "enter:execute:git checkout {..}" \
