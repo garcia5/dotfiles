@@ -11,7 +11,7 @@ HAS_BREW=$(command -v brew)
 HAS_PYENV=$(command -v pyenv)
 
 function usage {
-    echo "USAGE: $0 [bash, brew, nvim, tmux, zsh, alacritty, packages, all]"
+    echo "USAGE: $0 [bash, brew, nvim, tmux, zsh, alacritty, kitty, packages, all]"
 }
 
 function runcmd {
@@ -49,6 +49,7 @@ function setup_brew {
         echo "No brew installation found, installing..."
         runcmd /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
     fi
+    eval $(/opt/homebrew/bin/brew shellenv)
 
     runcmd brew update
 }
@@ -196,6 +197,12 @@ function setup_zsh {
     ln -s "$DF_HOME/files/.aliases" "$file"
 }
 
+function setup_kitty {
+    backup_dir "$CONFIG_HOME/kitty/"
+    mkdir -p "$CONFIG_HOME/kitty/"
+    ln -s "$DF_HOME/files/kitty" "$CONFIG_HOME/kitty/"
+}
+
 function setup_alacritty {
     backup_dir "$CONFIG_HOME/alacritty/"
     mkdir -p "$CONFIG_HOME/alacritty/"
@@ -226,7 +233,11 @@ for conf in "$@"; do
         "alacritty")
             setup_alacritty
             ;;
+        "kitty")
+            setup_kitty
+            ;;
         "all")
+            setup_kitty
             setup_alacritty
             setup_brew
             install_packages
