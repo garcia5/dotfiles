@@ -1,0 +1,106 @@
+#!/bin/bash
+join-lines() {
+  local item
+  while read item; do
+    echo -n "${(q)item} "
+  done
+}
+
+# Git
+is-git-repo() {
+    git rev-parse HEAD > /dev/null 2>&1
+}
+
+gpush() {
+    is-git-repo || echo 'Not in git repo'
+
+    cur_branch=$(git branch --show-current)
+    has_remote=$(git branch -r --list "origin/$cur_branch")
+    if [[ $has_remote ]]; then
+        git push "$@"
+    else
+        echo "No remote branch found, creating one"
+        git push --set-upstream origin "$cur_branch" "$@"
+    fi
+}
+
+# If I'm working with the git index, autocomplete changed files. Otherwise fallback to default command (all files)
+zle -N git-ctrl-t-widget
+git-ctrl-t-widget() {
+    if [[ $LBUFFER == 'git add ' || $LBUFFER == 'git restore ' ]]; then
+        result=$(fzf-git-changed | join-lines)
+        zle reset-prompt
+        LBUFFER+=$result
+    else
+        eval $FZF_CTRL_T_COMMAND | fzf
+    fi
+}
+bindkey '' git-ctrl-t-widget
+
+gstash() {
+    is-git-repo || echo 'Not in git repo'
+
+    local stash=$(fzf-git-stash)
+    git stash pop "$stash"
+}
+
+# FZF
+fzf-git-branch() {
+    is-git-repo || echo 'Not in git repo'
+
+    git branch --all --color=always --sort=-committerdate | grep -v HEAD | sed 's/^..//' | cut -d' ' -f1 |
+    fzf-tmux \
+        -p 80%,60%\
+        --ansi \
+        --header "Enter (checkout) / Ctrl-a (checkout -b) / Ctrl-t (checkout --track) / Ctrl-d (delete)" \
+        --bind "enter:execute(git checkout {..})+accept" \
+        --bind "ctrl-a:execute(git checkout -b {q})+accept" \
+        --bind "ctrl-t:execute(git checkout --track {..})+accept" \
+        --bind "ctrl-d:execute(git branch -d {..})+accept" \
+        --preview-window right:50% \
+        --preview 'git log --oneline --graph --date=short --color=always --pretty="format:%C(auto)%cd %h%d %s"'
+}
+
+fzf-git-changed() {
+    is-git-repo || echo 'Not in git repo'
+
+    git -c color.status=always status --short |
+    fzf \
+        --multi \
+        --ansi \
+        --nth 2..,.. \
+        --preview '(git diff --color=always -- {-1} | sed 1,4d; cat {-1})' |
+    cut -c4- | sed 's/.* -> //'
+}
+
+fzf-git-stash() {
+    is-git-repo || echo 'Not in git repo'
+
+    FZF_DEFAULT_COMMAND='git stash list'
+    fzf \
+        --ansi \
+        --reverse \
+        --no-multi \
+        -d: \
+        --bind='ctrl-a:' \
+        --preview='git stash show --color=always --stat {1}' |
+    cut -d: -f1
+}
+
+fzf-ls() {
+    FZF_DEFAULT_COMMAND='fd -tf'
+    fzf \
+        --ansi \
+        --multi \
+        --header "ctrl-d: Directories / ctrl-f: Files" \
+        --bind "ctrl-d:change-prompt(Directories> )+reload(fd -td)" \
+        --bind "ctrl-f:change-prompt(Files> )+reload(fd -tf)" \
+        --prompt "Files> "
+}
+
+# Others
+source-envfile() {
+    set -a
+    source "$1"
+    set +a
+}

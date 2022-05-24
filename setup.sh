@@ -195,6 +195,10 @@ function setup_zsh {
     file="$HOME/.aliases"
     backup_file $file
     ln -s "$DF_HOME/files/.aliases" "$file"
+    # do functions
+    file="$HOME/.functions"
+    backup_file $file
+    ln -s "$DF_HOME/files/.functions" "$file"
 }
 
 function setup_kitty {

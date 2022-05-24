@@ -113,6 +113,7 @@ autoload -U add-zsh-hook # hooks
 # make sure fzf keybindings still apply
 zvm_after_init() {
     [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+    [ -f ~/.functions ] && source ~/.functions
 }
 
 # Base16 Shell
@@ -173,6 +174,7 @@ alias luamake=/Users/agarcia/lua-language-server/3rd/luamake/luamake
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 source ~/.aliases
+source ~/.functions
 if [[ -f ~/.dotdash ]]; then
     source ~/.dotdash
 fi
