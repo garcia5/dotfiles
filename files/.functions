@@ -33,7 +33,7 @@ git-ctrl-t-widget() {
         LBUFFER+=$result
     # Otherwise do default and fuzzy search all files
     else
-        LBUFFER+=$(eval $FZF_CTRL_T_COMMAND | fzf)
+        LBUFFER+=$(eval $FZF_CTRL_T_COMMAND | fzf $FZF_CTRL_T_OPTS)
     fi
 }
 bindkey '' git-ctrl-t-widget
@@ -58,6 +58,7 @@ fzf-git-branch() {
         --bind "ctrl-a:execute(git checkout -b {q})+accept" \
         --bind "ctrl-t:execute(git checkout --track {..})+accept" \
         --bind "ctrl-d:execute(git branch -d {..})+accept" \
+        --prompt "Braches> " \
         --preview-window right:50% \
         --preview 'git log --oneline --graph --date=short --color=always --pretty="format:%C(auto)%cd %h%d %s"'
 }
@@ -99,9 +100,25 @@ fzf-ls() {
         --prompt "Files> "
 }
 
+fzf-cd() {
+    fd -td -H -E '*.git' |
+    fzf \
+        --ansi \
+        --no-multi \
+        --prompt "Directories> "
+}
+
 # Others
 source-envfile() {
     set -a
     source "$1"
     set +a
 }
+
+zle -N dcd
+dcd() {
+    result=$(fzf-cd)
+    zle reset-prompt
+    LBUFFER+=$result
+}
+bindkey '' dcd

@@ -10,6 +10,7 @@ telescope.setup({
             "--line-number",
             "--column",
             "--smart-case",
+            "--vimgrep",
         },
         file_ignore_patterns = {
             "%.png",

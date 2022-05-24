@@ -1,0 +1,11 @@
+{
+    "Setup": {
+        "prefix": ["setup"],
+        "body": [
+            "setup(${1:props}${2:, ctx}) {",
+            "\t$0",
+            "},"
+        ],
+        "description": "composition API setup function"
+    }
+}
