@@ -9,12 +9,12 @@ alias claer='clear'
 # Git
 alias gs='git status'
 alias gd='git diff'
+alias gdc='git diff --cached'
 alias gl="git log \
     --graph \
     --pretty='%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%ar) %C(bold blue)<%an>%Creset' \
     --stat"
 alias gc='fzf-git-branch'
-# alias ga='__fzf-git-changed-'
 
 # FZF
 alias show='exa -hal $(fzf-ls)'

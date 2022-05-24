@@ -24,15 +24,16 @@ gpush() {
     fi
 }
 
-# If I'm working with the git index, autocomplete changed files. Otherwise fallback to default command (all files)
 zle -N git-ctrl-t-widget
 git-ctrl-t-widget() {
-    if [[ $LBUFFER == 'git add ' || $LBUFFER == 'git restore ' ]]; then
+    # If the current command is 'git add ' or 'git restore ', fuzzy find changed files
+    if [[ $LBUFFER =~ '^git (add|restore|checkout) ' ]]; then
         result=$(fzf-git-changed | join-lines)
         zle reset-prompt
         LBUFFER+=$result
+    # Otherwise do default and fuzzy search all files
     else
-        eval $FZF_CTRL_T_COMMAND | fzf
+        LBUFFER+=$(eval $FZF_CTRL_T_COMMAND | fzf)
     fi
 }
 bindkey '' git-ctrl-t-widget
