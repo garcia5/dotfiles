@@ -55,5 +55,3 @@ source-envfile() {
     source "$1"
     set +a
 }
-
-alias sqlize='python ~/sqlize.py | pbcopy'
