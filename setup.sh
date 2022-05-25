@@ -116,15 +116,15 @@ function setup_bash {
     # .profile sourced automatically by bash
     file="$HOME/.profile"
     backup_file $file
-    ln -s "$DF_HOME/files/.profile" "$file"
+    ln -s "$DF_HOME/files/profile" "$file"
     # .profile sources .bashrc
     file="$HOME/.bashrc"
     backup_file $file
-    ln -s "$DF_HOME/files/.bashrc" "$file"
+    ln -s "$DF_HOME/files/bashrc" "$file"
     # .bashrc sources .aliases
     file="$HOME/.aliases"
     backup_file $file
-    ln -s "$DF_HOME/files/.aliases" "$file"
+    ln -s "$DF_HOME/files/aliases" "$file"
 
     # Color schemes
     if [[ ! $(-d $HOME/.config/base16-shell) ]]; then
@@ -174,7 +174,7 @@ function setup_nvim {
 function setup_tmux {
     file="$HOME/.tmux.conf"
     backup_file $file
-    ln -s "$DF_HOME/files/.tmux.conf" "$file"
+    ln -s "$DF_HOME/files/tmux.conf" "$file"
 }
 
 function setup_zsh {
@@ -190,15 +190,15 @@ function setup_zsh {
     fi
     file="$HOME/.zshrc"
     backup_file $file
-    ln -s "$DF_HOME/files/.zshrc" "$file"
+    ln -s "$DF_HOME/files/zshrc" "$file"
     # do aliases as well
     file="$HOME/.aliases"
     backup_file $file
-    ln -s "$DF_HOME/files/.aliases" "$file"
+    ln -s "$DF_HOME/files/aliases" "$file"
     # do functions
     file="$HOME/.functions"
     backup_file $file
-    ln -s "$DF_HOME/files/.functions" "$file"
+    ln -s "$DF_HOME/files/functions" "$file"
 }
 
 function setup_kitty {
