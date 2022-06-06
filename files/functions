@@ -33,7 +33,7 @@ git-ctrl-t-widget() {
         LBUFFER+=$result
     # Otherwise do default and fuzzy search all files
     else
-        LBUFFER+=$(eval $FZF_CTRL_T_COMMAND | fzf $FZF_CTRL_T_OPTS)
+        LBUFFER+=$(eval $FZF_CTRL_T_COMMAND | eval "fzf $FZF_CTRL_T_OPTS")
     fi
 }
 bindkey '' git-ctrl-t-widget

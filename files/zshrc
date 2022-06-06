@@ -133,8 +133,7 @@ export FZF_DEFAULT_COMMAND='fd -tf'
 export FZF_CTRL_T_COMMAND="fd -tf"
 export FZF_DEFAULT_OPTS="--height 40% --reverse"
 # Preview files (but not everything else) with bat
-export FZF_CTRL_T_OPTS="$FZF_DEFAULT_OPTS \
-    --preview 'bat --color=always --line-range=:40 --style=numbers,changes {}'"
+export FZF_CTRL_T_OPTS="$FZF_DEFAULT_OPTS --preview 'bat --color=always --line-range=:40 --style=numbers,changes {}'"
 
 # Python
 eval "$(pyenv init -)"

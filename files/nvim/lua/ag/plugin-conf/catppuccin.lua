@@ -1,5 +1,6 @@
 local catp = require("catppuccin")
 
+vim.g.catppuccin_flavour = "frappe"
 catp.setup({
     transparent_background = true,
     term_colors = true,

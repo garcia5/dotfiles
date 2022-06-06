@@ -21,7 +21,7 @@ packer.startup(function(use)
         config = function()
             require("Comment").setup({
                 pre_hook = function(ctx)
-                    -- Use commentstring plugins for vue SFCs
+                    -- Calculate commentstring on the fly for vue files
                     if vim.bo.filetype == "vue" then
                         local U = require("Comment.utils")
 
@@ -151,6 +151,7 @@ packer.startup(function(use)
     use({
         "catppuccin/nvim", -- another another lua colorscheme
         as = "catppuccin",
+        branch = "main",
         config = function()
             require("ag.plugin-conf.catppuccin")
         end,
@@ -218,12 +219,6 @@ packer.startup(function(use)
         },
     })
     use("jose-elias-alvarez/nvim-lsp-ts-utils") -- helpers for typescript development })
-    use({
-        "kwkarlwang/bufresize.nvim", -- maintain buffer ratios on terminal resize
-        config = function()
-            require("bufresize").setup()
-        end,
-    })
     use({
         "hrsh7th/vim-vsnip", -- snippets
         ft = {
@@ -314,7 +309,8 @@ packer.startup(function(use)
             require("nvim-tree").setup({
                 hijack_cursor = true,
                 view = {
-                    width = 40,
+                    adaptive_size = true,
+                    width = 30,
                     side = "left",
                 },
                 git = {

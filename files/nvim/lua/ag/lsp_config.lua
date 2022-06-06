@@ -164,7 +164,7 @@ lspconfig.vuels.setup({
             },
         },
         format = {
-            enable = false, -- delegated to prettier via null_ls
+            enable = false, -- delegated to prettierd via null_ls
             options = {
                 useTabs = false,
                 tabSize = 2,
