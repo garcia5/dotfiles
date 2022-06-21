@@ -84,7 +84,9 @@ fzf-git-stash() {
         --reverse \
         --no-multi \
         -d: \
-        --bind='ctrl-a:' \
+        --header='Enter (apply) / Ctrl-d (drop)' \
+        --bind='enter:execute(git stash apply --quiet {..})+accept' \
+        --bind='ctrl-d:execute(git stash drop --quiet {..})+accept' \
         --preview='git stash show --color=always --stat {1}' |
     cut -d: -f1
 }
