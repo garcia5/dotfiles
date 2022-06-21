@@ -53,29 +53,21 @@ dap.listeners.before["event_exited"]["dapui_config"] = function()
 end
 
 dapui.setup({
-    sidebar = {
+    layouts = {
         {
-            id = "scopes",
-            size = 0.33,
+            elements = {
+                {
+                    id = "scopes",
+                    size = 0.33,
+                },
+                {
+                    id = "breakpoints",
+                    size = 0.33,
+                },
+            },
+            position = "left",
+            size = 40,
         },
-        {
-            id = "breakpoints",
-            size = 0.33,
-        },
-        {
-            id = "watches",
-            size = 0,
-        },
-        {
-            id = "stacks",
-            size = 0,
-        },
-        size = 40,
-        position = "left",
-    },
-    tray = {
-        elements = {},
-        size = 0,
     },
     floating = {
         max_height = nil, -- These can be integers or a float between 0 and 1.

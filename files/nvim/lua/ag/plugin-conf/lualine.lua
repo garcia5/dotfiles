@@ -1,21 +1,20 @@
 local lualine = require("lualine")
-local is_lualine_buf = function()
-    return vim.opt.buftype:get() ~= "terminal"
-end
 
 lualine.setup({
     sections = {
         --+-------------------------------------------------+--
         --| A | B | C                             X | Y | Z |--
         --+-------------------------------------------------+--
-        lualine_a = { "mode" },
+        lualine_a = {
+            {
+                "mode",
+                fmt = function(m)
+                    return m:sub(1, 1)
+                end,
+            },
+        },
         lualine_b = { "branch" },
         lualine_c = {
-            {
-                "filename",
-                path = 1, -- full file path, doesn't take up too much room b/c laststatus = 3
-                cond = is_lualine_buf,
-            },
             {
                 "diff",
                 symbols = {
@@ -23,29 +22,33 @@ lualine.setup({
                     removed = "-",
                     added = "+",
                 },
-                cond = is_lualine_buf,
             },
-        },
-        lualine_x = {
             {
                 "diagnostics",
                 sources = { "nvim_diagnostic" },
-                cond = is_lualine_buf,
             },
-        },
-        lualine_y = { "filetype" },
-        lualine_z = {
+            -- add empty section to center filename
             {
-                "location",
-                cond = is_lualine_buf,
+                "%=",
+                separator = "",
+            },
+            {
+                "filename",
+                path = 1, -- full file path, doesn't take up too much room b/c laststatus = 3
+                color = { gui = "bold" },
             },
         },
+        lualine_x = {},
+        lualine_y = { "filetype" },
+        lualine_z = { "location" },
     },
     tabline = {
         lualine_a = {
             {
-                "buffers",
-                max_length = vim.o.columns / 2, -- take up at most 1/2 of the window
+                function()
+                    return vim.fn.getcwd()
+                end,
+                icon = "",
             },
         },
         lualine_b = {},
@@ -55,7 +58,6 @@ lualine.setup({
                 "aerial",
                 sep = " ) ",
                 depth = nil,
-                cond = is_lualine_buf,
             },
         },
         lualine_y = {},
@@ -65,12 +67,14 @@ lualine.setup({
         section_separators = { left = "", right = "" },
         component_separators = { left = "", right = "" },
         theme = "catppuccin",
-        disabled_filetypes = { "aerial", "TelescopePrompt", "help" },
+        disabled_filetypes = { "aerial" },
+        globalstatus = true,
     },
     extensions = {
         "aerial",
-        "quickfix",
         "fugitive",
+        "nvim-dap-ui",
         "nvim-tree",
+        "quickfix",
     },
 })
