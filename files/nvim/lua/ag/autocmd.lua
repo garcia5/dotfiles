@@ -26,10 +26,6 @@ local format_on_save = function()
     else
         vim.lsp.buf.formatting_seq_sync()
     end
-
-    if lang == "typescript" or lang == "javascript" or lang == "vue" then
-        vim.cmd("EslintFixAll")
-    end
 end
 
 au("BufWritePre", {

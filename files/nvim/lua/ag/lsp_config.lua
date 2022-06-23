@@ -20,13 +20,14 @@ vim.diagnostic.config({
         -- Prepend with diagnostic source if there is more than one attached to the buffer
         -- (e.g. (eslint) Error: blah blah blah)
         source = "if_many",
+        signs = false,
     },
     float = {
         severity_sort = true,
         source = "if_many",
         border = "rounded",
         header = {
-            "",
+            "Diagnostics",
             "LspDiagnosticsDefaultWarning",
         },
         prefix = function(diagnostic)
@@ -69,8 +70,13 @@ null_ls.setup({
         --#formatters
         null_ls.builtins.formatting.stylua,
         null_ls.builtins.formatting.prettierd,
+
         --#diagnostics/linters
         null_ls.builtins.diagnostics.flake8,
+        null_ls.builtins.diagnostics.eslint_d,
+
+        --#code actions
+        null_ls.builtins.code_actions.eslint_d,
     },
 })
 
@@ -99,14 +105,6 @@ lspconfig.pyright.setup({
     },
 })
 
--- eslint
-lspconfig.eslint.setup({
-    on_attach = custom_attach,
-    settings = {
-        packageManager = "yarn",
-    },
-})
-
 -- typescript
 lspconfig.tsserver.setup({
     capabilities = cmp_capabilities,
@@ -117,7 +115,7 @@ lspconfig.tsserver.setup({
         ts_utils.setup({
             update_imports_on_move = false,
             enable_import_on_completion = true,
-            auto_inlay_hints = false, -- doesn't _qutie_ work
+            auto_inlay_hints = false, -- doesn't _quite_ work
             inlay_hints_highlight = "Comment",
             inlay_hints_format = {
                 Type = {
