@@ -23,10 +23,6 @@ lualine.setup({
                     added = "+",
                 },
             },
-            {
-                "diagnostics",
-                sources = { "nvim_diagnostic" },
-            },
             -- add empty section to center filename
             {
                 "%=",
@@ -35,10 +31,49 @@ lualine.setup({
             {
                 "filename",
                 path = 1, -- full file path, doesn't take up too much room b/c laststatus = 3
-                color = { gui = "bold" },
+                color = { fg = "#ffffff", gui = "bold" },
             },
         },
-        lualine_x = {},
+        lualine_x = {
+            {
+                function()
+                    local msg = "No Active Lsp"
+                    local buf_ft = vim.api.nvim_buf_get_option(0, "filetype")
+                    local clients = vim.lsp.get_active_clients()
+                    if next(clients) == nil then
+                        return msg
+                    end
+
+                    local client_names = {}
+                    local active_client = false
+                    for _, client in ipairs(clients) do
+                        local filetypes = client.config.filetypes
+                        if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
+                            active_client = true
+                            if not client_names[client.name] then
+                                client_names[client.name] = 1
+                            end
+                        end
+                    end
+
+                    if active_client then
+                        local names = {}
+                        for name, _ in pairs(client_names) do
+                            table.insert(names, name)
+                        end
+                        return table.concat(names, ", ")
+                    end
+
+                    return "No Active Lsp"
+                end,
+                icon = " LSP:",
+                color = { gui = "bold" },
+            },
+            {
+                "diagnostics",
+                sources = { "nvim_diagnostic" },
+            },
+        },
         lualine_y = { "filetype" },
         lualine_z = { "location" },
     },
