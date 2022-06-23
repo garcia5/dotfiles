@@ -55,8 +55,6 @@ function setup_brew {
 }
 
 function install_packages {
-    #APT_PACKAGES=( 'liblzma-dev' 'libsqlite3-dev' 'unixodbc-dev' ) # TODO: add to this
-    # APT packages __should__ be taken care of by brew now
     BREW_PACKAGES=( 'gcc' 'fzf' 'bat' 'ripgrep' 'exa' 'pyenv' 'yarn' 'neovim' 'xz' 'sqlite' 'unixodbc' 'tmux' 'ninja' 'zsh' )
 
     echo ""
@@ -82,7 +80,7 @@ function install_packages {
     echo ""
     echo "installing from npm..."
     if [[ -d "$HOME/.nvm" ]]; then
-        echo "nvm is already installed"
+        echo "found nvm installation $(nvm --verison)"
     else
         echo "installing nvm"
         runcmd curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
@@ -92,7 +90,7 @@ function install_packages {
         echo "installing node"
         runcmd nvm install node
     fi
-    NPM_PACKAGES=( 'bash-language-server' 'pyright' 'vls' 'typescript-language-server' 'vscode-langservers-extracted' 'neovim' 'yaml-language-server' )
+    NPM_PACKAGES=( 'bash-language-server' 'pyright' 'vls' 'typescript-language-server' 'vscode-langservers-extracted' 'neovim' 'yaml-language-server' 'eslint_d' )
     npm_installed=$(npm -g list)
     for pkg in ${NPM_PACKAGES[@]}; do
         if [[ $(echo "$npm_installed" | grep -c "$pkg") -ge 1 ]]; then
@@ -199,6 +197,8 @@ function setup_zsh {
     file="$HOME/.functions"
     backup_file $file
     ln -s "$DF_HOME/files/functions" "$file"
+    # do custom theme
+    ln -s "$DF_HOME/files/quarter-life.zsh-theme" "$HOME/.oh-my-zsh/themes/quarter-life.zsh-theme"
 }
 
 function setup_kitty {
