@@ -1,8 +1,9 @@
 -- Bootstrap packer if necessary
 local install_path = vim.fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
+local packer_bootstrap = false
 
 if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
-    vim.fn.system({ "git", "clone", "https://github.com/wbthomason/packer.nvim", install_path })
+    packer_bootstrap = vim.fn.system({ "git", "clone", "https://github.com/wbthomason/packer.nvim", install_path })
 end
 
 -- Init setup
@@ -133,7 +134,6 @@ packer.startup(function(use)
     })
 
     -- Colorschemes
-    use("chriskempson/base16-vim") -- pretty colors
     use("shaunsingh/moonlight.nvim") -- VSCode's moonlight theme in lua
     use("nxvu699134/vn-night.nvim") -- dark purple theme w/ treesitter support
     use({
@@ -342,5 +342,10 @@ packer.startup(function(use)
         end,
     })
     use("b0o/schemastore.nvim") -- json schema provider
+
+    -- Grab all packages if we're setting up for the first time
+    if packer_bootstrap then
+        packer.sync()
+    end
 end)
 -- NOTE: If :h <plugin> does not work, run :helptags ALL to add them
