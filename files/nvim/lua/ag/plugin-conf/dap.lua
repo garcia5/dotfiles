@@ -42,7 +42,7 @@ end
 
 -- automatically open/close the sidebar when debugging starts
 dap.listeners.after["event_stopped"]["dapui_config"] = function()
-    dapui.open("sidebar")
+    dapui.open()
 end
 -- TODO: these aren't closing the ui on `lua require('dap').close()` or `.terminate()`!
 dap.listeners.before["event_terminated"]["dapui_config"] = function()
@@ -56,17 +56,18 @@ dapui.setup({
     layouts = {
         {
             elements = {
-                {
-                    id = "scopes",
-                    size = 0.33,
-                },
-                {
-                    id = "breakpoints",
-                    size = 0.33,
-                },
+                "scopes",
+                "breakpoints",
             },
             position = "left",
             size = 40,
+        },
+        {
+            elements = {
+                "repl",
+            },
+            position = "bottom",
+            size = 10,
         },
     },
     floating = {
