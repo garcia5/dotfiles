@@ -78,23 +78,16 @@ lualine.setup({
         lualine_z = { "location" },
     },
     tabline = {
-        lualine_a = {
-            {
-                function()
-                    return vim.fn.getcwd()
-                end,
-                icon = "",
-            },
-        },
+        lualine_a = {},
         lualine_b = {},
-        lualine_c = {},
-        lualine_x = {
+        lualine_c = {
             {
                 "aerial",
                 sep = " ) ",
                 depth = nil,
             },
         },
+        lualine_x = {},
         lualine_y = {},
         lualine_z = { "tabs" },
     },
