@@ -34,8 +34,9 @@ lualine.setup({
             },
             {
                 "filename",
-                path = IS_WIDE and 0 or 1, -- full file path, doesn't take up too much room b/c laststatus = 3
+                path = 1, -- full file path, doesn't take up too much room b/c laststatus = 3
                 color = { fg = "#ffffff", gui = "bold" },
+                shorting_target = 30,
             },
         },
         lualine_x = {

@@ -46,8 +46,6 @@ mapper("n", "<Leader>qf", function()
     -- open picker at bottom of window to match where the quickfix list already is
     telescope_builtin.quickfix(require("telescope.themes").get_ivy())
 end)
-mapper("n", "H", vim.lsp.buf.code_action) -- code actions (handled by telescope-ui-select)
-mapper("n", "<Leader>dd", "<cmd>Telescope dap commands<CR>") -- debugger actions
 
 -- Movemint
 mapper("n", "<C-j>", "<C-w>j")
@@ -69,11 +67,3 @@ mapper("t", "<C-l>", [[<C-\><C-n><C-w>l]])
 -- Git things
 mapper("n", "<Leader>gs", ":tab Git<CR>") -- `git status` in a new tab to save screen real estate
 mapper("n", "<Leader>gd", "<cmd>Gdiffsplit<CR>") -- open a split diffing the current file
-
--- DAP
-local dap = require("dap")
-mapper("n", "<Leader>dr", dap.continue) -- start debugging session/continue execution
-mapper("n", "<Leader>db", dap.toggle_breakpoint)
-mapper("n", "<Leader>di", dap.step_into)
-mapper("n", "<Leader>do", dap.step_over)
-mapper("n", "<Leader>dq", ":call dap#shutdown()<CR>") -- custom shtudown handler that closes dapui, event listeners aren't working

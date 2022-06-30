@@ -85,7 +85,7 @@ packer.startup(function(use)
                     virt_text_pos = "right_align",
                 },
                 update_debounce = 500,
-                numhl = false,
+                numhl = true,
                 attach_to_untracked = false,
                 on_attach = function(bufnr)
                     local keymap_opts = { silent = true, noremap = true, buffer = bufnr }
@@ -342,6 +342,11 @@ packer.startup(function(use)
         end,
     })
     use("b0o/schemastore.nvim") -- json schema provider
+    use({
+        "anuvyklack/hydra.nvim", -- custom "modes"
+        requires = { "anuvyklack/keymap-layer.nvim" },
+        config = require("ag.plugin-conf.hydra"),
+    })
 
     -- Grab all packages if we're setting up for the first time
     if packer_bootstrap then
