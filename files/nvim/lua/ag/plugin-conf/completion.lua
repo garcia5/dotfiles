@@ -1,5 +1,4 @@
 local cmp = require("cmp")
-local cmp_autopairs = require("nvim-autopairs.completion.cmp")
 cmp.setup({
     snippet = {
         expand = function(args)
@@ -9,7 +8,7 @@ cmp.setup({
     sources = {
         { name = "vsnip" },
         { name = "nvim_lua" },
-        { name = "nvim_lsp", max_item_count = 25 }, -- tsserver likes to send back _everything_
+        { name = "nvim_lsp", max_item_count = 30 }, -- tsserver likes to send back _everything_
         { name = "nvim_lsp_signature_help" },
         { name = "buffer", keyword_length = 3 }, -- don't complete from buffer right away
     },
@@ -57,5 +56,3 @@ cmp.setup({
         },
     },
 })
--- Help cmp play nice with autopairs, auto-insert parentheses when accepting completion for a function call
-cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done({ map_char = { tex = "" } }))

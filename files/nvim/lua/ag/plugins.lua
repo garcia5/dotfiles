@@ -84,9 +84,10 @@ packer.startup(function(use)
                     virt_text = true,
                     virt_text_pos = "right_align",
                 },
-                update_debounce = 500,
+                signcolumn = true,
                 numhl = true,
-                attach_to_untracked = false,
+                update_debounce = 500,
+                attach_to_untracked = true,
                 on_attach = function(bufnr)
                     local keymap_opts = { silent = true, noremap = true, buffer = bufnr }
                     vim.keymap.set("n", "=", "<cmd>Gitsigns preview_hunk<CR>", keymap_opts)

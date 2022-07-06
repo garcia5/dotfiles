@@ -21,3 +21,4 @@ alias show='exa -hal $(fzf-ls)'
 
 # Other
 alias ylinked='( ls -l node_modules ; ls -l node_modules/@* ) | grep ^l'
+alias ynuke='rm -rf node_modules && yarn cache clean && yarn install'
