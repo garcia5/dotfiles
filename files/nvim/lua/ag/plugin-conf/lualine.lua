@@ -1,8 +1,6 @@
 local lualine = require("lualine")
 
-local IS_WIDE = function()
-    return vim.o.columns > 190
-end
+local IS_WIDE = function() return vim.o.columns > 190 end
 
 lualine.setup({
     sections = {
@@ -12,9 +10,7 @@ lualine.setup({
         lualine_a = {
             {
                 "mode",
-                fmt = function(m)
-                    return IS_WIDE() and m or m:sub(1, 1)
-                end,
+                fmt = function(m) return IS_WIDE() and m or m:sub(1, 1) end,
             },
         },
         lualine_b = { "branch" },
@@ -45,9 +41,7 @@ lualine.setup({
                     local msg = "No Active Lsp"
                     local buf_ft = vim.api.nvim_buf_get_option(0, "filetype")
                     local clients = vim.lsp.get_active_clients()
-                    if next(clients) == nil then
-                        return msg
-                    end
+                    if next(clients) == nil then return msg end
 
                     local client_names = {}
                     local active_client = false
@@ -55,9 +49,7 @@ lualine.setup({
                         local filetypes = client.config.filetypes
                         if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
                             active_client = true
-                            if not client_names[client.name] then
-                                client_names[client.name] = 1
-                            end
+                            if not client_names[client.name] then client_names[client.name] = 1 end
                         end
                     end
 

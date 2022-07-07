@@ -17,12 +17,8 @@ Hydra({
             position = "bottom",
             border = "rounded",
         },
-        on_enter = function()
-            vim.bo.modifiable = false
-        end,
-        on_exit = function()
-            dapui.close()
-        end,
+        on_enter = function() vim.bo.modifiable = false end,
+        on_exit = function() dapui.close() end,
     },
     heads = {
         { "c", dap.continue },
@@ -52,9 +48,7 @@ Hydra({
             position = "bottom",
             border = "rounded",
         },
-        on_enter = function()
-            gs.toggle_linehl(true)
-        end,
+        on_enter = function() gs.toggle_linehl(true) end,
         on_exit = function()
             gs.toggle_deleted(false)
             gs.toggle_linehl(false)
@@ -67,9 +61,7 @@ Hydra({
         { "p", gs.prev_hunk },
         {
             "a",
-            function()
-                gs.setqflist("all", { open = true })
-            end,
+            function() gs.setqflist("all", { open = true }) end,
         },
         { "s", gs.stage_hunk },
         { "u", gs.undo_stage_hunk },
@@ -80,9 +72,7 @@ Hydra({
         { "b", gs.blame_line },
         {
             "B",
-            function()
-                gs.blame_line({ full = true })
-            end,
+            function() gs.blame_line({ full = true }) end,
         },
         { "C", ":tab Git commit<CR>", { silent = true, exit = true } },
         { "q", nil, { exit = true, nowait = true } },

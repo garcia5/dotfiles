@@ -27,7 +27,7 @@ vim.diagnostic.config({
         source = "if_many",
         border = "rounded",
         header = {
-            "Diagnostics",
+            "",
             "LspDiagnosticsDefaultWarning",
         },
         prefix = function(diagnostic)
@@ -121,9 +121,7 @@ lspconfig.tsserver.setup({
             inlay_hints_format = {
                 Type = {
                     highlight = "Comment",
-                    text = function(text)
-                        return "->" .. text
-                    end,
+                    text = function(text) return "->" .. text end,
                 },
                 Parameter = {
                     highlight = "Comment",
@@ -147,9 +145,7 @@ lspconfig.tsserver.setup({
 -- vue
 lspconfig.vuels.setup({
     capabilities = cmp_capabilities,
-    on_attach = function(client, bufnr)
-        custom_attach(client, bufnr)
-    end,
+    on_attach = function(client, bufnr) custom_attach(client, bufnr) end,
     settings = {
         vetur = {
             completion = {

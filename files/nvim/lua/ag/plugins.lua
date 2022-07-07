@@ -66,9 +66,7 @@ packer.startup(function(use)
     use("tpope/vim-repeat") -- ... and make them repeatable
     use({
         "nvim-telescope/telescope.nvim", -- fuzzy find ALL the things
-        config = function()
-            require("ag.plugin-conf.telescope")
-        end,
+        config = function() require("ag.plugin-conf.telescope") end,
     })
 
     -- Look and feel
@@ -105,9 +103,7 @@ packer.startup(function(use)
             "kyazdani42/nvim-web-devicons",
             opt = true,
         },
-        config = function()
-            require("ag.plugin-conf.lualine")
-        end,
+        config = function() require("ag.plugin-conf.lualine") end,
     })
     use("p00f/nvim-ts-rainbow") -- rainbow braces (and tags) powered by treesitter
     use({
@@ -144,18 +140,14 @@ packer.startup(function(use)
             nightfox.setup({
                 options = { transparent = true },
             })
-            if string.match(vim.g.colors_name, ".+fox$") ~= nil then
-                nightfox.load()
-            end
+            if string.match(vim.g.colors_name, ".+fox$") ~= nil then nightfox.load() end
         end,
     })
     use({
         "catppuccin/nvim", -- another another lua colorscheme
         as = "catppuccin",
         branch = "main",
-        config = function()
-            require("ag.plugin-conf.catppuccin")
-        end,
+        config = function() require("ag.plugin-conf.catppuccin") end,
     })
     use({
         "lukas-reineke/indent-blankline.nvim", -- indent guides
@@ -184,16 +176,12 @@ packer.startup(function(use)
     -- Debuggers
     use({
         "mfussenegger/nvim-dap",
-        config = function()
-            require("ag.plugin-conf.dap")
-        end,
+        config = function() require("ag.plugin-conf.dap") end,
     })
     use({
         "rcarriga/nvim-dap-ui",
         requires = { "mfussenegger/nvim-dap" },
-        config = function()
-            require("ag.plugin-conf.dap")
-        end,
+        config = function() require("ag.plugin-conf.dap") end,
     })
     use({
         "nvim-telescope/telescope-dap.nvim", -- telescope picker for dap actions/configuraitons
@@ -203,9 +191,7 @@ packer.startup(function(use)
     -- Other nice to have
     use({
         "editorconfig/editorconfig-vim", -- .editorconfig support
-        config = function()
-            vim.g.EditorConfig_exclude_patterns = { "fugitive://.*" }
-        end,
+        config = function() vim.g.EditorConfig_exclude_patterns = { "fugitive://.*" } end,
     })
     use({
         "tpope/vim-fugitive", -- git integration
@@ -350,8 +336,6 @@ packer.startup(function(use)
     })
 
     -- Grab all packages if we're setting up for the first time
-    if packer_bootstrap then
-        packer.sync()
-    end
+    if packer_bootstrap then packer.sync() end
 end)
 -- NOTE: If :h <plugin> does not work, run :helptags ALL to add them
