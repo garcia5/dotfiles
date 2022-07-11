@@ -222,3 +222,9 @@ lspconfig.jsonls.setup({
         },
     },
 })
+
+-- rust
+lspconfig.rust_analyzer.setup({
+    capabilities = cmp_capabilities,
+    on_attach = custom_attach,
+})
