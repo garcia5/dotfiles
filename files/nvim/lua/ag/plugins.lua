@@ -175,10 +175,6 @@ packer.startup(function(use)
 
     -- Debuggers
     use({
-        "mfussenegger/nvim-dap",
-        config = function() require("ag.plugin-conf.dap") end,
-    })
-    use({
         "rcarriga/nvim-dap-ui",
         requires = { "mfussenegger/nvim-dap" },
         config = function() require("ag.plugin-conf.dap") end,
@@ -205,7 +201,7 @@ packer.startup(function(use)
             "javascript",
         },
     })
-    use("jose-elias-alvarez/nvim-lsp-ts-utils") -- helpers for typescript development })
+    use("jose-elias-alvarez/nvim-lsp-ts-utils") -- helpers for typescript development
     use({
         "hrsh7th/vim-vsnip", -- snippets
         ft = {
@@ -214,6 +210,7 @@ packer.startup(function(use)
             "typescript",
             "vue",
             "lua",
+            "rust",
         },
         config = function()
             vim.g.vsnip_snippet_dir = vim.fn.expand("~/.config/nvim/snips")
@@ -332,7 +329,7 @@ packer.startup(function(use)
     use({
         "anuvyklack/hydra.nvim", -- custom "modes"
         requires = { "anuvyklack/keymap-layer.nvim" },
-        config = require("ag.plugin-conf.hydra"),
+        config = function() require("ag.plugin-conf.hydra") end,
     })
 
     -- Grab all packages if we're setting up for the first time
