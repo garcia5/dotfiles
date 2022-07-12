@@ -6,25 +6,37 @@ local dapui = require("dapui")
 Hydra({
     name = "Debug",
     hint = [[
-        _c_ : Continue   _b_ : Toggle Breakpoint
-        _i_ : Step Into  _o_ : Step Over
+        _c_ : Continue    _b_ : Toggle Breakpoint
+        _i_ : Step Into   _o_ : Step Over
+        _r_ : Toggle repl
+
         _q_ : Terminate
     ]],
     body = "<leader>d",
     config = {
         color = "pink",
         hint = {
-            position = "bottom",
+            position = "top-right",
             border = "rounded",
         },
-        on_enter = function() vim.bo.modifiable = false end,
-        on_exit = function() dapui.close() end,
+        on_enter = function()
+            vim.bo.modifiable = false
+            vim.api.nvim_create_autocmd("FileType", {
+                pattern = "dap-repl",
+                callback = function() dap.ext.autocompl.attach() end,
+            })
+        end,
+        on_exit = function()
+            dapui.close({ layout = nil })
+            dap.repl.close()
+        end,
     },
     heads = {
         { "c", dap.continue },
         { "b", dap.toggle_breakpoint },
         { "i", dap.step_into },
         { "o", dap.step_over },
+        { "r", dap.repl.open },
         { "q", dap.terminate, { exit = true } },
     },
 })
@@ -45,10 +57,13 @@ Hydra({
         invoke_on_body = true,
         color = "pink", -- let me press other keys _without_ exiting git mode
         hint = {
-            position = "bottom",
+            position = "top-right",
             border = "rounded",
         },
-        on_enter = function() gs.toggle_linehl(true) end,
+        on_enter = function()
+            gs.toggle_linehl(true)
+            gs.setqflist("all", { open = true })
+        end,
         on_exit = function()
             gs.toggle_deleted(false)
             gs.toggle_linehl(false)
@@ -57,8 +72,8 @@ Hydra({
     },
     mode = { "n", "x" },
     heads = {
-        { "n", gs.next_hunk },
-        { "p", gs.prev_hunk },
+        { "n", ":cn<CR>" },
+        { "p", ":cp<CR>" },
         {
             "a",
             function() gs.setqflist("all", { open = true }) end,
