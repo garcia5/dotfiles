@@ -2,9 +2,7 @@ local augroup = vim.api.nvim_create_augroup
 local au = vim.api.nvim_create_autocmd
 
 local exit_if_last = function()
-    if vim.fn.winnr("$") == 1 then
-        vim.cmd("q")
-    end
+    if vim.fn.winnr("$") == 1 then vim.cmd("q") end
 end
 
 -- Global formatopts
@@ -12,25 +10,8 @@ au("BufEnter", {
     pattern = "*",
     callback = function()
         local buftype = vim.opt.buftype:get()
-        if buftype ~= "terminal" and buftype ~= "gitcommit" then
-            vim.opt.formatoptions = "lcrqj"
-        end
+        if buftype ~= "terminal" and buftype ~= "gitcommit" then vim.opt.formatoptions = "lcrqj" end
     end,
-})
-
-local format_on_save = function()
-    local lang = vim.opt.filetype:get()
-
-    if lang == "typescript" then
-        vim.lsp.buf.formatting_seq_sync(nil, nil, { "tsserver", "null-ls" })
-    else
-        vim.lsp.buf.formatting_seq_sync()
-    end
-end
-
-au("BufWritePre", {
-    pattern = { "*.ts", "*.vue", "*.lua", "*.js" },
-    callback = format_on_save,
 })
 
 local term_group = augroup("term", { clear = false })
@@ -66,9 +47,7 @@ au("FileType", {
 
 au("BufEnter", {
     pattern = "Dockerfile.*",
-    callback = function()
-        vim.opt_local.filetype = "Dockerfile"
-    end,
+    callback = function() vim.opt_local.filetype = "Dockerfile" end,
 })
 
 local nvim_tree_group = augroup("NvimTree", { clear = true })
@@ -84,15 +63,11 @@ au("FileType", {
 -- Open kitty with all folds closed
 au("BufReadPost", {
     pattern = "kitty.conf",
-    callback = function()
-        vim.opt_local.foldlevel = 0
-    end,
+    callback = function() vim.opt_local.foldlevel = 0 end,
 })
 
 -- Aerial specific mapping
 au("FileType", {
     pattern = "aerial",
-    callback = function()
-        vim.keymap.set("n", "q", ":q<CR>", { noremap = true, silent = true, buffer = true })
-    end,
+    callback = function() vim.keymap.set("n", "q", ":q<CR>", { noremap = true, silent = true, buffer = true }) end,
 })

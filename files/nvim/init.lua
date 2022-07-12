@@ -3,8 +3,6 @@ vim.g.mapleader = " "
 vim.g.python3_host_skip_check = 1
 vim.g.python3_host_prog = "/Users/agarcia/py3nvim/bin/python"
 vim.g.bulitin_lsp = true
-vim.g.do_filetype_lua = 1 -- use nvim's faster way of detecting filetypes
-vim.g.did_load_filetypes = 0 -- disable old autocmd way of detecting filetypes
 
 require("ag") -- load my lua configs
 
