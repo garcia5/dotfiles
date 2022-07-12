@@ -161,7 +161,7 @@ fi
 add-zsh-hook chpwd load-nvmrc
 
 # Lua ls
-export PATH="$PATH:$HOME/lua-language-server/bin/macOS/"
+export PATH="$PATH:$HOME/lua-language-server/bin"
 alias luamake=/Users/agarcia/lua-language-server/3rd/luamake/luamake
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,

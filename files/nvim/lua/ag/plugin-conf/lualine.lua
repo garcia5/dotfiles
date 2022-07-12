@@ -1,6 +1,6 @@
 local lualine = require("lualine")
 
-local IS_WIDE = function() return vim.o.columns > 190 end
+local IS_WIDE = function() return vim.o.columns > 150 end
 
 lualine.setup({
     sections = {

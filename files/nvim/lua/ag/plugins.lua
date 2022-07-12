@@ -140,7 +140,8 @@ packer.startup(function(use)
             nightfox.setup({
                 options = { transparent = true },
             })
-            if string.match(vim.g.colors_name, ".+fox$") ~= nil then nightfox.load() end
+            local current_scheme = vim.g.colors_name == nil and "" or vim.g.colors_name
+            if string.match(current_scheme, ".+fox$") ~= nil then nightfox.load() end
         end,
     })
     use({
