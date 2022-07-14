@@ -68,9 +68,7 @@ local custom_attach = function(client, bufnr)
                 filter = function(this_client)
                     local lang = vim.opt.filetype:get()
 
-                    if lang == "typescript" then
-                        return this_client.name == "tsserver" or this_client.name == "null-ls"
-                    end
+                    if lang == "typescript" then return this_client.name == "null-ls" end
                     if lang == "json" then return this_client.name == "null-ls" end
                     return true
                 end,
@@ -91,6 +89,7 @@ end
 -- Set up clients
 local null_ls = require("null-ls")
 null_ls.setup({
+    on_attach = custom_attach,
     sources = {
         --#formatters
         null_ls.builtins.formatting.stylua,
@@ -217,19 +216,26 @@ lspconfig.bashls.setup({
 })
 
 -- lua
-local lua_ls_path = vim.fn.expand("~/lua-language-server/")
-local lua_ls_bin = lua_ls_path .. "bin/macOS/lua-language-server"
 lspconfig.sumneko_lua.setup({
     capabilities = cmp_capabilities,
     on_attach = custom_attach,
-    cmd = { lua_ls_bin, "-E", lua_ls_path .. "main.lua" },
     settings = {
         Lua = {
+            runtime = {
+                -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
+                version = "LuaJIT",
+            },
             diagnostics = {
                 -- Get the language server to recognize the `vim` global
-                globals = {
-                    "vim",
-                },
+                globals = { "vim" },
+            },
+            workspace = {
+                -- Make the server aware of Neovim runtime files
+                library = vim.api.nvim_get_runtime_file("", true),
+            },
+            -- Do not send telemetry data containing a randomized but unique identifier
+            telemetry = {
+                enable = false,
             },
         },
     },
