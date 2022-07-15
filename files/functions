@@ -77,7 +77,7 @@ fzf-git-changed() {
         --bind "ctrl-g:change-prompt(Changed Files> )+reload($cmd)" \
         --prompt "Changed Files> " \
         --preview '(git diff --color=always -- {-1} | sed 1,4d; cat {-1})' |
-    cut -c4- | sed 's/.* -> //'
+    sed 's/.* //'
 }
 
 fzf-git-stash() {

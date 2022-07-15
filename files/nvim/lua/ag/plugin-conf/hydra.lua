@@ -6,22 +6,29 @@ local dapui = require("dapui")
 Hydra({
     name = "Debug",
     hint = [[
-        _c_ : Continue   _b_ : Toggle Breakpoint
-        _i_ : Step Into  _o_ : Step Over
+        _c_ : Continue    _b_ : Toggle Breakpoint
+        _i_ : Step Into   _o_ : Step Over
+        _r_ : Toggle repl
+
         _q_ : Terminate
     ]],
     body = "<leader>d",
     config = {
         color = "pink",
         hint = {
-            position = "bottom",
+            position = "top-right",
             border = "rounded",
         },
         on_enter = function()
             vim.bo.modifiable = false
+            vim.api.nvim_create_autocmd("FileType", {
+                pattern = "dap-repl",
+                callback = function() dap.ext.autocompl.attach() end,
+            })
         end,
         on_exit = function()
-            dapui.close()
+            dapui.close({ layout = nil })
+            dap.repl.close()
         end,
     },
     heads = {
@@ -29,6 +36,7 @@ Hydra({
         { "b", dap.toggle_breakpoint },
         { "i", dap.step_into },
         { "o", dap.step_over },
+        { "r", dap.repl.open },
         { "q", dap.terminate, { exit = true } },
     },
 })
@@ -49,11 +57,12 @@ Hydra({
         invoke_on_body = true,
         color = "pink", -- let me press other keys _without_ exiting git mode
         hint = {
-            position = "bottom",
+            position = "top-right",
             border = "rounded",
         },
         on_enter = function()
             gs.toggle_linehl(true)
+            gs.setqflist("all", { open = true })
         end,
         on_exit = function()
             gs.toggle_deleted(false)
@@ -63,13 +72,11 @@ Hydra({
     },
     mode = { "n", "x" },
     heads = {
-        { "n", gs.next_hunk },
-        { "p", gs.prev_hunk },
+        { "n", ":cn<CR>" },
+        { "p", ":cp<CR>" },
         {
             "a",
-            function()
-                gs.setqflist("all", { open = true })
-            end,
+            function() gs.setqflist("all", { open = true }) end,
         },
         { "s", gs.stage_hunk },
         { "u", gs.undo_stage_hunk },
@@ -80,9 +87,7 @@ Hydra({
         { "b", gs.blame_line },
         {
             "B",
-            function()
-                gs.blame_line({ full = true })
-            end,
+            function() gs.blame_line({ full = true }) end,
         },
         { "C", ":tab Git commit<CR>", { silent = true, exit = true } },
         { "q", nil, { exit = true, nowait = true } },

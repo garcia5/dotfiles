@@ -148,7 +148,7 @@ fi
 add-zsh-hook chpwd load-nvmrc
 
 # Lua ls
-export PATH="$PATH:$HOME/lua-language-server/bin/"
+export PATH="$PATH:$HOME/lua-language-server/bin"
 alias luamake=/Users/agarcia/lua-language-server/3rd/luamake/luamake
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
@@ -168,4 +168,8 @@ fi
 
 eval $(thefuck --alias)
 
+# yarn
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+
+# rust
+export PATH="$HOME/.cargo/bin:$PATH"

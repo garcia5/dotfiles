@@ -1,7 +1,5 @@
 -- Mapping helper
-local mapper = function(mode, key, result)
-    vim.keymap.set(mode, key, result, { noremap = true, silent = true })
-end
+local mapper = function(mode, key, result) vim.keymap.set(mode, key, result, { noremap = true, silent = true }) end
 
 -- Essentials
 mapper("i", "jj", "<Esc>")
