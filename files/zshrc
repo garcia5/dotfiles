@@ -91,17 +91,6 @@ else
   export EDITOR='nvim'
 fi
 
-# Brew
-# Autocomplete
-if type brew &>/dev/null; then
-  FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
-fi
-
-# Let gcc play with brew
-export LDFLAGS="-L$(brew --prefix)/opt/zlib/lib -L$(brew --prefix)/opt/bzip2/lib -L$(brew --prefix openssl)/lib"
-export CPPFLAGS="-I$(brew --prefix)/opt/zlib/include -I$(brew --prefix)/opt/bzip2/include -I$(brew --prefix openssl)/include"
-export CFLAGS="-I$(brew --prefix openssl)/include -I$(brew --prefix bzip2)/include -I$(brew --prefix readline)/include -I$(xcrun --show-sdk-path)/usr/include"
-
 # zsh
 source $ZSH/oh-my-zsh.sh
 
@@ -112,7 +101,8 @@ autoload -U add-zsh-hook # hooks
 # vi mode
 # make sure fzf keybindings still apply
 zvm_after_init() {
-    [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+    [ -f /usr/share/fzf/completion.zsh ] && source /usr/share/fzf/completion.zsh
+    [ -f /usr/share/fzf/completion.zsh ] && source /usr/share/fzf/completion.zsh
     [ -f ~/.functions ] && source ~/.functions
 }
 
@@ -128,16 +118,13 @@ export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 export BAT_THEME="Dracula"
 
 # FZF things
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+[ -f /usr/share/fzf/completion.zsh ] && source /usr/share/fzf/completion.zsh
+[ -f /usr/share/fzf/completion.zsh ] && source /usr/share/fzf/completion.zsh
 export FZF_DEFAULT_COMMAND='fd -tf'
 export FZF_CTRL_T_COMMAND="fd -tf"
 export FZF_DEFAULT_OPTS="--height 40% --reverse"
 # Preview files (but not everything else) with bat
 export FZF_CTRL_T_OPTS="$FZF_DEFAULT_OPTS --preview 'bat --color=always --line-range=:40 --style=numbers,changes {}'"
-
-# Python
-eval "$(pyenv init -)"
-pyenv global 3.9.10
 
 # Node
 export NVM_DIR="$HOME/.nvm"
@@ -161,7 +148,7 @@ fi
 add-zsh-hook chpwd load-nvmrc
 
 # Lua ls
-export PATH="$PATH:$HOME/lua-language-server/bin/macOS/"
+export PATH="$PATH:$HOME/lua-language-server/bin/"
 alias luamake=/Users/agarcia/lua-language-server/3rd/luamake/luamake
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,

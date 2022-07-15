@@ -29,7 +29,7 @@ local format_on_save = function()
 end
 
 au("BufWritePre", {
-    pattern = { "*.ts", "*.vue", "*.lua", "*.js" },
+    pattern = { "*.ts", "*.vue", "*.lua", "*.js", "*.rs" },
     callback = format_on_save,
 })
 

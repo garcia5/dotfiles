@@ -132,17 +132,11 @@ function setup_bash {
 }
 
 function setup_nvim {
-    if [[ ! "$HAS_BREW" ]]; then
-        setup_brew
-    fi
-    if [[ ! $(command -v nvim) ]]; then
-        brew install neovim
-    fi
     mkdir -p "$HOME/.config"
     backup_dir "$NVIM_HOME"
     ln -s "$DF_HOME/files/nvim" "$NVIM_HOME"
     # Set up neovim python virtualenv
-    if [[ ! $(-d $HOME/py3nvim) ]]; then
+    if [[ ! -d $HOME/py3nvim ]]; then
         runcmd python -m venv "$HOME/py3nvim"
         runcmd source "$HOME/py3nvim/bin/activate"
         runcmd pip install --upgrade pip
@@ -156,14 +150,14 @@ function setup_nvim {
         local old_pwd=$(pwd)
 
         # clone project
-        git clone https://github.com/sumneko/lua-language-server "$HOME/"
+        git clone https://github.com/sumneko/lua-language-server "$HOME/lua-language-server"
         cd "$HOME/lua-language-server"
         git submodule update --init --recursive
         # build
         cd 3rd/luamake
         compile/install.sh
         cd ../..
-        ./3rd/luamake/luamake/rebuild
+        ./3rd/luamake/luamake rebuild
 
         cd "$old_pwd"
     fi
@@ -176,12 +170,6 @@ function setup_tmux {
 }
 
 function setup_zsh {
-    if [[ ! "$HAS_BREW" ]]; then
-        setup_brew
-    fi
-    if [[ ! $(command -v zsh) ]]; then
-        brew install zsh
-    fi
     # get oh-my-zsh first
     if [ ! -d "$HOME/.oh-my-zsh" ]; then
         sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
