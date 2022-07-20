@@ -131,24 +131,12 @@ packer.startup(function(use)
     })
 
     -- Colorschemes
-    use("shaunsingh/moonlight.nvim") -- VSCode's moonlight theme in lua
-    use("nxvu699134/vn-night.nvim") -- dark purple theme w/ treesitter support
-    use({
-        "EdenEast/nightfox.nvim", -- another lua colorscheme
-        config = function()
-            local nightfox = require("nightfox")
-            nightfox.setup({
-                options = { transparent = true },
-            })
-            local current_scheme = vim.g.colors_name == nil and "" or vim.g.colors_name
-            if string.match(current_scheme, ".+fox$") ~= nil then nightfox.load() end
-        end,
-    })
     use({
         "catppuccin/nvim", -- another another lua colorscheme
         as = "catppuccin",
         branch = "main",
         config = function() require("ag.plugin-conf.catppuccin") end,
+        run = ":CatppuccinCompile",
     })
     use({
         "lukas-reineke/indent-blankline.nvim", -- indent guides
@@ -244,44 +232,7 @@ packer.startup(function(use)
             "onsails/lspkind-nvim", -- add the nice source + completion item kind to the menu
             "lukas-reineke/cmp-under-comparator", -- better ordering for things with underscores
         },
-        config = function()
-            require("ag.plugin-conf.completion")
-            if vim.g.colors_name == "catppuccin" then
-                -- catppuccin sets these automatically
-                return
-            end
-            -- Use highlight groups!
-            vim.cmd([[
-                highlight! default link CmpItemAbbrMatch Boolean
-                highlight! default link CmpItemAbbrMatchFuzzy Boolean
-
-                highlight! default link CmpItemKindText TSEmphasis
-                highlight! default link CmpItemKindMethod TSKeywordFunction
-                highlight! default link CmpItemKindFunction TSKeywordFunction
-                highlight! default link CmpItemKindConstructor TSConstructor
-                highlight! default link CmpItemKindField TSField
-                highlight! default link CmpItemKindVariable TSVariable
-                highlight! default link CmpItemKindClass Structure
-                highlight! default link CmpItemKindInterface Structure
-                highlight! default link CmpItemKindModule Structure
-                highlight! default link CmpItemKindProperty TSProperty
-                highlight! default link CmpItemKindUnit Boolean
-                highlight! default link CmpItemKindValue Character
-                highlight! default link CmpItemKindEnum Structure
-                highlight! default link CmpItemKindKeyword TSKeywordOperator
-                highlight! default link CmpItemKindSnippet TSPunctSpecial
-                highlight! default link CmpItemKindColor Constant
-                highlight! default link CmpItemKindFile String
-                highlight! default link CmpItemKindReference TSTextReference
-                highlight! default link CmpItemKindFolder String
-                highlight! default link CmpItemKindEnumMember TSField
-                highlight! default link CmpItemKindConstant Constant
-                highlight! default link CmpItemKindStruct Structure
-                highlight! default link CmpItemKindEvent Conditional
-                highlight! default link CmpItemKindOperator Operator
-                highlight! default link CmpItemKindTypeParameter TSParameter
-                ]])
-        end,
+        config = function() require("ag.plugin-conf.completion") end,
         module = "cmp",
     })
     use({
@@ -329,7 +280,6 @@ packer.startup(function(use)
     use("b0o/schemastore.nvim") -- json schema provider
     use({
         "anuvyklack/hydra.nvim", -- custom "modes"
-        requires = { "anuvyklack/keymap-layer.nvim" },
         config = function() require("ag.plugin-conf.hydra") end,
     })
 

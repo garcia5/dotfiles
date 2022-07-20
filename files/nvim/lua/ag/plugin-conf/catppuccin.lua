@@ -4,12 +4,13 @@ vim.g.catppuccin_flavour = "mocha"
 catp.setup({
     transparent_background = true,
     term_colors = true,
+    compile = {
+        enabled = true,
+        path = vim.fn.stdpath("cache") .. "/catppuccin",
+    },
     styles = {
-        comments = "italic",
-        functions = "NONE",
-        keywords = "NONE",
-        strings = "italic",
-        variables = "NONE",
+        comments = { "italic" },
+        strings = { "italic" },
     },
     integrations = {
         gitsigns = true,
@@ -19,6 +20,10 @@ catp.setup({
         nvimtree = {
             enabled = true,
             show_root = false,
+        },
+        dap = {
+            enabled = true,
+            enable_ui = true,
         },
         native_lsp = {
             enabled = true,
@@ -30,4 +35,3 @@ catp.setup({
         },
     },
 })
-catp.load()
