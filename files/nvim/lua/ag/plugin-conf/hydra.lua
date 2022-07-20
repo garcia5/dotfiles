@@ -1,39 +1,61 @@
 local Hydra = require("hydra")
 
+-- window resize mode
+Hydra({
+    name = "Resize",
+    body = "<C-w>",
+    config = {
+        mode = { "n" },
+        color = "red",
+    },
+    heads = {
+        { "r", "<C-w>r", { silent = true, desc = "rotate (clockwise)" } },
+        { "R", "<C-w>R", { silent = true, desc = "Rotate (counter clockwise)" } },
+        { "x", "<C-w>x", { silent = true, desc = "eXchange" } },
+        { "H", "<C-w>H", { silent = true, desc = "move left" } },
+        { "J", "<C-w>J", { silent = true, desc = "move down" } },
+        { "K", "<C-w>K", { silent = true, desc = "move up" } },
+        { "L", "<C-w>L", { silent = true, desc = "move right" } },
+        { "<", "<C-w><", { silent = true, desc = "shrink horizontally" } },
+        { "-", "<C-w>-", { silent = true, desc = "shrink vertically" } },
+        { "+", "<C-w>+", { silent = true, desc = "grow vertically" } },
+        { ">", "<C-w>>", { silent = true, desc = "grow horizontally" } },
+        { "=", "<C-w>=", { silent = true, desc = "equalize sizes" } },
+        { "<C-h>", "<C-w>h", { silent = true } },
+        { "<C-j>", "<C-w>j", { silent = true } },
+        { "<C-k>", "<C-w>k", { silent = true } },
+        { "<C-l>", "<C-w>l", { silent = true } },
+    },
+})
+
+-- debug mode
 local dap = require("dap")
 local dapui = require("dapui")
--- Debug mode
 Hydra({
     name = "Debug",
     hint = [[
-        _c_ : Continue    _b_ : Toggle Breakpoint
+        _c_ : Continue    _s_ : Toggle Breakpoint
         _i_ : Step Into   _o_ : Step Over
         _r_ : Toggle repl
 
         _q_ : Terminate
     ]],
-    body = "<leader>d",
+    body = "<leader>D",
     config = {
         color = "pink",
+        invoke_on_body = true,
         hint = {
             position = "top-right",
             border = "rounded",
         },
-        on_enter = function()
-            vim.bo.modifiable = false
-            vim.api.nvim_create_autocmd("FileType", {
-                pattern = "dap-repl",
-                callback = function() dap.ext.autocompl.attach() end,
-            })
-        end,
         on_exit = function()
-            dapui.close({ layout = nil })
+            dap.terminate()
             dap.repl.close()
         end,
     },
     heads = {
         { "c", dap.continue },
-        { "b", dap.toggle_breakpoint },
+        { "s", dap.toggle_breakpoint },
         { "i", dap.step_into },
         { "o", dap.step_over },
         { "r", dap.repl.open },
@@ -41,6 +63,7 @@ Hydra({
     },
 })
 
+-- git mode
 local gs = require("gitsigns")
 Hydra({
     name = "Git",
@@ -61,19 +84,21 @@ Hydra({
             border = "rounded",
         },
         on_enter = function()
-            gs.toggle_linehl(true)
-            gs.setqflist("all", { open = true })
+            gs.toggle_linehl(true) -- light up changed lines
+            gs.toggle_deleted(true) -- show deleted lines
+            gs.setqflist("all", { open = true }) -- all hunks in qf
         end,
         on_exit = function()
             gs.toggle_deleted(false)
             gs.toggle_linehl(false)
+            vim.cmd("cclose") -- close quickfix
             vim.cmd("echo") -- clear the echo area
         end,
     },
-    mode = { "n", "x" },
+    mode = { "n", "x", "v" },
     heads = {
-        { "n", ":cn<CR>" },
-        { "p", ":cp<CR>" },
+        { "n", ":cn<CR>", { silent = true } },
+        { "p", ":cp<CR>", { silent = true } },
         {
             "a",
             function() gs.setqflist("all", { open = true }) end,
