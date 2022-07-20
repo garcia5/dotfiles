@@ -1,8 +1,15 @@
 #!/bin/bash
 
 # Essentials
-alias ll='exa -hal'
-alias la='exa -a'
+if [[ $(command -v exa) ]]; then
+    alias ll='exa -hal'
+    alias la='exa -a'
+    alias show='exa -hal $(fzf-ls)'
+else
+    alias ll='ls -la'
+    alias la='ls -a'
+    alias show='ls -la $(fzf-ls)'
+fi
 alias v='nvim'
 alias claer='clear'
 
@@ -13,12 +20,10 @@ alias gdc='git diff --cached'
 alias gl="git log \
     --graph \
     --pretty='%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%ar) %C(bold blue)<%an>%Creset' \
-    --stat"
+    --stat" # `glols` from zsh git plugin
 alias gc='fzf-git-branch'
 
-# FZF
-alias show='exa -hal $(fzf-ls)'
-
-# Other
+# Yarn
 alias ylinked='( ls -l node_modules ; ls -l node_modules/@* ) | grep ^l'
 alias ynuke='rm -rf node_modules && yarn cache clean && yarn install'
+alias ys='yarn start:dev'
