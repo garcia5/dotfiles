@@ -71,3 +71,9 @@ au("FileType", {
     pattern = "aerial",
     callback = function() vim.keymap.set("n", "q", ":q<CR>", { noremap = true, silent = true, buffer = true }) end,
 })
+
+-- Enable treesitter powered indent for vue files only
+au("FileType", {
+    pattern = "vue",
+    command = "TSBufEnable indent",
+})

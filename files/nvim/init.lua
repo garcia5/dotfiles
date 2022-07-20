@@ -14,7 +14,7 @@ vim.opt.inccommand = "nosplit" -- preview %s commands live as I type
 vim.opt.undofile = true -- keep track of my 'undo's between sessions
 vim.opt.grepprg = "rg --vimgrep --smart-case --no-heading" -- search with rg
 vim.opt.grepformat = "%f:%l:%c:%m" -- filename:line number:column number:error message
-vim.opt.mouse = "n" -- use mouse to scroll around in normal mode (hold shift to disable)
+vim.opt.mouse = "nv" -- use mouse in normal, visual modes
 
 -- Indentation
 vim.opt.autoindent = true -- continue indentation to new line

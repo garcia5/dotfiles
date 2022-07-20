@@ -94,6 +94,7 @@ null_ls.setup({
         --#formatters
         null_ls.builtins.formatting.stylua,
         null_ls.builtins.formatting.prettierd,
+        null_ls.builtins.formatting.eslint_d,
 
         --#diagnostics/linters
         null_ls.builtins.diagnostics.flake8,
@@ -182,7 +183,7 @@ lspconfig.vuels.setup({
             },
         },
         format = {
-            enable = false, -- delegated to prettierd via null_ls
+            enable = true,
             options = {
                 useTabs = false,
                 tabSize = 2,
