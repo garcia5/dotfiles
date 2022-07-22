@@ -10,6 +10,10 @@ end
 vim.cmd("packadd packer.nvim") -- load packer
 local packer = require("packer")
 
+packer.init({
+    auto_reload_compiled = true,
+})
+
 packer.startup(function(use)
     -- Strictly required
     use("wbthomason/packer.nvim") -- let packer manage itself

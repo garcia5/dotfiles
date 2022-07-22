@@ -35,3 +35,4 @@ catp.setup({
         },
     },
 })
+vim.cmd("colorscheme catppuccin")
