@@ -169,7 +169,7 @@ lspconfig.tsserver.setup({
 -- vue
 lspconfig.vuels.setup({
     capabilities = cmp_capabilities,
-    on_attach = function(client, bufnr) custom_attach(client, bufnr) end,
+    on_attach = custom_attach,
     settings = {
         vetur = {
             completion = {

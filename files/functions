@@ -60,7 +60,7 @@ fzf-git-branch() {
         --bind "ctrl-d:execute(git branch -d {..})+accept" \
         --prompt "Braches> " \
         --preview-window right:50% \
-        --preview 'git log --oneline --graph --date=short --color=always --pretty="format:%C(auto)%cd %h%d %s"'
+        --preview 'git log --oneline --graph --date=short --color=always --pretty="format:%C(auto)%cd %h%d %s" {}'
 }
 
 fzf-git-changed() {

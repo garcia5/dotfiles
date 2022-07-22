@@ -134,7 +134,6 @@ packer.startup(function(use)
     use({
         "catppuccin/nvim", -- another another lua colorscheme
         as = "catppuccin",
-        branch = "main",
         config = function() require("ag.plugin-conf.catppuccin") end,
         run = ":CatppuccinCompile",
     })

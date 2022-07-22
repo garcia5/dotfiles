@@ -1,4 +1,6 @@
 local cmp = require("cmp")
+if not cmp then return end
+
 cmp.setup({
     snippet = {
         expand = function(args) vim.fn["vsnip#anonymous"](args.body) end,
