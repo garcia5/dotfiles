@@ -7,6 +7,7 @@ Hydra({
     config = {
         mode = { "n" },
         color = "red",
+        invoke_on_body = true,
     },
     heads = {
         { "r", "<C-w>r", { silent = true, desc = "rotate (clockwise)" } },
@@ -20,7 +21,7 @@ Hydra({
         { "-", "<C-w>-", { silent = true, desc = "shrink vertically" } },
         { "+", "<C-w>+", { silent = true, desc = "grow vertically" } },
         { ">", "<C-w>>", { silent = true, desc = "grow horizontally" } },
-        { "=", "<C-w>=", { silent = true, desc = "equalize sizes" } },
+        { "=", "<C-w>=", { silent = true, desc = "equalize sizes", exit = true } },
         { "<C-h>", "<C-w>h", { silent = true } },
         { "<C-j>", "<C-w>j", { silent = true } },
         { "<C-k>", "<C-w>k", { silent = true } },
@@ -30,7 +31,6 @@ Hydra({
 
 -- debug mode
 local dap = require("dap")
-local dapui = require("dapui")
 Hydra({
     name = "Debug",
     hint = [[
@@ -95,7 +95,7 @@ Hydra({
             vim.cmd("echo") -- clear the echo area
         end,
     },
-    mode = { "n", "x", "v" },
+    mode = { "n", "x" },
     heads = {
         { "n", ":cn<CR>", { silent = true } },
         { "p", ":cp<CR>", { silent = true } },
