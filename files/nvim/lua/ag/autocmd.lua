@@ -10,7 +10,7 @@ au("BufEnter", {
     pattern = "*",
     callback = function()
         local buftype = vim.opt.buftype:get()
-        if buftype ~= "terminal" and buftype ~= "gitcommit" then vim.opt.formatoptions = "lcrqj" end
+        if buftype ~= "terminal" then vim.opt.formatoptions = "lcrqjn" end
     end,
 })
 
@@ -40,9 +40,14 @@ au("BufEnter", {
     end,
 })
 
+local gitcommit_group = augroup("gitcommit", { clear = true })
 au("FileType", {
+    group = gitcommit_group,
     pattern = "gitcommit",
-    command = "let b:EditorConfig_disable = 1",
+    callback = function()
+        vim.cmd("let b:EditorConfig_disable = 1")
+        vim.opt_local.formatoptions = "tcrnqj"
+    end,
 })
 
 au("BufEnter", {
