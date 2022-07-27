@@ -290,3 +290,5 @@ packer.startup(function(use)
     if packer_bootstrap then packer.sync() end
 end)
 -- NOTE: If :h <plugin> does not work, run :helptags ALL to add them
+
+return packer_bootstrap
