@@ -1,6 +1,7 @@
 -- Bootstrap packer if necessary
 local install_path = vim.fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
 local packer_bootstrap = false
+local lsp_filetypes = require('ag.lsp_config')
 
 if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
     packer_bootstrap = vim.fn.system({ "git", "clone", "https://github.com/wbthomason/packer.nvim", install_path })
@@ -64,7 +65,7 @@ packer.startup(function(use)
                 map_cr = true, -- send closing symbol to its own line
             })
         end,
-        disable_filetype = { "TelescopePrompt", "dap-repl", "fugitive" },
+        disable_filetype = { "TelescopePrompt", "fugitive" },
     })
     use("tpope/vim-surround") -- surround
     use("tpope/vim-repeat") -- ... and make them repeatable
@@ -74,7 +75,10 @@ packer.startup(function(use)
     })
 
     -- Look and feel
-    use("folke/lsp-colors.nvim") -- LSP colors that aren't built in
+    use({
+        "folke/lsp-colors.nvim", -- LSP colors that aren't built in
+        ft = lsp_filetypes,
+    })
     use({
         "lewis6991/gitsigns.nvim", -- git signs in gutter + some useful keymaps
         requires = { "nvim-lua/plenary.nvim" },
@@ -136,7 +140,7 @@ packer.startup(function(use)
 
     -- Colorschemes
     use({
-        "catppuccin/nvim", -- another another lua colorscheme
+        "catppuccin/nvim", -- the lua colorscheme
         as = "catppuccin",
         config = function() require("ag.plugin-conf.catppuccin") end,
         run = ":CatppuccinCompile",
@@ -189,21 +193,19 @@ packer.startup(function(use)
         "JoosepAlviste/nvim-ts-context-commentstring", -- commenting in vue files "just works"
         ft = {
             "vue",
+        },
+    })
+    use({
+        "jose-elias-alvarez/nvim-lsp-ts-utils", -- helpers for typescript development
+        ft = {
             "typescript",
+            "vue",
             "javascript",
         },
     })
-    use("jose-elias-alvarez/nvim-lsp-ts-utils") -- helpers for typescript development
     use({
         "hrsh7th/vim-vsnip", -- snippets
-        ft = {
-            "python",
-            "javascript",
-            "typescript",
-            "vue",
-            "lua",
-            "rust",
-        },
+        ft = lsp_filetypes,
         config = function()
             vim.g.vsnip_snippet_dir = vim.fn.expand("~/.config/nvim/snips")
             vim.keymap.set({ "i", "s" }, "<C-j>", function()
@@ -258,6 +260,7 @@ packer.startup(function(use)
                 },
             })
         end,
+        cmd = { "NvimTreeToggle", "NvimTreeFindFile", "NvimTreeRefresh" },
     })
     use({
         "nvim-telescope/telescope-fzf-native.nvim", -- fzf-like searching for telescope

@@ -1,5 +1,17 @@
 local lspconfig = require("lspconfig")
 
+local lsp_filetypes = {
+    "vue",
+    "typescript",
+    "json",
+    "javascript",
+    "python",
+    "rust",
+    "yaml",
+    "bash",
+    "lua",
+}
+
 local cmp_capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities())
 cmp_capabilities.textDocument.completion.completionItem.snippetSupport = true -- tell language servers we can handle snippets
 
@@ -133,8 +145,6 @@ lspconfig.pyright.setup({
 -- typescript
 lspconfig.tsserver.setup({
     capabilities = cmp_capabilities,
-    -- required to enable inlay hints
-    init_options = require("nvim-lsp-ts-utils").init_options,
     on_attach = function(client, bufnr)
         local ts_utils = require("nvim-lsp-ts-utils")
         ts_utils.setup({
@@ -259,3 +269,7 @@ lspconfig.rust_analyzer.setup({
     capabilities = cmp_capabilities,
     on_attach = custom_attach,
 })
+
+return {
+    lsp_filetypes = lsp_filetypes,
+}
