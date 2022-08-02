@@ -39,11 +39,12 @@ vim.opt.cursorline = false -- don't highlight current line
 vim.opt.list = true -- show list chars
 vim.opt.listchars = {
     -- these list chars
-    tab = "»·",
+    tab = "<->",
     nbsp = "␣",
     extends = "…",
     precedes = "…",
     trail = "·",
+    multispace = "·",
 }
 vim.opt.scrolloff = 10 -- padding between cursor and top/bottom of window
 vim.opt.foldlevel = 0 -- allow folding the whole way down
