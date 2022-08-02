@@ -22,10 +22,10 @@ Hydra({
         { "+", "<C-w>+", { silent = true, desc = "grow vertically" } },
         { ">", "<C-w>>", { silent = true, desc = "grow horizontally" } },
         { "=", "<C-w>=", { silent = true, desc = "equalize sizes", exit = true } },
-        { "<C-h>", "<C-w>h", { silent = true } },
-        { "<C-j>", "<C-w>j", { silent = true } },
-        { "<C-k>", "<C-w>k", { silent = true } },
-        { "<C-l>", "<C-w>l", { silent = true } },
+        { "<C-h>", "<C-w>h", { silent = true }, desc = "focus left" },
+        { "<C-j>", "<C-w>j", { silent = true }, desc = "focus down" },
+        { "<C-k>", "<C-w>k", { silent = true }, desc = "focus up" },
+        { "<C-l>", "<C-w>l", { silent = true }, desc = "focus right" },
     },
 })
 
@@ -68,19 +68,25 @@ local gs = require("gitsigns")
 Hydra({
     name = "Git",
     hint = [[
-        _=_ : Preview hunk   _a_ : All hunks
-        _n_ : Next hunk      _p_ : Prev hunk
-        _s_ : Stage hunk     _r_ : Reset hunk
-        _S_ : Stage buffer   _u_ : Undo last stage
-        _d_ : Toggle deleted _b_ : Blame line
-        _B_ : Blame full     _C_ : Commit
+ Stage/unstage hunks
+ _s_: Stage hunk    _r_: Reset hunk     _S_: Stage buffer   _u_: Undo last stage
+ ^
+ Navigation
+ _a_: All hunks     _n_: Next hunk      _p_: Prev hunk
+ ^
+ Display
+ _=_: Preview hunk  _d_: Show deleted   _b_: Blame line     _B_: Blame full
+ ^
+ _C_: Commit
+ ^
+ _q_, _<Esc>_: Quit
     ]],
     body = "<leader>G",
     config = {
         invoke_on_body = true,
         color = "pink", -- let me press other keys _without_ exiting git mode
         hint = {
-            position = "top-right",
+            position = "bottom",
             border = "rounded",
         },
         on_enter = function()
