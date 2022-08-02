@@ -22,30 +22,25 @@ Hydra({
         { "+", "<C-w>+", { silent = true, desc = "grow vertically" } },
         { ">", "<C-w>>", { silent = true, desc = "grow horizontally" } },
         { "=", "<C-w>=", { silent = true, desc = "equalize sizes", exit = true } },
-        { "<C-h>", "<C-w>h", { silent = true }, desc = "focus left" },
-        { "<C-j>", "<C-w>j", { silent = true }, desc = "focus down" },
-        { "<C-k>", "<C-w>k", { silent = true }, desc = "focus up" },
-        { "<C-l>", "<C-w>l", { silent = true }, desc = "focus right" },
+        { "<C-h>", "<C-w>h", { silent = true, desc = "focus left" } },
+        { "<C-j>", "<C-w>j", { silent = true, desc = "focus down" } },
+        { "<C-k>", "<C-w>k", { silent = true, desc = "focus up" } },
+        { "<C-l>", "<C-w>l", { silent = true, desc = "focus right" } },
     },
 })
 
 -- debug mode
 local dap = require("dap")
+local dapui = require("dapui")
 Hydra({
     name = "Debug",
-    hint = [[
-        _c_ : Continue    _s_ : Toggle Breakpoint
-        _i_ : Step Into   _o_ : Step Over
-        _r_ : Toggle repl
-
-        _q_ : Terminate
-    ]],
     body = "<leader>D",
     config = {
         color = "pink",
         invoke_on_body = true,
         hint = {
-            position = "top-right",
+            type = "cmdline",
+            position = "top",
             border = "rounded",
         },
         on_exit = function()
@@ -54,12 +49,13 @@ Hydra({
         end,
     },
     heads = {
-        { "c", dap.continue },
-        { "s", dap.toggle_breakpoint },
-        { "i", dap.step_into },
-        { "o", dap.step_over },
-        { "r", dap.repl.open },
-        { "q", dap.terminate, { exit = true } },
+        { "c", dap.continue, { desc = "continue" } },
+        { "s", dap.toggle_breakpoint, { desc = "toggle breakpoint" } },
+        { "i", dap.step_into, { desc = "step into" } },
+        { "o", dap.step_over, { desc = "step over" } },
+        { "r", dap.repl.open, { desc = "open repl" } },
+        { "K", dapui.eval, { desc = "eval variable" } },
+        { "q", dap.terminate, { exit = true, desc = "terminate" } },
     },
 })
 
@@ -67,61 +63,61 @@ Hydra({
 local gs = require("gitsigns")
 Hydra({
     name = "Git",
-    hint = [[
- Stage/unstage hunks
- _s_: Stage hunk    _r_: Reset hunk     _S_: Stage buffer   _u_: Undo last stage
- ^
- Navigation
- _a_: All hunks     _n_: Next hunk      _p_: Prev hunk
- ^
- Display
- _=_: Preview hunk  _d_: Show deleted   _b_: Blame line     _B_: Blame full
- ^
- _C_: Commit
- ^
- _q_, _<Esc>_: Quit
-    ]],
+ --    hint = [[
+ -- Stage/unstage hunks
+ -- _s_: Stage hunk    _r_: Reset hunk     _S_: Stage buffer   _u_: Undo last stage
+ -- ^
+ -- Navigation
+ -- _a_: All hunks     _n_, _gn_: Next hunk      _p_, _gp_: Prev hunk
+ -- ^
+ -- Display
+ -- _=_: Preview hunk  _<leader>d_: Show deleted   _<leader>B_: Blame full
+ -- ^
+ -- _<leader>C_: Commit
+ -- ^
+ -- _q_, _<Esc>_: Quit
+ --    ]],
     body = "<leader>G",
     config = {
         invoke_on_body = true,
         color = "pink", -- let me press other keys _without_ exiting git mode
         hint = {
-            position = "bottom",
-            border = "rounded",
+            type = "cmdline", -- one of "statusline", "cmdline", "window"
+            position = "top", -- only applies for type = "window"
+            border = "rounded", -- only applies for type = "window"
         },
         on_enter = function()
             gs.toggle_linehl(true) -- light up changed lines
-            gs.toggle_deleted(true) -- show deleted lines
-            gs.setqflist("all", { open = true }) -- all hunks in qf
+            gs.toggle_word_diff(true)
+            gs.setqflist("all", { open = false }) -- all hunks in qf
         end,
         on_exit = function()
             gs.toggle_deleted(false)
             gs.toggle_linehl(false)
+            gs.toggle_word_diff(false)
             vim.cmd("cclose") -- close quickfix
             vim.cmd("echo") -- clear the echo area
         end,
     },
     mode = { "n", "x" },
     heads = {
-        { "n", ":cn<CR>", { silent = true } },
-        { "p", ":cp<CR>", { silent = true } },
+        { "gn", ":cn<CR>", { silent = true, desc = "next hunk" } },
+        { "gp", ":cp<CR>", { silent = true, desc = "next hunk" } },
+        { "n", gs.next_hunk, { desc = "next hunk" } },
+        { "p", gs.prev_hunk, { desc = "next hunk" } },
         {
             "a",
             function() gs.setqflist("all", { open = true }) end,
+            { desc = "set qflist" },
         },
-        { "s", gs.stage_hunk },
-        { "u", gs.undo_stage_hunk },
-        { "r", gs.reset_hunk },
-        { "S", gs.stage_buffer },
-        { "=", gs.preview_hunk },
-        { "d", gs.toggle_deleted, { nowait = true } },
-        { "b", gs.blame_line },
-        {
-            "B",
-            function() gs.blame_line({ full = true }) end,
-        },
-        { "C", ":tab Git commit<CR>", { silent = true, exit = true } },
-        { "q", nil, { exit = true, nowait = true } },
-        { "<Esc>", nil, { exit = true, nowait = true } },
+        { "s", gs.stage_hunk, { desc = "stage hunk" } },
+        { "u", gs.undo_stage_hunk, { desc = "undo stage" } },
+        { "r", gs.reset_hunk, { desc = "reset hunk" } },
+        { "S", gs.stage_buffer, { desc = "stage buffer" } },
+        { "=", gs.preview_hunk, { desc = "preview hunk" } },
+        { "<leader>d", gs.toggle_deleted, { nowait = true, desc = "show deleted lines" } },
+        { "<leader>C", ":tab Git commit<CR>", { silent = true, exit = true, desc = "commit changes" } },
+        { "q", nil, { exit = true, nowait = true, desc = "quit" } },
+        { "<Esc>", nil, { exit = true, nowait = true, desc = "quit" } },
     },
 })
