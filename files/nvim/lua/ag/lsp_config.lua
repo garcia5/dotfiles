@@ -12,15 +12,8 @@ local lsp_filetypes = {
     "lua",
 }
 
-local cmp_capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities())
-cmp_capabilities.textDocument.completion.completionItem.snippetSupport = true -- tell language servers we can handle snippets
-
 -- Give floating windows borders
 vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" })
-
-vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-    border = "rounded",
-})
 
 -- Configure diagnostic display
 vim.diagnostic.config({
@@ -68,34 +61,20 @@ local custom_attach = function(client, bufnr)
     vim.keymap.set("n", "<leader>dp", vim.diagnostic.goto_prev, keymap_opts) -- move to prev diagnostic in buffer
     vim.keymap.set("n", "<leader>da", vim.diagnostic.setqflist, keymap_opts) -- show all buffer diagnostics in qflist
     vim.keymap.set("n", "H", vim.lsp.buf.code_action, keymap_opts) -- code actions (handled by telescope-ui-select)
+    vim.keymap.set("n", "<leader>F", vim.lsp.buf.format, keymap_opts) -- manual formatting, because sometimes they just decide to stop working
 
     -- use omnifunc
     vim.bo[bufnr].omnifunc = "v:lua.vim.lsp.omnifunc"
     vim.bo[bufnr].formatexpr = "v:lua.vim.lsp.formatexpr"
 
-    -- format on save (if supported)
-    if client.supports_method("textDocument/formatting") then
-        local lsp_formatting = function(lsp_bufnr)
-            vim.lsp.buf.format({
-                filter = function(this_client)
-                    local lang = vim.opt.filetype:get()
-
-                    if lang == "typescript" then return this_client.name == "null-ls" end
-                    if lang == "json" then return this_client.name == "null-ls" end
-                    return true
-                end,
-                bufnr = lsp_bufnr,
-            })
-        end
-
-        local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
-        vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
-        vim.api.nvim_create_autocmd("BufWritePre", {
-            group = augroup,
-            buffer = bufnr,
-            callback = function() lsp_formatting(bufnr) end,
-        })
-    end
+    -- format on save
+    local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
+    vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
+    vim.api.nvim_create_autocmd("BufWritePre", {
+        group = augroup,
+        buffer = bufnr,
+        callback = function() vim.lsp.buf.format() end,
+    })
 end
 
 -- Set up clients
@@ -119,7 +98,6 @@ null_ls.setup({
 
 -- python
 lspconfig.pyright.setup({
-    capabilities = cmp_capabilities,
     on_attach = function(client, bufnr)
         custom_attach(client, bufnr)
         -- 'Organize imports' keymap for pyright only
@@ -144,7 +122,6 @@ lspconfig.pyright.setup({
 
 -- typescript
 lspconfig.tsserver.setup({
-    capabilities = cmp_capabilities,
     on_attach = function(client, bufnr)
         local ts_utils = require("nvim-lsp-ts-utils")
         ts_utils.setup({
@@ -178,7 +155,6 @@ lspconfig.tsserver.setup({
 
 -- vue
 lspconfig.vuels.setup({
-    capabilities = cmp_capabilities,
     on_attach = custom_attach,
     settings = {
         vetur = {
@@ -216,19 +192,16 @@ lspconfig.vuels.setup({
 
 -- yaml
 lspconfig.yamlls.setup({
-    capabilities = cmp_capabilities,
     on_attach = custom_attach,
 })
 
 -- bash
 lspconfig.bashls.setup({
-    capabilities = cmp_capabilities,
     on_attach = custom_attach,
 })
 
 -- lua
 lspconfig.sumneko_lua.setup({
-    capabilities = cmp_capabilities,
     on_attach = custom_attach,
     settings = {
         Lua = {
@@ -254,7 +227,6 @@ lspconfig.sumneko_lua.setup({
 
 -- json w/ common schemas
 lspconfig.jsonls.setup({
-    capabilities = cmp_capabilities,
     on_attach = custom_attach,
     settings = {
         json = {
@@ -266,7 +238,6 @@ lspconfig.jsonls.setup({
 
 -- rust
 lspconfig.rust_analyzer.setup({
-    capabilities = cmp_capabilities,
     on_attach = custom_attach,
 })
 
