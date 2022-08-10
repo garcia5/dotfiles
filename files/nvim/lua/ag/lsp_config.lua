@@ -68,12 +68,18 @@ local custom_attach = function(client, bufnr)
     vim.bo[bufnr].formatexpr = "v:lua.vim.lsp.formatexpr"
 
     -- format on save
-    local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
-    vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
+    local augroup = vim.api.nvim_create_augroup("LspFormatting", { clear = true })
     vim.api.nvim_create_autocmd("BufWritePre", {
         group = augroup,
         buffer = bufnr,
-        callback = function() vim.lsp.buf.format() end,
+        callback = function()
+            vim.lsp.buf.format({
+                filter = function(this_client)
+                    local lang = vim.opt.filetype:get()
+                    if lang == "typescript" then return this_client.name ~= "tsserver" end -- disable tsserver formatting, it doesn't respect eslintrc
+                end,
+            })
+        end,
     })
 end
 
