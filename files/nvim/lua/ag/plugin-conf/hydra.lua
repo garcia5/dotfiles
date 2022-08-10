@@ -8,6 +8,11 @@ Hydra({
         mode = { "n" },
         color = "red",
         invoke_on_body = true,
+        hint = {
+            type = "window",
+            position = "middle",
+            border = "rounded",
+        },
     },
     heads = {
         { "r", "<C-w>r", { silent = true, desc = "rotate (clockwise)" } },
@@ -43,9 +48,13 @@ Hydra({
             position = "top",
             border = "rounded",
         },
+        on_enter = function()
+            dap.continue()
+            dapui.open({})
+        end,
         on_exit = function()
-            dap.terminate()
             dap.repl.close()
+            dapui.close({})
         end,
     },
     heads = {
@@ -63,27 +72,27 @@ Hydra({
 local gs = require("gitsigns")
 Hydra({
     name = "Git",
- --    hint = [[
- -- Stage/unstage hunks
- -- _s_: Stage hunk    _r_: Reset hunk     _S_: Stage buffer   _u_: Undo last stage
- -- ^
- -- Navigation
- -- _a_: All hunks     _n_, _gn_: Next hunk      _p_, _gp_: Prev hunk
- -- ^
- -- Display
- -- _=_: Preview hunk  _<leader>d_: Show deleted   _<leader>B_: Blame full
- -- ^
- -- _<leader>C_: Commit
- -- ^
- -- _q_, _<Esc>_: Quit
- --    ]],
+    hint = [[
+ Stage/unstage hunks
+ _s_: Stage hunk    _r_: Reset hunk         _S_: Stage buffer   _U_: Undo last stage
+ ^
+ Navigation
+ _a_: All hunks     _n_, _gn_: Next hunk    _p_, _gp_: Prev hunk
+ ^
+ Display
+ _=_: Preview hunk  _d_: Show deleted       _b_: Blame line
+ ^
+ _C_: Commit
+ ^
+ _q_, _<Esc>_: Quit
+    ]],
     body = "<leader>G",
     config = {
         invoke_on_body = true,
         color = "pink", -- let me press other keys _without_ exiting git mode
         hint = {
-            type = "cmdline", -- one of "statusline", "cmdline", "window"
-            position = "top", -- only applies for type = "window"
+            type = "window", -- one of "statusline", "cmdline", "window"
+            position = "middle-right", -- only applies for type = "window"
             border = "rounded", -- only applies for type = "window"
         },
         on_enter = function()
@@ -111,12 +120,13 @@ Hydra({
             { desc = "set qflist" },
         },
         { "s", gs.stage_hunk, { desc = "stage hunk" } },
-        { "u", gs.undo_stage_hunk, { desc = "undo stage" } },
+        { "U", gs.undo_stage_hunk, { desc = "undo stage" } },
         { "r", gs.reset_hunk, { desc = "reset hunk" } },
         { "S", gs.stage_buffer, { desc = "stage buffer" } },
         { "=", gs.preview_hunk, { desc = "preview hunk" } },
-        { "<leader>d", gs.toggle_deleted, { nowait = true, desc = "show deleted lines" } },
-        { "<leader>C", ":tab Git commit<CR>", { silent = true, exit = true, desc = "commit changes" } },
+        { "b", gs.blame_line, { desc = "blame line" } },
+        { "d", gs.toggle_deleted, { nowait = true, desc = "show deleted lines" } },
+        { "C", ":tab Git commit<CR>", { silent = true, exit = true, desc = "commit changes" } },
         { "q", nil, { exit = true, nowait = true, desc = "quit" } },
         { "<Esc>", nil, { exit = true, nowait = true, desc = "quit" } },
     },

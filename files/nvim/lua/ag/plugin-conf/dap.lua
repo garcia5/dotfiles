@@ -18,11 +18,6 @@ dap.configurations.typescript = {
     },
 }
 
--- automatically open/close the sidebar when debugging starts
-dap.listeners.after["event_stopped"]["dapui_config"] = function() dapui.open({ layout = nil }) end
-dap.listeners.before["event_terminated"]["dapui_config"] = function() dapui.close({ layout = nil }) end
-dap.listeners.before["event_exited"]["dapui_config"] = function() dapui.close({ layout = nil }) end
-
 dapui.setup({
     layouts = {
         {
