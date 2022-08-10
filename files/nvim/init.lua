@@ -44,7 +44,8 @@ vim.opt.listchars = {
     extends = "…",
     precedes = "…",
     trail = "·",
-    multispace = "·",
+    multispace = "·", -- show chars if I have multiple spaces between text
+    leadmultispace = " ", -- ...but don't show any when they're at the start
 }
 vim.opt.scrolloff = 10 -- padding between cursor and top/bottom of window
 vim.opt.foldlevel = 0 -- allow folding the whole way down

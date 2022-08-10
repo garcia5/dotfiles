@@ -28,11 +28,21 @@ lualine.setup({
                 "%=",
                 separator = "",
             },
+            -- A hack to change the path type if the window gets too short. Lualine doesn't accept a function for the
+            -- `path` option, so just swap out the entire component
             {
                 "filename",
-                path = 1, -- full file path, doesn't take up too much room b/c laststatus = 3
+                path = 1, -- full file path
                 color = { fg = "#ffffff", gui = "bold" },
                 shorting_target = 30,
+                cond = IS_WIDE,
+            },
+            {
+                "filename",
+                path = 0, -- just the filename
+                color = { fg = "#ffffff", gui = "bold" },
+                shorting_target = 30,
+                cond = function () return not IS_WIDE() end,
             },
         },
         lualine_x = {

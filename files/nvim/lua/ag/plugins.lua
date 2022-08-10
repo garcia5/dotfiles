@@ -1,7 +1,7 @@
 -- Bootstrap packer if necessary
 local install_path = vim.fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
 local packer_bootstrap = false
-local lsp_filetypes = require('ag.lsp_config')
+local lsp_filetypes = require("ag.lsp_config")
 
 if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
     packer_bootstrap = vim.fn.system({ "git", "clone", "https://github.com/wbthomason/packer.nvim", install_path })
@@ -205,7 +205,6 @@ packer.startup(function(use)
     })
     use({
         "hrsh7th/vim-vsnip", -- snippets
-        ft = lsp_filetypes,
         config = function()
             vim.g.vsnip_snippet_dir = vim.fn.expand("~/.config/nvim/snips")
             vim.keymap.set({ "i", "s" }, "<C-j>", function()

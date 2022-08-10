@@ -39,11 +39,5 @@ dapui.setup({
     },
 })
 
--- -- open variable sidebar on breakpoint
--- dap.listeners.after["event_stopped"]["scopes"] = function()
---     local widgets = require("dap.ui.widgets")
---     widgets.sidebar(widgets.scopes).open()
--- end
-
 vim.fn.sign_define("DapBreakpoint", { text = "", texthl = "Error", linehl = "", numhl = "" })
 vim.fn.sign_define("DapStopped", { text = "→", texthl = "WarningMsg", linehl = "", numhl = "" })
