@@ -158,6 +158,7 @@ packer.startup(function(use)
             vim.g.indent_blankline_use_treesitter = true
             vim.g.indent_blankline_disable_with_nolist = true
         end,
+        disable = true,
     })
 
     -- 0.5 features (lsp + treesitter)

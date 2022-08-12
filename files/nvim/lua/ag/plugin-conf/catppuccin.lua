@@ -30,7 +30,7 @@ catp.setup({
         },
         ts_rainbow = true,
         indent_blankline = {
-            enabled = true,
+            enabled = false,
             colored_indent_levels = false,
         },
     },
