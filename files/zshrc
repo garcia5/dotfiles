@@ -116,13 +116,6 @@ zvm_after_init() {
     [ -f ~/.functions ] && source ~/.functions
 }
 
-# Base16 Shell
-# BASE16_SHELL="$HOME/.config/base16-shell/"
-# [ -n "$PS1" ] && \
-#     [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
-#         eval "$("$BASE16_SHELL/profile_helper.sh")"
-
-
 # use bat for manpager
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 export BAT_THEME="Dracula"
@@ -143,20 +136,22 @@ pyenv global 3.9.10
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+# yarn
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 # Automatically use nvm version specified in .nvmrc (if any)
 # Intentionally not very flexible to avoid calling nvm every time we change directory
-load-nvmrc() {
-local nvmrc_path=".nvmrc"
+function load-nvmrc {
+    local nvmrc_path=".nvmrc"
 
-if [ -f "$nvmrc_path" ]; then
-    local nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
+    if [ -f "$nvmrc_path" ]; then
+        local nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
 
-    if [ "$nvmrc_node_version" = "N/A" ]; then
-        nvm install
-    elif [ "$nvmrc_node_version" != $(nvm version) ]; then
-        nvm use
+        if [ "$nvmrc_node_version" = "N/A" ]; then
+            nvm install
+        elif [ "$nvmrc_node_version" != $(nvm version) ]; then
+            nvm use
+        fi
     fi
-fi
 }
 add-zsh-hook chpwd load-nvmrc
 
@@ -178,11 +173,7 @@ if [[ -f ~/.dotdash ]]; then
     source ~/.dotdash
 fi
 
-
 eval $(thefuck --alias)
-
-# yarn
-export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 
 # rust
 export PATH="$HOME/.cargo/bin:$PATH"

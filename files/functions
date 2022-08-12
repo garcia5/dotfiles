@@ -51,7 +51,7 @@ fzf-git-branch() {
 
     git branch --all --color=always --sort=-committerdate | grep -v HEAD | sed 's/^..//' | cut -d' ' -f1 |
     fzf-tmux \
-        -p 80%,60%\
+        -p 50%,50%\
         --ansi \
         --header "Enter (checkout) / Ctrl-a (checkout -b) / Ctrl-t (checkout --track) / Ctrl-d (delete)" \
         --bind "enter:execute(git checkout {..})+accept" \
