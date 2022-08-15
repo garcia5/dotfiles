@@ -5,14 +5,15 @@ cmp.setup({
     snippet = {
         expand = function(args) vim.fn["vsnip#anonymous"](args.body) end,
     },
-    sources = {
+    sources = cmp.config.sources({
         { name = "vsnip" },
         { name = "nvim_lua" },
         { name = "nvim_lsp", max_item_count = 30 }, -- tsserver likes to send back _everything_
         { name = "nvim_lsp_signature_help" },
+        { name = "path" },
         { name = "buffer", keyword_length = 3 }, -- don't complete from buffer right away
-    },
-    mapping = {
+    }),
+    mapping = cmp.mapping.preset.insert({
         ["<C-f>"] = cmp.mapping.scroll_docs(-4),
         ["<C-d>"] = cmp.mapping.scroll_docs(4),
         ["<C-h>"] = cmp.mapping.complete({ reason = cmp.ContextReason.Manual }),
@@ -23,7 +24,7 @@ cmp.setup({
         }),
         ["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
         ["<C-p>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
-    },
+    }),
     preselect = cmp.PreselectMode.None,
     formatting = {
         -- Show where the completion opts are coming from
@@ -42,17 +43,5 @@ cmp.setup({
     experimental = {
         native_menu = false,
         ghost_text = true,
-    },
-    sorting = {
-        comparators = {
-            cmp.config.compare.offset,
-            cmp.config.compare.exact,
-            cmp.config.compare.score,
-            require("cmp-under-comparator").under,
-            cmp.config.compare.kind,
-            cmp.config.compare.sort_text,
-            cmp.config.compare.length,
-            cmp.config.compare.order,
-        },
     },
 })

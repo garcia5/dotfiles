@@ -233,9 +233,9 @@ packer.startup(function(use)
             "hrsh7th/cmp-nvim-lua",
             "hrsh7th/cmp-buffer",
             "hrsh7th/cmp-vsnip",
+            "hrsh7th/cmp-path",
             -- complements
             "onsails/lspkind-nvim", -- add the nice source + completion item kind to the menu
-            "lukas-reineke/cmp-under-comparator", -- better ordering for things with underscores
         },
         config = function() require("ag.plugin-conf.completion") end,
         module = "cmp",
