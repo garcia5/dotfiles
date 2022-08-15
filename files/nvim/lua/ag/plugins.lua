@@ -101,6 +101,7 @@ packer.startup(function(use)
                     vim.keymap.set("n", "<Leader>sh", "<cmd>Gitsigns stage_hunk<CR>", keymap_opts)
                     vim.keymap.set("n", "<Leader>gn", "<cmd>Gitsigns next_hunk<CR>", keymap_opts)
                     vim.keymap.set("n", "<Leader>gp", "<cmd>Gitsigns prev_hunk<CR>", keymap_opts)
+                    vim.api.nvim_set_hl(0, "GitSignsDeleteLn", { default = true, link = "GitSignsDelete" })
                 end,
             })
         end,
