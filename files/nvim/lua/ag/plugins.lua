@@ -26,28 +26,7 @@ packer.startup(function(use)
         "numToStr/Comment.nvim", -- "smart" (ts powered) commenting
         config = function()
             require("Comment").setup({
-                pre_hook = function(ctx)
-                    -- Calculate commentstring on the fly for vue files
-                    if vim.bo.filetype == "vue" then
-                        local U = require("Comment.utils")
-
-                        -- Detemine whether to use linewise or blockwise commentstring
-                        local type = ctx.ctype == U.ctype.line and "__default" or "__multiline"
-
-                        -- Determine the location where to calculate commentstring from
-                        local location = nil
-                        if ctx.ctype == U.ctype.block then
-                            location = require("ts_context_commentstring.utils").get_cursor_location()
-                        elseif ctx.cmotion == U.cmotion.v or ctx.cmotion == U.cmotion.V then
-                            location = require("ts_context_commentstring.utils").get_visual_start_location()
-                        end
-
-                        return require("ts_context_commentstring.internal").calculate_commentstring({
-                            key = type,
-                            location = location,
-                        })
-                    end
-                end,
+                pre_hook = require('ts_context_commentstring.integrations.comment_nvim').create_pre_hook(), -- better ts/vue commenting awareness
             })
         end,
     })
@@ -63,6 +42,7 @@ packer.startup(function(use)
         config = function()
             require("nvim-autopairs").setup({
                 map_cr = true, -- send closing symbol to its own line
+                check_ts = true, -- use treesitter
             })
         end,
         disable_filetype = { "TelescopePrompt", "fugitive" },
@@ -204,6 +184,19 @@ packer.startup(function(use)
             "vue",
             "javascript",
         },
+    })
+    use({
+        "axelvc/template-string.nvim", -- automatically turn quotes into backticks if I type a template placeholder
+        ft = {
+            "typescript",
+            "vue",
+            "javascript",
+        },
+        config = function()
+            require("template-string").setup({
+                filetypes = { "typescript", "vue", "javascript" },
+            })
+        end,
     })
     use({
         "hrsh7th/vim-vsnip", -- snippets
