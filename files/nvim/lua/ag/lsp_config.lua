@@ -47,6 +47,14 @@ vim.diagnostic.config({
     severity_sort = true,
 })
 
+-- Only let null-ls format my files
+local null_ls_format = function(bufnr)
+    vim.lsp.buf.format({
+        bufnr = bufnr,
+        filter = function(client) return client.name == "null-ls" end,
+    })
+end
+
 local custom_attach = function(client, bufnr)
     local keymap_opts = { buffer = bufnr, silent = true, noremap = true }
     -- LSP mappings (only apply when LSP client attached)
@@ -61,25 +69,18 @@ local custom_attach = function(client, bufnr)
     vim.keymap.set("n", "<leader>dp", vim.diagnostic.goto_prev, keymap_opts) -- move to prev diagnostic in buffer
     vim.keymap.set("n", "<leader>da", vim.diagnostic.setqflist, keymap_opts) -- show all buffer diagnostics in qflist
     vim.keymap.set("n", "H", vim.lsp.buf.code_action, keymap_opts) -- code actions (handled by telescope-ui-select)
-    vim.keymap.set("n", "<leader>F", vim.lsp.buf.format, keymap_opts) -- manual formatting, because sometimes they just decide to stop working
+    vim.keymap.set("n", "<leader>F", function() null_ls_format(bufnr) end, keymap_opts) -- manual formatting, because sometimes null-ls just decides to stop working
 
     -- use omnifunc
     vim.bo[bufnr].omnifunc = "v:lua.vim.lsp.omnifunc"
     vim.bo[bufnr].formatexpr = "v:lua.vim.lsp.formatexpr"
 
-    -- format on save
+    -- all formatting done by null-ls
     local augroup = vim.api.nvim_create_augroup("LspFormatting", { clear = true })
     vim.api.nvim_create_autocmd("BufWritePre", {
         group = augroup,
         buffer = bufnr,
-        callback = function()
-            vim.lsp.buf.format({
-                filter = function(this_client)
-                    local lang = vim.opt.filetype:get()
-                    if lang == "typescript" then return this_client.name ~= "tsserver" end -- disable tsserver formatting, it doesn't respect eslintrc
-                end,
-            })
-        end,
+        callback = function() null_ls_format(bufnr) end,
     })
 end
 
