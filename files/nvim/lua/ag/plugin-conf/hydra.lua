@@ -96,6 +96,7 @@ Hydra({
             border = "rounded", -- only applies for type = "window"
         },
         on_enter = function()
+            gs.toggle_deleted(true) -- show deleted lines
             gs.toggle_linehl(true) -- light up changed lines
             gs.toggle_word_diff(true)
             gs.setqflist("all", { open = false }) -- all hunks in qf
@@ -111,9 +112,9 @@ Hydra({
     mode = { "n", "x" },
     heads = {
         { "gn", ":cn<CR>", { silent = true, desc = "next hunk" } },
-        { "gp", ":cp<CR>", { silent = true, desc = "next hunk" } },
+        { "gp", ":cp<CR>", { silent = true, desc = "prev hunk" } },
         { "n", gs.next_hunk, { desc = "next hunk" } },
-        { "p", gs.prev_hunk, { desc = "next hunk" } },
+        { "p", gs.prev_hunk, { desc = "prev hunk" } },
         {
             "a",
             function() gs.setqflist("all", { open = true }) end,

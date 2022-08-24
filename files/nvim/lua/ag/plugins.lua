@@ -26,7 +26,7 @@ packer.startup(function(use)
         "numToStr/Comment.nvim", -- "smart" (ts powered) commenting
         config = function()
             require("Comment").setup({
-                pre_hook = require('ts_context_commentstring.integrations.comment_nvim').create_pre_hook(), -- better ts/vue commenting awareness
+                pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook(),
             })
         end,
     })
@@ -171,12 +171,7 @@ packer.startup(function(use)
         "tpope/vim-fugitive", -- git integration
         cmd = { "Git", "Gdiffsplit" },
     })
-    use({
-        "JoosepAlviste/nvim-ts-context-commentstring", -- commenting in vue files "just works"
-        ft = {
-            "vue",
-        },
-    })
+    use("JoosepAlviste/nvim-ts-context-commentstring") -- commenting in vue files "just works"
     use({
         "jose-elias-alvarez/nvim-lsp-ts-utils", -- helpers for typescript development
         ft = {
