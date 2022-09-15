@@ -31,9 +31,9 @@ vim.opt.background = "dark"
 vim.cmd("colorscheme catppuccin")
 
 -- Look and feel
-vim.opt.number = true -- numbers?
+vim.opt.number = false -- no numbers?
 vim.opt.relativenumber = false -- no numbers?
-vim.opt.signcolumn = "auto" -- show the sign column if necessary
+vim.opt.signcolumn = "yes" -- show the sign column always
 vim.opt.cursorline = false -- don't highlight current line
 vim.opt.list = true -- show list chars
 vim.opt.listchars = {

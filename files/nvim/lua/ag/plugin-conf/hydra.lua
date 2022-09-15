@@ -96,16 +96,16 @@ Hydra({
             border = "rounded", -- only applies for type = "window"
         },
         on_enter = function()
+            gs.toggle_signs(true)
             gs.toggle_deleted(true) -- show deleted lines
             gs.toggle_linehl(true) -- light up changed lines
-            gs.toggle_word_diff(true)
-            gs.setqflist("all", { open = false }) -- all hunks in qf
+            gs.toggle_word_diff(true) -- highlight changed words
+            gs.setqflist("all", { open = false }) -- all hunks in qf, but don't open qf list
         end,
         on_exit = function()
             gs.toggle_deleted(false)
             gs.toggle_linehl(false)
             gs.toggle_word_diff(false)
-            vim.cmd("cclose") -- close quickfix
             vim.cmd("echo") -- clear the echo area
         end,
     },
