@@ -22,3 +22,5 @@ alias gl="git log \
     --pretty='%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%ar) %C(bold blue)<%an>%Creset' \
     --stat" # `glols` from zsh git plugin
 alias gc='fzf-git-branch'
+
+alias kitty-update='curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin'
