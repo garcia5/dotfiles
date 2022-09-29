@@ -82,3 +82,8 @@ au("FileType", {
     pattern = "vue",
     command = "TSBufEnable indent",
 })
+
+au("FileType", {
+    pattern = "qf",
+    command = "set number",
+})

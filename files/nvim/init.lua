@@ -15,6 +15,7 @@ vim.opt.undofile = true -- keep track of my 'undo's between sessions
 vim.opt.grepprg = "rg --vimgrep --smart-case --no-heading" -- search with rg
 vim.opt.grepformat = "%f:%l:%c:%m" -- filename:line number:column number:error message
 vim.opt.mouse = "nv" -- use mouse in normal, visual modes
+vim.opt.mousescroll = "ver:3,hor:0" -- scroll vertically by 3 lines, no horizontal scrolling
 
 -- Indentation
 vim.opt.autoindent = true -- continue indentation to new line
