@@ -54,6 +54,7 @@ Hydra({
         end,
         on_exit = function()
             dap.repl.close()
+            dap.clear_breakpoints()
             dapui.close({})
         end,
     },
