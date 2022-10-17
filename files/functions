@@ -24,11 +24,16 @@ gpush() {
     fi
 }
 
-zle -N git-ctrl-t-widget
-git-ctrl-t-widget() {
+zle -N ctrl-t-widget
+ctrl-t-widget() {
     # If the current command is 'git add ' or 'git restore ', fuzzy find changed files
     if [[ $LBUFFER =~ '^git (add|restore|checkout) ' ]]; then
         result=$(fzf-git-changed | join-lines)
+        zle reset-prompt
+        LBUFFER+=$result
+    # Find only '.spec' files
+    elif [[ $LBUFFER =~ '^yarn test ' ]]; then
+        result=$(fzf-yarn-test | join-lines)
         zle reset-prompt
         LBUFFER+=$result
     # Otherwise do default and fuzzy search all files
@@ -36,7 +41,7 @@ git-ctrl-t-widget() {
         LBUFFER+=$(eval $FZF_CTRL_T_COMMAND | eval "fzf $FZF_CTRL_T_OPTS")
     fi
 }
-bindkey '' git-ctrl-t-widget
+bindkey '' ctrl-t-widget
 
 gstash() {
     is-git-repo || echo 'Not in git repo'
@@ -46,6 +51,19 @@ gstash() {
 }
 
 # FZF
+fzf-yarn-test() {
+    cmd="$FZF_CTRL_T_COMMAND '.spec.(t|j)s$'"
+    eval "$cmd" |
+    fzf \
+        --multi \
+        --ansi \
+        --header 'ctrl-f: All files / ctrl-g Test files' \
+        --bind "ctrl-f:change-prompt(Files> )+reload($FZF_CTRL_T_COMMAND)" \
+        --bind "ctrl-g:change-prompt(Test Files> )+reload($cmd)" \
+        --prompt "Test Files> " \
+        --preview 'bat {}'
+}
+
 fzf-git-branch() {
     is-git-repo || echo 'Not in git repo'
 
