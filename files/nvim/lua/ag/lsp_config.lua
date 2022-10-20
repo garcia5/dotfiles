@@ -28,7 +28,7 @@ vim.diagnostic.config({
     float = {
         severity_sort = true,
         source = "if_many",
-        border = "rounded",
+        border = "solid",
         header = {
             "",
             "LspDiagnosticsDefaultWarning",

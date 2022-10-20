@@ -42,7 +42,7 @@ lualine.setup({
                 path = 0, -- just the filename
                 color = { fg = "#ffffff", gui = "bold" },
                 shorting_target = 30,
-                cond = function () return not IS_WIDE() end,
+                cond = function() return not IS_WIDE() end,
             },
         },
         lualine_x = {
@@ -100,9 +100,9 @@ lualine.setup({
         lualine_z = { "tabs" },
     },
     options = {
-        section_separators = { left = "", right = "" },
-        component_separators = { left = "", right = "" },
-        theme = "catppuccin",
+        section_separators = { left = "", right = "" },
+        component_separators = { left = "", right = "" },
+        theme = "tokyonight",
         disabled_filetypes = { "aerial" },
         globalstatus = true,
     },

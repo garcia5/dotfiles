@@ -29,11 +29,11 @@ vim.opt.softtabstop = 4 -- <Tab> behaves as 4 spaces when editing
 -- Colors
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
-vim.cmd("colorscheme catppuccin")
+vim.cmd("colorscheme tokyonight-moon")
 
 -- Look and feel
-vim.opt.number = false -- no numbers?
-vim.opt.relativenumber = false -- no numbers?
+vim.opt.number = true
+vim.opt.relativenumber = true
 vim.opt.signcolumn = "yes" -- show the sign column always
 vim.opt.cursorline = false -- don't highlight current line
 vim.opt.list = true -- show list chars

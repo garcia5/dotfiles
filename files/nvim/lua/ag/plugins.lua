@@ -105,10 +105,6 @@ packer.startup(function(use)
     use({
         "mhinz/vim-startify", -- start menu
         config = function()
-            vim.g.startify_session_dir = "~/.sesh/"
-            vim.g.startify_change_to_dir = 0 -- don't go to the selected file's directory
-            vim.g.startify_change_to_vcs_root = 1 -- go to project root
-            vim.g.startify_change_cmd = "cd" -- ... and do it for the whole vim instance
             vim.g.startify_commands = {
                 { f = { "Find Files", "Telescope find_files" } },
                 { g = { "Live Grep", "Telescope live_grep" } },
@@ -132,6 +128,10 @@ packer.startup(function(use)
         as = "catppuccin",
         config = function() require("ag.plugin-conf.catppuccin") end,
         run = ":CatppuccinCompile",
+    })
+    use({
+        "folke/tokyonight.nvim",
+        config = function() require("ag.plugin-conf.tokyonight") end,
     })
     use({
         "lukas-reineke/indent-blankline.nvim", -- indent guides
