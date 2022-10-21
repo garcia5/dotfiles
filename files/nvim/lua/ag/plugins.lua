@@ -71,7 +71,7 @@ packer.startup(function(use)
                     virt_text_pos = "right_align",
                 },
                 preview_config = {
-                    border = "rounded",
+                    border = "solid",
                     style = "minimal",
                     relative = "cursor",
                     row = 0,
@@ -105,6 +105,9 @@ packer.startup(function(use)
     use({
         "mhinz/vim-startify", -- start menu
         config = function()
+            -- don't change directory when I select a file
+            vim.g.startify_change_to_dir = 0
+            vim.g.startify_change_to_vcs_root = 0
             vim.g.startify_commands = {
                 { f = { "Find Files", "Telescope find_files" } },
                 { g = { "Live Grep", "Telescope live_grep" } },
