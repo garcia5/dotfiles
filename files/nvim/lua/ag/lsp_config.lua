@@ -47,36 +47,13 @@ vim.diagnostic.config({
     severity_sort = true,
 })
 
-local augroup = vim.api.nvim_create_augroup("LspFormatting", { clear = true })
--- Only let null-ls format my files
-local null_ls_format = function(bufnr)
+local format_group = vim.api.nvim_create_augroup("LspFormatting", { clear = true })
+-- Don't let tsserver or vuels do formatting, they do it wrong
+local custom_format = function(bufnr)
     vim.lsp.buf.format({
         bufnr = bufnr,
-        filter = function(client) return client.name == "null-ls" end,
+        filter = function(client) return client.name ~= "tsserver" and client.name ~= "vuels" end,
     })
-end
-
-local attach_volar = function(client, bufnr)
-    local root_files = vim.fn.readdir(vim.fn.getcwd())
-    local volar = false
-    -- TODO: the "right" way to do this would be to check the typescript version, but that seems hard
-    for _, fname in ipairs(root_files) do
-        if fname == "pnpm-lock.yaml" then volar = true end
-    end
-
-    -- disable vuels and tsserver if we're using volar
-    if volar and (client.name == "tsserver" or client.name == "vuels") then
-        client.stop()
-        return true
-    end
-
-    -- disable volar if necessary
-    if not volar and client.name == "volar" then
-        client.stop()
-        return false
-    end
-
-    return false
 end
 
 local custom_attach = function(client, bufnr)
@@ -93,18 +70,42 @@ local custom_attach = function(client, bufnr)
     vim.keymap.set("n", "<leader>dp", vim.diagnostic.goto_prev, keymap_opts) -- move to prev diagnostic in buffer
     vim.keymap.set("n", "<leader>da", vim.diagnostic.setqflist, keymap_opts) -- show all buffer diagnostics in qflist
     vim.keymap.set("n", "H", vim.lsp.buf.code_action, keymap_opts) -- code actions (handled by telescope-ui-select)
-    vim.keymap.set("n", "<leader>F", function() null_ls_format(bufnr) end, keymap_opts) -- manual formatting, because sometimes null-ls just decides to stop working
+    vim.keymap.set("n", "<leader>F", function() custom_format(bufnr) end, keymap_opts) -- manual formatting, because sometimes null-ls just decides to stop working
 
     -- use omnifunc
     vim.bo[bufnr].omnifunc = "v:lua.vim.lsp.omnifunc"
     vim.bo[bufnr].formatexpr = "v:lua.vim.lsp.formatexpr"
 
-    -- all formatting done by null-ls
+    -- format on save
     vim.api.nvim_create_autocmd("BufWritePre", {
-        group = augroup,
+        group = format_group,
         buffer = bufnr,
-        callback = function() null_ls_format(bufnr) end,
+        callback = function() custom_format(bufnr) end,
     })
+end
+
+local web_dev_attach = function(client, bufnr)
+    local root_files = vim.fn.readdir(vim.fn.getcwd())
+    local volar = false
+    -- TODO: the "right" way to do this would be to check the typescript version, but that seems hard
+    for _, fname in ipairs(root_files) do
+        if fname == "pnpm-lock.yaml" then volar = true end
+    end
+
+    -- disable vuels and tsserver if we're using volar
+    if volar and (client.name == "tsserver" or client.name == "vuels") then
+        client.stop()
+        return false
+    end
+
+    -- disable volar if we don't have pnpm
+    if not volar and client.name == "volar" then
+        client.stop()
+        return false
+    end
+
+    custom_attach(client, bufnr)
+    return true
 end
 
 -- Set up clients
@@ -153,25 +154,12 @@ lspconfig.pyright.setup({
 -- typescript
 lspconfig.tsserver.setup({
     on_attach = function(client, bufnr)
-        if attach_volar(client, bufnr) then return end
+        if not web_dev_attach(client, bufnr) then return end
+
         local ts_utils = require("nvim-lsp-ts-utils")
         ts_utils.setup({
             update_imports_on_move = false,
             enable_import_on_completion = true,
-            auto_inlay_hints = false, -- doesn't _quite_ work
-            inlay_hints_highlight = "Comment",
-            inlay_hints_format = {
-                Type = {
-                    highlight = "Comment",
-                    text = function(text) return "->" .. text end,
-                },
-                Parameter = {
-                    highlight = "Comment",
-                },
-                Enum = {
-                    highlight = "Comment",
-                },
-            },
         })
 
         ts_utils.setup_client(client)
@@ -179,17 +167,12 @@ lspconfig.tsserver.setup({
         -- TS specific mappings
         vim.keymap.set("n", "<Leader>ii", "<cmd>TSLspOrganize<CR>", { buffer = bufnr, silent = true, noremap = true }) -- organize imports
         vim.keymap.set("n", "<Leader>R", "<cmd>TSLspRenameFile<CR>", { buffer = bufnr, silent = true, noremap = true }) -- rename file AND update references to it
-
-        custom_attach(client, bufnr)
     end,
 })
 
 -- vue
 lspconfig.vuels.setup({
-    on_attach = function(client, bufnr)
-        if attach_volar(client, bufnr) then return end
-        custom_attach(client, bufnr)
-    end,
+    on_attach = web_dev_attach,
     settings = {
         vetur = {
             completion = {
@@ -224,10 +207,7 @@ lspconfig.vuels.setup({
     },
 })
 lspconfig.volar.setup({
-    on_attach = function(client, bufnr)
-        if not attach_volar(client, bufnr) then return end
-        custom_attach(client, bufnr)
-    end,
+    on_attach = web_dev_attach,
     -- enable "take over mode" for typescript files as well: https://github.com/johnsoncodehk/volar/discussions/471
     filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue", "json" },
     init_options = {
