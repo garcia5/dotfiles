@@ -60,6 +60,10 @@ packer.startup(function(use)
         ft = lsp_filetypes,
     })
     use({
+        "norcalli/nvim-colorizer.lua", -- enable textDocument/documentColor
+        config = function() require("colorizer").setup() end,
+    })
+    use({
         "lewis6991/gitsigns.nvim", -- git signs in gutter + some useful keymaps
         requires = { "nvim-lua/plenary.nvim" },
         config = function()
