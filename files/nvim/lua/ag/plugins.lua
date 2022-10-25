@@ -1,7 +1,7 @@
 -- Bootstrap packer if necessary
 local install_path = vim.fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
 local packer_bootstrap = false
-local lsp_filetypes = require("ag.lsp_config")
+local lsp_filetypes = require("ag.lsp_config").lsp_filetypes
 
 if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
     packer_bootstrap = vim.fn.system({ "git", "clone", "https://github.com/wbthomason/packer.nvim", install_path })

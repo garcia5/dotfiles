@@ -47,12 +47,36 @@ vim.diagnostic.config({
     severity_sort = true,
 })
 
+local augroup = vim.api.nvim_create_augroup("LspFormatting", { clear = true })
 -- Only let null-ls format my files
 local null_ls_format = function(bufnr)
     vim.lsp.buf.format({
         bufnr = bufnr,
         filter = function(client) return client.name == "null-ls" end,
     })
+end
+
+local attach_volar = function(client, bufnr)
+    local root_files = vim.fn.readdir(vim.fn.getcwd())
+    local volar = false
+    -- TODO: the "right" way to do this would be to check the typescript version, but that seems hard
+    for _, fname in ipairs(root_files) do
+        if fname == "pnpm-lock.yaml" then volar = true end
+    end
+
+    -- disable vuels and tsserver if we're using volar
+    if volar and (client.name == "tsserver" or client.name == "vuels") then
+        client.stop()
+        return true
+    end
+
+    -- disable volar if necessary
+    if not volar and client.name == "volar" then
+        client.stop()
+        return false
+    end
+
+    return false
 end
 
 local custom_attach = function(client, bufnr)
@@ -76,7 +100,6 @@ local custom_attach = function(client, bufnr)
     vim.bo[bufnr].formatexpr = "v:lua.vim.lsp.formatexpr"
 
     -- all formatting done by null-ls
-    local augroup = vim.api.nvim_create_augroup("LspFormatting", { clear = true })
     vim.api.nvim_create_autocmd("BufWritePre", {
         group = augroup,
         buffer = bufnr,
@@ -130,6 +153,7 @@ lspconfig.pyright.setup({
 -- typescript
 lspconfig.tsserver.setup({
     on_attach = function(client, bufnr)
+        if attach_volar(client, bufnr) then return end
         local ts_utils = require("nvim-lsp-ts-utils")
         ts_utils.setup({
             update_imports_on_move = false,
@@ -162,7 +186,10 @@ lspconfig.tsserver.setup({
 
 -- vue
 lspconfig.vuels.setup({
-    on_attach = custom_attach,
+    on_attach = function(client, bufnr)
+        if attach_volar(client, bufnr) then return end
+        custom_attach(client, bufnr)
+    end,
     settings = {
         vetur = {
             completion = {
@@ -193,6 +220,20 @@ lspconfig.vuels.setup({
             style = true,
             templateProps = true,
             interpolation = true,
+        },
+    },
+})
+lspconfig.volar.setup({
+    on_attach = function(client, bufnr)
+        if not attach_volar(client, bufnr) then return end
+        custom_attach(client, bufnr)
+    end,
+    -- enable "take over mode" for typescript files as well: https://github.com/johnsoncodehk/volar/discussions/471
+    filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue", "json" },
+    init_options = {
+        typescript = {
+            -- "take over mode" can be weird in monorepos, use a global typescript installation instead
+            serverPath = vim.fn.expand("~") .. "/.config/yarn/global/node_modules/typescript/lib/tsserverlibrary.js",
         },
     },
 })
