@@ -274,8 +274,10 @@ packer.startup(function(use)
         config = function()
             require("aerial").setup({
                 backends = { "treesitter" },
-                max_width = 40,
-                min_width = 20,
+                layout = {
+                    max_width = 40,
+                    min_width = 20,
+                },
                 close_automatic_events = { "switch_buffer" },
                 manage_folds = false,
                 link_folds_to_tree = false,
