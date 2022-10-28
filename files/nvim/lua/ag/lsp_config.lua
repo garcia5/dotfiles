@@ -52,7 +52,11 @@ local format_group = vim.api.nvim_create_augroup("LspFormatting", { clear = true
 local custom_format = function(bufnr)
     vim.lsp.buf.format({
         bufnr = bufnr,
-        filter = function(client) return client.name ~= "tsserver" and client.name ~= "vuels" end,
+        filter = function(client)
+            local ft = vim.bo[bufnr].filetype
+            if ft ~= "typescript" and ft ~= "javascript" and ft ~= "vue" then return true end
+            return client.name ~= "tsserver" and client.name ~= "vuels"
+        end,
     })
 end
 
@@ -112,6 +116,13 @@ end
 local null_ls = require("null-ls")
 null_ls.setup({
     on_attach = custom_attach,
+    should_attach = function(bufnr)
+        local cur_ft = vim.bo[bufnr].filetype
+        for _, ft in ipairs({ "vue", "typescript", "javascript", "python", "lua" }) do
+            if ft == cur_ft then return true end
+        end
+        return false
+    end,
     sources = {
         --#formatters
         null_ls.builtins.formatting.stylua,
@@ -125,6 +136,7 @@ null_ls.setup({
         --#code actions
         null_ls.builtins.code_actions.eslint_d,
     },
+    fallback_severity = vim.diagnostic.severity.WARN,
 })
 
 -- python
