@@ -27,7 +27,7 @@ gpush() {
 zle -N ctrl-t-widget
 ctrl-t-widget() {
     # If the current command is 'git add ' or 'git restore ', fuzzy find changed files
-    if [[ $LBUFFER =~ '^git (add|restore|checkout) ' ]]; then
+    if [[ $LBUFFER =~ '^git (add|restore|checkout|rm) ' ]]; then
         result=$(fzf-git-changed | join-lines)
         zle reset-prompt
         LBUFFER+=$result
