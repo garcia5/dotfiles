@@ -47,16 +47,19 @@ vim.diagnostic.config({
     severity_sort = true,
 })
 
-local format_group = vim.api.nvim_create_augroup("LspFormatting", { clear = true })
 -- Don't let tsserver or vuels do formatting, they do it wrong
 local custom_format = function(bufnr)
     vim.lsp.buf.format({
         bufnr = bufnr,
-        filter = function(client)
-            local ft = vim.bo[bufnr].filetype
-            if ft ~= "typescript" and ft ~= "javascript" and ft ~= "vue" then return true end
-            return client.name ~= "tsserver" and client.name ~= "vuels"
-        end,
+        filter = function(client) return client.name ~= "tsserver" and client.name ~= "vuels" end,
+    })
+end
+local format_group = vim.api.nvim_create_augroup("LspFormatting", { clear = true })
+local format_on_save = function(bufnr)
+    vim.api.nvim_create_autocmd("BufWritePre", {
+        group = format_group,
+        buffer = bufnr,
+        callback = function() custom_format(bufnr) end,
     })
 end
 
@@ -79,13 +82,6 @@ local custom_attach = function(client, bufnr)
     -- use omnifunc
     vim.bo[bufnr].omnifunc = "v:lua.vim.lsp.omnifunc"
     vim.bo[bufnr].formatexpr = "v:lua.vim.lsp.formatexpr"
-
-    -- format on save
-    vim.api.nvim_create_autocmd("BufWritePre", {
-        group = format_group,
-        buffer = bufnr,
-        callback = function() custom_format(bufnr) end,
-    })
 end
 
 local web_dev_attach = function(client, bufnr)
@@ -107,6 +103,8 @@ local web_dev_attach = function(client, bufnr)
         client.stop()
         return false
     end
+
+    format_on_save(bufnr)
 
     custom_attach(client, bufnr)
     return true
@@ -221,7 +219,7 @@ lspconfig.vuels.setup({
 lspconfig.volar.setup({
     on_attach = web_dev_attach,
     -- enable "take over mode" for typescript files as well: https://github.com/johnsoncodehk/volar/discussions/471
-    filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue", "json" },
+    filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" },
     init_options = {
         typescript = {
             -- "take over mode" can be weird in monorepos, use a global typescript installation instead
@@ -242,7 +240,10 @@ lspconfig.bashls.setup({
 
 -- lua
 lspconfig.sumneko_lua.setup({
-    on_attach = custom_attach,
+    on_attach = function(client, bufnr)
+        custom_attach(client, bufnr)
+        format_on_save(bufnr)
+    end,
     settings = {
         Lua = {
             runtime = {
