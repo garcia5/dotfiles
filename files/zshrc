@@ -118,7 +118,7 @@ zvm_after_init() {
 
 # use bat for manpager
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
-export BAT_THEME="Dracula"
+export BAT_THEME="tokyonight_moon"
 
 # FZF things
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
