@@ -17,7 +17,7 @@ cmp.setup({
         ["<C-f>"] = cmp.mapping.scroll_docs(-4),
         ["<C-d>"] = cmp.mapping.scroll_docs(4),
         ["<C-h>"] = cmp.mapping.complete({ reason = cmp.ContextReason.Manual }),
-        ["<C-e>"] = cmp.mapping.close(),
+        ["<C-e>"] = cmp.mapping.abort(),
         ["<C-y>"] = cmp.mapping.confirm({
             behavior = cmp.ConfirmBehavior.Insert,
             select = true, -- use first result if none explicitly selected

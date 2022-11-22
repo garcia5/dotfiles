@@ -61,7 +61,14 @@ packer.startup(function(use)
     })
     use({
         "norcalli/nvim-colorizer.lua", -- enable textDocument/documentColor
-        config = function() require("colorizer").setup() end,
+        config = function()
+            require("colorizer").setup({
+                "css",
+                "scss",
+                "vue",
+                "html",
+            })
+        end,
     })
     use({
         "lewis6991/gitsigns.nvim", -- git signs in gutter + some useful keymaps
@@ -227,7 +234,7 @@ packer.startup(function(use)
         },
         config = function()
             require("template-string").setup({
-                filetypes = { "typescript", "vue", "javascript" },
+                filetypes = { "typescript", "vue", "javascript", "python" },
             })
         end,
     })
@@ -316,6 +323,12 @@ packer.startup(function(use)
     use({
         "anuvyklack/hydra.nvim", -- custom "modes"
         config = function() require("ag.plugin-conf.hydra") end,
+    })
+    use({
+        "cshuaimin/ssr.nvim", -- structural search + replace
+        config = function()
+            vim.keymap.set({ "n", "x" }, "<leader>sr", function() require("ssr").open() end)
+        end,
     })
 
     -- Grab all packages if we're setting up for the first time
