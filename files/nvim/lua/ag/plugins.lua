@@ -55,6 +55,7 @@ packer.startup(function(use)
     })
 
     -- Look and feel
+    use("kyazdani42/nvim-web-devicons")
     use({
         "folke/lsp-colors.nvim", -- LSP colors that aren't built in
         ft = lsp_filetypes,
@@ -107,29 +108,18 @@ packer.startup(function(use)
     use({
         "nvim-lualine/lualine.nvim", -- statusline in lua
         requires = {
-            "kyazdani42/nvim-web-devicons",
             opt = true,
         },
         config = function() require("ag.plugin-conf.lualine") end,
     })
     use("p00f/nvim-ts-rainbow") -- rainbow braces (and tags) powered by treesitter
     use({
-        "mhinz/vim-startify", -- start menu
-        config = function()
-            -- don't change directory when I select a file
-            vim.g.startify_change_to_dir = 0
-            vim.g.startify_change_to_vcs_root = 0
-            vim.g.startify_commands = {
-                { f = { "Find Files", "Telescope find_files" } },
-                { g = { "Live Grep", "Telescope live_grep" } },
-                { c = { "Checkout Branch", "Telescope git_branches" } },
-            }
-            vim.g.startify_files_number = 5 -- show 5 most recent files
-            vim.g.startify_lists = {
-                { type = "commands", header = { "    Commands" } }, -- Commands from above
-                { type = "dir", header = { "    MRU " .. vim.fn.getcwd() } }, -- MRU files from CWD
-            }
-        end,
+        "goolord/alpha-nvim", -- start menu, but in lua
+        config = function() require("ag.plugin-conf.alpha") end,
+        requires = {
+            "kyazdani42/nvim-web-devicons",
+            opt = true,
+        },
     })
     use({
         "nvim-telescope/telescope-ui-select.nvim", -- Use telescope to override vim.ui.select
