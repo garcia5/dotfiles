@@ -60,6 +60,11 @@ au("BufEnter", {
     callback = function() vim.opt_local.filetype = "Dockerfile" end,
 })
 
+au("BufEnter", {
+    pattern = "*.tmTheme",
+    callback = function() vim.opt_local.filetype = "tmTheme" end,
+})
+
 local nvim_tree_group = augroup("NvimTree", { clear = true })
 au("FileType", {
     group = nvim_tree_group,

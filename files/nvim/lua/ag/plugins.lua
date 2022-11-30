@@ -68,6 +68,7 @@ packer.startup(function(use)
                 "scss",
                 "vue",
                 "html",
+                "tmTheme",
             })
         end,
     })
@@ -108,6 +109,7 @@ packer.startup(function(use)
     use({
         "nvim-lualine/lualine.nvim", -- statusline in lua
         requires = {
+            "kyazdani42/nvim-web-devicons",
             opt = true,
         },
         config = function() require("ag.plugin-conf.lualine") end,
@@ -313,12 +315,6 @@ packer.startup(function(use)
     use({
         "anuvyklack/hydra.nvim", -- custom "modes"
         config = function() require("ag.plugin-conf.hydra") end,
-    })
-    use({
-        "cshuaimin/ssr.nvim", -- structural search + replace
-        config = function()
-            vim.keymap.set({ "n", "x" }, "<leader>sr", function() require("ssr").open() end)
-        end,
     })
 
     -- Grab all packages if we're setting up for the first time
