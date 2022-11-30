@@ -57,11 +57,13 @@ fzf-yarn-test() {
     fzf \
         --multi \
         --ansi \
+        --height 100% \
+        --layout reverse \
         --header 'ctrl-f: All files / ctrl-g Test files' \
         --bind "ctrl-f:change-prompt(Files> )+reload($FZF_CTRL_T_COMMAND)" \
         --bind "ctrl-g:change-prompt(Test Files> )+reload($cmd)" \
         --prompt "Test Files> " \
-        --preview 'bat {}'
+        --preview "bat --color=always --line-range=:40 --style=plain --highlight-line=\"\$(cat {} | grep -m1 -n 'describe' | cut -f1 -d:)\" {}"
 }
 
 fzf-git-branch() {
@@ -89,6 +91,8 @@ fzf-git-changed() {
     fzf \
         --multi \
         --ansi \
+        --height 40% \
+        --layout reverse \
         --nth 2..,.. \
         --header 'ctrl-f: All files / ctrl-g: Changed files' \
         --bind "ctrl-f:change-prompt(Files> )+reload($FZF_CTRL_T_COMMAND)" \
