@@ -171,7 +171,6 @@ packer.startup(function(use)
                 "packer",
                 "checkhealth",
                 "help",
-                "startify",
             }
             vim.g.indent_blankline_use_treesitter = true
             vim.g.indent_blankline_disable_with_nolist = true
