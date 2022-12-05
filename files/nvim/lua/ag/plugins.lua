@@ -53,25 +53,6 @@ packer.startup(function(use)
         "nvim-telescope/telescope.nvim", -- fuzzy find ALL the things
         config = function() require("ag.plugin-conf.telescope") end,
     })
-
-    -- Look and feel
-    use("kyazdani42/nvim-web-devicons")
-    use({
-        "folke/lsp-colors.nvim", -- LSP colors that aren't built in
-        ft = lsp_filetypes,
-    })
-    use({
-        "norcalli/nvim-colorizer.lua", -- enable textDocument/documentColor
-        config = function()
-            require("colorizer").setup({
-                "css",
-                "scss",
-                "vue",
-                "html",
-                "tmTheme",
-            })
-        end,
-    })
     use({
         "lewis6991/gitsigns.nvim", -- git signs in gutter + some useful keymaps
         requires = { "nvim-lua/plenary.nvim" },
@@ -105,6 +86,39 @@ packer.startup(function(use)
                 end,
             })
         end,
+    })
+
+    -- Look and feel
+    use("kyazdani42/nvim-web-devicons")
+    use({
+        "folke/lsp-colors.nvim", -- LSP colors that aren't built in
+        ft = lsp_filetypes,
+    })
+    use({
+        "norcalli/nvim-colorizer.lua", -- enable textDocument/documentColor
+        config = function()
+            require("colorizer").setup({
+                "css",
+                "scss",
+                "vue",
+                "html",
+                "tmTheme",
+            })
+        end,
+    })
+    use({
+        "lukas-reineke/indent-blankline.nvim", -- indent guides
+        config = function()
+            vim.g.indent_blankline_filetype_exclude = {
+                "lspinfo",
+                "packer",
+                "checkhealth",
+                "help",
+            }
+            vim.g.indent_blankline_use_treesitter = true
+            vim.g.indent_blankline_disable_with_nolist = true
+        end,
+        disable = true,
     })
     use({
         "nvim-lualine/lualine.nvim", -- statusline in lua
@@ -162,20 +176,6 @@ packer.startup(function(use)
     use({
         "folke/tokyonight.nvim",
         config = function() require("ag.plugin-conf.tokyonight") end,
-    })
-    use({
-        "lukas-reineke/indent-blankline.nvim", -- indent guides
-        config = function()
-            vim.g.indent_blankline_filetype_exclude = {
-                "lspinfo",
-                "packer",
-                "checkhealth",
-                "help",
-            }
-            vim.g.indent_blankline_use_treesitter = true
-            vim.g.indent_blankline_disable_with_nolist = true
-        end,
-        disable = true,
     })
 
     -- 0.5 features (lsp + treesitter)
