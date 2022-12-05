@@ -2,6 +2,8 @@ local lualine = require("lualine")
 
 local IS_WIDE = function() return vim.o.columns > 150 end
 
+local IS_START = function() return vim.opt.filetype:get() == "alpha" end
+
 lualine.setup({
     sections = {
         --+-------------------------------------------------+--
@@ -11,6 +13,7 @@ lualine.setup({
             {
                 "mode",
                 fmt = function(m) return IS_WIDE() and m or m:sub(1, 1) end,
+                cond = function() return not IS_START() end,
             },
         },
         lualine_b = { "branch" },
@@ -35,14 +38,14 @@ lualine.setup({
                 path = 1, -- full file path
                 color = { fg = "#ffffff", gui = "bold" },
                 shorting_target = 30,
-                cond = IS_WIDE,
+                cond = function() return IS_WIDE() and not IS_START() end,
             },
             {
                 "filename",
                 path = 0, -- just the filename
                 color = { fg = "#ffffff", gui = "bold" },
                 shorting_target = 30,
-                cond = function() return not IS_WIDE() end,
+                cond = function() return not IS_WIDE() and not IS_START() end,
             },
         },
         lualine_x = {
@@ -75,7 +78,7 @@ lualine.setup({
                 end,
                 icon = " LSP:",
                 color = { gui = "bold" },
-                cond = IS_WIDE,
+                cond = function() return IS_WIDE() and not IS_START() end,
             },
             {
                 "diagnostics",
