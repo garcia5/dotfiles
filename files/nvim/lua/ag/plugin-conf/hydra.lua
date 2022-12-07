@@ -108,6 +108,7 @@ Hydra({
             gs.toggle_linehl(false)
             gs.toggle_word_diff(false)
             vim.cmd("echo") -- clear the echo area
+            vim.cmd("ccl") -- close qf list
         end,
     },
     mode = { "n", "x" },
@@ -118,7 +119,10 @@ Hydra({
         { "p", gs.prev_hunk, { desc = "prev hunk" } },
         {
             "a",
-            function() gs.setqflist("all", { open = true }) end,
+            function()
+                gs.setqflist("all", { open = true })
+                vim.cmd("cc")
+            end,
             { desc = "set qflist" },
         },
         { "s", gs.stage_hunk, { desc = "stage hunk" } },
