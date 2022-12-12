@@ -51,7 +51,9 @@ vim.diagnostic.config({
 local custom_format = function(bufnr)
     vim.lsp.buf.format({
         bufnr = bufnr,
-        filter = function(client) return client.name ~= "tsserver" and client.name ~= "vuels" end,
+        filter = function(client)
+            return client.name ~= "tsserver" and client.name ~= "vuels" and client.name ~= "volar"
+        end,
     })
 end
 local format_group = vim.api.nvim_create_augroup("LspFormatting", { clear = true })
@@ -217,7 +219,26 @@ lspconfig.vuels.setup({
     },
 })
 lspconfig.volar.setup({
-    on_attach = web_dev_attach,
+    on_attach = function(client, bufnr)
+        web_dev_attach(client, bufnr)
+        require("nvim-lsp-ts-utils")
+
+        -- TS specific mappings
+        if vim.bo[bufnr].filetype == "typescript" then
+            vim.keymap.set(
+                "n",
+                "<Leader>ii",
+                "<cmd>TSLspOrganize<CR>",
+                { buffer = bufnr, silent = true, noremap = true }
+            ) -- organize imports
+            vim.keymap.set(
+                "n",
+                "<Leader>R",
+                "<cmd>TSLspRenameFile<CR>",
+                { buffer = bufnr, silent = true, noremap = true }
+            ) -- rename file AND update references to it
+        end
+    end,
     -- enable "take over mode" for typescript files as well: https://github.com/johnsoncodehk/volar/discussions/471
     filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" },
     init_options = {
