@@ -9,6 +9,7 @@ mapper("n", "<BS>", "daw")
 mapper("n", "<CR>", ":e<CR>")
 mapper("n", "<Leader><Leader>", "<C-^>")
 mapper("n", ":W", ":w")
+mapper("n", "I", "0I")
 
 -- Movemint
 mapper("n", "<C-j>", "<C-w>j")
