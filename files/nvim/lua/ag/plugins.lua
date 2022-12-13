@@ -315,6 +315,19 @@ packer.startup(function(use)
         "anuvyklack/hydra.nvim", -- custom "modes"
         config = function() require("ag.plugin-conf.hydra") end,
     })
+    use({
+        "vinnymeller/swagger-preview.nvim",
+        run = "npm install -g swagger-ui-watcher",
+        ft = { "yaml", "json" },
+        config = function()
+            require("swagger-preview").setup({
+                -- The port to run the preview server on
+                port = 8000,
+                -- The host to run the preview server on
+                host = "localhost",
+            })
+        end,
+    })
 
     -- Grab all packages if we're setting up for the first time
     if packer_bootstrap then packer.sync() end
