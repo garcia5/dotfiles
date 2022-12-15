@@ -58,8 +58,9 @@ end
 local default_mru_ignore = { "gitcommit" }
 
 local mru_opts = {
-    ignore = function(path, ext) return (string.find(path, "COMMIT_EDITMSG")) or
-        (vim.tbl_contains(default_mru_ignore, ext)) end,
+    ignore = function(path, ext)
+        return (string.find(path, "COMMIT_EDITMSG")) or (vim.tbl_contains(default_mru_ignore, ext))
+    end,
 }
 
 local function mru(cwd, num_items, opts)
@@ -112,10 +113,11 @@ local buttons = {
     val = {
         { type = "text", val = "Quick links", opts = { hl = "SpecialComment", position = "center" } },
         { type = "padding", val = 1 },
-        dashboard.button("e", "  New file", ":ene <BAR> startinsert<CR>"),
+        dashboard.button("e", "  New file", ":e<CR>"),
         dashboard.button("f", "  Find file", ":Telescope find_files<CR>"),
         dashboard.button("g", "  Live grep", ":Telescope live_grep<CR>"),
         dashboard.button("c", "  Checkout branch", ":Telescope git_branches<CR>"),
+        dashboard.button("s", "  Update Plugins", ":PackerSync<CR>"),
         dashboard.button("q", "  Quit", ":qa<CR>"),
     },
     position = "center",
