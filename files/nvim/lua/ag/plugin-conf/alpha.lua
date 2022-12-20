@@ -117,6 +117,7 @@ local buttons = {
         dashboard.button("f", "  Find file", ":Telescope find_files<CR>"),
         dashboard.button("g", "  Live grep", ":Telescope live_grep<CR>"),
         dashboard.button("c", "  Checkout branch", ":Telescope git_branches<CR>"),
+        dashboard.button("m", "  Open mergetool", ":Git mergetool<CR>"),
         dashboard.button("s", "  Update Plugins", ":PackerSync<CR>"),
         dashboard.button("q", "  Quit", ":qa<CR>"),
     },

@@ -90,9 +90,7 @@ local web_dev_attach = function(client, bufnr)
     local root_files = vim.fn.readdir(vim.fn.getcwd())
     local volar = false
     -- TODO: the "right" way to do this would be to check the typescript version, but that seems hard
-    for _, fname in ipairs(root_files) do
-        if fname == "pnpm-lock.yaml" then volar = true end
-    end
+    if vim.tbl_contains(root_files, "pnpm-lock.yaml") then volar = true end
 
     -- disable vuels and tsserver if we're using volar
     if volar and (client.name == "tsserver" or client.name == "vuels") then
@@ -118,9 +116,7 @@ null_ls.setup({
     on_attach = custom_attach,
     should_attach = function(bufnr)
         local cur_ft = vim.bo[bufnr].filetype
-        for _, ft in ipairs({ "vue", "typescript", "javascript", "python", "lua" }) do
-            if ft == cur_ft then return true end
-        end
+        if vim.tbl_contains({ "vue", "typescript", "javascript", "python", "lua" }, cur_ft) then return true end
         return false
     end,
     sources = {
