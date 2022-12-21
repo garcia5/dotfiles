@@ -39,33 +39,43 @@ local dap = require("dap")
 local dapui = require("dapui")
 Hydra({
     name = "Debug",
+    hint = [[
+ Run
+ _c_: Continue              _i_: Step Into          _o_: Step Over          _r_: Run to cursor
+ ^
+
+ Interact
+ _K_: Inspect variable      _s_: Toggle breakpoint  _a_: List breakpoints
+ ^
+
+ Exit
+ _q_: Terminate debugger    _<Esc>_: Close UI
+    ]],
     body = "<leader>D",
     config = {
-        color = "pink",
+        color = "red", -- Do nothing if I press a key not in this body
         invoke_on_body = true,
         hint = {
-            type = "cmdline",
-            position = "top",
+            type = "window",
+            position = "middle-right",
             border = "rounded",
         },
         on_enter = function()
             dap.continue()
             dapui.open({})
         end,
-        on_exit = function()
-            dap.repl.close()
-            dap.clear_breakpoints()
-            dapui.close({})
-        end,
+        on_exit = function() dapui.close({}) end,
     },
     heads = {
-        { "c", dap.continue, { desc = "continue" } },
-        { "s", dap.toggle_breakpoint, { desc = "toggle breakpoint" } },
-        { "i", dap.step_into, { desc = "step into" } },
-        { "o", dap.step_over, { desc = "step over" } },
-        { "r", dap.repl.open, { desc = "open repl" } },
-        { "K", dapui.eval, { desc = "eval variable" } },
+        { "c", dap.continue },
+        { "r", dap.run_to_cursor },
+        { "s", dap.toggle_breakpoint },
+        { "a", dap.list_breakpoints },
+        { "i", dap.step_into },
+        { "o", dap.step_over },
+        { "K", dapui.eval },
         { "q", dap.terminate, { exit = true, desc = "terminate" } },
+        { "<Esc>", nil, { exit = true, desc = "exit" } },
     },
 })
 

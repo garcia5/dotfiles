@@ -29,6 +29,14 @@ dapui.setup({
             position = "left",
             size = 40,
         },
+        {
+            elements = {
+                "repl",
+                "console",
+            },
+            position = "bottom",
+            size = 0.25,
+        },
     },
     floating = {
         max_height = nil, -- These can be integers or a float between 0 and 1.
