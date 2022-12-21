@@ -249,6 +249,13 @@ packer.startup(function(use)
                 end
             end, { silent = true, expr = true })
         end,
+        disable = true,
+    })
+    use({
+        "L3MON4D3/LuaSnip", -- better snippets?
+        as = "luasnip",
+        tag = "v1.*",
+        config = function() require("ag.plugin-conf.luasnip") end,
     })
     use({
         "hrsh7th/nvim-cmp", -- autocomplete
@@ -258,7 +265,7 @@ packer.startup(function(use)
             "hrsh7th/cmp-nvim-lsp-signature-help",
             "hrsh7th/cmp-nvim-lua",
             "hrsh7th/cmp-buffer",
-            "hrsh7th/cmp-vsnip",
+            "saadparwaiz1/cmp_luasnip",
             "hrsh7th/cmp-path",
             -- complements
             "onsails/lspkind-nvim", -- add the nice source + completion item kind to the menu

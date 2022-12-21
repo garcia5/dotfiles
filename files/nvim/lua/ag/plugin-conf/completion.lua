@@ -3,10 +3,10 @@ if not cmp then return end
 
 cmp.setup({
     snippet = {
-        expand = function(args) vim.fn["vsnip#anonymous"](args.body) end,
+        expand = function(args) require("luasnip").lsp_expand(args.body) end,
     },
     sources = cmp.config.sources({
-        { name = "vsnip" },
+        { name = "luasnip", option = { use_show_condition = true } },
         { name = "nvim_lsp_signature_help" },
         { name = "nvim_lua" },
         { name = "nvim_lsp", max_item_count = 30 }, -- tsserver likes to send back _everything_
@@ -31,7 +31,7 @@ cmp.setup({
         format = require("lspkind").cmp_format({
             with_text = true,
             menu = {
-                vsnip = "[vsnip]",
+                luasnip = "[snippet]",
                 nvim_lua = "[nvim]",
                 nvim_lsp = "[LSP]",
                 path = "[path]",
