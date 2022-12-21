@@ -6,7 +6,9 @@ local t = ls.text_node
 local d = ls.dynamic_node
 local c = ls.choice_node
 local r = ls.restore_node
+local f = ls.function_node
 local fmt = require("luasnip.extras.fmt").fmt
+local types = require("luasnip.util.types")
 
 ---#Config
 ls.config.set_config({
@@ -16,7 +18,14 @@ ls.config.set_config({
     -- Update snippet text in _real time_
     updateevents = "TextChanged,TextChangedI",
 
-    enable_autosnippets = true,
+    -- Show virtual text hints for node types
+    ext_opts = {
+        [types.choiceNode] = {
+            active = {
+                virt_text = { { "●", "Constant" } },
+            },
+        },
+    },
 })
 
 ---#Mappings
@@ -45,14 +54,30 @@ end)
 --#Snippets
 --]]
 
----#Typescript
 local ts_function_fmt = [[
+{doc}
 {type} {async}{name}({params}): {ret} {{
 	{body}
 }}
 ]]
 local ts_function_snippet = function(type)
     return fmt(ts_function_fmt, {
+        doc = f(function(args)
+            local params_str = args[1][1]
+            local return_type = args[2][1]
+            local nodes = { "/**" }
+            for _, param in ipairs(vim.split(params_str, ",", true)) do
+                local name = param:match("([%a%d_-]+):?")
+                local t = param:match(": ?([%S^,]+)")
+                if name then
+                    local str = " * @param " .. name
+                    if t then str = str .. " {" .. t .. "}" end
+                    table.insert(nodes, str)
+                end
+            end
+            vim.list_extend(nodes, { " * @returns " .. return_type, " */" })
+            return nodes
+        end, { 3, 4 }),
         type = t(type),
         async = c(1, { t("async "), t("") }),
         name = i(2, "funcName"),
