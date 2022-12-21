@@ -57,6 +57,7 @@ local custom_format = function(bufnr)
     })
 end
 local format_group = vim.api.nvim_create_augroup("LspFormatting", { clear = true })
+---@param bufnr number
 local format_on_save = function(bufnr)
     vim.api.nvim_create_autocmd("BufWritePre", {
         group = format_group,
@@ -65,6 +66,8 @@ local format_on_save = function(bufnr)
     })
 end
 
+---@param client any
+---@param bufnr number
 local custom_attach = function(client, bufnr)
     local keymap_opts = { buffer = bufnr, silent = true, noremap = true }
     -- LSP mappings (only apply when LSP client attached)
@@ -86,6 +89,8 @@ local custom_attach = function(client, bufnr)
     vim.bo[bufnr].formatexpr = "v:lua.vim.lsp.formatexpr"
 end
 
+---@param client any
+---@param bufnr number
 local web_dev_attach = function(client, bufnr)
     local root_files = vim.fn.readdir(vim.fn.getcwd())
     local volar = false

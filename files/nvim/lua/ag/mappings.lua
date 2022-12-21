@@ -1,4 +1,7 @@
 -- Mapping helper
+---@param mode string
+---@param key string
+---@param result function | string
 local mapper = function(mode, key, result) vim.keymap.set(mode, key, result, { noremap = true, silent = true }) end
 local no_plugins = require("ag.plugins")
 

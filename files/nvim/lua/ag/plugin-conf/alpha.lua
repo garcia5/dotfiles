@@ -22,6 +22,9 @@ local footer = {
     },
 }
 
+---Get file extension
+---@param fn string filename
+---@return string
 local function get_extension(fn)
     local match = fn:match("^.+(%..+)$")
     local ext = ""
@@ -29,12 +32,19 @@ local function get_extension(fn)
     return ext
 end
 
+---Get the icon corresponding to a file extension
+---@param fn string filename
+---@return string, string
 local function icon(fn)
     local nwd = require("nvim-web-devicons")
     local ext = get_extension(fn)
     return nwd.get_icon(fn, ext, { default = true })
 end
 
+---@param fn string filename
+---@param sc string shortcut key
+---@param short_fn function shortening function
+---@return table
 local function file_button(fn, sc, short_fn)
     short_fn = short_fn or fn
     local ico_txt
@@ -63,6 +73,11 @@ local mru_opts = {
     end,
 }
 
+---Get most recently used files
+---@param cwd string current dir
+---@param num_items number number of recent files to fetch
+---@param opts table
+---@return table
 local function mru(cwd, num_items, opts)
     opts = opts or mru_opts
     num_items = num_items or 9
