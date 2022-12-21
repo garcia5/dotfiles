@@ -1,4 +1,5 @@
-local ls = require("luasnip")
+local success, ls = pcall(require, "luasnip")
+if not success then return end
 local s = ls.snippet
 local sn = ls.snippet_node
 local i = ls.insert_node
@@ -20,6 +21,11 @@ ls.config.set_config({
 
     -- Show virtual text hints for node types
     ext_opts = {
+        [types.insertNode] = {
+            active = {
+                virt_text = { { "●", "Operator" } },
+            },
+        },
         [types.choiceNode] = {
             active = {
                 virt_text = { { "●", "Constant" } },
@@ -81,24 +87,24 @@ local ts_function_snippet = function(type)
         type = t(type),
         async = c(1, { t("async "), t("") }),
         name = i(2, "funcName"),
-        params = i(3, "args"),
+        params = i(3),
         ret = d(4, function(args)
             local async = string.match(args[1][1], "async")
             if async == nil then
                 return sn(nil, {
-                    r(1, "return_type", i(nil, "return")),
+                    r(1, "return_type", i(nil, "void")),
                 })
             end
             return sn(nil, {
                 t("Promise<"),
-                r(1, "return_type", i(nil, "return")),
+                r(1, "return_type", i(nil, "void")),
                 t(">"),
             })
         end, { 1 }),
         body = i(0),
     }, {
         stored = {
-            ["return_type"] = i(nil, "return"),
+            ["return_type"] = i(nil, "void"),
         },
     })
 end
