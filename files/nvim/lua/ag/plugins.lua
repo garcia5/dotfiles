@@ -143,6 +143,7 @@ packer.startup(function(use)
     })
     use({
         "nvim-zh/colorful-winsep.nvim", -- clearer window separators
+        commit = "9a474934a27203d1c2e9943c94a29165dd81823d",
         config = function()
             local winsep = require("colorful-winsep")
             winsep.setup({
