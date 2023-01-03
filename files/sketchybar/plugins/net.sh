@@ -8,16 +8,16 @@ AIRPORT=$(echo "$airport" | awk 'NR==1 {print $2}')
 LABEL=$(echo "$airport" | grep -o "SSID: .*" | sed 's/^SSID: //')
 
 if [ $AIRPORT = "Off" ]; then
-    sketchybar -m --set net icon=$WIFI_OFF              \
-                            icon.color=$RED \
+    sketchybar -m --set net icon=$WIFI_OFF        \
+                            icon.color=$RED       \
                             label.padding_right=2
 
 elif [ -z "$LABEL" ]; then
-    sketchybar -m --set net icon=$WIFI_DISCONNECTED     \
-                            icon.color=$RED \
+    sketchybar -m --set net icon=$WIFI_DISCONNECTED \
+                            icon.color=$RED         \
                             label.padding_right=2
 else
-    sketchybar -m --set net icon=$WIFI_CONNECTED        \
+    sketchybar -m --set net icon=$WIFI_CONNECTED  \
                             label.padding_right=4
 fi
 

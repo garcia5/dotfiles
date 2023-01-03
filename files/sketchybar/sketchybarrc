@@ -59,6 +59,9 @@ source "$ITEM_DIR/network.sh"
 source "$ITEM_DIR/net.sh"
 source "$ITEM_DIR/amethyst.sh"
 
+# Center
+source "$ITEM_DIR/now_playing.sh"
+
 ##### Finalizing Setup #####
 # The below command is only needed at the end of the initial configuration and
 # should never be run in an item script.
