@@ -55,7 +55,7 @@ function setup_brew {
 }
 
 function install_packages {
-    BREW_PACKAGES=( 'gcc' 'fzf' 'bat' 'ripgrep' 'exa' 'pyenv' 'yarn' 'neovim' 'xz' 'sqlite' 'unixodbc' 'tmux' 'ninja' 'zsh' )
+    BREW_PACKAGES=( 'gcc' 'fzf' 'bat' 'ripgrep' 'exa' 'pyenv' 'yarn' 'neovim' 'xz' 'sqlite' 'unixodbc' 'tmux' 'ninja' 'zsh' 'git-delta' 'tree' )
 
     echo ""
     echo "installing from brew..."
@@ -76,6 +76,9 @@ function install_packages {
             fi
         fi
     done
+    # Install sketchybar from tap
+    runcmd brew tap FelixKratz/formulae
+    runcmd brew install sketchybar
 
     echo ""
     echo "installing from npm..."
@@ -199,18 +202,23 @@ function setup_zsh {
     ln -s "$DF_HOME/files/functions" "$file"
     # do custom theme
     ln -s "$DF_HOME/files/quarter-life.zsh-theme" "$HOME/.oh-my-zsh/themes/quarter-life.zsh-theme"
+
+    # Do sketchybar here?
+    backup_dir "$CONFIG_HOME/sketchybar/"
+    ln -s "$DF_HOME/files/sketchybar/" "$CONFIG_HOME/sketchybar"
+    if [[ $(command -v sketchybar) ]]; then
+        runcmd brew services start sketchybar
+    fi
 }
 
 function setup_kitty {
     backup_dir "$CONFIG_HOME/kitty/"
-    mkdir -p "$CONFIG_HOME/kitty/"
-    ln -s "$DF_HOME/files/kitty" "$CONFIG_HOME/kitty/"
+    ln -s "$DF_HOME/files/kitty" "$CONFIG_HOME/kitty"
 }
 
 function setup_alacritty {
     backup_dir "$CONFIG_HOME/alacritty/"
-    mkdir -p "$CONFIG_HOME/alacritty/"
-    ln -s "$DF_HOME/files/alacritty/" "$CONFIG_HOME/alacritty/"
+    ln -s "$DF_HOME/files/alacritty/" "$CONFIG_HOME/alacritty"
 }
 
 for conf in "$@"; do
@@ -231,6 +239,7 @@ for conf in "$@"; do
             setup_tmux
             ;;
         "zsh")
+            install_packages
             setup_zsh
             source "$HOME/.zshrc"
             ;;

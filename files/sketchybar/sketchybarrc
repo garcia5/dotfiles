@@ -1,0 +1,66 @@
+# This is a demo config to show some of the most important commands more easily.
+# This is meant to be changed and configured, as it is intentionally kept sparse.
+# For a more advanced configuration example see my dotfiles:
+# https://github.com/FelixKratz/dotfiles
+
+source "$HOME/.config/sketchybar/icons.sh"
+source "$HOME/.config/sketchybar/colors.sh"
+
+PLUGIN_DIR="$HOME/.config/sketchybar/plugins"
+ITEM_DIR="$HOME/.config/sketchybar/items"
+
+##### Bar Appearance #####
+# Configuring the general appearance of the bar, these are only some of the
+# options available. For all options see:
+# https://felixkratz.github.io/SketchyBar/config/bar
+# If you are looking for other colors, see the color picker:
+# https://felixkratz.github.io/SketchyBar/config/tricks#color-picker
+
+sketchybar --bar height=25        \
+                 blur_radius=50   \
+                 position=top     \
+                 sticky=on        \
+                 padding_left=10  \
+                 padding_right=10 \
+                 color=$BAR_COLOR
+
+##### Changing Defaults #####
+# We now change some default values that are applied to all further items
+# For a full list of all available item properties see:
+# https://felixkratz.github.io/SketchyBar/config/items
+
+sketchybar --default updates=when_shown                    \
+                     drawing=on                            \
+                     icon.font="JetBrainsMono Nerd Font Mono:Bold:17.0"  \
+                     icon.color=0xffffffff                 \
+                     label.font="JetBrainsMono Nerd Font Mono:Bold:14.0" \
+                     label.color=0xffffffff                \
+                     label.padding_left=4                  \
+                     label.padding_right=4                 \
+                     icon.padding_left=4                   \
+                     icon.padding_right=4
+
+# Left
+source "$ITEM_DIR/spaces.sh"
+sketchybar --add item space_separator left                   \
+           --set space_separator icon=                      \
+                                 background.padding_left=15  \
+                                 background.padding_right=15 \
+                                 label.drawing=off           \
+                                 icon.color=$RED
+source "$ITEM_DIR/app.sh"
+
+# Right
+source "$ITEM_DIR/date-time.sh"
+source "$ITEM_DIR/battery.sh"
+source "$ITEM_DIR/network.sh"
+source "$ITEM_DIR/net.sh"
+source "$ITEM_DIR/amethyst.sh"
+
+##### Finalizing Setup #####
+# The below command is only needed at the end of the initial configuration and
+# should never be run in an item script.
+
+sketchybar --update
+
+echo "sketchybar configuration loaded.."
