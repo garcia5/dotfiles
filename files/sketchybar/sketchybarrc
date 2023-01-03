@@ -1,3 +1,5 @@
+#!/usr/bin/env sh
+
 # This is a demo config to show some of the most important commands more easily.
 # This is meant to be changed and configured, as it is intentionally kept sparse.
 # For a more advanced configuration example see my dotfiles:
@@ -29,15 +31,15 @@ sketchybar --bar height=25        \
 # For a full list of all available item properties see:
 # https://felixkratz.github.io/SketchyBar/config/items
 
-sketchybar --default updates=when_shown                    \
-                     drawing=on                            \
-                     icon.font="JetBrainsMono Nerd Font Mono:Bold:17.0"  \
-                     icon.color=0xffffffff                 \
+sketchybar --default updates=when_shown                                  \
+                     drawing=on                                          \
+                     icon.font="JetBrainsMono Nerd Font Mono:Bold:18.0"  \
+                     icon.color=$WHITE                                   \
                      label.font="JetBrainsMono Nerd Font Mono:Bold:14.0" \
-                     label.color=0xffffffff                \
-                     label.padding_left=4                  \
-                     label.padding_right=4                 \
-                     icon.padding_left=4                   \
+                     label.color=$WHITE                                  \
+                     label.padding_left=4                                \
+                     label.padding_right=4                               \
+                     icon.padding_left=4                                 \
                      icon.padding_right=4
 
 # Left

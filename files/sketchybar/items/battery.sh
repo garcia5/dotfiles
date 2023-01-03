@@ -3,6 +3,7 @@
 sketchybar --add item battery right                      \
            --set battery script="$PLUGIN_DIR/battery.sh" \
                          update_freq=10                  \
-                         icon.color=$YELLOW              \
-                         label.color=$YELLOW             \
+                         background.color=$YELLOW              \
+                         label.color=$BLACK \
+                         icon.color=$BLACK \
            --subscribe battery system_woke

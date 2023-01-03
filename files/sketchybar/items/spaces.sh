@@ -8,10 +8,6 @@ do
   sketchybar --add space space.$sid left                    \
              --set space.$sid associated_space=$sid         \
                               icon=${SPACE_ICONS[i]}        \
-                              icon.padding_left=8           \
-                              icon.padding_right=8          \
-                              background.padding_left=5     \
-                              background.padding_right=5    \
                               background.color=0x44ffffff   \
                               background.corner_radius=5    \
                               background.height=22          \
@@ -19,5 +15,7 @@ do
                               label.drawing=off             \
                               icon.color=$WHITE             \
                               script="$PLUGIN_DIR/space.sh"
-
 done
+
+sketchybar --add bracket spaces '/space\..*/' \
+           --set spaces background.color=$GREY

@@ -9,15 +9,15 @@ LABEL=$(echo "$airport" | grep -o "SSID: .*" | sed 's/^SSID: //')
 
 if [ $AIRPORT = "Off" ]; then
     sketchybar -m --set net icon=$WIFI_OFF              \
-                            icon.color=$WHITE           \
+                            icon.color=$RED \
                             label.padding_right=2
+
 elif [ -z "$LABEL" ]; then
     sketchybar -m --set net icon=$WIFI_DISCONNECTED     \
-                            icon.color=$WHITE           \
+                            icon.color=$RED \
                             label.padding_right=2
 else
     sketchybar -m --set net icon=$WIFI_CONNECTED        \
-                            icon.color=$GREEN           \
                             label.padding_right=4
 fi
 

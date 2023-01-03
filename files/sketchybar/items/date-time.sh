@@ -3,4 +3,6 @@
 sketchybar --add item clock right                      \
            --set clock   update_freq=10                \
                          script="$PLUGIN_DIR/clock.sh" \
-                         label.color=$CYAN
+                         background.color=$CYAN \
+                         label.color=$BLACK \
+                         icon.color=$BLACK
