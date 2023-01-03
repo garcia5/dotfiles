@@ -109,8 +109,6 @@ local web_dev_attach = function(client, bufnr)
         return false
     end
 
-    format_on_save(bufnr)
-
     custom_attach(client, bufnr)
     return true
 end
