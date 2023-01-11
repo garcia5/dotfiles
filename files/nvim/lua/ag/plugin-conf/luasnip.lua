@@ -7,7 +7,6 @@ local t = ls.text_node
 local d = ls.dynamic_node
 local c = ls.choice_node
 local r = ls.restore_node
-local f = ls.function_node
 local fmt = require("luasnip.extras.fmt").fmt
 local types = require("luasnip.util.types")
 
@@ -60,6 +59,7 @@ end)
 --#Snippets
 --]]
 
+---#Typescript
 local ts_function_fmt = [[
 {doc}
 {type} {async}{name}({params}): {ret} {{
@@ -68,27 +68,26 @@ local ts_function_fmt = [[
 ]]
 local ts_function_snippet = function(type)
     return fmt(ts_function_fmt, {
-        doc = f(function(args)
+        doc = d(1, function(args)
             local params_str = args[1][1]
             local return_type = args[2][1]
-            local nodes = { "/**" }
+            local nodes = { t({ "/**", " * " }), r(1, "description", i(nil)) }
             for _, param in ipairs(vim.split(params_str, ",", true)) do
                 local name = param:match("([%a%d_-]+):?")
-                local t = param:match(": ?([%S^,]+)")
                 if name then
                     local str = " * @param " .. name
-                    if t then str = str .. " {" .. t .. "}" end
-                    table.insert(nodes, str)
+                    table.insert(nodes, t({ "", str }))
                 end
             end
-            vim.list_extend(nodes, { " * @returns " .. return_type, " */" })
-            return nodes
-        end, { 3, 4 }),
+            vim.list_extend(nodes, { t({ "", " * @returns " .. return_type, " */" }) })
+            return sn(nil, nodes)
+        end, { 4, 5 }),
+        -- doc = c(1, { sn(nil, { t({ "/**", " * " }), i(1), t({ "", " */" }) }), t("") }),
         type = t(type),
-        async = c(1, { t("async "), t("") }),
-        name = i(2, "funcName"),
-        params = i(3),
-        ret = d(4, function(args)
+        async = c(2, { t("async "), t("") }),
+        name = i(3, "funcName"),
+        params = i(4),
+        ret = d(5, function(args)
             local async = string.match(args[1][1], "async")
             if async == nil then
                 return sn(nil, {
@@ -100,17 +99,18 @@ local ts_function_snippet = function(type)
                 r(1, "return_type", i(nil, "void")),
                 t(">"),
             })
-        end, { 1 }),
+        end, { 2 }),
         body = i(0),
     }, {
         stored = {
             ["return_type"] = i(nil, "void"),
+            ["description"] = i(nil, "description"),
         },
     })
 end
 
 local ts_loop_fmt = [[
-{type}({async}({item}) => {{
+.{type}({async}({item}) => {{
 	{body}
 }})
 ]]
@@ -123,8 +123,17 @@ local ts_loop_snippet = function(type)
     })
 end
 ls.add_snippets("typescript", {
+    -- methods
     s("public", ts_function_snippet("public")),
     s("private", ts_function_snippet("private")),
+    -- array methods
+    s(".map", ts_loop_snippet("map")),
+    s(".filter", ts_loop_snippet("filter")),
+    s(".forEach", ts_loop_snippet("forEach")),
+    s(".find", ts_loop_snippet("find")),
+    s(".some", ts_loop_snippet("some")),
+    s(".every", ts_loop_snippet("every")),
+    -- tests
     s(
         "describe",
         fmt(
@@ -154,7 +163,4 @@ it('{test_case}', {async}() => {{
             }
         )
     ),
-    s("map", ts_loop_snippet("map")),
-    s("filter", ts_loop_snippet("filter")),
-    s("forEach", ts_loop_snippet("forEach")),
 })
