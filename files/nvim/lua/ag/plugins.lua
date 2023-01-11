@@ -128,7 +128,7 @@ packer.startup(function(use)
         },
         config = function() require("ag.plugin-conf.lualine") end,
     })
-    use("p00f/nvim-ts-rainbow") -- rainbow braces (and tags) powered by treesitter
+    use("mrjones2014/nvim-ts-rainbow") -- rainbow braces (and tags) powered by treesitter
     use({
         "goolord/alpha-nvim", -- start menu, but in lua
         config = function() require("ag.plugin-conf.alpha") end,
@@ -318,6 +318,7 @@ packer.startup(function(use)
                 },
             })
         end,
+        commit = "7e2fef6ec501a3fe8bc6c4051b3a1014dc098a06",
     })
     use("b0o/schemastore.nvim") -- json schema provider
     use({
