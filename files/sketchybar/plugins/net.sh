@@ -18,7 +18,8 @@ elif [ -z "$LABEL" ]; then
                             label.padding_right=2
 else
     sketchybar -m --set net icon=$WIFI_CONNECTED  \
-                            label.padding_right=4
+                            icon.color=$BLACK     \
+                            label.padding_right=2
 fi
 
 sketchybar -m --set net label="$LABEL"

@@ -7,10 +7,10 @@ airport=$(/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Curren
 AIRPORT=$(echo "$airport" | awk 'NR==1 {print $2}')
 LABEL=$(echo "$airport" | grep -o "SSID: .*" | sed 's/^SSID: //')
 UPDOWN=$(ifstat -i "en0" -b 0.1 1 | tail -n1)
-DOWN=$(echo $UPDOWN | awk "{ print \$1 }" | cut -f1 -d ".")
-UP=$(echo $UPDOWN | awk "{ print \$2 }" | cut -f1 -d ".")
-DOWN_SPEED=$((DOWN/8))
-UP_SPEED=$((UP/8))
+DOWN_SPEED=$(echo $UPDOWN | awk "{ print \$1 }" | cut -f1 -d ".")
+UP_SPEED=$(echo $UPDOWN | awk "{ print \$2 }" | cut -f1 -d ".")
+DOWN_SPEED=$(($DOWN_SPEED/8))
+UP_SPEED=$(($UP_SPEED/8))
 SPEED=""
 
 if [ $AIRPORT = "Off" ] || [ -z "$LABEL" ]; then

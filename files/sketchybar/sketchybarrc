@@ -18,12 +18,12 @@ ITEM_DIR="$HOME/.config/sketchybar/items"
 # If you are looking for other colors, see the color picker:
 # https://felixkratz.github.io/SketchyBar/config/tricks#color-picker
 
-sketchybar --bar height=25        \
+sketchybar --bar height=24        \
                  blur_radius=50   \
                  position=top     \
                  sticky=on        \
-                 padding_left=10  \
-                 padding_right=10 \
+                 padding_left=0   \
+                 padding_right=0  \
                  color=$BAR_COLOR
 
 ##### Changing Defaults #####
@@ -58,6 +58,8 @@ source "$ITEM_DIR/battery.sh"
 source "$ITEM_DIR/network.sh"
 source "$ITEM_DIR/net.sh"
 source "$ITEM_DIR/amethyst.sh"
+source "$ITEM_DIR/settings.sh"
+source "$ITEM_DIR/bluetooth.sh"
 
 # Center
 source "$ITEM_DIR/now_playing.sh"
