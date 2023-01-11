@@ -74,6 +74,7 @@ plugins=(
     ripgrep
     zsh-vi-mode
     zsh-interactive-cd
+    zsh-syntax-highlighting
 )
 
 # User configuration
