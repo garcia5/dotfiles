@@ -103,6 +103,7 @@ packer.startup(function(use)
                 "vue",
                 "html",
                 "tmTheme",
+                "kitty",
             })
         end,
     })
@@ -256,7 +257,7 @@ packer.startup(function(use)
         as = "luasnip",
         tag = "v1.*",
         config = function() require("ag.plugin-conf.luasnip") end,
-        ft = { "typescript" },
+        ft = { "typescript", "vue" },
     })
     use({
         "hrsh7th/nvim-cmp", -- autocomplete

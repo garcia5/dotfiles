@@ -50,10 +50,10 @@ vim.keymap.set({ "i", "s" }, "<C-l>", function()
 end)
 
 -- DEBUG: reload snippets
-vim.keymap.set("n", "<leader><leader>s", function()
-    ls.cleanup()
-    vim.cmd("source ~/.config/nvim/lua/ag/plugin-conf/luasnip.lua")
-end)
+-- vim.keymap.set("n", "<leader><leader>s", function()
+--     ls.cleanup()
+--     vim.cmd("source ~/.config/nvim/lua/ag/plugin-conf/luasnip.lua")
+-- end)
 
 --[[
 --#Snippets
@@ -73,7 +73,7 @@ local ts_function_snippet = function(type)
             local return_type = args[2][1]
             local nodes = { t({ "/**", " * " }), r(1, "description", i(nil)) }
             for _, param in ipairs(vim.split(params_str, ",", true)) do
-                local name = param:match("([%a%d_-]+):?")
+                local name = param:match("([%a%d_-]+) ?:")
                 if name then
                     local str = " * @param " .. name
                     table.insert(nodes, t({ "", str }))
@@ -82,7 +82,6 @@ local ts_function_snippet = function(type)
             vim.list_extend(nodes, { t({ "", " * @returns " .. return_type, " */" }) })
             return sn(nil, nodes)
         end, { 4, 5 }),
-        -- doc = c(1, { sn(nil, { t({ "/**", " * " }), i(1), t({ "", " */" }) }), t("") }),
         type = t(type),
         async = c(2, { t("async "), t("") }),
         name = i(3, "funcName"),
@@ -159,6 +158,31 @@ it('{test_case}', {async}() => {{
             {
                 test_case = i(1, "does something"),
                 async = c(2, { t("async "), t("") }),
+                body = i(0),
+            }
+        )
+    ),
+})
+
+---#Vue
+ls.add_snippets("vue", {
+    s(
+        "defineComponent",
+        fmt(
+            [[
+defineComponent({{
+	name: '{name}',
+	{props},
+	setup({props_arg}{ctx}) {{
+		{body}
+	}}
+}})
+    ]]       ,
+            {
+                name = i(1, "ComponentName"),
+                props = c(2, { sn(nil, { t({ "props: {", "" }), i(1), t({ "", "}" }) }), t("") }),
+                props_arg = c(3, { t("props"), t("") }),
+                ctx = c(4, { t(", ctx"), t("") }),
                 body = i(0),
             }
         )
