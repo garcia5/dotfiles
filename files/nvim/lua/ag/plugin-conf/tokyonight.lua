@@ -1,7 +1,7 @@
 local tn = require("tokyonight")
 
 tn.setup({
-    style = "moon",
+    style = "night",
     transparent = false,
     terminal_colors = true,
     styles = {
@@ -41,4 +41,4 @@ tn.setup({
     end,
     sidebars = { "qf", "help", "aerial", "packer" },
 })
-vim.cmd("colorscheme tokyonight-moon")
+vim.cmd("colorscheme tokyonight-night")

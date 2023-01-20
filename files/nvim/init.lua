@@ -29,7 +29,7 @@ vim.opt.softtabstop = 4 -- <Tab> behaves as 4 spaces when editing
 -- Colors
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
-vim.cmd("colorscheme tokyonight-moon")
+vim.cmd("colorscheme tokyonight-night")
 
 -- Look and feel
 vim.opt.number = true

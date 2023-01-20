@@ -36,5 +36,4 @@ if vim.g.colors_name == "catppuccin" then
             },
         },
     })
-    vim.cmd("colorscheme catppuccin")
 end
