@@ -6,7 +6,7 @@ cmp.setup({
         expand = function(args) require("luasnip").lsp_expand(args.body) end,
     },
     sources = cmp.config.sources({
-        { name = "luasnip", option = { use_show_condition = true } },
+        { name = "luasnip" },
         { name = "nvim_lsp_signature_help" },
         { name = "nvim_lua" },
         { name = "nvim_lsp", max_item_count = 30 }, -- tsserver likes to send back _everything_

@@ -87,6 +87,7 @@ require("nvim-treesitter.configs").setup({
     rainbow = {
         enable = true,
         extended_mode = true, -- Also highlight non-bracket delimiters like html tags
+        max_file_lines = 10000,
     },
     autotag = {
         enable = true,
