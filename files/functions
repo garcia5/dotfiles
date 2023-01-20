@@ -66,7 +66,7 @@ fzf-yarn-test() {
         --preview "bat --color=always --line-range=:40 --style=plain --highlight-line=\"\$(cat {} | grep -m1 -n 'describe' | cut -f1 -d:)\" {}"
 }
 
-fzf-git-branch() {
+fzf-git-checkout() {
     is-git-repo || echo 'Not in git repo'
 
     git branch --all --color=always --sort=-committerdate | grep -v HEAD | sed 's/^..//' | cut -d' ' -f1 |
@@ -82,6 +82,20 @@ fzf-git-branch() {
         --preview-window right:50% \
         --preview 'git log --oneline --graph --date=short --color=always --pretty="format:%C(auto)%cd %h%d %s" {}'
 }
+
+zle -N fzf-git-branch
+fzf-git-branch() {
+    is-git-repo || echo 'Not in git repo'
+
+    git branch --all --color=always --sort=-committerdate | grep -v HEAD | sed 's/^..//' | cut -d' ' -f1 |
+    fzf-tmux \
+        -p 50%,50%\
+        --ansi \
+        --prompt "Braches> " \
+        --preview-window right:50% \
+        --preview 'git log --oneline --graph --date=short --color=always --pretty="format:%C(auto)%cd %h%d %s" {}'
+}
+bindkey '' fzf-git-branch
 
 fzf-git-changed() {
     is-git-repo || echo 'Not in git repo'
