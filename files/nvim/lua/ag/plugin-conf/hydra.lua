@@ -53,7 +53,7 @@ Hydra({
     ]],
     body = "<leader>D",
     config = {
-        color = "red", -- Do nothing if I press a key not in this body
+        color = "pink",
         invoke_on_body = true,
         hint = {
             type = "window",
