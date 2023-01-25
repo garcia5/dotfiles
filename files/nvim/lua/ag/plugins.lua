@@ -257,7 +257,7 @@ packer.startup(function(use)
         as = "luasnip",
         tag = "v1.*",
         config = function() require("ag.plugin-conf.luasnip") end,
-        ft = { "typescript", "vue" },
+        ft = { "typescript", "vue", "lua", "python" },
     })
     use({
         "hrsh7th/nvim-cmp", -- autocomplete
