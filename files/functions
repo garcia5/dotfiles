@@ -32,8 +32,8 @@ ctrl-t-widget() {
         zle reset-prompt
         LBUFFER+=$result
     # Find only '.spec' files
-    elif [[ $LBUFFER =~ '^yarn test ' ]]; then
-        result=$(fzf-yarn-test | join-lines)
+    elif [[ $LBUFFER =~ '^(yarn|pnpm) test ' ]]; then
+        result=$(fzf-js-test | join-lines)
         zle reset-prompt
         LBUFFER+=$result
     # Otherwise do default and fuzzy search all files
@@ -51,7 +51,7 @@ gstash() {
 }
 
 # FZF
-fzf-yarn-test() {
+fzf-js-test() {
     cmd="$FZF_CTRL_T_COMMAND '.spec.(t|j)s$'"
     eval "$cmd" |
     fzf \
