@@ -133,12 +133,14 @@ export FZF_CTRL_T_OPTS="$FZF_DEFAULT_OPTS --preview 'bat --color=always --line-r
 eval "$(pyenv init -)"
 pyenv global 3.9.10
 
-# Node
+# yarn
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+
+# NVM
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-# yarn
-export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+
 # Automatically use nvm version specified in .nvmrc (if any)
 # Intentionally not very flexible to avoid calling nvm every time we change directory
 function load-nvmrc {
@@ -155,6 +157,21 @@ function load-nvmrc {
     fi
 }
 add-zsh-hook chpwd load-nvmrc
+
+# Load nvmrc if I'm switching branches
+branching=false
+function nvm-git-branch {
+    local cmd="$1"
+    if [[ $cmd && $cmd =~ "^git (checkout|branch)" && ! $braching ]]; then
+        branching=true
+    elif [[ $branching ]]; then
+        load-nvmrc
+        branching=false
+    fi
+}
+add-zsh-hook preexec nvm-git-branch
+add-zsh-hook precmd nvm-git-branch
+# NVM end
 
 # Lua ls
 export PATH="$PATH:$HOME/lua-language-server/bin"

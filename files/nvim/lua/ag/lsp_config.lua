@@ -257,6 +257,7 @@ lspconfig.yamlls.setup({
 -- bash
 lspconfig.bashls.setup({
     on_attach = custom_attach,
+    filetypes = { "bash", "sh", "zsh" },
 })
 
 -- lua
