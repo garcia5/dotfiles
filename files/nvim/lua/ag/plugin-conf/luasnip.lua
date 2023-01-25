@@ -7,16 +7,19 @@ local t = ls.text_node
 local d = ls.dynamic_node
 local c = ls.choice_node
 local r = ls.restore_node
+local f = ls.function_node
 local fmt = require("luasnip.extras.fmt").fmt
 local types = require("luasnip.util.types")
 
 ---#Config
 ls.config.set_config({
-    -- Remember the last snippet I was in
+    -- Edit the snippet even after I exit it
     history = true,
 
     -- Update snippet text in _real time_
     updateevents = "TextChanged,TextChangedI",
+
+    enable_autosnippets = true,
 
     -- Show virtual text hints for node types
     ext_opts = {
@@ -32,6 +35,8 @@ ls.config.set_config({
         },
     },
 })
+-- load vscode style snippets from other plugins
+require("luasnip.loaders.from_vscode").lazy_load()
 
 ---#Mappings
 -- Previous snippet region
@@ -39,9 +44,9 @@ vim.keymap.set({ "i", "s" }, "<C-k>", function()
     if ls.jumpable(-1) then ls.jump(-1) end
 end, { silent = true })
 
--- Next snippet region
+-- Expand snippet, or go to next snippet region
 vim.keymap.set({ "i", "s" }, "<C-j>", function()
-    if ls.jumpable(1) then ls.jump(1) end
+    if ls.expand_or_jumpable() then ls.expand_or_jump() end
 end, { silent = true })
 
 -- Cycle "choices" for current snippet region
@@ -126,12 +131,12 @@ ls.add_snippets("typescript", {
     s("public", ts_function_snippet("public")),
     s("private", ts_function_snippet("private")),
     -- array methods
-    s(".map", ts_loop_snippet("map")),
-    s(".filter", ts_loop_snippet("filter")),
-    s(".forEach", ts_loop_snippet("forEach")),
-    s(".find", ts_loop_snippet("find")),
-    s(".some", ts_loop_snippet("some")),
-    s(".every", ts_loop_snippet("every")),
+    s({ trig = ".map", wordTrig = false }, ts_loop_snippet("map")),
+    s({ trig = ".filter", wordTrig = false }, ts_loop_snippet("filter")),
+    s({ trig = ".forEach", wordTrig = false }, ts_loop_snippet("forEach")),
+    s({ trig = ".find", wordTrig = false }, ts_loop_snippet("find")),
+    s({ trig = ".some", wordTrig = false }, ts_loop_snippet("some")),
+    s({ trig = ".every", wordTrig = false }, ts_loop_snippet("every")),
     -- tests
     s(
         "describe",
@@ -172,17 +177,20 @@ ls.add_snippets("vue", {
             [[
 defineComponent({{
 	name: '{name}',
-	{props},
+	{props}
 	setup({props_arg}{ctx}) {{
 		{body}
 	}}
 }})
     ]]       ,
             {
-                name = i(1, "ComponentName"),
-                props = c(2, { sn(nil, { t({ "props: {", "" }), i(1), t({ "", "}" }) }), t("") }),
-                props_arg = c(3, { t("props"), t("") }),
-                ctx = c(4, { t(", ctx"), t("") }),
+                name = f(function(args, parent)
+                    local env = parent.snippet.env
+                    return env.TM_FILENAME:match("^(.+)%..+$")
+                end, {}),
+                props = c(1, { sn(nil, { t({ "props: {", "" }), i(1), t({ "", "}," }) }), t("") }),
+                props_arg = c(2, { t("props"), t("") }),
+                ctx = c(3, { t(", ctx"), t("") }),
                 body = i(0),
             }
         )

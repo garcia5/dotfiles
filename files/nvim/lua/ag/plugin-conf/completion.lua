@@ -9,7 +9,7 @@ cmp.setup({
         { name = "luasnip" },
         { name = "nvim_lsp_signature_help" },
         { name = "nvim_lua" },
-        { name = "nvim_lsp", max_item_count = 30 }, -- tsserver likes to send back _everything_
+        { name = "nvim_lsp" },
         { name = "path" },
         { name = "buffer", keyword_length = 3 }, -- don't complete from buffer right away
     }),
