@@ -222,6 +222,13 @@ lspconfig.volar.setup({
     on_attach = function(client, bufnr)
         web_dev_attach(client, bufnr)
         require("nvim-lsp-ts-utils")
+        local ts_utils = require("nvim-lsp-ts-utils")
+        ts_utils.setup({
+            update_imports_on_move = false,
+            enable_import_on_completion = true,
+        })
+
+        ts_utils.setup_client(client)
 
         -- TS specific mappings
         if vim.bo[bufnr].filetype == "typescript" then
@@ -241,12 +248,13 @@ lspconfig.volar.setup({
     end,
     -- enable "take over mode" for typescript files as well: https://github.com/johnsoncodehk/volar/discussions/471
     filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" },
-    init_options = {
-        typescript = {
-            -- "take over mode" can be weird in monorepos, use a global typescript installation instead
-            serverPath = vim.fn.expand("~") .. "/.config/yarn/global/node_modules/typescript/lib/tsserverlibrary.js",
-        },
-    },
+    -- init_options = {
+    --     typescript = {
+    --         -- "take over mode" can be weird in monorepos, use a global typescript installation instead
+    --         -- serverPath = vim.fn.expand("~") .. "/.config/yarn/global/node_modules/typescript/lib/tsserverlibrary.js",
+    --         -- tsdk = vim.fn.expand("~") .. "/.config/yarn/global/node_modules/typescript/lib",
+    --     },
+    -- },
 })
 
 -- yaml
