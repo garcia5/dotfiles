@@ -304,7 +304,6 @@ packer.startup(function(use)
     })
     use({
         "b0o/schemastore.nvim", -- json schema provider
-        ft = { "json" },
     })
     use({
         "anuvyklack/hydra.nvim", -- custom "modes"
