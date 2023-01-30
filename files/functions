@@ -83,7 +83,7 @@ fzf-git-checkout() {
         --preview 'git log --oneline --graph --date=short --color=always --pretty="format:%C(auto)%cd %h%d %s" {}'
 }
 
-zle -N fzf-git-branch
+zle -N git-branch-widget
 fzf-git-branch() {
     is-git-repo || echo 'Not in git repo'
 
@@ -95,7 +95,12 @@ fzf-git-branch() {
         --preview-window right:50% \
         --preview 'git log --oneline --graph --date=short --color=always --pretty="format:%C(auto)%cd %h%d %s" {}'
 }
-bindkey '' fzf-git-branch
+git-branch-widget() {
+    result=$(fzf-git-branch | join-lines)
+    zle reset-prompt
+    LBUFFER+=$result
+}
+bindkey '' git-branch-widget
 
 fzf-git-changed() {
     is-git-repo || echo 'Not in git repo'
