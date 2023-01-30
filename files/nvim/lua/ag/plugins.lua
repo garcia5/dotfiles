@@ -18,17 +18,12 @@ packer.init({
 packer.startup(function(use)
     -- Strictly required
     use("wbthomason/packer.nvim") -- let packer manage itself
-    use("nvim-lua/popup.nvim") -- popup windows
     use("nvim-lua/plenary.nvim") -- utility functions
 
     -- Essentials
     use({
         "numToStr/Comment.nvim", -- "smart" (ts powered) commenting
-        config = function()
-            require("Comment").setup({
-                pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook(),
-            })
-        end,
+        config = function() require("Comment").setup() end,
     })
     use({
         "windwp/nvim-ts-autotag", -- auto close html tags
@@ -174,9 +169,10 @@ packer.startup(function(use)
         as = "catppuccin",
         config = function() require("ag.plugin-conf.catppuccin") end,
         run = ":CatppuccinCompile",
+        disable = true,
     })
     use({
-        "folke/tokyonight.nvim",
+        "folke/tokyonight.nvim", -- the other lua colorscheme
         config = function() require("ag.plugin-conf.tokyonight") end,
     })
 
@@ -209,7 +205,10 @@ packer.startup(function(use)
         "tpope/vim-fugitive", -- git integration
         cmd = { "Git", "Gdiffsplit" },
     })
-    use("JoosepAlviste/nvim-ts-context-commentstring") -- commenting in vue files "just works"
+    use({
+        "JoosepAlviste/nvim-ts-context-commentstring", -- commenting in vue files "just works"
+        ft = { "vue" },
+    })
     use({
         "jose-elias-alvarez/nvim-lsp-ts-utils", -- helpers for typescript development
         ft = {
@@ -224,6 +223,7 @@ packer.startup(function(use)
             "typescript",
             "vue",
             "javascript",
+            "python",
         },
         config = function()
             require("template-string").setup({
@@ -232,28 +232,7 @@ packer.startup(function(use)
         end,
     })
     use({
-        "hrsh7th/vim-vsnip", -- snippets
-        config = function()
-            vim.g.vsnip_snippet_dir = vim.fn.expand("~/.config/nvim/snips")
-            vim.keymap.set({ "i", "s" }, "<C-j>", function()
-                if vim.fn["vsnip#jumpable"](1) then
-                    return "<Plug>(vsnip-jump-next)"
-                else
-                    return "<C-j>"
-                end
-            end, { silent = true, expr = true })
-            vim.keymap.set({ "i", "s" }, "<C-k>", function()
-                if vim.fn["vsnip#jumpable"](-1) then
-                    return "<Plug>(vsnip-jump-prev)"
-                else
-                    return "<C-k>"
-                end
-            end, { silent = true, expr = true })
-        end,
-        disable = true,
-    })
-    use({
-        "L3MON4D3/LuaSnip", -- better snippets?
+        "L3MON4D3/LuaSnip", -- snippets
         as = "luasnip",
         tag = "v1.*",
         config = function() require("ag.plugin-conf.luasnip") end,
@@ -274,6 +253,7 @@ packer.startup(function(use)
         },
         config = function() require("ag.plugin-conf.completion") end,
         module = "cmp",
+        ft = lsp_filetypes,
     })
     use({
         "godlygeek/tabular", -- line it up
@@ -319,9 +299,13 @@ packer.startup(function(use)
                 },
             })
         end,
-        commit = "7e2fef6ec501a3fe8bc6c4051b3a1014dc098a06",
+        -- commit = "7e2fef6ec501a3fe8bc6c4051b3a1014dc098a06",
+        cmd = "AerialToggle",
     })
-    use("b0o/schemastore.nvim") -- json schema provider
+    use({
+        "b0o/schemastore.nvim", -- json schema provider
+        ft = { "json" },
+    })
     use({
         "anuvyklack/hydra.nvim", -- custom "modes"
         config = function() require("ag.plugin-conf.hydra") end,
@@ -329,7 +313,6 @@ packer.startup(function(use)
     use({
         "vinnymeller/swagger-preview.nvim",
         run = "npm install -g swagger-ui-watcher",
-        ft = { "yaml", "json" },
         config = function()
             require("swagger-preview").setup({
                 -- The port to run the preview server on
@@ -338,6 +321,7 @@ packer.startup(function(use)
                 host = "localhost",
             })
         end,
+        cmd = { "SwaggerPreview", "SwaggerPreviewToggle" },
     })
 
     -- Grab all packages if we're setting up for the first time

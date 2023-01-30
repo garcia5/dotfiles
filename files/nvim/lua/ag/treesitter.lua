@@ -82,7 +82,7 @@ require("nvim-treesitter.configs").setup({
     },
     context_commentstring = {
         enable = true,
-        enable_autocmd = false,
+        enable_autocmd = false, -- Comment.nvim takes care of this automatically
     },
     rainbow = {
         enable = true,
