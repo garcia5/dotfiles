@@ -119,8 +119,7 @@ null_ls.setup({
     on_attach = custom_attach,
     should_attach = function(bufnr)
         local cur_ft = vim.bo[bufnr].filetype
-        if vim.tbl_contains({ "vue", "typescript", "javascript", "python", "lua" }, cur_ft) then return true end
-        return false
+        return vim.tbl_contains({ "vue", "typescript", "javascript", "python", "lua" }, cur_ft)
     end,
     sources = {
         --#formatters
@@ -136,7 +135,7 @@ null_ls.setup({
         --#code actions
         null_ls.builtins.code_actions.eslint_d,
     },
-    fallback_severity = vim.diagnostic.severity.WARN,
+    fallback_severity = vim.diagnostic.severity.HINT,
 })
 
 -- python
