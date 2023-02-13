@@ -128,7 +128,7 @@ local buttons = {
     val = {
         { type = "text", val = "Quick links", opts = { hl = "SpecialComment", position = "center" } },
         { type = "padding", val = 1 },
-        dashboard.button("e", "  New file", ":e<CR>"),
+        dashboard.button("e", "  New file", ":e "),
         dashboard.button("f", "  Find file", ":Telescope find_files<CR>"),
         dashboard.button("g", "  Live grep", ":Telescope live_grep<CR>"),
         dashboard.button("c", "  Checkout branch", ":Telescope git_branches<CR>"),

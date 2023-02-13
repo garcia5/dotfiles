@@ -268,7 +268,7 @@ lspconfig.bashls.setup({
 })
 
 -- lua
-lspconfig.sumneko_lua.setup({
+lspconfig.lua_ls.setup({
     on_attach = function(client, bufnr)
         custom_attach(client, bufnr)
         format_on_save(bufnr)

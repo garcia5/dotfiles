@@ -207,7 +207,6 @@ packer.startup(function(use)
     })
     use({
         "JoosepAlviste/nvim-ts-context-commentstring", -- commenting in vue files "just works"
-        ft = { "vue" },
     })
     use({
         "jose-elias-alvarez/nvim-lsp-ts-utils", -- helpers for typescript development
