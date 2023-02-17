@@ -15,12 +15,9 @@ local types = require("luasnip.util.types")
 ls.config.set_config({
     -- Edit the snippet even after I exit it
     history = true,
-
     -- Update snippet text in _real time_
     updateevents = "TextChanged,TextChangedI",
-
     enable_autosnippets = true,
-
     -- Show virtual text hints for node types
     ext_opts = {
         [types.insertNode] = {
@@ -41,7 +38,7 @@ require("luasnip.loaders.from_vscode").lazy_load()
 ---#Mappings
 -- Previous snippet region
 vim.keymap.set({ "i", "s" }, "<C-k>", function()
-    if ls.jumpable(-1) then ls.jump(-1) end
+    if ls.jumpable( -1) then ls.jump( -1) end
 end, { silent = true })
 
 -- Expand snippet, or go to next snippet region
@@ -63,7 +60,6 @@ end)
 --[[
 --#Snippets
 --]]
-
 ---#Typescript
 local ts_function_fmt = [[
 {doc}
@@ -75,8 +71,8 @@ local ts_function_snippet = function(type)
     return fmt(ts_function_fmt, {
         doc = d(1, function(args)
             local params_str = args[1][1]
-            local return_type = args[2][1]
             local nodes = { t({ "/**", " * " }), r(1, "description", i(nil)) }
+            local end_comment = t({ "", " */" })
             for _, param in ipairs(vim.split(params_str, ",", true)) do
                 local name = param:match("([%a%d_-]+) ?:")
                 if name then
@@ -84,9 +80,16 @@ local ts_function_snippet = function(type)
                     table.insert(nodes, t({ "", str }))
                 end
             end
-            vim.list_extend(nodes, { t({ "", " * @returns " .. return_type, " */" }) })
+            local return_str = c(2, {
+                sn(nil, {
+                    t({ "", " * @returns " }),
+                    r(1, "return_description", i(nil)),
+                }),
+                t(""),
+            })
+            vim.list_extend(nodes, { return_str, end_comment })
             return sn(nil, nodes)
-        end, { 4, 5 }),
+        end, { 4 }),
         type = t(type),
         async = c(2, { t("async "), t("") }),
         name = i(3, "funcName"),
@@ -109,6 +112,7 @@ local ts_function_snippet = function(type)
         stored = {
             ["return_type"] = i(nil, "void"),
             ["description"] = i(nil, "description"),
+            ["return_description"] = i(nil, ""),
         },
     })
 end
@@ -145,7 +149,7 @@ ls.add_snippets("typescript", {
 describe('{suite}', () => {{
 	{body}
 }});
-        ]]   ,
+        ]],
             {
                 suite = i(1, "function or module"),
                 body = i(0),
@@ -159,7 +163,7 @@ describe('{suite}', () => {{
 it('{test_case}', {async}() => {{
 	{body}
 }});
-    ]]       ,
+    ]],
             {
                 test_case = i(1, "does something"),
                 async = c(2, { t("async "), t("") }),
@@ -182,7 +186,7 @@ defineComponent({{
 		{body}
 	}}
 }})
-    ]]       ,
+    ]],
             {
                 name = f(function(args, parent)
                     local env = parent.snippet.env
