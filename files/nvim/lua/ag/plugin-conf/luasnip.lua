@@ -69,10 +69,16 @@ local ts_function_fmt = [[
 ]]
 local ts_function_snippet = function(type)
     return fmt(ts_function_fmt, {
+        -- function is called every time the function parameters ({params} in `fmt`) are updated
         doc = d(1, function(args)
+            -- params_str = "param1: string, param2: other string, @Param('param3') param3: string"
             local params_str = args[1][1]
+
             local nodes = { t({ "/**", " * " }), r(1, "description", i(nil)) }
-            local end_comment = t({ "", " */" })
+            -- after `nodes`: [[
+            -- /**
+            --  * |
+            -- ]]
             for _, param in ipairs(vim.split(params_str, ",", true)) do
                 local name = param:match("([%a%d_-]+) ?:")
                 if name then
@@ -80,14 +86,66 @@ local ts_function_snippet = function(type)
                     table.insert(nodes, t({ "", str }))
                 end
             end
-            local return_str = c(2, {
-                sn(nil, {
-                    t({ "", " * @returns " }),
-                    r(1, "return_description", i(nil)),
-                }),
-                t(""),
-            })
+            -- after inserting `params_str`: [[
+            -- /**
+            --  * inserted `description` here
+            --  * @param param1
+            --  * @param param2
+            --  * @param param3
+            -- ]]
+
+            -- use restore_node to remember choice as params are added
+            local return_str = r(
+                2,
+                "return_choice",
+                c(nil, {
+                    sn(nil, {
+                        t({ "", " * @returns " }),
+                        r(1, "return_description", i(nil)),
+                    }),
+                    t(""),
+                })
+            )
+            -- after return_str:
+            -- choice 1: [[
+            --
+            -- /**
+            --  * inserted `description` here
+            --  * @param param1
+            --  * @param param2
+            --  * @param param3
+            --  * @returns |
+            -- ]]
+            --
+            -- choice 2: [[
+            --
+            -- /**
+            --  * inserted `description` here
+            --  * @param param1
+            --  * @param param2
+            --  * @param param3|
+            -- ]]
+            local end_comment = t({ "", " */" })
             vim.list_extend(nodes, { return_str, end_comment })
+            -- final: [[
+            --
+            -- /**
+            --  * inserted `description` here
+            --  * @param param1
+            --  * @param param2
+            --  * @param param3
+            --  * @returns inserted `return_description` here
+            --  */
+            --
+            -- OR
+            --
+            -- /**
+            --  * inserted `description` here
+            --  * @param param1
+            --  * @param param2
+            --  * @param param3
+            --  */
+            -- ]]
             return sn(nil, nodes)
         end, { 4 }),
         type = t(type),
@@ -113,6 +171,7 @@ local ts_function_snippet = function(type)
             ["return_type"] = i(nil, "void"),
             ["description"] = i(nil, "description"),
             ["return_description"] = i(nil, ""),
+            ["return_choice"] = i(nil, ""),
         },
     })
 end
