@@ -17,7 +17,10 @@ if not vim.loop.fs_stat(lazypath) then
     })
 end
 vim.opt.rtp:prepend(lazypath)
-require("ag") -- load my lua configs
+require("lazy").setup("ag.plugins")
+
+-- Keymaps
+require("ag.mappings")
 
 -- Behaviors
 vim.opt.belloff = "all" -- NO BELLS!

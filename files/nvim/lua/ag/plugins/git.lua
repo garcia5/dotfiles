@@ -62,6 +62,6 @@ local gitsigns = {
 }
 
 return {
-    fugitive = fugitive,
-    gs = gitsigns,
+    fugitive,
+    gitsigns,
 }
