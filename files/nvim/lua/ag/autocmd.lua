@@ -50,11 +50,6 @@ au("FileType", {
     end,
 })
 
-au("BufWritePost", {
-    pattern = "plugins.lua",
-    command = "PackerCompile",
-})
-
 au("BufEnter", {
     pattern = "Dockerfile.*",
     callback = function() vim.opt_local.filetype = "Dockerfile" end,
