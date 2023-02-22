@@ -12,6 +12,7 @@ local fugitive = {
             desc = "diff file in split",
         },
     },
+    cmd = "Git",
 }
 local gitsigns = {
     "lewis6991/gitsigns.nvim",

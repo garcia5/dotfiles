@@ -24,7 +24,7 @@ require("ag.mappings")
 
 -- Behaviors
 vim.opt.belloff = "all" -- NO BELLS!
-vim.opt.completeopt = { "menu", "menuone", "noselect" } -- ins-completion how vsnip likes it
+vim.opt.completeopt = { "menuone", "noselect" } -- ins-completion how I like it
 vim.opt.swapfile = false -- no swap files
 vim.opt.inccommand = "nosplit" -- preview %s commands live as I type
 vim.opt.undofile = true -- keep track of my 'undo's between sessions
