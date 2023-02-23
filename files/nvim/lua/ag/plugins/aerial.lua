@@ -17,7 +17,4 @@ return {
             update_delay = 100,
         },
     },
-    keys = {
-        { "<Leader>ou", "<cmd>AerialToggle!<CR>", desc = "toggle code outline" },
-    },
 }

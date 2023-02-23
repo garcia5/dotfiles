@@ -26,24 +26,7 @@ return {
 
         require("nvim-treesitter.configs").setup({
             -- either "all" or a list of languages
-            ensure_installed = {
-                "javascript",
-                "jsonc",
-                "comment",
-                "jsdoc",
-                "tsx",
-                "html",
-                "vue",
-                "typescript",
-                "python",
-                "regex",
-                "bash",
-                "lua",
-                "css",
-                "scss",
-                "yaml",
-                "vim",
-            },
+            ensure_installed = "all",
             highlight = {
                 -- false will disable the whole extension
                 enable = true,
