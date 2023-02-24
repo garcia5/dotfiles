@@ -19,6 +19,8 @@ return {
                 "vue",
             },
         },
+        -- View treesitter info
+        "nvim-treesitter/playground",
     },
     config = function()
         vim.opt.foldmethod = "expr" -- use function to determine folds
@@ -99,6 +101,9 @@ return {
             autotag = {
                 enable = true,
                 filetypes = { "html", "vue" },
+            },
+            playground = {
+                enabled = true,
             },
         })
     end,
