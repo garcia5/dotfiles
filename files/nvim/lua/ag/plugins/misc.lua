@@ -23,8 +23,6 @@ return {
         "kyazdani42/nvim-web-devicons",
         lazy = true,
     },
-    -- extra lsp highlight groups
-    "folke/lsp-colors.nvim",
     -- highlight color codes
     {
         "norcalli/nvim-colorizer.lua",
@@ -43,7 +41,6 @@ return {
             "typescript",
             "vue",
             "javascript",
-            "python",
         },
     },
     -- align text
