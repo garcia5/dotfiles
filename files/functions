@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 join-lines() {
   local item
   while read item; do
@@ -68,6 +68,13 @@ fzf-js-test() {
 
 fzf-git-checkout() {
     is-git-repo || echo 'Not in git repo'
+
+    # pass args straight to git-checkout if provided
+    arg=$1
+    if [[ -n $arg ]]; then
+        git checkout "$@"
+        return
+    fi
 
     git branch --all --color=always --sort=-committerdate | grep -v HEAD | sed 's/^..//' | cut -d' ' -f1 |
     fzf-tmux \

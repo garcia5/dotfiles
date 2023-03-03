@@ -110,6 +110,10 @@ autoload -Uz compinit && compinit # completion
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 autoload -U add-zsh-hook # hooks
 
+# edit command in $EDITOR (default c-x c-e)
+autoload -z edit-command-line
+zle -N edit-command-line
+
 # vi mode
 # make sure fzf keybindings still apply
 zvm_after_init() {
