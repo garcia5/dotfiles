@@ -35,7 +35,7 @@ return {
         ---#Mappings
         -- Previous snippet region
         vim.keymap.set({ "i", "s" }, "<C-k>", function()
-            if ls.jumpable( -1) then ls.jump( -1) end
+            if ls.jumpable(-1) then ls.jump(-1) end
         end, { silent = true })
 
         -- Expand snippet, or go to next snippet region

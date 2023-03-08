@@ -69,6 +69,7 @@ end
 ---@param client any
 ---@param bufnr number
 local custom_attach = function(client, bufnr)
+    require("telescope") -- make sure telescope is loaded for code actions
     local keymap_opts = { buffer = bufnr, silent = true, noremap = true }
     -- LSP mappings (only apply when LSP client attached)
     vim.keymap.set("n", "K", vim.lsp.buf.hover, keymap_opts)

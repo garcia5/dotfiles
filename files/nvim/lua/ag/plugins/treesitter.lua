@@ -4,13 +4,18 @@ return {
     dependencies = {
         -- extra textobjects
         "nvim-treesitter/nvim-treesitter-textobjects",
+        -- extra extra textobjects
+        {
+            "chrisgrieser/nvim-various-textobjs",
+            config = function() require("various-textobjs").setup({ useDefaultKeymaps = true }) end,
+        },
         -- commenting for vue SFCs
         {
             "JoosepAlviste/nvim-ts-context-commentstring",
             ft = { "vue" },
         },
         -- rainbow braces
-        "mrjones2014/nvim-ts-rainbow",
+        "https://gitlab.com/HiPhish/nvim-ts-rainbow2",
         -- auto insert closing tags
         {
             "windwp/nvim-ts-autotag",
@@ -95,8 +100,13 @@ return {
             },
             rainbow = {
                 enable = true,
-                extended_mode = true, -- Also highlight non-bracket delimiters like html tags
-                max_file_lines = 10000,
+                -- Which query to use for finding delimiters
+                query = {
+                    "rainbow-parens", -- parentheses by default
+                    html = "rainbow-tags", -- tags for html
+                },
+                -- Highlight the entire buffer all at once
+                strategy = require("ts-rainbow.strategy.global"),
             },
             autotag = {
                 enable = true,

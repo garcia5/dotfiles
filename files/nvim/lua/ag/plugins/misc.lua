@@ -44,7 +44,7 @@ return {
         },
     },
     -- align text
-    { "godlygeek/tabular",     cmd = "Tab" },
+    { "godlygeek/tabular", cmd = "Tab" },
     -- json schema provider
     "b0o/schemastore.nvim",
 }
