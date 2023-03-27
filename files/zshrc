@@ -110,16 +110,16 @@ autoload -Uz compinit && compinit # completion
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 autoload -U add-zsh-hook # hooks
 
-# edit command in $EDITOR (default c-x c-e)
-autoload -z edit-command-line
-zle -N edit-command-line
 
 # vi mode
+# NOTE: edit command in $EDITOR happens from zsh-vi-mode with `vv`
 # make sure fzf keybindings still apply
 zvm_after_init() {
     [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
     [ -f ~/.functions ] && source ~/.functions
 }
+# Do vim surround on the command line
+export ZVM_VI_SURROUND_BINDKEY='classic'
 
 # use bat for manpager
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
