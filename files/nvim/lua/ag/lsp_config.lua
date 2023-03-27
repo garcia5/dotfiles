@@ -1,17 +1,5 @@
 local lspconfig = require("lspconfig")
 
-local lsp_filetypes = {
-    "vue",
-    "typescript",
-    "json",
-    "javascript",
-    "python",
-    "rust",
-    "yaml",
-    "bash",
-    "lua",
-}
-
 -- Give floating windows borders
 vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" })
 
@@ -47,15 +35,28 @@ vim.diagnostic.config({
     severity_sort = true,
 })
 
--- Don't let tsserver or vuels do formatting, they do it wrong
+-- set up helpers for typescript development
+local setup_ts_utils = function(client, bufnr)
+    local ts_utils = require("nvim-lsp-ts-utils")
+    ts_utils.setup({
+        update_imports_on_move = false,
+        enable_import_on_completion = true,
+    })
+
+    ts_utils.setup_client(client)
+
+    vim.keymap.set("n", "<Leader>ii", "<cmd>TSLspOrganize<CR>", { buffer = bufnr, silent = true, noremap = true }) -- organize imports
+    vim.keymap.set("n", "<Leader>R", "<cmd>TSLspRenameFile<CR>", { buffer = bufnr, silent = true, noremap = true }) -- rename file AND update references to it
+end
+
+-- format with *only* null-ls
 local custom_format = function(bufnr)
     vim.lsp.buf.format({
         bufnr = bufnr,
-        filter = function(client)
-            return client.name ~= "tsserver" and client.name ~= "vuels" and client.name ~= "volar"
-        end,
+        name = "null-ls",
     })
 end
+
 local format_group = vim.api.nvim_create_augroup("LspFormatting", { clear = true })
 ---@param bufnr number
 local format_on_save = function(bufnr)
@@ -167,18 +168,7 @@ lspconfig.pyright.setup({
 lspconfig.tsserver.setup({
     on_attach = function(client, bufnr)
         if not web_dev_attach(client, bufnr) then return end
-
-        local ts_utils = require("nvim-lsp-ts-utils")
-        ts_utils.setup({
-            update_imports_on_move = false,
-            enable_import_on_completion = true,
-        })
-
-        ts_utils.setup_client(client)
-
-        -- TS specific mappings
-        vim.keymap.set("n", "<Leader>ii", "<cmd>TSLspOrganize<CR>", { buffer = bufnr, silent = true, noremap = true }) -- organize imports
-        vim.keymap.set("n", "<Leader>R", "<cmd>TSLspRenameFile<CR>", { buffer = bufnr, silent = true, noremap = true }) -- rename file AND update references to it
+        setup_ts_utils(client, bufnr)
     end,
 })
 
@@ -220,41 +210,11 @@ lspconfig.vuels.setup({
 })
 lspconfig.volar.setup({
     on_attach = function(client, bufnr)
-        web_dev_attach(client, bufnr)
-        require("nvim-lsp-ts-utils")
-        local ts_utils = require("nvim-lsp-ts-utils")
-        ts_utils.setup({
-            update_imports_on_move = false,
-            enable_import_on_completion = true,
-        })
-
-        ts_utils.setup_client(client)
-
-        -- TS specific mappings
-        if vim.bo[bufnr].filetype == "typescript" then
-            vim.keymap.set(
-                "n",
-                "<Leader>ii",
-                "<cmd>TSLspOrganize<CR>",
-                { buffer = bufnr, silent = true, noremap = true }
-            ) -- organize imports
-            vim.keymap.set(
-                "n",
-                "<Leader>R",
-                "<cmd>TSLspRenameFile<CR>",
-                { buffer = bufnr, silent = true, noremap = true }
-            ) -- rename file AND update references to it
-        end
+        if not web_dev_attach(client, bufnr) then return end
+        setup_ts_utils(client, bufnr)
     end,
     -- enable "take over mode" for typescript files as well: https://github.com/johnsoncodehk/volar/discussions/471
     filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" },
-    -- init_options = {
-    --     typescript = {
-    --         -- "take over mode" can be weird in monorepos, use a global typescript installation instead
-    --         -- serverPath = vim.fn.expand("~") .. "/.config/yarn/global/node_modules/typescript/lib/tsserverlibrary.js",
-    --         -- tsdk = vim.fn.expand("~") .. "/.config/yarn/global/node_modules/typescript/lib",
-    --     },
-    -- },
 })
 
 -- yaml
@@ -311,7 +271,3 @@ lspconfig.jsonls.setup({
 lspconfig.rust_analyzer.setup({
     on_attach = custom_attach,
 })
-
-return {
-    lsp_filetypes = lsp_filetypes,
-}
