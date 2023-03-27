@@ -7,6 +7,11 @@ join-lines() {
 }
 
 # Git
+cg () {
+    is-git-repo || echo 'Not in git repo'
+    cd $(git rev-parse --show-toplevel)
+}
+
 is-git-repo() {
     git rev-parse HEAD > /dev/null 2>&1
 }
