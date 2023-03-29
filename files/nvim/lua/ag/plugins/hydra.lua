@@ -89,6 +89,7 @@ return {
 
         -- git mode
         local gs = require("gitsigns")
+        local sidebar = require("sidebar-nvim")
         Hydra({
             name = "Git",
             hint = [[
@@ -120,6 +121,7 @@ return {
                     gs.toggle_linehl(true) -- light up changed lines
                     gs.toggle_word_diff(true) -- highlight changed words
                     gs.setqflist("all", { open = false }) -- all hunks in qf, but don't open qf list
+                    sidebar.open()
                 end,
                 on_exit = function()
                     gs.toggle_deleted(false)
@@ -127,6 +129,7 @@ return {
                     gs.toggle_word_diff(false)
                     vim.cmd("echo") -- clear the echo area
                     vim.cmd("ccl") -- close qf list
+                    sidebar.close()
                 end,
             },
             mode = { "n", "x" },
@@ -143,10 +146,38 @@ return {
                     end,
                     { desc = "set qflist" },
                 },
-                { "s", gs.stage_hunk, { desc = "stage hunk" } },
-                { "U", gs.undo_stage_hunk, { desc = "undo stage" } },
-                { "r", gs.reset_hunk, { desc = "reset hunk" } },
-                { "S", gs.stage_buffer, { desc = "stage buffer" } },
+                {
+                    "s",
+                    function()
+                        gs.stage_hunk()
+                        sidebar.update()
+                    end,
+                    { desc = "stage hunk" },
+                },
+                {
+                    "U",
+                    function()
+                        gs.undo_stage_hunk()
+                        sidebar.update()
+                    end,
+                    { desc = "undo stage" },
+                },
+                {
+                    "r",
+                    function()
+                        gs.reset_hunk()
+                        sidebar.update()
+                    end,
+                    { desc = "reset hunk" },
+                },
+                {
+                    "S",
+                    function()
+                        gs.stage_buffer()
+                        sidebar.update()
+                    end,
+                    { desc = "stage buffer" },
+                },
                 { "=", gs.preview_hunk, { desc = "preview hunk" } },
                 { "b", gs.blame_line, { desc = "blame line" } },
                 { "d", gs.toggle_deleted, { nowait = true, desc = "show deleted lines" } },
