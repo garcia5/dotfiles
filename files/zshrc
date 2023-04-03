@@ -204,3 +204,6 @@ export PATH="$HOME/.cargo/bin:$PATH"
 export PNPM_HOME="/Users/agarcia/Library/pnpm"
 export PATH="$PNPM_HOME:$PATH"
 # pnpm end
+
+# wez
+export PATH="$PATH:/Applications/WezTerm.app/Contents/MacOS"
