@@ -17,7 +17,7 @@ config.window_frame = {
     font = wezterm.font({ family = "JetBrainsMono Nerd Font Mono" }),
     font_size = font_size,
 }
-config.font = wezterm.font("JetBrainsMono Nerd Font Mono")
+config.font = wezterm.font("JetBrainsMono Nerd Font Mono", { weight = "Medium" })
 config.font_size = font_size
 
 -- mappings
