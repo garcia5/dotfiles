@@ -28,11 +28,6 @@ return {
         "norcalli/nvim-colorizer.lua",
         config = function() require("colorizer").setup(nil, { css = true }) end,
     },
-    -- .editorconfig support
-    {
-        "editorconfig/editorconfig-vim",
-        init = function() vim.g.EditorConfig_exclude_patterns = { "fugitive://.*" } end,
-    },
     -- convert quotes to template string quotes automatically
     {
         "axelvc/template-string.nvim",

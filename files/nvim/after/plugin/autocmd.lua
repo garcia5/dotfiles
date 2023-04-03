@@ -44,10 +44,7 @@ local gitcommit_group = augroup("gitcommit", { clear = true })
 au("FileType", {
     group = gitcommit_group,
     pattern = "gitcommit",
-    callback = function()
-        vim.cmd("let b:EditorConfig_disable = 1")
-        vim.opt_local.formatoptions = "tcrnqj"
-    end,
+    callback = function() vim.opt_local.formatoptions = "tcrnqj" end,
 })
 
 au("BufEnter", {
