@@ -5,7 +5,7 @@ vim.g.python3_host_prog = "/Users/agarcia/py3nvim/bin/python"
 vim.g.bulitin_lsp = true
 
 -- Plugins
-vim.loader.enable() -- lua caching
+vim.loader.enable() -- cache lua modules (https://github.com/neovim/neovim/pull/22668)
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
     vim.fn.system({
