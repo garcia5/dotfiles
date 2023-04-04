@@ -26,46 +26,75 @@ config.keys = {
     {
         key = "r",
         mods = "CMD|SHIFT",
-        action = wezterm.action.ReloadConfiguration,
+        action = act.ReloadConfiguration,
     },
     {
         key = "l",
         mods = "ALT",
-        action = wezterm.action.ShowLauncherArgs({ flags = "FUZZY|LAUNCH_MENU_ITEMS|WORKSPACES|COMMANDS|TABS" }),
+        action = act.ShowLauncherArgs({ flags = "FUZZY|LAUNCH_MENU_ITEMS|WORKSPACES|COMMANDS|TABS" }),
     },
     {
         key = "|",
         mods = "LEADER",
-        action = wezterm.action.SplitHorizontal({ domain = "CurrentPaneDomain" }),
+        action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }),
     },
     {
         key = "_",
         mods = "LEADER",
-        action = wezterm.action.SplitVertical({ domain = "CurrentPaneDomain" }),
+        action = act.SplitVertical({ domain = "CurrentPaneDomain" }),
     },
     {
         key = "h",
         mods = "LEADER",
-        action = wezterm.action.ActivatePaneDirection("Left"),
+        action = act.ActivatePaneDirection("Left"),
     },
     {
         key = "j",
         mods = "LEADER",
-        action = wezterm.action.ActivatePaneDirection("Down"),
+        action = act.ActivatePaneDirection("Down"),
     },
     {
         key = "k",
         mods = "LEADER",
-        action = wezterm.action.ActivatePaneDirection("Up"),
+        action = act.ActivatePaneDirection("Up"),
     },
     {
         key = "l",
         mods = "LEADER",
-        action = wezterm.action.ActivatePaneDirection("Right"),
+        action = act.ActivatePaneDirection("Right"),
+    },
+    {
+        key = "r",
+        mods = "LEADER",
+        action = act.ActivateKeyTable({
+            name = "resize_pane",
+            one_shot = false,
+        }),
+    },
+    {
+        key = "z",
+        mods = "LEADER",
+        action = act.TogglePaneZoomState,
+    },
+    {
+        key = "s",
+        mods = "LEADER",
+        action = act.ShowLauncherArgs({ flags = "WORKSPACES|FUZZY" }),
     },
     { key = "+", mods = "CMD", action = act.IncreaseFontSize },
     { key = "-", mods = "CMD", action = act.DecreaseFontSize },
     { key = ".", mods = "CMD", action = act.ResetFontSize },
+}
+
+config.key_tables = {
+    resize_pane = {
+        { key = "LeftArrow", action = act.AdjustPaneSize({ "Left", 1 }) },
+        { key = "RightArrow", action = act.AdjustPaneSize({ "Right", 1 }) },
+        { key = "UpArrow", action = act.AdjustPaneSize({ "Up", 1 }) },
+        { key = "DownArrow", action = act.AdjustPaneSize({ "Down", 1 }) },
+        -- Cancel the mode by pressing escape
+        { key = "Escape", action = "PopKeyTable" },
+    },
 }
 
 return config
