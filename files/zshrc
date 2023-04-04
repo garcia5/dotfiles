@@ -110,13 +110,13 @@ autoload -Uz compinit && compinit # completion
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 autoload -U add-zsh-hook # hooks
 
-
 # vi mode
 # NOTE: edit command in $EDITOR happens from zsh-vi-mode with `vv`
 # make sure fzf keybindings still apply
 zvm_after_init() {
     [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
     [ -f ~/.functions ] && source ~/.functions
+    source "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" # TODO: why do I need to do this with wezterm?
 }
 # Do vim surround on the command line
 export ZVM_VI_SURROUND_BINDKEY='classic'
