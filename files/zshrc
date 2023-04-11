@@ -129,7 +129,7 @@ export BAT_THEME="tokyonight_moon"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_COMMAND='fd -tf'
 export FZF_CTRL_T_COMMAND="fd -tf"
-export FZF_DEFAULT_OPTS="--height 40% --reverse"
+export FZF_DEFAULT_OPTS='--height 40% --reverse --bind "ctrl-u:preview-page-up,ctrl-d:preview-page-down"'
 # Preview files (but not everything else) with bat
 export FZF_CTRL_T_OPTS="$FZF_DEFAULT_OPTS --preview 'bat --color=always --line-range=:40 --style=numbers,changes {}'"
 

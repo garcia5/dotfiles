@@ -95,6 +95,21 @@ fzf-git-checkout() {
         --preview 'git log --oneline --graph --date=short --color=always --pretty="format:%C(auto)%cd %h%d %s" {}'
 }
 
+fzf-git-rebase() {
+    is-git-repo || echo 'Not in git repo'
+
+    cmd="git log --date-order --abbrev-commit --oneline"
+    eval "$cmd" |
+    fzf \
+        --ansi \
+        --height 100% \
+        --layout reverse \
+        --prompt "Commits> " \
+        --preview-window right:50% \
+        --preview 'git show --color=always --format=full --stat -p {1}' |
+    cut -d' ' -f1
+}
+
 zle -N git-branch-widget
 fzf-git-branch() {
     is-git-repo || echo 'Not in git repo'
