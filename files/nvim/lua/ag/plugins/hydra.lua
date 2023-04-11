@@ -104,7 +104,7 @@ return {
  ^
  _C_: Commit
  ^
- _q_, _<Esc>_: Quit
+ _q_: Quit
     ]],
             body = "<leader>G",
             config = {
@@ -183,7 +183,6 @@ return {
                 { "d", gs.toggle_deleted, { nowait = true, desc = "show deleted lines" } },
                 { "C", ":tab Git commit<CR>", { silent = true, exit = true, desc = "commit changes" } },
                 { "q", nil, { exit = true, nowait = true, desc = "quit" } },
-                { "<Esc>", nil, { exit = true, nowait = true, desc = "quit" } },
             },
         })
     end,
