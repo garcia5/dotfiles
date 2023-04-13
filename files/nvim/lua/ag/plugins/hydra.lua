@@ -1,5 +1,9 @@
 return {
     "anuvyklack/hydra.nvim",
+    dependencies = {
+        "tpope/vim-fugitive",
+        "lewis6991/gitsigns.nvim",
+    },
     keys = {
         "<Leader>G",
         "<Leader>D",
@@ -102,7 +106,7 @@ return {
  Display
  _=_: Preview hunk  _d_: Show deleted       _b_: Blame line
  ^
- _C_: Commit
+ _C_: Commit        _P_: Push
  ^
  _q_: Quit
     ]],
@@ -181,7 +185,16 @@ return {
                 { "=", gs.preview_hunk, { desc = "preview hunk" } },
                 { "b", gs.blame_line, { desc = "blame line" } },
                 { "d", gs.toggle_deleted, { nowait = true, desc = "show deleted lines" } },
-                { "C", ":tab Git commit<CR>", { silent = true, exit = true, desc = "commit changes" } },
+                {
+                    "C",
+                    ":Git commit<CR>",
+                    { silent = true, desc = "commit changes" },
+                },
+                {
+                    "P",
+                    ":GPush<CR>",
+                    { silent = true, exit = true, desc = "push changes" },
+                },
                 { "q", nil, { exit = true, nowait = true, desc = "quit" } },
             },
         })

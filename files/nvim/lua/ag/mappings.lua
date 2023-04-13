@@ -46,4 +46,4 @@ mapper("n", "<Leader>z", ":call ToggleFocus()<CR>") -- toggle focus on current w
 mapper("n", "<Leader>tn", ":call termcmd#vert()<CR>") -- open new term in vertical split
 mapper("n", "<Leader>ts", ":call termcmd#horiz()<CR>") -- open new term in horizontal split
 
-mapper("n", "<Leader>rr", "<cmd>lua vim.lsp.stop_client(vim.lsp.get_active_clients())<CR>") -- start language servers
+mapper("n", "<Leader>rr", "<cmd>LspRestart<CR>") -- restart language servers
