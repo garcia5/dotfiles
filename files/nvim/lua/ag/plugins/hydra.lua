@@ -3,6 +3,7 @@ return {
     dependencies = {
         "tpope/vim-fugitive",
         "lewis6991/gitsigns.nvim",
+        "sidebar-nvim/sidebar.nvim",
     },
     keys = {
         "<Leader>G",
@@ -106,7 +107,7 @@ return {
  Display
  _=_: Preview hunk  _d_: Show deleted       _b_: Blame line
  ^
- _C_: Commit        _P_: Push
+ _C_: Commit
  ^
  _q_: Quit
     ]],
@@ -134,6 +135,9 @@ return {
                     vim.cmd("echo") -- clear the echo area
                     vim.cmd("ccl") -- close qf list
                     sidebar.close()
+                    -- close fugitive if open
+                    local ft = vim.opt.filetype:get()
+                    if ft == "fugitive" then vim.cmd("tabclose") end
                 end,
             },
             mode = { "n", "x" },
@@ -187,13 +191,11 @@ return {
                 { "d", gs.toggle_deleted, { nowait = true, desc = "show deleted lines" } },
                 {
                     "C",
-                    ":Git commit<CR>",
-                    { silent = true, desc = "commit changes" },
-                },
-                {
-                    "P",
-                    ":GPush<CR>",
-                    { silent = true, exit = true, desc = "push changes" },
+                    function()
+                        vim.cmd("tab Git")
+                        vim.cmd("Git commit")
+                    end,
+                    { silent = true, exit = true, desc = "commit changes" },
                 },
                 { "q", nil, { exit = true, nowait = true, desc = "quit" } },
             },
