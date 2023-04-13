@@ -23,6 +23,6 @@ alias gl="git log \
     --stat" # `glols` from zsh git plugin
 alias gc='fzf-git-checkout'
 alias gpf='gpush --force-with-lease'
-alias gf='git commit --fixup=$(fzf-git-rebase)'
+alias gf='git commit --fixup=$(fzf-git-commits)'
 
 alias kitty-update='curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin'

@@ -95,7 +95,7 @@ fzf-git-checkout() {
         --preview 'git log --oneline --graph --date=short --color=always --pretty="format:%C(auto)%cd %h%d %s" {}'
 }
 
-fzf-git-rebase() {
+fzf-git-commits() {
     is-git-repo || echo 'Not in git repo'
 
     cmd="git log --date-order --abbrev-commit --oneline"
