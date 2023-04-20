@@ -209,6 +209,18 @@ function setup_zsh {
     if [[ $(command -v sketchybar) ]]; then
         runcmd brew services start sketchybar
     fi
+
+    # Do special scripts
+    dir="$HOME/bin/"
+    if [[ ! -d "$dir" ]]; then
+        runcmd "mkdir -p $dir"
+    fi
+    files=$(ls "$DF_HOME/files/bin/")
+    for file in ${files[@]}; do
+        if [[ ! -f "$dir/$file" ]]; then
+            runcmd ln -s "$DF_HOME/files/bin/$file" "$HOME/bin/$file"
+        fi
+    done
 }
 
 function setup_kitty {

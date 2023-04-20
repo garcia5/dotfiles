@@ -1,0 +1,9 @@
+#!/bin/bash
+
+IFS=:
+for C in $LS_COLORS
+do
+    IFS='='
+    set $C
+    echo -e "\033[$2m$1\033[00m"
+done

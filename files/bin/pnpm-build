@@ -1,0 +1,8 @@
+#!/bin/bash
+
+pnpm build
+changed="$(git status --short)"
+if [[ $(echo $changed | grep 'e2e/package.json') ]]; then
+    fname="$(echo $changed | grep 'e2e/package.json' | cut -c4-)"
+    git restore "$fname"
+fi
