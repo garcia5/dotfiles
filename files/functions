@@ -43,7 +43,9 @@ ctrl-t-widget() {
         LBUFFER+=$result
     # Otherwise do default and fuzzy search all files
     else
-        LBUFFER+=$(eval $FZF_CTRL_T_COMMAND | eval "fzf $FZF_CTRL_T_OPTS")
+        result=$(eval $FZF_CTRL_T_COMMAND | eval "fzf $FZF_CTRL_T_OPTS")
+        zle reset-prompt
+        LBUFFER+=$result
     fi
 }
 bindkey '' ctrl-t-widget

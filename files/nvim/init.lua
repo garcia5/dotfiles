@@ -70,6 +70,7 @@ vim.opt.splitright = true -- prefer vsplitting to the right
 vim.opt.splitbelow = true -- prefer splitting below
 vim.opt.splitkeep = "screen" -- keep text on screen the same when splitting
 vim.opt.wrap = false -- don't wrap my text
+vim.opt.linebreak = true -- if I toggle `wrap` ON, only break between words
 vim.opt.cursorline = true -- hightlight line cursor is on
 vim.opt.laststatus = 3 -- single global statusline
 

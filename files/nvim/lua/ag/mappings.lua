@@ -14,15 +14,14 @@ mapper("n", ":W", ":w")
 mapper("n", "I", "0I")
 
 -- Movemint
+-- move by line even with `wrap` set
+mapper("n", "j", "gj")
+mapper("n", "k", "gk")
+-- Move between windows
 mapper("n", "<C-j>", "<C-w>j")
 mapper("n", "<C-h>", "<C-w>h")
 mapper("n", "<C-k>", "<C-w>k")
 mapper("n", "<C-l>", "<C-w>l")
--- Move without firing 'BufEnter' autocommands
-mapper("n", "<M-j>", ":noautocmd wincmd j<CR>")
-mapper("n", "<M-h>", ":noautocmd wincmd h<CR>")
-mapper("n", "<M-k>", ":noautocmd wincmd k<CR>")
-mapper("n", "<M-l>", ":noautocmd wincmd l<CR>")
 -- Term
 mapper("t", "<Esc><Esc>", [[<C-\><C-n>]])
 mapper("t", "<C-j>", [[<C-\><C-n><C-w>j]])
@@ -41,6 +40,8 @@ mapper("n", "<Leader>bd", ":bp | bd #<CR>") -- delete the current buffer
 mapper("n", "+", "=") -- new format mapping
 mapper("n", "<Leader>nn", ":set number!<CR>") -- toggle line numbers
 mapper("n", "<Leader>z", ":call ToggleFocus()<CR>") -- toggle focus on current window
+mapper("n", "<Leader>W", ":set wrap!<CR>") -- toggle wrap
+mapper("i", "<M-r>", [[<Esc>:set paste<CR>i<C-r>"<Esc>:set nopaste<CR>i]]) -- enable `paste` when I want to paste in insert mode, then disable it again
 
 -- terminal
 mapper("n", "<Leader>tn", ":call termcmd#vert()<CR>") -- open new term in vertical split
