@@ -94,6 +94,7 @@ fi
 
 # Brew
 # Autocomplete
+eval $(/opt/homebrew/bin/brew shellenv)
 if type brew &>/dev/null; then
   FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
 fi
@@ -135,7 +136,6 @@ export FZF_CTRL_T_OPTS="$FZF_DEFAULT_OPTS --preview 'bat --color=always --line-r
 
 # Python
 eval "$(pyenv init -)"
-pyenv global 3.9.10
 
 # yarn
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
@@ -195,7 +195,7 @@ if [[ -f ~/.dotdash ]]; then
     source ~/.dotdash
 fi
 
-eval $(thefuck --alias)
+# eval $(thefuck --alias)
 
 # rust
 export PATH="$HOME/.cargo/bin:$PATH"

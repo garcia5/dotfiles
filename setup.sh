@@ -203,14 +203,14 @@ function setup_nvim {
         local old_pwd=$(pwd)
 
         # clone project
-        git clone https://github.com/sumneko/lua-language-server "$HOME/"
+        git clone https://github.com/sumneko/lua-language-server "$HOME/lua-language-server"
         cd "$HOME/lua-language-server"
         git submodule update --init --recursive
         # build
         cd 3rd/luamake
         compile/install.sh
         cd ../..
-        ./3rd/luamake/luamake/rebuild
+        ./3rd/luamake/luamake rebuild
 
         cd "$old_pwd"
     fi
@@ -231,8 +231,16 @@ function setup_zsh {
     fi
     # get oh-my-zsh first
     if [ ! -d "$HOME/.oh-my-zsh" ]; then
-        sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+        runcmd sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
     fi
+    # get plugins
+    # vi mode
+    runcmd git clone https://github.com/jeffreytse/zsh-vi-mode \
+      $ZSH_CUSTOM/plugins/zsh-vi-mode
+    # syntax highlighting
+    runcmd git clone https://github.com/zsh-users/zsh-syntax-highlighting.git \
+      $ZSH_CUSTOM/plugins/zsh-syntax-highlighting
+
     file="$HOME/.zshrc"
     backup_file $file
     ln -s "$DF_HOME/files/zshrc" "$file"
