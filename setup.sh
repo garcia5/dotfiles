@@ -81,6 +81,9 @@ function setup_git {
     git_config delta.plus-non-emph-style           'syntax "#273849"'
     git_config delta.plus-emph-style               '"#1b1d2b" "#41a6b5"'
     git_config delta.plus-empty-line-marker-style  'syntax "#273849"'
+
+    # `git-absorb`
+    git_config absorb.maxStack 20
 }
 
 function setup_brew {
@@ -96,7 +99,7 @@ function setup_brew {
 }
 
 function install_packages {
-    BREW_PACKAGES=( 'gcc' 'fzf' 'bat' 'ripgrep' 'exa' 'pyenv' 'yarn' 'neovim' 'xz' 'sqlite' 'unixodbc' 'tmux' 'ninja' 'zsh' 'git-delta' 'tree' )
+    BREW_PACKAGES=( 'gcc' 'fzf' 'bat' 'ripgrep' 'exa' 'pyenv' 'yarn' 'neovim' 'xz' 'sqlite' 'unixodbc' 'tmux' 'ninja' 'zsh' 'git-delta' 'tree' 'git-absorb' )
 
     echo ""
     echo "installing from brew..."
