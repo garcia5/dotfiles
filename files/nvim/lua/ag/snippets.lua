@@ -7,7 +7,6 @@ local t = ls.text_node
 local d = ls.dynamic_node
 local c = ls.choice_node
 local r = ls.restore_node
-local f = ls.function_node
 local fmt = require("luasnip.extras.fmt").fmt
 
 --[[
@@ -32,7 +31,7 @@ local ts_function_snippet = function(type)
             -- /**
             --  * |
             -- ]]
-            for _, param in ipairs(vim.split(params_str, ",", true)) do
+            for _, param in ipairs(vim.split(params_str, ",", { trimEmpty = true, plain = true })) do
                 local name = param:match("([%a%d_-]+) ?:")
                 if name then
                     local str = " * @param " .. name
@@ -181,32 +180,6 @@ it('{test_case}', {async}() => {{
                 {
                     test_case = i(1, "does something"),
                     async = c(2, { t("async "), t("") }),
-                    body = i(0),
-                }
-            )
-        ),
-    },
-    vue = {
-        s(
-            "defineComponent",
-            fmt(
-                [[
-defineComponent({{
-	name: '{name}',
-	{props}
-	setup({props_arg}{ctx}) {{
-		{body}
-	}}
-}})
-    ]],
-                {
-                    name = f(function(args, parent)
-                        local env = parent.snippet.env
-                        return env.TM_FILENAME:match("^(.+)%..+$")
-                    end, {}),
-                    props = c(1, { sn(nil, { t({ "props: {", "" }), i(1), t({ "", "}," }) }), t("") }),
-                    props_arg = c(2, { t("props"), t("") }),
-                    ctx = c(3, { t(", ctx"), t("") }),
                     body = i(0),
                 }
             )
