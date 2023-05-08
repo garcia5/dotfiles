@@ -41,7 +41,7 @@ mapper("n", "+", "=") -- new format mapping
 mapper("n", "<Leader>nn", ":set number!<CR>") -- toggle line numbers
 mapper("n", "<Leader>z", ":call ToggleFocus()<CR>") -- toggle focus on current window
 mapper("n", "<Leader>W", ":set wrap!<CR>") -- toggle wrap
-mapper("i", "<M-r>", [[<Esc>:set paste<CR>i<C-r>"<Esc>:set nopaste<CR>i]]) -- enable `paste` when I want to paste in insert mode, then disable it again
+mapper("i", "<M-r>", [[<Esc>:set paste<CR>i<C-r>"<Esc>:set nopaste<CR>a]]) -- enable `paste` when I want to paste in insert mode, then disable it again
 
 -- terminal
 mapper("n", "<Leader>tn", ":call termcmd#vert()<CR>") -- open new term in vertical split

@@ -1,5 +1,11 @@
 return {
     "numToStr/FTerm.nvim",
+    keys = {
+        { "<A-i>", '<CMD>lua require("FTerm").toggle()<CR>', mode = "n", desc = "toggle floatterm" },
+        { "<A-i>", '<C-\\><C-n><CMD>lua require("FTerm").toggle()<CR>', mode = "t", desc = "toggle floatterm" },
+        { "<Leader>pb", ":PBuild<CR>", desc = "pnpm build" },
+        { "<Leader>pt", ":PTest<CR>", desc = "pnpm test" },
+    },
     config = function()
         -- display
         require("FTerm").setup({
@@ -7,16 +13,11 @@ return {
             blend = 10, -- a little transparent
         })
 
-        -- basics
-        vim.keymap.set("n", "<A-i>", '<CMD>lua require("FTerm").toggle()<CR>')
-        vim.keymap.set("t", "<A-i>", '<C-\\><C-n><CMD>lua require("FTerm").toggle()<CR>')
-
         -- build
         vim.api.nvim_create_user_command("PBuild", function()
             require("FTerm").scratch({ cmd = { "pnpm-build" } }) -- my own `pnpm build` alias
             vim.cmd("LspRestart")
         end, { bang = true })
-        vim.keymap.set("n", "<Leader>pb", ":PBuild<CR>")
 
         -- test
         vim.api.nvim_create_user_command(
@@ -24,7 +25,6 @@ return {
             function() require("FTerm").run({ "pnpm", "test" }) end,
             { bang = true }
         )
-        vim.keymap.set("n", "<Leader>pt", ":PTest<CR>")
 
         -- push
         vim.api.nvim_create_user_command(
