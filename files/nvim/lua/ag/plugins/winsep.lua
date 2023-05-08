@@ -1,10 +1,8 @@
 return {
     "nvim-zh/colorful-winsep.nvim",
-    commit = "9a474934a27203d1c2e9943c94a29165dd81823d",
     opts = {
         highlight = {
-            guibg = vim.api.nvim_get_hl_by_name("Normal", true)["background"],
-            guifg = "#c099ff",
+            fg = "#c099ff",
         },
         interval = 50,
         no_exec_files = { "packer", "TelescopePrompt" },
