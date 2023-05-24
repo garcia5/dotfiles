@@ -62,9 +62,6 @@ return {
         "vue",
         "typescript",
         "javascript",
-        "python",
-        "lua",
         "dart",
-        "vue",
     },
 }

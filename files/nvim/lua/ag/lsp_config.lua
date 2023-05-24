@@ -45,7 +45,7 @@ local setup_ts_utils = function(client, bufnr)
 
     ts_utils.setup_client(client)
 
-    vim.keymap.set("n", "<Leader>ii", "<cmd>TSLspOrganize<CR>", { buffer = bufnr, silent = true, noremap = true })  -- organize imports
+    vim.keymap.set("n", "<Leader>ii", "<cmd>TSLspOrganize<CR>", { buffer = bufnr, silent = true, noremap = true }) -- organize imports
     vim.keymap.set("n", "<Leader>R", "<cmd>TSLspRenameFile<CR>", { buffer = bufnr, silent = true, noremap = true }) -- rename file AND update references to it
 end
 
@@ -86,11 +86,11 @@ local custom_attach = function(client, bufnr, formatters)
     vim.keymap.set("n", "gr", vim.lsp.buf.rename, with_desc(keymap_opts, "Rename"))
 
     -- diagnostics
-    vim.keymap.set("n", "<leader>dk", vim.diagnostic.open_float, with_desc(keymap_opts, "View Current Diagnostic"))     -- diagnostic(s) on current line
-    vim.keymap.set("n", "<leader>dn", vim.diagnostic.goto_next, with_desc(keymap_opts, "Goto next diagnostic"))         -- move to next diagnostic in buffer
-    vim.keymap.set("n", "<leader>dp", vim.diagnostic.goto_prev, with_desc(keymap_opts, "Goto prev diagnostic"))         -- move to prev diagnostic in buffer
-    vim.keymap.set("n", "<leader>da", vim.diagnostic.setqflist, with_desc(keymap_opts, "Populate qf list"))             -- show all buffer diagnostics in qflist
-    vim.keymap.set("n", "H", vim.lsp.buf.code_action, with_desc(keymap_opts, "Code Actions"))                           -- code actions (handled by telescope-ui-select)
+    vim.keymap.set("n", "<leader>dk", vim.diagnostic.open_float, with_desc(keymap_opts, "View Current Diagnostic")) -- diagnostic(s) on current line
+    vim.keymap.set("n", "<leader>dn", vim.diagnostic.goto_next, with_desc(keymap_opts, "Goto next diagnostic")) -- move to next diagnostic in buffer
+    vim.keymap.set("n", "<leader>dp", vim.diagnostic.goto_prev, with_desc(keymap_opts, "Goto prev diagnostic")) -- move to prev diagnostic in buffer
+    vim.keymap.set("n", "<leader>da", vim.diagnostic.setqflist, with_desc(keymap_opts, "Populate qf list")) -- show all buffer diagnostics in qflist
+    vim.keymap.set("n", "H", vim.lsp.buf.code_action, with_desc(keymap_opts, "Code Actions")) -- code actions (handled by telescope-ui-select)
     vim.keymap.set("n", "<leader>F", function() custom_format(bufnr, formatters) end, with_desc(keymap_opts, "Format")) -- format
 
     -- use omnifunc
@@ -254,6 +254,7 @@ lspconfig.lua_ls.setup({
             workspace = {
                 -- Make the server aware of Neovim runtime files
                 library = vim.api.nvim_get_runtime_file("", true),
+                checkThirdParty = false,
             },
             -- Do not send telemetry data containing a randomized but unique identifier
             telemetry = {
