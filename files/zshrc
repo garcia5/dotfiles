@@ -179,7 +179,7 @@ add-zsh-hook precmd nvm-git-branch
 
 # Lua ls
 export PATH="$PATH:$HOME/lua-language-server/bin"
-alias luamake=/Users/agarcia/lua-language-server/3rd/luamake/luamake
+alias luamake=$HOME/lua-language-server/3rd/luamake/luamake
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
@@ -195,15 +195,24 @@ if [[ -f ~/.dotdash ]]; then
     source ~/.dotdash
 fi
 
-# eval $(thefuck --alias)
+# android studio
+export ANDROID_HOME="$HOME/Library/Android/sdk"
+export PATH="$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$ANDROID_HOME/platform-tools"
 
 # rust
 export PATH="$HOME/.cargo/bin:$PATH"
 
 # pnpm
-export PNPM_HOME="/Users/agarcia/Library/pnpm"
+export PNPM_HOME="$HOME/Library/pnpm"
 export PATH="$PNPM_HOME:$PATH"
 # pnpm end
 
 # wez
 export PATH="$PATH:/Applications/WezTerm.app/Contents/MacOS"
+
+# go
+export GOROOT="$(brew --prefix)/Cellar/go/1.20.3/libexec"
+export PATH="$PATH:$GOROOT/bin"
+
+# flutter
+export PATH="$HOME/devel/flutter/bin:$PATH"

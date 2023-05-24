@@ -99,7 +99,7 @@ function setup_brew {
 }
 
 function install_packages {
-    BREW_PACKAGES=( 'gcc' 'fzf' 'bat' 'ripgrep' 'exa' 'pyenv' 'yarn' 'neovim' 'xz' 'sqlite' 'unixodbc' 'tmux' 'ninja' 'zsh' 'git-delta' 'tree' 'git-absorb' )
+    BREW_PACKAGES=( 'gcc' 'fzf' 'bat' 'ripgrep' 'exa' 'pyenv' 'yarn' 'neovim' 'xz' 'sqlite' 'unixodbc' 'tmux' 'ninja' 'zsh' 'git-delta' 'tree' 'stylua' 'git-absorb' )
 
     echo ""
     echo "installing from brew..."

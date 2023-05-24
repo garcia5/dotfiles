@@ -45,46 +45,53 @@ local setup_ts_utils = function(client, bufnr)
 
     ts_utils.setup_client(client)
 
-    vim.keymap.set("n", "<Leader>ii", "<cmd>TSLspOrganize<CR>", { buffer = bufnr, silent = true, noremap = true }) -- organize imports
+    vim.keymap.set("n", "<Leader>ii", "<cmd>TSLspOrganize<CR>", { buffer = bufnr, silent = true, noremap = true })  -- organize imports
     vim.keymap.set("n", "<Leader>R", "<cmd>TSLspRenameFile<CR>", { buffer = bufnr, silent = true, noremap = true }) -- rename file AND update references to it
 end
 
--- format with *only* null-ls
-local custom_format = function(bufnr)
+-- restricted format
+local custom_format = function(bufnr, allowed_clients)
     vim.lsp.buf.format({
         bufnr = bufnr,
-        name = "null-ls",
+        filter = function(client)
+            if not allowed_clients then return true end
+            return vim.tbl_contains(allowed_clients, client.name)
+        end,
     })
 end
 
 local format_group = vim.api.nvim_create_augroup("LspFormatting", { clear = true })
 ---@param bufnr number
-local format_on_save = function(bufnr)
+---@param allowed_clients string[]
+local format_on_save = function(bufnr, allowed_clients)
     vim.api.nvim_create_autocmd("BufWritePre", {
         group = format_group,
         buffer = bufnr,
-        callback = function() custom_format(bufnr) end,
+        callback = function() custom_format(bufnr, allowed_clients) end,
     })
 end
 
 ---@param client any
 ---@param bufnr number
-local custom_attach = function(client, bufnr)
+---@param formatters string[] table containing client names for which formatting should be enabled
+local custom_attach = function(client, bufnr, formatters)
     require("telescope") -- make sure telescope is loaded for code actions
-    local keymap_opts = { buffer = bufnr, silent = true, noremap = true }
+
     -- LSP mappings (only apply when LSP client attached)
-    vim.keymap.set("n", "K", vim.lsp.buf.hover, keymap_opts)
-    vim.keymap.set("n", "<c-]>", vim.lsp.buf.definition, keymap_opts)
-    vim.keymap.set("n", "<leader>gr", vim.lsp.buf.references, keymap_opts)
-    vim.keymap.set("n", "gr", vim.lsp.buf.rename, keymap_opts)
+    local keymap_opts = { buffer = bufnr, silent = true, noremap = true }
+    local with_desc = function(opts, desc) return vim.tbl_extend("force", opts, { desc = desc }) end
+    vim.keymap.set("n", "K", vim.lsp.buf.hover, with_desc(keymap_opts, "Hover"))
+    vim.keymap.set("n", "<c-]>", vim.lsp.buf.definition, with_desc(keymap_opts, "Goto Definition"))
+    vim.keymap.set("n", "<leader>gr", vim.lsp.buf.references, with_desc(keymap_opts, "Find References"))
+    vim.keymap.set("n", "gr", vim.lsp.buf.rename, with_desc(keymap_opts, "Rename"))
 
     -- diagnostics
-    vim.keymap.set("n", "<leader>dk", vim.diagnostic.open_float, keymap_opts) -- diagnostic(s) on current line
-    vim.keymap.set("n", "<leader>dn", vim.diagnostic.goto_next, keymap_opts) -- move to next diagnostic in buffer
-    vim.keymap.set("n", "<leader>dp", vim.diagnostic.goto_prev, keymap_opts) -- move to prev diagnostic in buffer
-    vim.keymap.set("n", "<leader>da", vim.diagnostic.setqflist, keymap_opts) -- show all buffer diagnostics in qflist
-    vim.keymap.set("n", "H", vim.lsp.buf.code_action, keymap_opts) -- code actions (handled by telescope-ui-select)
-    vim.keymap.set("n", "<leader>F", function() custom_format(bufnr) end, keymap_opts) -- manual formatting, because sometimes null-ls just decides to stop working
+    vim.keymap.set("n", "<leader>dk", vim.diagnostic.open_float, with_desc(keymap_opts, "View Current Diagnostic"))     -- diagnostic(s) on current line
+    vim.keymap.set("n", "<leader>dn", vim.diagnostic.goto_next, with_desc(keymap_opts, "Goto next diagnostic"))         -- move to next diagnostic in buffer
+    vim.keymap.set("n", "<leader>dp", vim.diagnostic.goto_prev, with_desc(keymap_opts, "Goto prev diagnostic"))         -- move to prev diagnostic in buffer
+    vim.keymap.set("n", "<leader>da", vim.diagnostic.setqflist, with_desc(keymap_opts, "Populate qf list"))             -- show all buffer diagnostics in qflist
+    vim.keymap.set("n", "H", vim.lsp.buf.code_action, with_desc(keymap_opts, "Code Actions"))                           -- code actions (handled by telescope-ui-select)
+    vim.keymap.set("n", "<leader>F", function() custom_format(bufnr, formatters) end, with_desc(keymap_opts, "Format")) -- format
 
     -- use omnifunc
     vim.bo[bufnr].omnifunc = "v:lua.vim.lsp.omnifunc"
@@ -111,7 +118,7 @@ local web_dev_attach = function(client, bufnr)
         return false
     end
 
-    custom_attach(client, bufnr)
+    custom_attach(client, bufnr, { "null-ls" })
     return true
 end
 
@@ -143,7 +150,7 @@ null_ls.setup({
 -- python
 lspconfig.pyright.setup({
     on_attach = function(client, bufnr)
-        custom_attach(client, bufnr)
+        custom_attach(client, bufnr, { "null-ls" })
         -- 'Organize imports' keymap for pyright only
         vim.keymap.set("n", "<Leader>ii", "<cmd>PyrightOrganizeImports<CR>", {
             buffer = bufnr,
@@ -231,8 +238,8 @@ lspconfig.bashls.setup({
 -- lua
 lspconfig.lua_ls.setup({
     on_attach = function(client, bufnr)
-        custom_attach(client, bufnr)
-        format_on_save(bufnr)
+        custom_attach(client, bufnr, { "null-ls" })
+        format_on_save(bufnr, { "null-ls" })
     end,
     settings = {
         Lua = {
@@ -270,4 +277,27 @@ lspconfig.jsonls.setup({
 -- rust
 lspconfig.rust_analyzer.setup({
     on_attach = custom_attach,
+})
+
+-- go
+lspconfig.gopls.setup({
+    on_attach = function(client, bufnr)
+        custom_attach(client, bufnr, { "gopls" })
+        -- auto organize imports/format on save
+        format_on_save(bufnr, { "gopls" })
+        vim.api.nvim_create_autocmd("BufWritePre", {
+            pattern = "*.go",
+            callback = function()
+                vim.lsp.buf.code_action({ context = { only = { "source.organizeImports" } }, apply = true })
+            end,
+        })
+    end,
+})
+
+-- dart
+lspconfig.dartls.setup({
+    on_attach = function(client, bufnr)
+        custom_attach(client, bufnr, { "dartls" })
+        format_on_save(bufnr, { "dartls" })
+    end,
 })
