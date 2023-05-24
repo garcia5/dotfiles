@@ -99,7 +99,7 @@ function setup_brew {
 }
 
 function install_packages {
-    BREW_PACKAGES=( 'gcc' 'fzf' 'bat' 'ripgrep' 'exa' 'pyenv' 'yarn' 'neovim' 'xz' 'sqlite' 'unixodbc' 'tmux' 'ninja' 'zsh' 'git-delta' 'tree' 'stylua' 'git-absorb' )
+    BREW_PACKAGES=( 'gcc' 'fzf' 'bat' 'ripgrep' 'exa' 'pyenv' 'yarn' 'neovim' 'xz' 'sqlite' 'unixodbc' 'tmux' 'ninja' 'zsh' 'git-delta' 'tree' 'stylua' 'git-absorb' 'lua-language-server' )
 
     echo ""
     echo "installing from brew..."
@@ -200,19 +200,7 @@ function setup_nvim {
     # install_packages
     read -p "Install sumneko_lua? (y/n) " install_sumneko
     if [[ $install_sumneko == "y" ]]; then
-        local old_pwd=$(pwd)
-
-        # clone project
-        git clone https://github.com/sumneko/lua-language-server "$HOME/lua-language-server"
-        cd "$HOME/lua-language-server"
-        git submodule update --init --recursive
-        # build
-        cd 3rd/luamake
-        compile/install.sh
-        cd ../..
-        ./3rd/luamake/luamake rebuild
-
-        cd "$old_pwd"
+        rumcmd brew install lua-langauge-server
     fi
 }
 
