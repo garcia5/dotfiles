@@ -7,7 +7,9 @@ local t = ls.text_node
 local d = ls.dynamic_node
 local c = ls.choice_node
 local r = ls.restore_node
+local f = ls.function_node
 local fmt = require("luasnip.extras.fmt").fmt
+local rep = require("luasnip.extras").rep
 
 --[[
 --#Snippets
@@ -31,7 +33,7 @@ local ts_function_snippet = function(type)
             -- /**
             --  * |
             -- ]]
-            for _, param in ipairs(vim.split(params_str, ",", { trimEmpty = true, plain = true })) do
+            for _, param in ipairs(vim.split(params_str, ",", true)) do
                 local name = param:match("([%a%d_-]+) ?:")
                 if name then
                     local str = " * @param " .. name
@@ -180,6 +182,57 @@ it('{test_case}', {async}() => {{
                 {
                     test_case = i(1, "does something"),
                     async = c(2, { t("async "), t("") }),
+                    body = i(0),
+                }
+            )
+        ),
+    },
+    dart = {
+        s(
+            "StatelessWidget",
+            fmt(
+                [[
+class {name} extends StatelessWidget {{
+	{name_rep}({{super.key}});
+
+	@override
+	Widget build(BuildContext context) {{
+		return {body}
+	}}
+}}
+]],
+                {
+                    name = i(1, "WidgetName"),
+                    name_rep = rep(1),
+                    body = i(0),
+                }
+            )
+        ),
+        s(
+            "StatefulWidget",
+            fmt(
+                [[
+class {name} extends StatefulWidget {{
+	{name_rep}({{super.key}});
+
+	@override
+	State<{name_rep}> createState() => {impl_name}();
+}}
+
+class {impl_name} extends State<{name_rep}> {{
+	@override
+	Widget build(BuildContext context) {{
+		return {body}
+	}}
+}}
+]],
+                {
+                    name = i(1, "WidgetName"),
+                    name_rep = rep(1),
+                    impl_name = f(function(args)
+                        local widget_name = args[1][1]
+                        return "_" .. widget_name .. "State"
+                    end, { 1 }),
                     body = i(0),
                 }
             )
