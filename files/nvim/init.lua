@@ -22,12 +22,11 @@ if not vim.loop.fs_stat(lazypath) then
     })
 end
 vim.opt.rtp:prepend(lazypath)
-require("lazy").setup({
-    import = "ag.plugins",
+require("lazy").setup("ag.plugins", {
     change_detection = {
         -- automatically check for config file changes and reload the ui
         enabled = false,
-        notify = false, -- get a notification when changes are found
+        notify = false,
     },
 })
 
