@@ -1,9 +1,9 @@
 #!/bin/bash
 
 function projects {
-    workflow='/Users/agarcia/Projects/greenhouse-workflow/'
-    cd "$workflow"
-    wezterm cli split-pane --cwd "$workflow" --right --percent 30
+    projects='/Users/agarcia/Projects/'
+    cd "$projects"
+    wezterm cli split-pane --cwd "$projects" --right --percent 30
 }
 
 function dotfiles {
@@ -16,7 +16,7 @@ function main {
     wezterm cli activate-tab --tab-id 0
 
     # open up gmail, calendar, jira, bitbucket
-    open 'https://gmail.com' 'https://calendar.google.com' 'https://dotdash.atlassian.net/jira/software/c/projects/GCOL/boards/487' 'https://bitbucket.prod.aws.about.com/dashboard'
+    open 'https://gmail.com' 'https://calendar.google.com' 'https://dotdash.atlassian.net/jira/software/c/projects/CMSFRM/boards/1084' 'https://bitbucket.prod.aws.about.com/dashboard'
 
     # open slack
     open '/Applications/Slack.app/'
