@@ -137,7 +137,7 @@ function install_packages {
         echo "installing node"
         runcmd nvm install node
     fi
-    NPM_PACKAGES=( 'bash-language-server' 'pyright' 'vls' 'typescript-language-server' 'vscode-langservers-extracted' 'neovim' 'yaml-language-server' 'eslint_d' )
+    NPM_PACKAGES=( 'bash-language-server' 'pyright' 'vls' 'typescript-language-server' 'vscode-langservers-extracted' 'neovim' 'yaml-language-server' 'eslint_d' '@fsouza/prettierd' )
     npm_installed=$(npm -g list)
     for pkg in ${NPM_PACKAGES[@]}; do
         if [[ $(echo "$npm_installed" | grep -c "$pkg") -ge 1 ]]; then
@@ -193,7 +193,7 @@ function setup_nvim {
         runcmd python -m venv "$HOME/py3nvim"
         runcmd source "$HOME/py3nvim/bin/activate"
         runcmd pip install --upgrade pip
-        runcmd pip install pynvim
+        runcmd pip install pynvim flake8 black
         runcmd deactivate
     fi
     # Optionally install lua language server. Everything else is done in

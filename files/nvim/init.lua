@@ -1,8 +1,12 @@
 -- Essentials
 vim.g.mapleader = " "
-vim.g.python3_host_skip_check = 1
-vim.g.python3_host_prog = "/Users/agarcia/py3nvim/bin/python"
 vim.g.bulitin_lsp = true
+
+-- Manual provider config for faster startup
+vim.g.python3_host_skip_check = 1
+vim.g.python3_host_prog = os.getenv("HOME") .. "/py3nvim/bin/python"
+vim.g.loaded_ruby_provider = 0
+vim.g.loaded_perl_provider = 0
 
 -- Plugins
 vim.loader.enable() -- cache lua modules (https://github.com/neovim/neovim/pull/22668)
