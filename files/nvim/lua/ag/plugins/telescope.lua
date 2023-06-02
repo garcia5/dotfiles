@@ -120,8 +120,13 @@ return {
         },
         {
             "<Leader>qf",
-            function() require("telescope.builtin").quickfilx(require("telescope.themes").get_ivy()) end,
+            function() require("telescope.builtin").quickfix(require("telescope.themes").get_ivy()) end,
             desc = "Jump to items in quickfix list",
+        },
+        {
+            "<Leader>R",
+            function() require("telescope.builtin").resume() end,
+            desc = "Reopen previous telescope picker",
         },
     },
     cmd = {
