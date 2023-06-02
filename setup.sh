@@ -269,7 +269,6 @@ function setup_zsh {
     runcmd curl -o- https://raw.githubusercontent.com/catppuccin/zsh-syntax-highlighting/main/themes/catppuccin_macchiato-zsh-syntax-highlighting.zsh \
         > "$HOME/.zsh/catppuccin_macchiato-zsh-syntax-highlighting.zsh"
 
-
     # Do sketchybar here?
     backup_dir "$CONFIG_HOME/sketchybar/"
     ln -s "$DF_HOME/files/sketchybar/" "$CONFIG_HOME/sketchybar"

@@ -1,6 +1,10 @@
 return {
     "catppuccin/nvim",
     name = "catppuccin",
+    build = ":CatppuccinCompile",
+    lazy = false,
+    priority = 1000,
+    enabled = true,
     config = function()
         vim.g.catppuccin_flavour = "mocha"
         require("catppuccin").setup({
@@ -12,7 +16,6 @@ return {
             },
             styles = {
                 comments = { "italic" },
-                strings = { "italic" },
             },
             custom_highlights = function(colors)
                 local prompt = colors.surface0
@@ -74,7 +77,4 @@ return {
             },
         })
     end,
-    build = ":CatppuccinCompile",
-    priority = 1000,
-    enabled = true,
 }

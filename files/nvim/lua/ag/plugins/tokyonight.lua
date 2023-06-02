@@ -2,8 +2,8 @@ return {
     "folke/tokyonight.nvim", -- the other lua colorscheme
     lazy = false,
     priority = 1000,
+    enabled = false,
     config = function()
-        vim.opt.termguicolors = true
         require("tokyonight").setup({
             style = "night",
             transparent = false,

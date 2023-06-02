@@ -1,6 +1,7 @@
 -- Essentials
 vim.g.mapleader = " "
 vim.g.bulitin_lsp = true
+vim.opt.termguicolors = true
 
 -- Manual provider config for faster startup
 vim.g.python3_host_skip_check = 1
@@ -54,7 +55,6 @@ vim.opt.tabstop = 4 -- <Tab> appears as 4 spaces
 vim.opt.softtabstop = 4 -- <Tab> behaves as 4 spaces when editing
 
 -- Colors
-vim.opt.termguicolors = true
 vim.opt.background = "dark"
 vim.cmd("colorscheme catppuccin")
 
