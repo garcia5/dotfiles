@@ -118,6 +118,21 @@ function install_packages {
                 # Actually install fzf
                 $(brew --prefix)/opt/fzf/install
             fi
+            if [[ "$pkg" == "bat" ]]; then
+                # Install bat themes
+                mkdir -p "$(bat --config-dir)/themes"
+                runcmd curl -o- https://raw.githubusercontent.com/enkia/enki-theme/master/scheme/Enki-Tokyo-Night.tmTheme \
+                        > "$(bat --config-dir)/themes/tokyonight_moon.tmTheme"
+                runcmd curl -o- https://raw.githubusercontent.com/catppuccin/bat/main/Catppuccin-mocha.tmTheme \
+                        > "$(bat --config-dir)/themes/Catppuccin-mocha.tmTheme"
+                runcmd curl -o- https://raw.githubusercontent.com/catppuccin/bat/main/Catppuccin-frappe.tmTheme \
+                        > "$(bat --config-dir)/themes/Catppuccin-frappe.tmTheme"
+                runcmd curl -o- https://raw.githubusercontent.com/catppuccin/bat/main/Catppuccin-latte.tmTheme \
+                        > "$(bat --config-dir)/themes/Catppuccin-latte.tmTheme"
+                runcmd curl -o- https://raw.githubusercontent.com/catppuccin/bat/main/Catppuccin-latte.tmTheme \
+                        > "$(bat --config-dir)/themes/Catppuccin-latte.tmTheme"
+                runcmd bat cache --build
+            fi
         fi
     done
     # Install sketchybar from tap
@@ -242,6 +257,18 @@ function setup_zsh {
     ln -s "$DF_HOME/files/functions" "$file"
     # do custom theme
     ln -s "$DF_HOME/files/quarter-life.zsh-theme" "$HOME/.oh-my-zsh/themes/quarter-life.zsh-theme"
+
+    # do syntax highlighting themes
+    mkdir -p "$HOME/.zsh"
+    runcmd curl -o- https://raw.githubusercontent.com/catppuccin/zsh-syntax-highlighting/main/themes/catppuccin_frappe-zsh-syntax-highlighting.zsh \
+        > "$HOME/.zsh/catppuccin_frappe-zsh-syntax-highlighting.zsh"
+    runcmd curl -o- https://raw.githubusercontent.com/catppuccin/zsh-syntax-highlighting/main/themes/catppuccin_latte-zsh-syntax-highlighting.zsh \
+        > "$HOME/.zsh/catppuccin_latte-zsh-syntax-highlighting.zsh"
+    runcmd curl -o- https://raw.githubusercontent.com/catppuccin/zsh-syntax-highlighting/main/themes/catppuccin_mocha-zsh-syntax-highlighting.zsh \
+        > "$HOME/.zsh/catppuccin_mocha-zsh-syntax-highlighting.zsh"
+    runcmd curl -o- https://raw.githubusercontent.com/catppuccin/zsh-syntax-highlighting/main/themes/catppuccin_macchiato-zsh-syntax-highlighting.zsh \
+        > "$HOME/.zsh/catppuccin_macchiato-zsh-syntax-highlighting.zsh"
+
 
     # Do sketchybar here?
     backup_dir "$CONFIG_HOME/sketchybar/"

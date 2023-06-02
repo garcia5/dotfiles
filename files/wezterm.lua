@@ -9,7 +9,7 @@ if wezterm.config_builder then config = wezterm.config_builder() end
 config.default_prog = { "/bin/zsh", "-l" }
 
 -- colors
-config.color_scheme = "tokyonight_night"
+config.color_scheme = "Catppuccin Mocha"
 
 -- look & feel
 local font_size = 14.0

@@ -3,13 +3,13 @@ return {
     lazy = false,
     priority = 1000,
     config = function()
+        vim.opt.termguicolors = true
         require("tokyonight").setup({
             style = "night",
             transparent = false,
             terminal_colors = true,
             styles = {
                 comments = { italic = true },
-                strings = { italic = true },
             },
             on_highlights = function(hl, c)
                 local prompt = "#2d3149"
@@ -44,6 +44,5 @@ return {
             end,
             sidebars = { "qf", "help", "aerial", "packer" },
         })
-        vim.cmd([[colorscheme tokyonight]])
     end,
 }
