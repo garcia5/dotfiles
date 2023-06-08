@@ -15,7 +15,7 @@ return {
 
         -- build
         vim.api.nvim_create_user_command("PBuild", function()
-            require("FTerm").scratch({ cmd = { "pnpm-build" } }) -- my own `pnpm build` alias
+            require("FTerm").scratch({ cmd = { "pnpm", "build" } })
             vim.cmd("LspRestart")
         end, { bang = true })
 
