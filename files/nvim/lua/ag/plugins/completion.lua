@@ -26,7 +26,7 @@ return {
                 { name = "path" },
                 { name = "buffer", keyword_length = 3 }, -- don't complete from buffer right away
             }),
-            mapping = cmp.mapping.preset.insert({
+            mapping = {
                 ["<C-f>"] = cmp.mapping.scroll_docs(-2),
                 ["<C-d>"] = cmp.mapping.scroll_docs(2),
                 ["<C-h>"] = cmp.mapping.complete({ reason = cmp.ContextReason.Manual }),
@@ -37,7 +37,7 @@ return {
                 }),
                 ["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
                 ["<C-p>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
-            }),
+            },
             preselect = cmp.PreselectMode.Item, -- auto select whatever entry the source says
             formatting = {
                 -- Show where the completion opts are coming from
@@ -53,8 +53,11 @@ return {
                     },
                 }),
             },
+            window = {
+                completion = cmp.config.window.bordered(),
+                documentation = cmp.config.window.bordered(),
+            },
             experimental = {
-                native_menu = false,
                 ghost_text = true,
             },
         })
