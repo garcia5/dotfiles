@@ -125,7 +125,7 @@ end
 -- Set up clients
 local null_ls = require("null-ls")
 null_ls.setup({
-    on_attach = custom_attach,
+    on_attach = function(client, bufnr) custom_attach(client, bufnr, { "null-ls" }) end,
     should_attach = function(bufnr)
         local cur_ft = vim.bo[bufnr].filetype
         return vim.tbl_contains({ "vue", "typescript", "javascript", "python", "lua" }, cur_ft)
