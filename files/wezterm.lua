@@ -81,6 +81,21 @@ config.keys = {
         mods = "LEADER",
         action = act.ShowLauncherArgs({ flags = "WORKSPACES|FUZZY" }),
     },
+    {
+        key = " ",
+        mods = "LEADER",
+        action = act.RotatePanes("Clockwise"),
+    },
+    {
+        key = "f",
+        mods = "LEADER",
+        action = act.PaneSelect,
+    },
+    {
+        key = "x",
+        mods = "LEADER",
+        action = act.PaneSelect({ mode = "SwapWithActive" }),
+    },
     { key = "+", mods = "CMD", action = act.IncreaseFontSize },
     { key = "-", mods = "CMD", action = act.DecreaseFontSize },
     { key = ".", mods = "CMD", action = act.ResetFontSize },
