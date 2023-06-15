@@ -27,7 +27,7 @@ return {
                 { name = "buffer", keyword_length = 3 }, -- don't complete from buffer right away
             }),
             mapping = {
-                ["<C-f>"] = cmp.mapping.scroll_docs(-2),
+                ["<C-u>"] = cmp.mapping.scroll_docs(-2),
                 ["<C-d>"] = cmp.mapping.scroll_docs(2),
                 ["<C-h>"] = cmp.mapping.complete({ reason = cmp.ContextReason.Manual }),
                 ["<C-e>"] = cmp.mapping.abort(),
