@@ -44,6 +44,14 @@ vim.opt.grepprg = "rg --vimgrep --smart-case --no-heading" -- search with rg
 vim.opt.grepformat = "%f:%l:%c:%m" -- filename:line number:column number:error message
 vim.opt.mouse = "nv" -- use mouse in normal, visual modes
 vim.opt.mousescroll = "ver:3,hor:0" -- scroll vertically by 3 lines, no horizontal scrolling
+vim.opt.scrolloff = 10 -- padding between cursor and top/bottom of window
+vim.opt.foldlevel = 0 -- allow folding the whole way down
+vim.opt.foldlevelstart = 99 -- open files with all folds open
+vim.opt.splitright = true -- prefer vsplitting to the right
+vim.opt.splitbelow = true -- prefer splitting below
+vim.opt.splitkeep = "screen" -- keep text on screen the same when splitting
+vim.opt.wrap = false -- don't wrap my text
+vim.opt.linebreak = true -- if I toggle `wrap` ON, only break between words
 
 -- Indentation
 vim.opt.autoindent = true -- continue indentation to new line
@@ -73,14 +81,16 @@ vim.opt.listchars = {
     multispace = "·", -- show chars if I have multiple spaces between text
     leadmultispace = " ", -- ...but don't show any when they're at the start
 }
-vim.opt.scrolloff = 10 -- padding between cursor and top/bottom of window
-vim.opt.foldlevel = 0 -- allow folding the whole way down
-vim.opt.foldlevelstart = 99 -- open files with all folds open
-vim.opt.splitright = true -- prefer vsplitting to the right
-vim.opt.splitbelow = true -- prefer splitting below
-vim.opt.splitkeep = "screen" -- keep text on screen the same when splitting
-vim.opt.wrap = false -- don't wrap my text
-vim.opt.linebreak = true -- if I toggle `wrap` ON, only break between words
+-- more defined window border
+vim.opt.fillchars:append({
+    vert = "┃",
+    horiz = "━",
+    horizup = "┻",
+    horizdown = "┳",
+    vertleft = "┫",
+    vertright = "┣",
+    verthoriz = "╋",
+})
 vim.opt.cursorline = true -- hightlight line cursor is on
 vim.opt.laststatus = 3 -- single global statusline
 
