@@ -113,7 +113,7 @@ return {
             desc = "Checkout branches",
         },
         {
-            "<Leader>re",
+            "<Leader>gl",
             "<cmd>Telescope git_commits<CR>",
             desc = "Checkout commits",
         },

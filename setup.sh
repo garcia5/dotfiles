@@ -65,13 +65,14 @@ function setup_git {
     # colors
     git_config diff.colorMoved "zebra"
     # delta
-    git_config delta.features "decorations"
-    git_config delta.file-decoration-style "blue bold ol ul"
-    git_config delta.hunk-header-style "file line-number syntax"
-    git_config delta.hunk-header-decoration-style "blue"
+    git_config delta.features "decorations side-by-side"
+    git_config delta.file-decoration-style "brightgreen bold ol"
+    git_config delta.file-style "brightgreen auto"
+    git_config delta.hunk-header-style "file dim auto"
+    git_config delta.hunk-header-decoration-style "blue ol"
     git_config delta.hunk-label ">>>"
     git_config delta.line-numbers "true"
-    git_config delta.hyperlinks "true"
+    git_config delta.side-by-side "true"
     # tokyonight-moon theme
     git_config delta.minus-style                   'syntax "#3a273a"'
     git_config delta.minus-non-emph-style          'syntax "#3a273a"'
@@ -139,7 +140,6 @@ function install_packages {
     runcmd brew tap FelixKratz/formulae
     runcmd brew install sketchybar
 
-    echo ""
     echo "installing from npm..."
     if [[ -d "$HOME/.nvm" ]]; then
         echo "found nvm installation $(nvm --verison)"

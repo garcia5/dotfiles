@@ -18,7 +18,7 @@ local gitsigns = {
     "lewis6991/gitsigns.nvim",
     opts = {
         preview_config = {
-            border = "solid",
+            border = "single",
             style = "minimal",
             relative = "cursor",
             row = 0,
