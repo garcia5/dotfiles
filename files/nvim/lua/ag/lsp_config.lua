@@ -71,12 +71,10 @@ local format_on_save = function(bufnr, allowed_clients)
     })
 end
 
----@param client any
----@param bufnr number
+---@param client any the lsp client instance
+---@param bufnr number buffer we're attaching to
 ---@param formatters string[] table containing client names for which formatting should be enabled
 local custom_attach = function(client, bufnr, formatters)
-    require("telescope") -- make sure telescope is loaded for code actions
-
     -- LSP mappings (only apply when LSP client attached)
     local keymap_opts = { buffer = bufnr, silent = true, noremap = true }
     local with_desc = function(opts, desc) return vim.tbl_extend("force", opts, { desc = desc }) end
@@ -90,7 +88,11 @@ local custom_attach = function(client, bufnr, formatters)
     vim.keymap.set("n", "<leader>dn", vim.diagnostic.goto_next, with_desc(keymap_opts, "Goto next diagnostic")) -- move to next diagnostic in buffer
     vim.keymap.set("n", "<leader>dp", vim.diagnostic.goto_prev, with_desc(keymap_opts, "Goto prev diagnostic")) -- move to prev diagnostic in buffer
     vim.keymap.set("n", "<leader>da", vim.diagnostic.setqflist, with_desc(keymap_opts, "Populate qf list")) -- show all buffer diagnostics in qflist
-    vim.keymap.set("n", "H", vim.lsp.buf.code_action, with_desc(keymap_opts, "Code Actions")) -- code actions (handled by telescope-ui-select)
+    vim.keymap.set("n", "H", function()
+        -- make sure telescope is loaded for code actions
+        require("telescope").load_extension("ui-select")
+        vim.lsp.buf.code_action()
+    end, with_desc(keymap_opts, "Code Actions")) -- code actions (handled by telescope-ui-select)
     vim.keymap.set("n", "<leader>F", function() custom_format(bufnr, formatters) end, with_desc(keymap_opts, "Format")) -- format
 
     -- use omnifunc
