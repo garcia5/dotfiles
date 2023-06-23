@@ -6,11 +6,6 @@ local fugitive = {
             ":tab Git<CR>",
             desc = "Git status in new tab",
         },
-        {
-            "<Leader>gd",
-            "<cmd>Gdiffsplit<CR>",
-            desc = "diff file in split",
-        },
     },
     cmd = "Git",
 }
@@ -61,8 +56,22 @@ local gitsigns = {
         end,
     },
 }
+local diffview = {
+    "sindrets/diffview.nvim",
+    keys = {
+        {
+            "<Leader>gd",
+            "<cmd>DiffviewOpen<CR>",
+            desc = "Open changed files",
+        },
+    },
+    cmd = {
+        "DiffviewOpen",
+    },
+}
 
 return {
     fugitive,
     gitsigns,
+    diffview,
 }

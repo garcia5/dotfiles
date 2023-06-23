@@ -90,6 +90,7 @@ vim.opt.fillchars:append({
     vertleft = "┫",
     vertright = "┣",
     verthoriz = "╋",
+    diff = "╱",
 })
 vim.opt.cursorline = true -- hightlight line cursor is on
 vim.opt.laststatus = 3 -- single global statusline
