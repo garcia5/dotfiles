@@ -7,6 +7,9 @@
 
 source "$HOME/.config/sketchybar/icons.sh"
 source "$HOME/.config/sketchybar/colors.sh"
+if [[ -f "$HOME/.custom" ]]; then
+    source "$HOME/.custom"
+fi
 
 PLUGIN_DIR="$HOME/.config/sketchybar/plugins"
 ITEM_DIR="$HOME/.config/sketchybar/items"
@@ -18,12 +21,12 @@ ITEM_DIR="$HOME/.config/sketchybar/items"
 # If you are looking for other colors, see the color picker:
 # https://felixkratz.github.io/SketchyBar/config/tricks#color-picker
 
-sketchybar --bar height=24        \
-                 blur_radius=50   \
-                 position=top     \
-                 sticky=on        \
-                 padding_left=0   \
-                 padding_right=0  \
+sketchybar --bar height=${SKETCHYBAR_HEIGHT:-24} \
+                 blur_radius=50                  \
+                 position=top                    \
+                 sticky=on                       \
+                 padding_left=0                  \
+                 padding_right=0                 \
                  color=$BAR_COLOR
 
 ##### Changing Defaults #####
