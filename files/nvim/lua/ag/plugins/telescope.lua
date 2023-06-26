@@ -88,11 +88,6 @@ return {
             desc = "Switch buffer",
         },
         {
-            "<Leader>fl",
-            "<cmd>Telescope current_buffer_fuzzy_find<CR>",
-            desc = "Find in file",
-        },
-        {
             "<Leader>gg",
             "<cmd>Telescope live_grep<CR>",
             desc = "Grep",
