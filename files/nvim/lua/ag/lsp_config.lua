@@ -35,20 +35,6 @@ vim.diagnostic.config({
     severity_sort = true,
 })
 
--- set up helpers for typescript development
-local setup_ts_utils = function(client, bufnr)
-    local ts_utils = require("nvim-lsp-ts-utils")
-    ts_utils.setup({
-        update_imports_on_move = false,
-        enable_import_on_completion = true,
-    })
-
-    ts_utils.setup_client(client)
-
-    vim.keymap.set("n", "<Leader>ii", "<cmd>TSLspOrganize<CR>", { buffer = bufnr, silent = true, noremap = true }) -- organize imports
-    vim.keymap.set("n", "<Leader>R", "<cmd>TSLspRenameFile<CR>", { buffer = bufnr, silent = true, noremap = true }) -- rename file AND update references to it
-end
-
 -- restricted format
 local custom_format = function(bufnr, allowed_clients)
     vim.lsp.buf.format({
@@ -100,30 +86,6 @@ local custom_attach = function(client, bufnr, formatters)
     vim.bo[bufnr].formatexpr = "v:lua.vim.lsp.formatexpr"
 end
 
----@param client any
----@param bufnr number
-local web_dev_attach = function(client, bufnr)
-    local root_files = vim.fn.readdir(vim.fn.getcwd())
-    local volar = false
-    -- TODO: the "right" way to do this would be to check the typescript version, but that seems hard
-    if vim.tbl_contains(root_files, "pnpm-lock.yaml") then volar = true end
-
-    -- disable vuels and tsserver if we're using volar
-    if volar and (client.name == "tsserver" or client.name == "vuels") then
-        client.stop()
-        return false
-    end
-
-    -- disable volar if we don't have pnpm
-    if not volar and client.name == "volar" then
-        client.stop()
-        return false
-    end
-
-    custom_attach(client, bufnr, { "null-ls" })
-    return true
-end
-
 -- Set up clients
 local null_ls = require("null-ls")
 null_ls.setup({
@@ -173,57 +135,10 @@ lspconfig.pyright.setup({
     },
 })
 
--- typescript
-lspconfig.tsserver.setup({
-    on_attach = function(client, bufnr)
-        if not web_dev_attach(client, bufnr) then return end
-        setup_ts_utils(client, bufnr)
-    end,
-})
-
--- vue
-lspconfig.vuels.setup({
-    on_attach = web_dev_attach,
-    settings = {
-        vetur = {
-            completion = {
-                autoImport = true,
-                tagCasing = "kebab",
-                useScaffoldSnippets = true,
-            },
-            useWorkspaceDependencies = true,
-            experimental = {
-                templateInterpolationService = true,
-            },
-        },
-        format = {
-            enable = true,
-            options = {
-                useTabs = false,
-                tabSize = 2,
-            },
-            defaultFormatter = {
-                ts = "prettier",
-            },
-            scriptInitialIndent = false,
-            styleInitialIndent = false,
-        },
-        validation = {
-            template = true,
-            script = true,
-            style = true,
-            templateProps = true,
-            interpolation = true,
-        },
-    },
-})
 lspconfig.volar.setup({
-    on_attach = function(client, bufnr)
-        if not web_dev_attach(client, bufnr) then return end
-        setup_ts_utils(client, bufnr)
-    end,
+    on_attach = function(client, bufnr) custom_attach(client, bufnr, { "null-ls" }) end,
     -- enable "take over mode" for typescript files as well: https://github.com/johnsoncodehk/volar/discussions/471
-    filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" },
+    filetypes = { "typescript", "javascript", "vue" },
 })
 
 -- yaml
