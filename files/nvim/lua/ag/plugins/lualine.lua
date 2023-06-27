@@ -89,19 +89,23 @@ return {
                     sources = { "nvim_diagnostic" },
                 },
             },
-            lualine_y = { "filetype" },
-            lualine_z = { "location" },
+            lualine_y = { { "filetype", cond = function() return not IS_START() end } },
+            lualine_z = {
+                { "location", cond = function() return IS_WIDE() and not IS_START() end },
+            },
         },
         tabline = {
-            lualine_a = {},
-            lualine_b = {},
-            lualine_c = {
+            lualine_a = {
                 {
-                    "aerial",
-                    sep = " ) ",
-                    depth = nil,
+                    "buffers",
+                    mode = 0, -- name only
+                    max_length = vim.o.columns / 3,
+                    cond = function() return not IS_START() end,
+                    use_mode_colors = true,
                 },
             },
+            lualine_b = {},
+            lualine_c = {},
             lualine_x = {},
             lualine_y = {},
             lualine_z = { "tabs" },
