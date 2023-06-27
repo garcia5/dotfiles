@@ -3,9 +3,13 @@ return {
     dependencies = {
         "nvim-treesitter/nvim-treesitter",
     },
-    init = function()
-        vim.keymap.set("n", "<Leader>ou", "<cmd>AerialToggle!<CR>", { silent = true, desc = "Open code outline " })
-    end,
+    keys = {
+        {
+            "<Leader>ou",
+            "<cmd>AerialToggle!<CR>",
+            desc = "Open code outline",
+        },
+    },
     opts = {
         backends = { "treesitter" },
         layout = {
