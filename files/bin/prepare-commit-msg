@@ -1,0 +1,14 @@
+#!/bin/sh
+
+COMMIT_MSG_FILE=$1
+COMMIT_SOURCE=$2
+SHA1=$3
+
+if ! command -v "llm" >/dev/null 2>&1; then
+    exit 0
+fi
+
+echo "Generating commit message..."
+changes="$(git diff --cached)"
+prompt="Describe the following changes in the form of a git commit message. Make sure to include a brief summary as the title, and a bulleted list of changes below.\nCHANGES:\n$changes"
+echo "$prompt" | llm | cat - "$COMMIT_MSG_FILE" > "/tmp/cat-commit" && mv "/tmp/cat-commit" "$COMMIT_MSG_FILE"
