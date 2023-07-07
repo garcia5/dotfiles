@@ -166,8 +166,9 @@ fzf-git-stash() {
     cut -d: -f1
 }
 
+zle -N fzf-ls-widget
 fzf-ls() {
-    FZF_DEFAULT_COMMAND='fd -tf'
+    fd -tf |
     fzf \
         --ansi \
         --multi \
@@ -176,12 +177,19 @@ fzf-ls() {
         --bind "ctrl-f:change-prompt(Files> )+reload(fd -tf)" \
         --prompt "Files> "
 }
+fzf-ls-widget() {
+    result=$(fzf-ls)
+    zle reset-prompt
+    LBUFFER+=$result
+}
+bindkey '' fzf-ls-widget
 
 fzf-cd() {
     fd -td -H -E '*.git' |
     fzf \
         --ansi \
         --no-multi \
+        --preview='exa -hal {..}' \
         --prompt "Directories> "
 }
 
@@ -192,10 +200,3 @@ source-envfile() {
     set +a
 }
 
-zle -N dcd
-dcd() {
-    result=$(fzf-cd)
-    zle reset-prompt
-    LBUFFER+=$result
-}
-bindkey '' dcd

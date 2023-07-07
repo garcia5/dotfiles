@@ -68,6 +68,13 @@ local diffview = {
     cmd = {
         "DiffviewOpen",
     },
+    opts = {
+        view = {
+            merge_tool = {
+                layout = "diff3_mixed",
+            },
+        },
+    },
 }
 
 return {

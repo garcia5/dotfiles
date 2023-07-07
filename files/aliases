@@ -12,6 +12,7 @@ else
 fi
 alias v='nvim'
 alias claer='clear'
+alias c='cd $(fzf-cd)'
 
 # Git
 alias gs='git status'
