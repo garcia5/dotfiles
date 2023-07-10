@@ -3,7 +3,7 @@
 function projects {
     projects='/Users/agarcia/Projects/'
     cd "$projects"
-    wezterm cli split-pane --cwd "$projects" --right --percent 30
+    wezterm cli split-pane --cwd "$projects" --right --percent 33
 }
 
 function dotfiles {

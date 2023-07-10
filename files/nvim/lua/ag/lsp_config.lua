@@ -86,35 +86,45 @@ local custom_attach = function(client, bufnr, formatters)
     vim.bo[bufnr].formatexpr = "v:lua.vim.lsp.formatexpr"
 end
 
--- Set up clients
-local null_ls = require("null-ls")
-null_ls.setup({
-    on_attach = function(client, bufnr) custom_attach(client, bufnr, { "null-ls" }) end,
-    should_attach = function(bufnr)
-        local cur_ft = vim.bo[bufnr].filetype
-        return vim.tbl_contains({ "vue", "typescript", "javascript", "python", "lua" }, cur_ft)
-    end,
-    sources = {
-        --#formatters
-        null_ls.builtins.formatting.stylua,
-        null_ls.builtins.formatting.prettierd,
-        null_ls.builtins.formatting.eslint_d,
-        null_ls.builtins.formatting.black,
-
-        --#diagnostics/linters
-        null_ls.builtins.diagnostics.flake8,
-        null_ls.builtins.diagnostics.eslint_d,
-
-        --#code actions
-        null_ls.builtins.code_actions.eslint_d,
+--#region Set up clients
+-- Formatting via (efm-langserver)[https://github.com/mattn/efm-langserver]
+lspconfig.efm.setup({
+    on_attach = function(client, bufnr) custom_attach(client, bufnr, { "efm" }) end,
+    init_options = {
+        documentFormatting = true,
     },
-    fallback_severity = vim.diagnostic.severity.HINT,
+    settings = {
+        languages = {
+            lua = {
+                require("efmls-configs.formatters.stylua"),
+            },
+            typescript = {
+                require("efmls-configs.linters.eslint_d"),
+                require("efmls-configs.formatters.prettier_d"),
+                require("efmls-configs.formatters.eslint_d"),
+            },
+            javascript = {
+                require("efmls-configs.formatters.prettier_d"),
+                require("efmls-configs.formatters.eslint_d"),
+                require("efmls-configs.linters.eslint_d"),
+            },
+            vue = {
+                require("efmls-configs.formatters.prettier_d"),
+                require("efmls-configs.formatters.eslint_d"),
+                require("efmls-configs.linters.eslint_d"),
+            },
+            python = {
+                require("efmls-configs.formatters.black"),
+            },
+        },
+    },
+    filetypes = { "lua", "typescript", "javascript", "vue", "python" },
 })
 
 -- python
 lspconfig.pyright.setup({
     on_attach = function(client, bufnr)
-        custom_attach(client, bufnr, { "null-ls" })
+        custom_attach(client, bufnr, { "efm" })
         -- 'Organize imports' keymap for pyright only
         vim.keymap.set("n", "<Leader>ii", "<cmd>PyrightOrganizeImports<CR>", {
             buffer = bufnr,
@@ -136,7 +146,7 @@ lspconfig.pyright.setup({
 })
 
 lspconfig.volar.setup({
-    on_attach = function(client, bufnr) custom_attach(client, bufnr, { "null-ls" }) end,
+    on_attach = function(client, bufnr) custom_attach(client, bufnr, { "efm" }) end,
     -- enable "take over mode" for typescript files as well: https://github.com/johnsoncodehk/volar/discussions/471
     filetypes = { "typescript", "javascript", "vue" },
 })
@@ -155,8 +165,8 @@ lspconfig.bashls.setup({
 -- lua
 lspconfig.lua_ls.setup({
     on_attach = function(client, bufnr)
-        custom_attach(client, bufnr, { "null-ls" })
-        format_on_save(bufnr, { "null-ls" })
+        custom_attach(client, bufnr, { "efm" })
+        format_on_save(bufnr, { "efm" })
     end,
     settings = {
         Lua = {
@@ -219,3 +229,4 @@ lspconfig.dartls.setup({
         format_on_save(bufnr, { "dartls" })
     end,
 })
+--#endregion

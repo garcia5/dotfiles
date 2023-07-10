@@ -100,7 +100,7 @@ function setup_brew {
 }
 
 function install_packages {
-    BREW_PACKAGES=( 'gcc' 'fzf' 'bat' 'ripgrep' 'exa' 'pyenv' 'yarn' 'neovim' 'xz' 'sqlite' 'unixodbc' 'tmux' 'ninja' 'zsh' 'git-delta' 'tree' 'stylua' 'git-absorb' 'lua-language-server' )
+    BREW_PACKAGES=( 'gcc' 'fzf' 'bat' 'ripgrep' 'exa' 'pyenv' 'yarn' 'neovim' 'xz' 'sqlite' 'unixodbc' 'tmux' 'ninja' 'zsh' 'git-delta' 'tree' 'stylua' 'git-absorb' 'lua-language-server' 'efm-langserver' )
 
     echo ""
     echo "installing from brew..."
@@ -152,7 +152,7 @@ function install_packages {
         echo "installing node"
         runcmd nvm install node
     fi
-    NPM_PACKAGES=( 'bash-language-server' 'pyright' 'vls' 'typescript-language-server' 'vscode-langservers-extracted' 'neovim' 'yaml-language-server' 'eslint_d' '@fsouza/prettierd' )
+    NPM_PACKAGES=( 'bash-language-server' 'pyright' 'typescript-language-server' 'vscode-langservers-extracted' 'yaml-language-server' 'eslint_d' '@fsouza/prettierd' '@volar/vue-language-server' )
     npm_installed=$(npm -g list)
     for pkg in ${NPM_PACKAGES[@]}; do
         if [[ $(echo "$npm_installed" | grep -c "$pkg") -ge 1 ]]; then
@@ -211,11 +211,10 @@ function setup_nvim {
         runcmd pip install pynvim flake8 black
         runcmd deactivate
     fi
-    # Optionally install lua language server. Everything else is done in
-    # install_packages
-    read -p "Install sumneko_lua? (y/n) " install_sumneko
-    if [[ $install_sumneko == "y" ]]; then
-        rumcmd brew install lua-langauge-server
+    if [[ $(command -v npm) ]]; then
+        runcmd npm i -g neovim
+    else
+        echo "No npm installation detected, skipping 'npm i -g neovim'"
     fi
 }
 
