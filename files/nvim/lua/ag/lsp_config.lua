@@ -164,10 +164,7 @@ lspconfig.bashls.setup({
 
 -- lua
 lspconfig.lua_ls.setup({
-    on_attach = function(client, bufnr)
-        custom_attach(client, bufnr, { "efm" })
-        format_on_save(bufnr, { "efm" })
-    end,
+    on_attach = function(client, bufnr) custom_attach(client, bufnr, { "efm" }) end,
     settings = {
         Lua = {
             runtime = {

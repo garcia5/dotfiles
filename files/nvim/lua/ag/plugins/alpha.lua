@@ -130,6 +130,7 @@ return {
                 dashboard.button("g", "  Live grep", ":Telescope live_grep<CR>"),
                 dashboard.button("c", "  Checkout branch", ":Telescope git_branches<CR>"),
                 dashboard.button("m", "  Open mergetool", ":Git mergetool<CR>"),
+                dashboard.button("d", "  Open Diffview", ":DiffviewOpen<CR>"),
                 dashboard.button("s", "  Update Plugins", ":Lazy sync<CR>"),
                 dashboard.button("q", "  Quit", ":qa<CR>"),
             },

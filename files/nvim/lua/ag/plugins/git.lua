@@ -67,6 +67,7 @@ local diffview = {
     },
     cmd = {
         "DiffviewOpen",
+        "DiffviewFileHistory",
     },
     opts = {
         view = {
