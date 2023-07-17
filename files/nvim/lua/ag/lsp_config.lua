@@ -87,40 +87,6 @@ local custom_attach = function(client, bufnr, formatters)
 end
 
 --#region Set up clients
--- Formatting via (efm-langserver)[https://github.com/mattn/efm-langserver]
-lspconfig.efm.setup({
-    on_attach = function(client, bufnr) custom_attach(client, bufnr, { "efm" }) end,
-    init_options = {
-        documentFormatting = true,
-    },
-    settings = {
-        languages = {
-            lua = {
-                require("efmls-configs.formatters.stylua"),
-            },
-            typescript = {
-                require("efmls-configs.linters.eslint_d"),
-                require("efmls-configs.formatters.prettier_d"),
-                require("efmls-configs.formatters.eslint_d"),
-            },
-            javascript = {
-                require("efmls-configs.formatters.prettier_d"),
-                require("efmls-configs.formatters.eslint_d"),
-                require("efmls-configs.linters.eslint_d"),
-            },
-            vue = {
-                require("efmls-configs.formatters.prettier_d"),
-                require("efmls-configs.formatters.eslint_d"),
-                require("efmls-configs.linters.eslint_d"),
-            },
-            python = {
-                require("efmls-configs.formatters.black"),
-            },
-        },
-    },
-    filetypes = { "lua", "typescript", "javascript", "vue", "python" },
-})
-
 -- python
 lspconfig.pyright.setup({
     on_attach = function(client, bufnr)
@@ -227,3 +193,7 @@ lspconfig.dartls.setup({
     end,
 })
 --#endregion
+
+return {
+    custom_attach = custom_attach,
+}
