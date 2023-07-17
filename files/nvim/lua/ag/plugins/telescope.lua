@@ -98,6 +98,11 @@ return {
             desc = "Find references",
         },
         {
+            "<Leader>fl",
+            "<cmd>Telescope current_buffer_fuzzy_find<CR>",
+            desc = "Find in file",
+        },
+        {
             "<Leader>co",
             "<cmd>Telescope colorscheme<CR>",
             desc = "Switch colorscheme",
