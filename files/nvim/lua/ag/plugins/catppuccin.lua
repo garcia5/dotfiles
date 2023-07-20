@@ -68,12 +68,16 @@ return {
                 },
                 native_lsp = {
                     enabled = true,
+                    inlay_hints = {
+                        background = false,
+                    },
                 },
                 ts_rainbow2 = true,
                 indent_blankline = {
                     enabled = false,
                     colored_indent_levels = false,
                 },
+                flash = true,
             },
         })
     end,
