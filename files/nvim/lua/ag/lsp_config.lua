@@ -80,6 +80,7 @@ local custom_attach = function(client, bufnr, formatters)
         vim.lsp.buf.code_action()
     end, with_desc(keymap_opts, "Code Actions")) -- code actions (handled by telescope-ui-select)
     vim.keymap.set("n", "<leader>F", function() custom_format(bufnr, formatters) end, with_desc(keymap_opts, "Format")) -- format
+    vim.keymap.set("n", "<Leader>rr", "<cmd>LspRestart<CR>", with_desc(keymap_opts, "Restart all LSP clients")) -- restart clients
 
     -- use omnifunc
     vim.bo[bufnr].omnifunc = "v:lua.vim.lsp.omnifunc"
