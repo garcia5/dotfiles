@@ -1,0 +1,19 @@
+#!/bin/bash
+
+status_output=$1
+if [[ ! -n "$status_output" ]]; then
+    exit 0
+fi
+
+fname="${status_output##* }"
+status_cols="${status_output% *}"
+
+if [[ "$status_cols" == 'M ' ]]; then
+    # staged changes
+    git diff --staged --color=always -- "$fname" | fzf-delta
+elif [[ "$status_cols" == '??' ]]; then
+    # new file
+    bat --color=always -- "$fname"
+else
+    git diff --color=always -- "$fname" | fzf-delta
+fi

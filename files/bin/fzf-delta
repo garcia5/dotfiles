@@ -1,0 +1,3 @@
+#!/bin/bash
+
+delta -w ${FZF_PREVIEW_COLUMNS:-$COLUMNS} "$@"

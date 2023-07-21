@@ -50,27 +50,20 @@ ctrl-t-widget() {
 }
 bindkey '' ctrl-t-widget
 
-gstash() {
-    is-git-repo || echo 'Not in git repo'
-
-    local stash=$(fzf-git-stash)
-    git stash pop "$stash"
-}
-
 # FZF
 fzf-js-test() {
-    cmd="$FZF_CTRL_T_COMMAND '.spec.(t|j)s$'"
+    cmd="rg -n -m 1 'describe' --glob '*.spec.ts' --line-number --no-heading"
     eval "$cmd" |
     fzf \
         --multi \
-        --ansi \
         --height 100% \
-        --layout reverse \
+        --delimiter : \
+        --nth 1 \
         --header 'ctrl-f: All files / ctrl-g Test files' \
         --bind "ctrl-f:change-prompt(Files> )+reload($FZF_CTRL_T_COMMAND)" \
         --bind "ctrl-g:change-prompt(Test Files> )+reload($cmd)" \
         --prompt "Test Files> " \
-        --preview "bat --color=always --line-range=:40 --style=plain --highlight-line=\"\$(cat {} | grep -m1 -n 'describe' | cut -f1 -d:)\" {}"
+        --preview "bat --color=always --line-range=:40 --style=plain --highlight-line={2} {1}"
 }
 
 fzf-git-checkout() {
@@ -84,33 +77,38 @@ fzf-git-checkout() {
     fi
 
     git branch --all --color=always --sort=-committerdate | grep -v HEAD | sed 's/^..//' | cut -d' ' -f1 |
-    fzf-tmux \
-        -p 50%,50%\
+    fzf \
         --ansi \
-        --header "Enter (checkout) / Ctrl-a (checkout -b) / Ctrl-t (checkout --track) / Ctrl-d (delete)" \
+        --header "Enter (checkout) / Ctrl-a (checkout -b) / Ctrl-t (checkout --track)" \
         --bind "enter:execute(git checkout {..})+accept" \
         --bind "ctrl-a:execute(git checkout -b {q})+accept" \
         --bind "ctrl-t:execute(git checkout --track {..})+accept" \
-        --bind "ctrl-d:execute(git branch -d {..})+accept" \
         --prompt "Braches> " \
-        --preview-window right:50% \
+        --preview-window 'right:50%' \
         --preview 'git log --oneline --graph --date=short --color=always --pretty="format:%C(auto)%cd %h%d %s" {}'
 }
 
+zle -N git-commit-widget
 fzf-git-commits() {
     is-git-repo || echo 'Not in git repo'
 
-    cmd="git log --date-order --abbrev-commit --oneline"
+    cmd="git log --date-order --abbrev-commit --oneline --decorate --color=always"
     eval "$cmd" |
     fzf \
         --ansi \
-        --height 100% \
-        --layout reverse \
+        --multi \
+        --height '70%' \
         --prompt "Commits> " \
-        --preview-window right:50% \
-        --preview 'git show --color=always --format=full --stat -p {1}' |
+        --preview-window 'down,70%' \
+        --preview 'git show --color=always --format=short --stat -p {1} | fzf-delta' |
     cut -d' ' -f1
 }
+git-commit-widget() {
+    result=$(fzf-git-commits | join-lines)
+    zle reset-prompt
+    LBUFFER+=$result
+}
+bindkey '' git-commit-widget
 
 zle -N git-branch-widget
 fzf-git-branch() {
@@ -121,7 +119,7 @@ fzf-git-branch() {
         -p 50%,50%\
         --ansi \
         --prompt "Braches> " \
-        --preview-window right:50% \
+        --preview-window 'right,50%' \
         --preview 'git log --oneline --graph --date=short --color=always --pretty="format:%C(auto)%cd %h%d %s" {}'
 }
 git-branch-widget() {
@@ -138,32 +136,15 @@ fzf-git-changed() {
     eval "$cmd" |
     fzf \
         --multi \
+        --height '70%' \
         --ansi \
-        --height 40% \
-        --layout reverse \
-        --nth 2..,.. \
         --header 'ctrl-f: All files / ctrl-g: Changed files' \
         --bind "ctrl-f:change-prompt(Files> )+reload($FZF_CTRL_T_COMMAND)" \
         --bind "ctrl-g:change-prompt(Changed Files> )+reload($cmd)" \
         --prompt "Changed Files> " \
-        --preview '(git diff --color=always -- {-1} | sed 1,4d; cat {-1})' |
+        --preview-window 'right,70%' \
+        --preview 'delta-git-diff {..}' |
     sed 's/.* //'
-}
-
-fzf-git-stash() {
-    is-git-repo || echo 'Not in git repo'
-
-    FZF_DEFAULT_COMMAND='git stash list'
-    fzf \
-        --ansi \
-        --reverse \
-        --no-multi \
-        -d: \
-        --header='Enter (apply) / Ctrl-d (drop)' \
-        --bind='enter:execute(git stash apply --quiet {..})+accept' \
-        --bind='ctrl-d:execute(git stash drop --quiet {..})+accept' \
-        --preview='git stash show --color=always --stat {1}' |
-    cut -d: -f1
 }
 
 zle -N fzf-ls-widget
