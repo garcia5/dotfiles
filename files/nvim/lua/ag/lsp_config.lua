@@ -36,7 +36,9 @@ vim.diagnostic.config({
 })
 
 -- restricted format
-local custom_format = function(bufnr, allowed_clients)
+---@param bufnr number buffer to format
+---@param allowed_clients string[] client names to allow formatting
+local format_by_client = function(bufnr, allowed_clients)
     vim.lsp.buf.format({
         bufnr = bufnr,
         filter = function(client)
@@ -46,21 +48,23 @@ local custom_format = function(bufnr, allowed_clients)
     })
 end
 
-local format_group = vim.api.nvim_create_augroup("LspFormatting", { clear = true })
 ---@param bufnr number
 ---@param allowed_clients string[]
-local format_on_save = function(bufnr, allowed_clients)
+local register_format_on_save = function(bufnr, allowed_clients)
+    local format_group = vim.api.nvim_create_augroup("LspFormatting", { clear = true })
     vim.api.nvim_create_autocmd("BufWritePre", {
         group = format_group,
         buffer = bufnr,
-        callback = function() custom_format(bufnr, allowed_clients) end,
+        callback = function() format_by_client(bufnr, allowed_clients) end,
     })
 end
 
 ---@param client any the lsp client instance
 ---@param bufnr number buffer we're attaching to
----@param formatters string[] table containing client names for which formatting should be enabled
-local custom_attach = function(client, bufnr, formatters)
+---@param format_opts table how to deal with formatting, takes the following keys:
+-- allowed_clients (string[]): names of the lsp clients that are allowed to handle vim.lsp.buf.format() when this client is attached
+-- format_on_save (bool): whether or not to auto format on save
+local custom_attach = function(client, bufnr, format_opts)
     -- LSP mappings (only apply when LSP client attached)
     local keymap_opts = { buffer = bufnr, silent = true, noremap = true }
     local with_desc = function(opts, desc) return vim.tbl_extend("force", opts, { desc = desc }) end
@@ -79,19 +83,22 @@ local custom_attach = function(client, bufnr, formatters)
         require("telescope").load_extension("ui-select")
         vim.lsp.buf.code_action()
     end, with_desc(keymap_opts, "Code Actions")) -- code actions (handled by telescope-ui-select)
-    vim.keymap.set("n", "<leader>F", function() custom_format(bufnr, formatters) end, with_desc(keymap_opts, "Format")) -- format
+    vim.keymap.set(
+        "n",
+        "<leader>F",
+        function() format_by_client(bufnr, format_opts.allowed_clients) end,
+        with_desc(keymap_opts, "Format")
+    ) -- format
     vim.keymap.set("n", "<Leader>rr", "<cmd>LspRestart<CR>", with_desc(keymap_opts, "Restart all LSP clients")) -- restart clients
 
-    -- use omnifunc
-    vim.bo[bufnr].omnifunc = "v:lua.vim.lsp.omnifunc"
-    vim.bo[bufnr].formatexpr = "v:lua.vim.lsp.formatexpr"
+    if format_opts.format_on_save then register_format_on_save(bufnr, format_opts.allowed_clients) end
 end
 
 --#region Set up clients
 -- python
 lspconfig.pyright.setup({
     on_attach = function(client, bufnr)
-        custom_attach(client, bufnr, { "efm" })
+        custom_attach(client, bufnr, { allowed_clients = { "efm" } })
         -- 'Organize imports' keymap for pyright only
         vim.keymap.set("n", "<Leader>ii", "<cmd>PyrightOrganizeImports<CR>", {
             buffer = bufnr,
@@ -113,7 +120,7 @@ lspconfig.pyright.setup({
 })
 
 lspconfig.volar.setup({
-    on_attach = function(client, bufnr) custom_attach(client, bufnr, { "efm" }) end,
+    on_attach = function(client, bufnr) custom_attach(client, bufnr, { allowed_clients = { "efm" } }) end,
     -- enable "take over mode" for typescript files as well: https://github.com/johnsoncodehk/volar/discussions/471
     filetypes = { "typescript", "javascript", "vue" },
 })
@@ -131,7 +138,7 @@ lspconfig.bashls.setup({
 
 -- lua
 lspconfig.lua_ls.setup({
-    on_attach = function(client, bufnr) custom_attach(client, bufnr, { "efm" }) end,
+    on_attach = function(client, bufnr) custom_attach(client, bufnr, { allowed_clients = { "efm" } }) end,
     settings = {
         Lua = {
             runtime = {
@@ -174,9 +181,8 @@ lspconfig.rust_analyzer.setup({
 -- go
 lspconfig.gopls.setup({
     on_attach = function(client, bufnr)
-        custom_attach(client, bufnr, { "gopls" })
-        -- auto organize imports/format on save
-        format_on_save(bufnr, { "gopls" })
+        custom_attach(client, bufnr, { allowed_clients = { "gopls" }, format_on_save = true })
+        -- auto organize imports
         vim.api.nvim_create_autocmd("BufWritePre", {
             pattern = "*.go",
             callback = function()
@@ -189,8 +195,7 @@ lspconfig.gopls.setup({
 -- dart
 lspconfig.dartls.setup({
     on_attach = function(client, bufnr)
-        custom_attach(client, bufnr, { "dartls" })
-        format_on_save(bufnr, { "dartls" })
+        custom_attach(client, bufnr, { allowed_clients = { "dartls" }, format_on_save = true })
     end,
 })
 --#endregion

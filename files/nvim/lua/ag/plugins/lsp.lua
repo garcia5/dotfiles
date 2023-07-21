@@ -8,7 +8,7 @@ return {
                 local custom_attach = require("ag.lsp_config").custom_attach
                 local efmls = require("efmls-configs")
                 efmls.init({
-                    on_attach = function(client, bufnr) custom_attach(client, bufnr, { "efm" }) end,
+                    on_attach = function(client, bufnr) custom_attach(client, bufnr, { allowed_clients = "efm" }) end,
                     init_options = {
                         documentFormatting = true,
                         codeAction = true,
