@@ -130,8 +130,8 @@ function install_packages {
                         > "$(bat --config-dir)/themes/Catppuccin-frappe.tmTheme"
                 runcmd curl -o- https://raw.githubusercontent.com/catppuccin/bat/main/Catppuccin-latte.tmTheme \
                         > "$(bat --config-dir)/themes/Catppuccin-latte.tmTheme"
-                runcmd curl -o- https://raw.githubusercontent.com/catppuccin/bat/main/Catppuccin-latte.tmTheme \
-                        > "$(bat --config-dir)/themes/Catppuccin-latte.tmTheme"
+                runcmd curl -o- https://raw.githubusercontent.com/catppuccin/bat/main/Catppuccin-macchiato.tmTheme \
+                        > "$(bat --config-dir)/themes/Catppuccin-macchiato.tmTheme"
                 runcmd bat cache --build
             fi
         fi

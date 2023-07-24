@@ -73,10 +73,6 @@ return {
                     },
                 },
                 ts_rainbow2 = true,
-                indent_blankline = {
-                    enabled = false,
-                    colored_indent_levels = false,
-                },
                 flash = true,
             },
         })

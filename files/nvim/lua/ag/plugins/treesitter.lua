@@ -4,11 +4,6 @@ return {
     dependencies = {
         -- extra textobjects
         "nvim-treesitter/nvim-treesitter-textobjects",
-        -- extra extra textobjects
-        {
-            "chrisgrieser/nvim-various-textobjs",
-            config = function() require("various-textobjs").setup({ useDefaultKeymaps = true }) end,
-        },
         -- commenting for vue SFCs
         {
             "JoosepAlviste/nvim-ts-context-commentstring",
