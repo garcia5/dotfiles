@@ -14,8 +14,8 @@ return {
                         codeAction = true,
                     },
                 })
-                local eslint = require("efmls-configs.linters.eslint")
-                local prettier = require("efmls-configs.formatters.prettier")
+                local eslint = require("efmls-configs.linters.eslint_d")
+                local prettier = require("efmls-configs.formatters.prettier_d")
                 local stylua = require("efmls-configs.formatters.stylua")
                 local black = require("efmls-configs.formatters.black")
                 efmls.setup({
