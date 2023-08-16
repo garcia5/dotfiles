@@ -43,7 +43,6 @@ mapper("n", "<Leader>nn", ":set number!<CR>", "Toggle number")
 mapper("n", "<Leader>z", ":call ToggleFocus()<CR>", "Toggle focus")
 mapper("n", "<Leader>W", ":set wrap!<CR>", "Toggle wrap")
 mapper("i", "<M-r>", [[<Esc>:set paste<CR>i<C-r>"<Esc>:set nopaste<CR>a]], "'set paste' automatically")
-
--- terminal
-mapper("n", "<Leader>tn", ":call termcmd#vert()<CR>", "New terminal in vert split")
-mapper("n", "<Leader>ts", ":call termcmd#horiz()<CR>", "New terminal in horiz split")
+mapper("n", "<Leader>tn", "<cmd>tabn<CR>", "Next tab");
+mapper("n", "<Leader>tp", "<cmd>tabp<CR>", "Prev tab");
+mapper("n", "<Leader>tq", "<cmd>tabcl<CR>", "Close tab");
