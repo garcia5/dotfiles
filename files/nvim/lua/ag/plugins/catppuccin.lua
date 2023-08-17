@@ -63,8 +63,8 @@ return {
                     show_root = false,
                 },
                 dap = {
-                    enabled = true,
-                    enable_ui = true,
+                    enabled = false,
+                    enable_ui = false,
                 },
                 native_lsp = {
                     enabled = true,
