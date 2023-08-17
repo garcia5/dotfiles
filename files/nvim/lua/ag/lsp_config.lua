@@ -189,7 +189,9 @@ lspconfig.jsonls.setup({
 
 -- rust
 lspconfig.rust_analyzer.setup({
-    on_attach = custom_attach,
+    on_attach = function (client, bufnr)
+        custom_attach(client, bufnr, { format_on_save = true, allowed_clients = {'rust_analyzer'} })
+    end,
 })
 
 -- go
