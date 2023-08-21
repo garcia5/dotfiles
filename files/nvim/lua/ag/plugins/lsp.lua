@@ -4,40 +4,37 @@ return {
     dependencies = {
         {
             "creativenull/efmls-configs-nvim",
+            version = "v1.x.x",
             config = function()
                 local custom_attach = require("ag.lsp_config").custom_attach
-                local efmls = require("efmls-configs")
-                efmls.init({
-                    on_attach = function(client, bufnr) custom_attach(client, bufnr, { allowed_clients = { "efm" } }) end,
-                    init_options = {
-                        documentFormatting = true,
-                        codeAction = true,
-                    },
-                })
+                local lspconfig = require("lspconfig")
+
                 local eslint = require("efmls-configs.linters.eslint_d")
                 local prettier = require("efmls-configs.formatters.prettier_d")
                 local stylua = require("efmls-configs.formatters.stylua")
                 local black = require("efmls-configs.formatters.black")
-                efmls.setup({
-                    lua = {
-                        formatter = stylua,
+                local languages = {
+                    lua = { stylua },
+                    typescript = { prettier, eslint },
+                    javascript = { prettier, eslint },
+                    vue = { prettier, eslint },
+                    python = { black },
+                }
+                local efmls_config = {
+                    filetypes = vim.tbl_keys(languages),
+                    settings = {
+                        rootMarkers = { ".git/" },
+                        languages = languages,
                     },
-                    typescript = {
-                        formatter = prettier,
-                        linter = eslint,
+                    init_options = {
+                        documentFormatting = true,
+                        documentRangeFormatting = true,
                     },
-                    javascript = {
-                        formatter = prettier,
-                        linter = eslint,
-                    },
-                    vue = {
-                        formatter = prettier,
-                        linter = eslint,
-                    },
-                    python = {
-                        formatter = black,
-                    },
-                })
+                }
+
+                lspconfig.efm.setup(vim.tbl_extend("force", efmls_config, {
+                    on_attach = function(client, bufnr) custom_attach(client, bufnr, { allowed_clients = { "efm" } }) end,
+                }))
             end,
         },
     },
