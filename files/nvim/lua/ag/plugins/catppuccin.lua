@@ -51,20 +51,20 @@ return {
                 }
             end,
             integrations = {
-                alpha = true,
                 aerial = true,
-                markdown = true,
+                alpha = true,
+                dashboard = false,
+                flash = true,
                 gitsigns = true,
-                telescope = false, -- custom overrides for borderless
-                treesitter = true,
-                cmp = true,
-                nvimtree = {
-                    enabled = true,
-                    show_root = false,
-                },
-                dap = {
+                indent_blankline = {
                     enabled = false,
-                    enable_ui = false,
+                },
+                markdown = true,
+                neogit = false,
+                cmp = true,
+                dap = {
+                    enabled = true,
+                    enable_ui = true,
                 },
                 native_lsp = {
                     enabled = true,
@@ -72,8 +72,16 @@ return {
                         background = false,
                     },
                 },
+                semantic_tokens = true,
+                nvimtree = {
+                    enabled = true,
+                    show_root = false,
+                },
+                treesitter = true,
                 ts_rainbow2 = true,
-                flash = true,
+                telescope = {
+                    enabled = false,
+                },
             },
         })
     end,
