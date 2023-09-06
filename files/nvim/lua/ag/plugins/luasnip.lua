@@ -63,5 +63,6 @@ return {
         "typescript",
         "javascript",
         "dart",
+        "rust",
     },
 }
