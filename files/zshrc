@@ -145,6 +145,9 @@ export FZF_CTRL_T_OPTS="$FZF_DEFAULT_OPTS --preview 'bat --color=always --line-r
 
 # Python
 eval "$(pyenv init -)"
+if [[ -d "$HOME/.rye" ]]; then
+    source "$HOME/.rye/env"
+fi
 
 # yarn
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
