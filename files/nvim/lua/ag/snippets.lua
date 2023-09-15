@@ -87,6 +87,22 @@ return {
         s({ trig = ".find", wordTrig = false }, ts_loop_snippet("find")),
         s({ trig = ".some", wordTrig = false }, ts_loop_snippet("some")),
         s({ trig = ".every", wordTrig = false }, ts_loop_snippet("every")),
+        -- block comments
+        s(
+            { trig = "/*", snippetType = "autosnippet" },
+            fmt(
+                [[
+/**
+ * {comment}
+ */
+        ]],
+                {
+                    comment = isn(0, {
+                        i(1),
+                    }, "$PARENT_INDENT *"),
+                }
+            )
+        ),
         -- tests
         s(
             "describe",
