@@ -9,7 +9,7 @@ local mapper = function(mode, key, result, desc) vim.keymap.set(mode, key, resul
 mapper("i", "jj", "<Esc>")
 mapper("n", "<Leader>no", ":nohl<CR>")
 mapper("n", "<BS>", "daw")
-mapper("n", "<CR>", ":e<CR>")
+mapper("n", "<CR>", ":e<CR>:echo<CR>")
 mapper("n", "<Leader><Leader>", "<C-^>")
 mapper("n", ":W", ":w")
 mapper("n", "I", "0I")

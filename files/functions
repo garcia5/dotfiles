@@ -31,22 +31,19 @@ gpush() {
 
 zle -N ctrl-t-widget
 ctrl-t-widget() {
+    result=''
     # If the current command is 'git add ' or 'git restore ', fuzzy find changed files
-    if [[ $LBUFFER =~ '^git (add|restore|checkout) ' ]]; then
+    if [[ $LBUFFER =~ '^git (add|restore|checkout \w+) ' ]]; then
         result=$(fzf-git-changed | join-lines)
-        zle reset-prompt
-        LBUFFER+=$result
     # Find only '.spec' files
     elif [[ $LBUFFER =~ '^(yarn|pnpm) test ' ]]; then
         result=$(fzf-js-test | join-lines)
-        zle reset-prompt
-        LBUFFER+=$result
     # Otherwise do default and fuzzy search all files
     else
         result=$(eval $FZF_CTRL_T_COMMAND | eval "fzf $FZF_CTRL_T_OPTS")
-        zle reset-prompt
-        LBUFFER+=$result
     fi
+    zle reset-prompt
+    LBUFFER+=$result
 }
 bindkey '' ctrl-t-widget
 
@@ -115,9 +112,9 @@ fzf-git-branch() {
     is-git-repo || echo 'Not in git repo'
 
     git branch --all --color=always --sort=-committerdate | grep -v HEAD | sed 's/^..//' | cut -d' ' -f1 |
-    fzf-tmux \
-        -p 50%,50%\
+    fzf \
         --ansi \
+        --multi \
         --prompt "Braches> " \
         --preview-window 'right,50%' \
         --preview 'git log --oneline --graph --date=short --color=always --pretty="format:%C(auto)%cd %h%d %s" {}'
@@ -159,7 +156,7 @@ fzf-ls() {
         --prompt "Files> "
 }
 fzf-ls-widget() {
-    result=$(fzf-ls)
+    result=$(fzf-ls | join-lines)
     zle reset-prompt
     LBUFFER+=$result
 }
