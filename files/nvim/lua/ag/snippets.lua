@@ -89,7 +89,7 @@ return {
         s({ trig = ".every", wordTrig = false }, ts_loop_snippet("every")),
         -- block comments
         s(
-            { trig = "/*", snippetType = "autosnippet" },
+            { trig = "/**", snippetType = "autosnippet" },
             fmt(
                 [[
 /**
