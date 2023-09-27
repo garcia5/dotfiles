@@ -7,7 +7,6 @@ return {
             build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
         },
         "nvim-telescope/telescope-ui-select.nvim", -- Use telescope to override vim.ui.select
-        "nvim-telescope/telescope-dap.nvim", -- USe telescope for debugging
     },
     config = function()
         local telescope = require("telescope")
@@ -28,9 +27,10 @@ return {
                 },
                 prompt_prefix = "» ",
                 selection_caret = " ",
+                multi_icon = '>',
                 selection_strategy = "reset",
                 sorting_strategy = "descending",
-                layout_strategy = "horizontal",
+                layout_strategy = "flex", -- horiz on wide screen, vert on narrow screen
                 path_display = { "truncate" },
                 dynamic_preview_title = true,
                 border = true,
@@ -73,7 +73,6 @@ return {
         })
 
         telescope.load_extension("fzf")
-        telescope.load_extension("dap")
         telescope.load_extension("ui-select")
     end,
     keys = {
