@@ -11,7 +11,7 @@ HAS_BREW=$(command -v brew)
 HAS_PYENV=$(command -v pyenv)
 
 function usage {
-    echo "USAGE: $0 [bash, brew, nvim, tmux, zsh, alacritty, kitty, git, packages, all]"
+    echo "USAGE: $0 [bash, brew, nvim, tmux, zsh, alacritty, kitty, wez, packages, all]"
 }
 
 function runcmd {
@@ -40,51 +40,6 @@ function backup_dir {
             runcmd mv $dir "$dir backup"
         fi
     fi
-}
-
-function git_config {
-    local cmd="git config --global"
-    runcmd "$cmd" $@
-}
-
-function setup_git {
-    # aliases
-    git_config alias.plog "log --pretty --oneline --decorate"
-    git_config alias.update "fetch origin master:master"
-    git_config alias.cleanup "! zsh -i -c 'git branch --merged master | grep -v master | xargs git branch -d'"
-    git_config alias.fixup "! zsh -i -c 'git commit --fixup=\$(fzf-git-commits)'"
-    git_config alias.rockstars "shortlog -s -n --no-merges"
-    git_config alias.count-lines "! git log --author=\"\$1\" --pretty=tformat: --numstat | awk '{ add += \$1; subs += \$2; loc += \$1 - \$2 } END { printf \"added lines: %s, removed lines: %s, total lines: %s\n\", add, subs, loc }' #"
-
-    # settings
-    git_config core.pager "delta"
-    git_config push.autoSetupRemove "true"
-    git_config fetch.prune "true"
-    git_config pull.rebase "true"
-
-    # colors
-    git_config diff.colorMoved "zebra"
-    # delta
-    git_config delta.features "decorations side-by-side"
-    git_config delta.file-decoration-style "brightgreen bold ol"
-    git_config delta.file-style "brightgreen auto"
-    git_config delta.hunk-header-style "file dim auto"
-    git_config delta.hunk-header-decoration-style "blue ol"
-    git_config delta.hunk-label ">>>"
-    git_config delta.line-numbers "true"
-    git_config delta.side-by-side "true"
-    # tokyonight-moon theme
-    git_config delta.minus-style                   'syntax "#3a273a"'
-    git_config delta.minus-non-emph-style          'syntax "#3a273a"'
-    git_config delta.minus-emph-style              '"#1b1d2b" "#c53b53"'
-    git_config delta.minus-empty-line-marker-style 'syntax "#3a273a"'
-    git_config delta.plus-style                    'syntax "#273849"'
-    git_config delta.plus-non-emph-style           'syntax "#273849"'
-    git_config delta.plus-emph-style               '"#1b1d2b" "#41a6b5"'
-    git_config delta.plus-empty-line-marker-style  'syntax "#273849"'
-
-    # `git-absorb`
-    git_config absorb.maxStack 20
 }
 
 function setup_brew {
@@ -298,6 +253,11 @@ function setup_alacritty {
     ln -s "$DF_HOME/files/alacritty/" "$CONFIG_HOME/alacritty"
 }
 
+function setup_wez {
+    backup_file "$HOME/.wezterm.lua"
+    ln -s "$DF_HOME/files/wezterm.lua" "$HOME/.wezterm.lua"
+}
+
 for conf in "$@"; do
     echo "setting up $conf..."
     case "$conf" in
@@ -326,8 +286,9 @@ for conf in "$@"; do
         "kitty")
             setup_kitty
             ;;
-        "git")
-            setup_git
+        "wez")
+            setup_wez
+            ;;
         "all")
             setup_kitty
             setup_alacritty
