@@ -4,6 +4,7 @@ local act = wezterm.action
 local config = {}
 
 if wezterm.config_builder then config = wezterm.config_builder() end
+config.automatically_reload_config = true
 
 -- startup
 config.default_prog = { "/bin/zsh", "-l" }
@@ -32,6 +33,11 @@ config.keys = {
         key = "l",
         mods = "ALT",
         action = act.ShowLauncherArgs({ flags = "FUZZY|LAUNCH_MENU_ITEMS|WORKSPACES|COMMANDS|TABS" }),
+    },
+    {
+        key = "P",
+        mods = "CMD",
+        action = wezterm.action.ActivateCommandPalette,
     },
     {
         key = "|",
@@ -99,6 +105,7 @@ config.keys = {
     { key = "+", mods = "CMD", action = act.IncreaseFontSize },
     { key = "-", mods = "CMD", action = act.DecreaseFontSize },
     { key = ".", mods = "CMD", action = act.ResetFontSize },
+    { key = "u", mods = "LEADER", action = act.QuickSelect },
 }
 
 config.key_tables = {
