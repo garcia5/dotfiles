@@ -14,7 +14,7 @@ function setup_git {
     git_config alias.count-lines "! git log --author=\"\$1\" --pretty=tformat: --numstat | awk '{ add += \$1; subs += \$2; loc += \$1 - \$2 } END { printf \"added lines: %s, removed lines: %s, total lines: %s\n\", add, subs, loc }' #"
 
     # settings
-    git_config core.pager "delta"
+    git_config core.pager "fzf-delta"
     git_config push.autoSetupRemove "true"
     git_config fetch.prune "true"
     git_config pull.rebase "true"
@@ -22,14 +22,13 @@ function setup_git {
     # colors
     git_config diff.colorMoved "zebra"
     # delta
-    git_config delta.features "decorations side-by-side"
+    git_config delta.features "decorations"
     git_config delta.file-decoration-style "brightgreen bold ol"
     git_config delta.file-style "brightgreen auto"
     git_config delta.hunk-header-style "file dim auto"
     git_config delta.hunk-header-decoration-style "blue ol"
     git_config delta.hunk-label ">>>"
     git_config delta.line-numbers "true"
-    git_config delta.side-by-side "true"
     # tokyonight-moon theme
     git_config delta.minus-style                   'syntax "#3a273a"'
     git_config delta.minus-non-emph-style          'syntax "#3a273a"'

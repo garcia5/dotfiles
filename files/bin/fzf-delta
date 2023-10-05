@@ -1,3 +1,8 @@
 #!/bin/bash
 
-delta -w ${FZF_PREVIEW_COLUMNS:-$COLUMNS} "$@"
+cols=${FZF_PREVIEW_COLUMNS:-$COLUMNS}
+if [[ $cols -gt 175 ]]; then
+    DELTA_FEATURES=+side-by-side delta -w "$cols" "$@"
+else
+    delta -w "$cols" "$@"
+fi
