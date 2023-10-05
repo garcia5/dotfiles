@@ -6,12 +6,10 @@ function git_config {
 
 function setup_git {
     # aliases
-    git_config alias.plog "log --pretty --oneline --decorate"
     git_config alias.update "fetch origin master:master"
     git_config alias.cleanup "! zsh -i -c 'git branch --merged master | grep -v master | xargs git branch -d'"
-    git_config alias.fixup "! zsh -i -c 'git commit --fixup=\$(fzf-git-commits)'"
     git_config alias.rockstars "shortlog -s -n --no-merges"
-    git_config alias.count-lines "! git log --author=\"\$1\" --pretty=tformat: --numstat | awk '{ add += \$1; subs += \$2; loc += \$1 - \$2 } END { printf \"added lines: %s, removed lines: %s, total lines: %s\n\", add, subs, loc }' #"
+    git_config alias.count-lines "! git log --author=\"\${1:-Alexander Garcia}\" --pretty=tformat: --numstat | grep -v '.lock$' | awk '{ add += \$1; subs += \$2; loc += \$1 - \$2 } END { printf \"added lines: %s, removed lines: %s, total lines: %s\n\", add, subs, loc }' #"
 
     # settings
     git_config core.pager "fzf-delta"
