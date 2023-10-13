@@ -68,15 +68,29 @@ return {
             formatting = {
                 -- Show where the completion opts are coming from
                 format = require("lspkind").cmp_format({
-                    with_text = true,
-                    menu = {
-                        luasnip = "[snippet]",
-                        nvim_lua = "[nvim]",
-                        nvim_lsp = "[LSP]",
-                        path = "[path]",
-                        buffer = "[buffer]",
-                        nvim_lsp_signature_help = "[param]",
-                    },
+                    mode = "text_symbol",
+                    maxwidth = 50,
+                    ellipsis_char = "...",
+                    before = function (entry, vim_item)
+                        vim_item.menu_hl_group = 'Comment'
+
+                        local source_names = {
+                            luasnip = "snip",
+                            nvim_lua = "nvim",
+                            nvim_lsp = "lsp",
+                            buffer = "buf",
+                            nvim_lsp_signature_help = "param",
+                        }
+                        local source_name
+                        if vim.tbl_contains(source_names, entry.source.name) then
+                            source_name = source_names[entry.source.name]
+                        else
+                            source_name = entry.source.name
+                        end
+                        vim_item.menu = " " .. source_name .. ""
+
+                        return vim_item
+                    end,
                 }),
             },
             performance = {
