@@ -11,8 +11,13 @@ else
     alias show='ls -la $(fzf-ls)'
 fi
 alias v='nvim'
-alias claer='clear'
 alias c='cd $(fzf-cd)'
+
+# Typos
+alias claer='clear'
+alias :wq='echo "Wrong pane"'
+alias :w='echo "Wrong pane"'
+alias :q='echo "Wrong pane"'
 
 # Git
 alias gs='git status'

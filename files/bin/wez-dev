@@ -11,8 +11,8 @@ function dotfiles {
 }
 
 function main {
-    projects # tab 0
-    dotfiles # tab 1
+    projects > /dev/null # tab 0
+    dotfiles > /dev/null # tab 1
     wezterm cli activate-tab --tab-id 0
 
     # open up gmail, calendar, jira, bitbucket
@@ -20,6 +20,9 @@ function main {
 
     # open slack
     open '/Applications/Slack.app/'
+
+    # open obsidian
+    open '/Applications/Obsidian.app/'
 }
 
 main
