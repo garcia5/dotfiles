@@ -16,6 +16,10 @@ is-git-repo() {
     git rev-parse HEAD > /dev/null 2>&1
 }
 
+git-branch-names() {
+    git branch --all --color=always --sort=-committerdate | grep -v HEAD | sed 's/^..//' | sed 's,remotes/,,' | cut -d' ' -f1
+}
+
 gpush() {
     is-git-repo || echo 'Not in git repo'
 
@@ -29,11 +33,12 @@ gpush() {
     fi
 }
 
+# FZF
 zle -N ctrl-t-widget
 ctrl-t-widget() {
-    result=''
-    # If the current command is 'git add ' or 'git restore ', fuzzy find changed files
-    if [[ $LBUFFER =~ '^git (add|restore|checkout \w+) ' ]]; then
+    local result=''
+    # If the current command is 'git add ', 'git restore ', or 'git checkout ' fuzzy find changed files
+    if [[ $LBUFFER =~ '^git (add|restore|checkout) ' ]]; then
         result=$(fzf-git-changed | join-lines)
     # Find only '.spec' files
     elif [[ $LBUFFER =~ '^(yarn|pnpm) test ' ]]; then
@@ -47,9 +52,8 @@ ctrl-t-widget() {
 }
 bindkey '' ctrl-t-widget
 
-# FZF
 fzf-js-test() {
-    cmd="rg -n -m 1 'describe' --glob '*.spec.ts' --line-number --no-heading"
+    local cmd="rg -n -m 1 'describe' --glob '*.spec.ts' --line-number --no-heading"
     eval "$cmd" |
     fzf \
         --multi \
@@ -73,7 +77,7 @@ fzf-git-checkout() {
         return
     fi
 
-    git branch --all --color=always --sort=-committerdate | grep -v HEAD | sed 's/^..//' | cut -d' ' -f1 |
+    git-branch-names |
     fzf \
         --ansi \
         --header "Enter (checkout) / Ctrl-a (checkout -b) / Ctrl-t (checkout --track)" \
@@ -111,7 +115,7 @@ zle -N git-branch-widget
 fzf-git-branch() {
     is-git-repo || echo 'Not in git repo'
 
-    git branch --all --color=always --sort=-committerdate | grep -v HEAD | sed 's/^..//' | cut -d' ' -f1 |
+    git-branch-names |
     fzf \
         --ansi \
         --multi \

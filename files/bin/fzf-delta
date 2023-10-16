@@ -1,6 +1,11 @@
 #!/bin/bash
 
 cols=${FZF_PREVIEW_COLUMNS:-$COLUMNS}
+if [[ ! "$cols" ]]; then
+    delta "$@"
+    exit 0
+fi
+
 if [[ $cols -gt 175 ]]; then
     DELTA_FEATURES=+side-by-side delta -w "$cols" "$@"
 else

@@ -137,11 +137,19 @@ export BAT_THEME="Catppuccin-mocha"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_COMMAND='fd -tf'
 export FZF_CTRL_T_COMMAND="fd -tf"
-export FZF_DEFAULT_OPTS='--height 40% --reverse --multi --bind "ctrl-u:preview-page-up,ctrl-d:preview-page-down"'
-# catppuccin color scheme -- https://github.com/catppuccin/fzf
-export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --color=bg+:#313244,bg:#1e1e2e,spinner:#f5e0dc,hl:#f38ba8 \
---color=fg:#cdd6f4,header:#f38ba8,info:#cba6f7,pointer:#f5e0dc \
---color=marker:#f5e0dc,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8"
+# Basic global opts
+export FZF_DEFAULT_OPTS="--height 40% \
+    --info=inline-right \
+    --scrollbar=▏▕ \
+    --reverse \
+    --multi \
+    --bind 'ctrl-u:preview-page-up,ctrl-d:preview-page-down'"
+# catppuccin "mocha" color scheme -- https://github.com/catppuccin/catppuccin#-palette
+export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS \
+    --color=bg+:#313244,bg:#1e1e2e,spinner:#f5e0dc,hl:#f38ba8 \
+    --color=fg:#cdd6f4,header:#f38ba8,info:#cba6f7,pointer:#f5e0dc \
+    --color=marker:#f5e0dc,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8 \
+    --color=preview-border:#45475a,preview-scrollbar:#45475a"
 
 # Preview files (but not everything else) with bat
 export FZF_CTRL_T_OPTS="$FZF_DEFAULT_OPTS --preview 'bat --color=always --line-range=:40 --style=numbers,changes {}'"
