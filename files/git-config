@@ -23,9 +23,7 @@ function setup_git {
     git_config delta.features "decorations"
     git_config delta.file-decoration-style "brightgreen bold ol"
     git_config delta.file-style "brightgreen auto"
-    git_config delta.hunk-header-style "file dim auto"
-    git_config delta.hunk-header-decoration-style "blue ol"
-    git_config delta.hunk-label ">>>"
+    git_config delta.hunk-header-style "omit"
     git_config delta.line-numbers "true"
     # tokyonight-moon theme
     git_config delta.minus-style                   'syntax "#3a273a"'
@@ -34,7 +32,7 @@ function setup_git {
     git_config delta.minus-empty-line-marker-style 'syntax "#3a273a"'
     git_config delta.plus-style                    'syntax "#273849"'
     git_config delta.plus-non-emph-style           'syntax "#273849"'
-    git_config delta.plus-emph-style               '"#1b1d2b" "#41a6b5"'
+    git_config delta.plus-emph-style               '"#1b1d2b" "#89b4fa"'
     git_config delta.plus-empty-line-marker-style  'syntax "#273849"'
     # git log --graph (catppuccin colors: https://github.com/catppuccin/catppuccin)
     git_config log.graphColors '"#d20f39","#8839ef","#179299","#df8e1d","#40a02b","#fe640b","#7287fd"'
