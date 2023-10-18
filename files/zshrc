@@ -138,12 +138,14 @@ export BAT_THEME="Catppuccin-mocha"
 export FZF_DEFAULT_COMMAND='fd -tf'
 export FZF_CTRL_T_COMMAND="fd -tf"
 # Basic global opts
-export FZF_DEFAULT_OPTS="--height 40% \
+export FZF_DEFAULT_OPTS="--height 60% \
+    --border=none \
     --info=inline-right \
     --scrollbar=▏▕ \
     --reverse \
     --multi \
-    --bind 'ctrl-u:preview-page-up,ctrl-d:preview-page-down'"
+    --bind 'ctrl-u:preview-page-up,ctrl-d:preview-page-down' \
+    --bind 'ctrl-y:jump-accept'"
 # catppuccin "mocha" color scheme -- https://github.com/catppuccin/catppuccin#-palette
 export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS \
     --color=bg+:#313244,bg:#1e1e2e,spinner:#f5e0dc,hl:#f38ba8 \

@@ -16,10 +16,6 @@ is-git-repo() {
     git rev-parse HEAD > /dev/null 2>&1
 }
 
-git-branch-names() {
-    git branch --all --color=always --sort=-committerdate | grep -v HEAD | sed 's/^..//' | sed 's,remotes/,,' | cut -d' ' -f1
-}
-
 gpush() {
     is-git-repo || echo 'Not in git repo'
 
@@ -77,13 +73,17 @@ fzf-git-checkout() {
         return
     fi
 
-    git-branch-names |
+    local git_cmd="git branch --color=always --sort=-committerdate"
+    local format="grep -v HEAD | sed 's/^..//' | sed 's,remotes/,,' | cut -d' ' -f1"
+    eval "$git_cmd --all | $format" |
     fzf \
         --ansi \
-        --header "Enter (checkout) / Ctrl-a (checkout -b) / Ctrl-t (checkout --track)" \
+        --header "ctrl-a: checkout -b / ctrl-t: checkout --track / ctrl-r: All branches / ctrl-l: Local branches" \
         --bind "enter:execute(git checkout {..})+accept" \
         --bind "ctrl-a:execute(git checkout -b {q})+accept" \
         --bind "ctrl-t:execute(git checkout --track {..})+accept" \
+        --bind "ctrl-r:reload($git_cmd --all | $format)+change-prompt(Branches> )" \
+        --bind "ctrl-l:reload($git_cmd | $format)+change-prompt(Branches (local)> )" \
         --prompt "Braches> " \
         --preview-window 'right:50%' \
         --preview 'git log --oneline --graph --date=short --color=always --pretty="format:%C(auto)%cd %h%d %s" {}'
@@ -114,13 +114,18 @@ bindkey '' git-commit-widget
 zle -N git-branch-widget
 fzf-git-branch() {
     is-git-repo || echo 'Not in git repo'
+    local git_cmd="git branch --color=always --sort=-committerdate"
+    local format="grep -v HEAD | sed 's/^..//' | sed 's,remotes/,,' | cut -d' ' -f1"
 
-    git-branch-names |
+    eval "$git_cmd --all | $format" |
     fzf \
         --ansi \
         --multi \
-        --prompt "Braches> " \
+        --prompt "Branches> " \
+        --header "ctrl-r: All branches / ctrl-l: Local branches" \
         --preview-window 'right,50%' \
+        --bind "ctrl-r:reload($git_cmd --all | $format)+change-prompt(Branches> )" \
+        --bind "ctrl-l:reload($git_cmd | $format)+change-prompt(Branches (local)> )" \
         --preview 'git log --oneline --graph --date=short --color=always --pretty="format:%C(auto)%cd %h%d %s" {}'
 }
 git-branch-widget() {
