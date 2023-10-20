@@ -14,6 +14,7 @@ config.color_scheme = "Catppuccin Mocha"
 
 -- look & feel
 local font_size = 14.0
+config.adjust_window_size_when_changing_font_size = false
 config.window_frame = {
     font = wezterm.font({ family = "JetBrainsMono Nerd Font Mono" }),
     font_size = font_size,
@@ -42,7 +43,12 @@ config.keys = {
     {
         key = "|",
         mods = "LEADER",
-        action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }),
+        action = wezterm.action_callback(function(_, pane)
+            local dimensions = pane:get_dimensions()
+            local size = 0.5
+            if dimensions.cols >= 300 then size = 0.33 end
+            pane:split(({ direction = "Right", size = size }))
+        end),
     },
     {
         key = "_",
