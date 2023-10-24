@@ -60,7 +60,8 @@ fzf-js-test() {
         --bind "ctrl-f:change-prompt(Files> )+reload($FZF_CTRL_T_COMMAND)" \
         --bind "ctrl-g:change-prompt(Test Files> )+reload($cmd)" \
         --prompt "Test Files> " \
-        --preview "bat --color=always --line-range=:40 --style=plain --highlight-line={2} {1}"
+        --preview "bat --color=always --line-range=:40 --style=plain --highlight-line={2} {1}" |
+    cut -d: -f1
 }
 
 fzf-git-checkout() {
