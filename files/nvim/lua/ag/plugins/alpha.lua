@@ -106,6 +106,7 @@ return {
                 if #short_fn > target_width then
                     short_fn = path.new(short_fn):shorten(1, { -2, -1 })
                     if #short_fn > target_width then short_fn = path.new(short_fn):shorten(1, { -1 }) end
+                    if #short_fn > target_width then short_fn = short_fn:sub(1, target_width - 3) .. "..." end
                 end
 
                 local shortcut = tostring(i)

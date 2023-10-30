@@ -65,6 +65,7 @@ vim.opt.softtabstop = 4 -- <Tab> behaves as 4 spaces when editing
 -- Colors
 vim.opt.background = "dark"
 vim.cmd("colorscheme catppuccin")
+require("ag.colors")
 
 -- Look and feel
 vim.opt.number = true
