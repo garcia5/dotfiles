@@ -43,6 +43,6 @@ local hl = vim.api.nvim_get_hl(0, { name = "Folded" })
 hl.bg = bg
 vim.api.nvim_set_hl(0, "Folded", hl)
 
-if vim.fn.has("nvim-0.9.5") then
+if vim.fn.has("nvim-0.9.5") ~= 0 then
     vim.opt.foldtext=[[luaeval('HighlightedFoldtext')()]]
 end
