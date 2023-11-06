@@ -1,9 +1,14 @@
 #!/bin/bash
 
 function projects {
+    local max_cols=300
     projects='/Users/agarcia/Projects/'
     cd "$projects"
-    wezterm cli split-pane --cwd "$projects" --right --percent 33
+    local percent=50
+    if [[ $COLUMNS -gt $max_cols || $COLUMS -eq $max_cols ]]; then
+        percent=33
+    fi
+    wezterm cli split-pane --cwd "$projects" --right --percent "$percent"
 }
 
 function dotfiles {

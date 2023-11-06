@@ -47,7 +47,7 @@ config.keys = {
             local dimensions = pane:get_dimensions()
             local size = 0.5
             if dimensions.cols >= 300 then size = 0.33 end
-            pane:split(({ direction = "Right", size = size }))
+            pane:split({ direction = "Right", size = size })
         end),
     },
     {
