@@ -105,9 +105,9 @@ function install_packages {
     fi
     if [[ ! $(command -v node) ]]; then
         echo "installing node"
-        runcmd nvm install node
+        runcmd nvm install --latest-npm
     fi
-    NPM_PACKAGES=( 'bash-language-server' 'pyright' 'typescript-language-server' 'vscode-langservers-extracted' 'yaml-language-server' 'eslint_d' '@fsouza/prettierd' '@volar/vue-language-server' )
+    NPM_PACKAGES=( 'bash-language-server' 'pyright' 'typescript-language-server' 'vscode-langservers-extracted' 'yaml-language-server' 'eslint_d' '@fsouza/prettierd' '@volar/vue-language-server' 'typescript' )
     npm_installed=$(npm -g list)
     for pkg in ${NPM_PACKAGES[@]}; do
         if [[ $(echo "$npm_installed" | grep -c "$pkg") -ge 1 ]]; then
