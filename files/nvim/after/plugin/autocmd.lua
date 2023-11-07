@@ -8,6 +8,7 @@ end
 -- Global formatopts
 au("BufEnter", {
     pattern = "*",
+    desc = "Set global formatopts",
     callback = function()
         local buftype = vim.opt.buftype:get()
         if buftype ~= "terminal" then vim.opt.formatoptions = "lcrqjn" end
@@ -18,6 +19,7 @@ local term_group = augroup("term", { clear = false })
 au("TermOpen", {
     group = term_group,
     pattern = "*",
+    desc = "Terminal display configuration",
     callback = function()
         vim.cmd("startinsert")
         vim.opt_local.number = false
@@ -29,6 +31,7 @@ au("TermOpen", {
 au("BufEnter", {
     group = term_group,
     pattern = "*",
+    desc = "Auto enter insert mode when entering terminal buffer",
     callback = function()
         local buftype = vim.opt.buftype:get()
         if buftype == "terminal" then
@@ -43,12 +46,14 @@ au("BufEnter", {
 local gitcommit_group = augroup("gitcommit", { clear = true })
 au("FileType", {
     group = gitcommit_group,
+    desc = "gitcommit formatopts",
     pattern = "gitcommit",
     callback = function() vim.opt_local.formatoptions = "tcrnqj" end,
 })
 
 au("BufEnter", {
     pattern = "Dockerfile.*",
+    desc = "Detect Dockerfiles with different extensions",
     callback = function() vim.opt_local.filetype = "Dockerfile" end,
 })
 
@@ -61,15 +66,16 @@ local nvim_tree_group = augroup("NvimTree", { clear = true })
 au("FileType", {
     group = nvim_tree_group,
     pattern = "NvimTree",
+    desc = "Quit nvim if NvimTree is the only buffer",
     callback = function()
         exit_if_last()
         vim.opt_local.cursorline = true
     end,
 })
 
--- Open kitty with all folds closed
 au("BufReadPost", {
     pattern = "kitty.conf",
+    desc = "Open kitty with all folds closed",
     callback = function() vim.opt_local.foldlevel = 0 end,
 })
 
@@ -79,9 +85,9 @@ au("FileType", {
     callback = function() vim.keymap.set("n", "q", ":q<CR>", { noremap = true, silent = true, buffer = true }) end,
 })
 
--- Enable treesitter powered indent for vue files only
 au("FileType", {
     pattern = "vue",
+    desc = "Treesitter indenting for vue files",
     command = "TSBufEnable indent",
 })
 
@@ -90,9 +96,9 @@ au("FileType", {
     command = "set number",
 })
 
--- EZ rebase keybinds
 au("FileType", {
     pattern = "gitrebase",
+    desc = "EZ rebase keybinds",
     callback = function()
         for _, key in ipairs({ "p", "r", "e", "s", "f", "d", "x", "b", "l", "r", "t", "m" }) do
             vim.keymap.set("n", key, "ciw" .. key .. "<Esc>", { noremap = true, silent = true, buffer = true })

@@ -91,7 +91,9 @@ local custom_attach = function(client, bufnr, format_opts)
     ) -- format
     vim.keymap.set("n", "<Leader>rr", "<cmd>LspRestart<CR>", with_desc(keymap_opts, "Restart all LSP clients")) -- restart clients
 
-    if format_opts.format_on_save then register_format_on_save(bufnr, format_opts.allowed_clients or { client.name }) end
+    if format_opts.format_on_save then
+        register_format_on_save(bufnr, format_opts.allowed_clients or { client.name })
+    end
 end
 
 --#region Set up clients
@@ -192,8 +194,8 @@ lspconfig.jsonls.setup({
 
 -- rust
 lspconfig.rust_analyzer.setup({
-    on_attach = function (client, bufnr)
-        custom_attach(client, bufnr, { format_on_save = true, allowed_clients = {'rust_analyzer'} })
+    on_attach = function(client, bufnr)
+        custom_attach(client, bufnr, { format_on_save = true, allowed_clients = { "rust_analyzer" } })
     end,
 })
 
