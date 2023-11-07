@@ -127,7 +127,10 @@ lspconfig.volar.setup({
 
 -- yaml
 lspconfig.yamlls.setup({
-    on_attach = custom_attach,
+    autostart = false,
+    on_attach = function(client, bufnr)
+        custom_attach(client, bufnr, { allowed_clients = { "efm" }, format_on_save = false })
+    end,
 })
 
 -- bash
