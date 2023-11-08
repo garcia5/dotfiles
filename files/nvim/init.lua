@@ -65,7 +65,9 @@ vim.opt.softtabstop = 4 -- <Tab> behaves as 4 spaces when editing
 -- Colors
 vim.opt.background = "dark"
 vim.cmd("colorscheme catppuccin")
-require("ag.colors")
+if vim.fn.has('nvim-0.9.5') ~= 0 then
+    vim.opt.foldtext = 'v:lua.vim.treesitter.foldtext()'
+end
 
 -- Look and feel
 vim.opt.number = true
