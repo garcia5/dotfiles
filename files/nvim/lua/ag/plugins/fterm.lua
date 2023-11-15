@@ -10,6 +10,7 @@ return {
         -- display
         require("FTerm").setup({
             border = "rounded",
+            cmd = { "/bin/zsh", "-l" },
             blend = 10, -- a little transparent
         })
 
