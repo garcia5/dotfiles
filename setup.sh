@@ -254,6 +254,12 @@ function setup_alacritty {
 }
 
 function setup_wez {
+    # Download & compile wezterm terminfo
+    local tempfile=$(mktemp) \
+      && curl -o $tempfile https://raw.githubusercontent.com/wez/wezterm/main/termwiz/data/wezterm.terminfo \
+      && tic -x -o ~/.terminfo $tempfile \
+      && rm $tempfile
+
     backup_file "$HOME/.wezterm.lua"
     ln -s "$DF_HOME/files/wezterm.lua" "$HOME/.wezterm.lua"
 }

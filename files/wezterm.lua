@@ -8,6 +8,8 @@ config.automatically_reload_config = true
 
 -- startup
 config.default_prog = { "/bin/zsh", "-l" }
+config.audible_bell = "Disabled" -- NO BELLS
+config.window_close_confirmation = "NeverPrompt" -- Shutdown w/o requiring confirmation
 
 -- colors
 config.color_scheme = "Catppuccin Mocha"
@@ -19,8 +21,20 @@ config.window_frame = {
     font = wezterm.font({ family = "JetBrainsMono Nerd Font Mono" }),
     font_size = font_size,
 }
+config.window_decorations = "RESIZE"
 config.font = wezterm.font("JetBrainsMono Nerd Font Mono", { weight = "Medium" })
 config.font_size = font_size
+config.max_fps = 100
+config.window_padding = {
+    left = 5,
+    right = 0,
+    top = 10,
+    bottom = 0,
+}
+
+-- tab bar
+config.tab_bar_at_bottom = false
+config.use_fancy_tab_bar = false
 
 -- mappings
 config.leader = { key = " ", mods = "CTRL", timeout_milliseconds = 500 } -- keep my tmux muscle memory
