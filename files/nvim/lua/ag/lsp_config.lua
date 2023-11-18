@@ -65,12 +65,12 @@ end
 -- allowed_clients (string[]): names of the lsp clients that are allowed to handle vim.lsp.buf.format() when this client is attached
 -- format_on_save (bool): whether or not to auto format on save
 local custom_attach = function(client, bufnr, format_opts)
-    -- LSP mappings (only apply when LSP client attached)
     local keymap_opts = { buffer = bufnr, silent = true, noremap = true }
     local with_desc = function(opts, desc) return vim.tbl_extend("force", opts, { desc = desc }) end
+
     vim.keymap.set("n", "K", vim.lsp.buf.hover, with_desc(keymap_opts, "Hover"))
     vim.keymap.set("n", "<c-]>", vim.lsp.buf.definition, with_desc(keymap_opts, "Goto Definition"))
-    vim.keymap.set("n", "<leader>gr", vim.lsp.buf.references, with_desc(keymap_opts, "Find References"))
+    vim.keymap.set("n", "<leader>gr", "<cmd>Glance references<CR>", with_desc(keymap_opts, "Find References"))
     vim.keymap.set("n", "gr", vim.lsp.buf.rename, with_desc(keymap_opts, "Rename"))
 
     -- diagnostics
