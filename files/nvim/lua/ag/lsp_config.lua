@@ -124,16 +124,14 @@ lspconfig.pyright.setup({
 -- Use project-local typescript installation if available, fallback to global install
 -- assumes typescript installed globally w/ nvm
 local function get_typescript_server_path(root_dir)
-    local nvm_node_version = vim.fn.system("node --version"):gsub("%s+", "")
-    local global_ts = vim.fn.expand("$NVM_DIR/versions/node/" .. nvm_node_version .. "/lib/node_modules/typescript/lib")
-    -- Alternative location if installed as root:
-    local found_ts = ""
+    local global_ts = vim.fn.expand("$NVM_DIR/versions/node/$DEFAULT_NODE_VERSION/lib/node_modules/typescript/lib")
+    local project_ts = ""
     local function check_dir(path)
-        found_ts = lspconfig.util.path.join(path, "node_modules", "typescript", "lib")
-        if lspconfig.util.path.exists(found_ts) then return path end
+        project_ts = lspconfig.util.path.join(path, "node_modules", "typescript", "lib")
+        if lspconfig.util.path.exists(project_ts) then return path end
     end
     if lspconfig.util.search_ancestors(root_dir, check_dir) then
-        return found_ts
+        return project_ts
     else
         return global_ts
     end

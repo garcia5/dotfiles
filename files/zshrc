@@ -166,6 +166,8 @@ fi
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+nvm_default="$(nvm which default)"
+export DEFAULT_NODE_VERSION="$("$nvm_default" --version)"
 
 # Automatically use nvm version specified in .nvmrc (if any)
 # Intentionally not very flexible to avoid calling nvm every time we change directory
