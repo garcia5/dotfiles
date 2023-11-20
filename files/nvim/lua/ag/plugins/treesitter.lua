@@ -8,6 +8,10 @@ return {
         {
             "JoosepAlviste/nvim-ts-context-commentstring",
             ft = { "vue" },
+            config = function()
+                vim.g.skip_ts_context_commentstring_module = true
+                require("ts_context_commentstring").setup()
+            end,
         },
         -- rainbow braces
         "https://gitlab.com/HiPhish/nvim-ts-rainbow2",
@@ -86,10 +90,6 @@ return {
                         ["<Leader>h"] = "@parameter.outer",
                     },
                 },
-            },
-            context_commentstring = {
-                enable = true,
-                enable_autocmd = false, -- Comment.nvim takes care of this automatically
             },
             rainbow = {
                 enable = true,
