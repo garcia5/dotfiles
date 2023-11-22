@@ -126,6 +126,26 @@ config.keys = {
     { key = "-", mods = "CMD", action = act.DecreaseFontSize },
     { key = ".", mods = "CMD", action = act.ResetFontSize },
     { key = "u", mods = "LEADER", action = act.QuickSelect },
+    {
+        key = ",",
+        mods = "LEADER",
+        action = act.PromptInputLine({
+            description = "New tab name",
+            action = wezterm.action_callback(function(window, pane, line)
+                if line then window:active_tab():set_title(line) end
+            end),
+        }),
+    },
+    {
+        key = "$",
+        mods = "LEADER",
+        action = act.PromptInputLine({
+            description = "New session name",
+            action = wezterm.action_callback(function(window, pane, line)
+                if line then wezterm.mux.rename_workspace(wezterm.mux.get_active_workspace(), line) end
+            end),
+        }),
+    },
 }
 
 config.key_tables = {
