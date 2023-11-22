@@ -137,6 +137,7 @@ local function get_typescript_server_path(root_dir)
     end
 end
 
+-- ts/js/vue
 lspconfig.volar.setup({
     on_attach = function(client, bufnr) custom_attach(client, bufnr, { allowed_clients = { "efm" } }) end,
     -- enable "take over mode" for typescript files as well: https://github.com/johnsoncodehk/volar/discussions/471
@@ -206,7 +207,7 @@ lspconfig.jsonls.setup({
     settings = {
         json = {
             schemas = require("schemastore").json.schemas(),
-            validate = { enable = true },
+            validate = { enable = false },
         },
     },
 })

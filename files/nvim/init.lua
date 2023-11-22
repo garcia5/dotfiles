@@ -3,11 +3,11 @@ vim.g.mapleader = " "
 vim.g.bulitin_lsp = true
 vim.opt.termguicolors = true
 
--- Manual provider config for faster startup
-vim.g.python3_host_skip_check = 1
-vim.g.python3_host_prog = os.getenv("HOME") .. "/py3nvim/bin/python"
+-- Disable providers for faster startup
+vim.g.loaded_python3_provider = 0
 vim.g.loaded_ruby_provider = 0
 vim.g.loaded_perl_provider = 0
+vim.g.loaded_node_provider = 0
 
 -- Plugins
 vim.loader.enable() -- cache lua modules (https://github.com/neovim/neovim/pull/22668)
