@@ -20,14 +20,23 @@ function main {
     dotfiles > /dev/null # tab 1
     wezterm cli activate-tab --tab-id 0
 
-    # open up gmail, calendar, jira, bitbucket
-    open 'https://gmail.com' 'https://calendar.google.com' 'https://dotdash.atlassian.net/jira/software/c/projects/CMSFRM/boards/1084' 'https://bitbucket.prod.aws.about.com/dashboard'
+    if [[ "$1" == true ]]; then
+        # open up gmail, calendar, jira, bitbucket
+        open 'https://gmail.com' 'https://calendar.google.com' 'https://dotdash.atlassian.net/jira/software/c/projects/CMSFRM/boards/1084' 'https://bitbucket.prod.aws.about.com/dashboard'
 
-    # open slack
-    open '/Applications/Slack.app/'
+        # open slack
+        open '/Applications/Slack.app/'
 
-    # open obsidian
-    open '/Applications/Obsidian.app/'
+        # open obsidian
+        open '/Applications/Obsidian.app/'
+    fi
 }
 
-main
+open_progs=true
+for arg in "$@"; do
+    if [[ "$arg" == "-q" ]]; then
+        open_progs=false
+    fi
+done
+
+main "$open_progs"
