@@ -33,8 +33,26 @@ config.window_padding = {
 }
 
 -- tab bar
+config.tab_max_width = 24
 config.tab_bar_at_bottom = false
 config.use_fancy_tab_bar = false
+wezterm.on("format-tab-title", function(tab, tabs, panes, cfg, hover, max_width)
+    local dir_name = tab.active_pane.current_working_dir:match("([^/]+)$")
+    local process = tab.active_pane.foreground_process_name:match("([^/]+)$")
+    local label = ""
+
+    if process == nil or process == "zsh" then
+        label = dir_name
+    else
+        label = process .. " @ " .. dir_name
+    end
+
+    if #label > max_width - 2 then
+        label = string.sub(label, 1, max_width - 3) .. "…"
+    end
+
+    return ' ' .. label .. ' '
+end)
 
 -- mappings
 config.leader = { key = " ", mods = "CTRL", timeout_milliseconds = 500 } -- keep my tmux muscle memory
@@ -161,7 +179,6 @@ config.key_tables = {
 
 -- better hyperlink detection
 local link_rules = wezterm.default_hyperlink_rules()
-link_rules[5] = nil -- remove default email rule
 table.insert(link_rules, {
     regex = [[\b([A-Z]{2,9}?-\d+?)\b]],
     format = "https://dotdash.atlassian.net/browse/$1",
