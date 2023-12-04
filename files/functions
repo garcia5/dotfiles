@@ -29,6 +29,12 @@ gpush() {
     fi
 }
 
+# CD helpers
+function cdp() {
+    cd "${HOME}/Projects/${1}"
+}
+compdef '_path_files -/ -W $HOME/Projects' cdp
+
 # FZF
 zle -N ctrl-t-widget
 ctrl-t-widget() {
