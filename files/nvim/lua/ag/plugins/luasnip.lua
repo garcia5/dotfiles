@@ -1,10 +1,9 @@
 return {
     "L3MON4D3/LuaSnip", -- snippets
     name = "luasnip",
-    version = "v1.*",
+    version = "v2.*",
     config = function()
-        local success, ls = pcall(require, "luasnip")
-        if not success then return end
+        local ls = require("luasnip")
         local types = require("luasnip.util.types")
         local snippets = require("ag.snippets")
 
