@@ -32,6 +32,21 @@ config.window_padding = {
     bottom = 0,
 }
 
+wezterm.on("window-resized", function(window, pane)
+    local tab = pane:tab()
+    if tab == nil then return end
+    local cols = tab:get_size().cols
+    local overrides = window:get_config_overrides() or {}
+    local default_font_size = 14
+    if cols >= 300 then
+        overrides.font_size = 15
+    end
+
+    if overrides.font_size ~= default_font_size then
+        window:set_config_overrides({ font_size = default_font_size })
+    end
+end)
+
 -- tab bar
 config.tab_max_width = 24
 config.tab_bar_at_bottom = false
@@ -40,6 +55,9 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, cfg, hover, max_width)
     local dir_name = tab.active_pane.current_working_dir:match("([^/]+)$")
     local process = tab.active_pane.foreground_process_name:match("([^/]+)$")
     local label = ""
+    if process == nil and dir_name == nil then
+        return label
+    end
 
     if process == nil or process == "zsh" then
         label = dir_name
@@ -47,11 +65,9 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, cfg, hover, max_width)
         label = process .. " @ " .. dir_name
     end
 
-    if #label > max_width - 2 then
-        label = string.sub(label, 1, max_width - 3) .. "…"
-    end
+    if #label > max_width - 2 then label = string.sub(label, 1, max_width - 3) .. "…" end
 
-    return ' ' .. label .. ' '
+    return " " .. label .. " "
 end)
 
 -- mappings
