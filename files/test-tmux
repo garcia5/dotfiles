@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# Check terminal width
+width=$(tput cols)
+
+# Create new tmux session
+tmux new-session -d -s my_session -c "$HOME/projects"
+
+# Split window vertically with calculated pane sizes
+tmux split-window -h -c "$HOME/projects"
+
+# Adjust pane sizes if necessary
+if [ "$width" -gt 300 ]; then
+    left_pane_size=$(expr $width \* 2 / 3)
+    tmux resize-pane -R $left_pane_size
+fi
+
+# Attach to the newly created session
+tmux attach-session -t my_session
