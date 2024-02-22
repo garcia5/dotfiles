@@ -30,7 +30,7 @@ vim.keymap.set("i", "=", function()
     end
 
     return '=""<left>'
-end, { expr = true, buffer = true })
+end, { expr = true, buffer = true, desc = "Smart vue attribute insert" })
 
 -- auto close tag when I type `/` inside a tag
 vim.keymap.set("i", "/", function()
@@ -57,7 +57,7 @@ vim.keymap.set("i", "/", function()
     end
 
     return "/"
-end, { expr = true, buffer = true })
+end, { expr = true, buffer = true, desc = "Auto close vue tag" })
 
 -- automatically turn {{| into {{ | }} in vue templates
 local Rule = require("nvim-autopairs.rule")

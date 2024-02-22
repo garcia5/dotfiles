@@ -12,4 +12,4 @@ end
 vim.keymap.set("n", "<C-]>", function()
     local fname = get_text_inside_square_brackets() .. ".md"
     vim.cmd('find ++edit' .. fname)
-end)
+end, { silent = true, buffer = true, desc = "Goto file reference"})

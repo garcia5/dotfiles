@@ -82,7 +82,7 @@ au("BufReadPost", {
 -- Aerial specific mapping
 au("FileType", {
     pattern = "aerial",
-    callback = function() vim.keymap.set("n", "q", ":q<CR>", { noremap = true, silent = true, buffer = true }) end,
+    callback = function() vim.keymap.set("n", "q", ":q<CR>", { noremap = true, silent = true, buffer = true, desc = "quit aerial" }) end,
 })
 
 au("FileType", {
