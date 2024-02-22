@@ -36,6 +36,7 @@ return {
             "typescript",
             "vue",
             "javascript",
+            "python",
         },
     },
     -- align text

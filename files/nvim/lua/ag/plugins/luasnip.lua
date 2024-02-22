@@ -38,17 +38,17 @@ return {
         -- Previous snippet region
         vim.keymap.set({ "i", "s" }, "<C-k>", function()
             if ls.jumpable(-1) then ls.jump(-1) end
-        end, { silent = true })
+        end, { silent = true, desc = "Next snippet node" })
 
         -- Expand snippet, or go to next snippet region
         vim.keymap.set({ "i", "s" }, "<C-j>", function()
             if ls.expand_or_jumpable() then ls.expand_or_jump() end
-        end, { silent = true })
+        end, { silent = true, desc = "Prev snippet node" })
 
         -- Cycle "choices" for current snippet region
         vim.keymap.set({ "i", "s" }, "<C-l>", function()
             if ls.choice_active() then ls.change_choice(1) end
-        end)
+        end, { silent = true, desc = "Next snippet choice" })
 
         -- load my custom snippets
         ls.add_snippets("typescript", snippets.typescript)
