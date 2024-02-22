@@ -10,45 +10,82 @@ local fmt = require("luasnip.extras.fmt").fmt
 
 local py_function_fmt = [[
 def {name}({params}){ret}:
-	{doc}
-	{body}
+	{doc}{body}
 ]]
-local python_function_snippet = function()
-    return fmt(py_function_fmt, {
-        doc = sn(1, {
-            t({ '"""', "\t" }),
-            i(1, "function description"),
-            t({ "", '\t"""' }),
-        }),
-        name = c(2, {
-            r(nil, "func_name", i(nil, "func_name")),
-            sn(nil, {
-                t("_"),
-                r(1, "func_name", i(nil, "func_name")),
-            }),
-        }),
-        params = i(3),
-        ret = c(4, {
-            sn(nil, {
-                t({ " -> " }),
-                r(1, "return_type", i(nil, "None")),
-            }),
-            t(""),
-        }),
-        body = i(0),
-    }, {
-        stored = {
-            ["return_type"] = i(nil, "None"),
-        },
-    })
-end
 
 local if_name_main_fmt = [[
 if __name__ == "__main__":
-    {main}
+	{main}
 ]]
 
+local class_fmt = [[
+class {cls}{parent}:
+	{doc}{body}
+]]
+
+---Choice snippet to toggle between python docstring and empty text node
+---@param order number where in the root snippet the docstring appears
+---@param default 'DOC' | 'NONE' the default choice to be returned
+local optional_docstring_choice = function(order, default)
+    local docstr = sn(nil, {
+        t({ '"""', "\t" }),
+        i(1, "description"),
+        t({ "", '\t"""', "\t" }),
+    })
+
+    if default == "DOC" then return c(order, {
+        docstr,
+        t(""),
+    }) end
+    return c(order, {
+        t(""),
+        docstr,
+    })
+end
+
 return {
-    s("def", python_function_snippet()),
+    s(
+        "def",
+        fmt(py_function_fmt, {
+            doc = optional_docstring_choice(1, "DOC"),
+            name = c(2, {
+                r(nil, "func_name", i(nil, "public_function")),
+                sn(nil, {
+                    t("_"),
+                    r(1, "func_name", i(nil, "private_function")),
+                }),
+            }),
+            params = i(3),
+            ret = c(4, {
+                sn(nil, {
+                    t({ " -> " }),
+                    r(1, "return_type", i(nil, "None")),
+                }),
+                t(""),
+            }),
+            body = i(0, "..."),
+        }, {
+            stored = {
+                ["return_type"] = i(nil, "None"),
+                ["func_name"] = i(nil, "function_name"),
+            },
+        })
+    ),
+    s(
+        "class",
+        fmt(class_fmt, {
+            doc = optional_docstring_choice(1, "DOC"),
+            cls = i(2, "ClassName"),
+            parent = c(3, {
+                t(""),
+                sn(nil, {
+                    t("("),
+                    i(1, "ParentClass"),
+                    t(")"),
+                }),
+            }),
+            body = i(0, "..."),
+        })
+    ),
     s("inm", fmt(if_name_main_fmt, { main = i(0) })),
 }
