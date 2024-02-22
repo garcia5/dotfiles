@@ -9,12 +9,14 @@ return {
         local snippets = require("ag.snippets")
 
         ---#Config
-        ls.config.set_config({
-            -- Edit the snippet even after I exit it
-            history = true,
+        ls.setup({
+            keep_roots = false,
+            link_roots = false,
+            link_children = false,
             -- Update snippet text in _real time_
-            updateevents = "TextChanged,TextChangedI",
+            updateevents = { "TextChanged", "TextChangedI" },
             enable_autosnippets = true,
+            delete_check_events = { "InsertLeave" },
             -- Show virtual text hints for node types
             ext_opts = {
                 [types.insertNode] = {
@@ -48,15 +50,10 @@ return {
             if ls.choice_active() then ls.change_choice(1) end
         end)
 
-        -- DEBUG: reload snippets
-        -- vim.keymap.set("n", "<leader><leader>s", function()
-        --     ls.cleanup()
-        --     vim.cmd("source ~/.config/nvim/lua/ag/plugin-conf/luasnip.lua")
-        -- end)
-
         -- load my custom snippets
         ls.add_snippets("typescript", snippets.typescript)
         ls.add_snippets("dart", snippets.dart)
+        ls.add_snippets("python", snippets.python)
     end,
     ft = {
         "vue",
@@ -64,5 +61,6 @@ return {
         "javascript",
         "dart",
         "rust",
+        "python",
     },
 }
