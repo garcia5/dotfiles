@@ -17,4 +17,5 @@ return {
         { "<Leader>nf", "<cmd>NvimTreeFindFile<CR>", desc = "open file browser with current file showing" },
         { "<Leader>nr", "<cmd>NvimTreeRefresh<CR>", desc = "refresh file browser" },
     },
+    cmd = { "NvimTreeToggle" },
 }

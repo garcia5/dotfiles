@@ -67,27 +67,48 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 # Standard plugins can be found in ~/.oh-my-zsh/plugins/*
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 
-# https://github.com/catppuccin/zsh-syntax-highlighting
-syntax_highlights="$HOME/.zsh/catppuccin_mocha-zsh-syntax-highlighting.zsh"
-if [[ -f $syntax_highlights ]]; then
-    source "$syntax_highlights"
+if [[ -f ~/.custom ]]; then
+    source ~/.custom
 fi
+
+# OMZ config
 plugins=(
     git
-    copypath
     ripgrep
-    zsh-vi-mode
     zsh-interactive-cd
-    zsh-syntax-highlighting
+    zsh-vi-mode
 )
 
+# vi mode
+# NOTE: edit command in $EDITOR happens from zsh-vi-mode with `vv`
+# make sure fzf keybindings still apply
+zvm_after_init() {
+    [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+    [ -f ~/.functions ] && source ~/.functions
+    source "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+}
+# Do vim surround on the command line
+export ZVM_VI_SURROUND_BINDKEY='classic'
+
+source $ZSH/oh-my-zsh.sh
+
+# Brew
+if [[ -d /opt/homebrew ]]; then
+    eval $(/opt/homebrew/bin/brew shellenv)
+    # Autocomplete
+    if type brew &>/dev/null; then
+      FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
+    fi
+    # Let gcc play with brew
+    export LDFLAGS="-L$(brew --prefix)/opt/zlib/lib -L$(brew --prefix)/opt/bzip2/lib -L$(brew --prefix openssl)/lib"
+    export CPPFLAGS="-I$(brew --prefix)/opt/zlib/include -I$(brew --prefix)/opt/bzip2/include -I$(brew --prefix openssl)/include"
+    export CFLAGS="-I$(brew --prefix openssl)/include \
+        -I$(brew --prefix bzip2)/include \
+        -I$(brew --prefix readline)/include \
+        -I$(xcrun --show-sdk-path)/usr/include"
+fi
+
 # User configuration
-
-# export MANPATH="/usr/local/man:$MANPATH"
-
-# PATH
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
@@ -96,38 +117,17 @@ else
   export EDITOR='nvim'
 fi
 
-# Brew
-# Autocomplete
-eval $(/opt/homebrew/bin/brew shellenv)
-if type brew &>/dev/null; then
-  FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
-fi
-
-# Let gcc play with brew
-export LDFLAGS="-L$(brew --prefix)/opt/zlib/lib -L$(brew --prefix)/opt/bzip2/lib -L$(brew --prefix openssl)/lib"
-export CPPFLAGS="-I$(brew --prefix)/opt/zlib/include -I$(brew --prefix)/opt/bzip2/include -I$(brew --prefix openssl)/include"
-export CFLAGS="-I$(brew --prefix openssl)/include \
-    -I$(brew --prefix bzip2)/include \
-    -I$(brew --prefix readline)/include \
-    -I$(xcrun --show-sdk-path)/usr/include"
-
-# zsh
-source $ZSH/oh-my-zsh.sh
-
 autoload -Uz compinit && compinit # completion
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 autoload -U add-zsh-hook # hooks
 
-# vi mode
-# NOTE: edit command in $EDITOR happens from zsh-vi-mode with `vv`
-# make sure fzf keybindings still apply
-zvm_after_init() {
-    [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-    [ -f ~/.functions ] && source ~/.functions
-    source "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" # TODO: why do I need to do this with wezterm?
-}
-# Do vim surround on the command line
-export ZVM_VI_SURROUND_BINDKEY='classic'
+# syntax highlights, must run after compinit - https://github.com/zsh-users/zsh-syntax-highlighting?tab=readme-ov-file#faq
+# https://github.com/catppuccin/zsh-syntax-highlighting
+syntax_highlights="$HOME/.zsh/catppuccin_mocha-zsh-syntax-highlighting.zsh"
+if [[ -f $syntax_highlights ]]; then
+    source "$syntax_highlights"
+fi
+source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # use bat for manpager
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
@@ -157,7 +157,9 @@ export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS \
 export FZF_CTRL_T_OPTS="$FZF_DEFAULT_OPTS --preview 'bat --color=always --line-range=:40 --style=numbers,changes {}'"
 
 # Python
-eval "$(pyenv init -)"
+if [[ -d "$HOME/.pyenv" ]]; then
+    eval "$(pyenv init -)"
+fi
 if [[ -d "$HOME/.rye" ]]; then
     source "$HOME/.rye/env"
 fi
@@ -166,39 +168,41 @@ fi
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-nvm_default="$(nvm which default)"
-export DEFAULT_NODE_VERSION="$("$nvm_default" --version)"
+if [[ -d "$NVM_DIR" ]]; then
+    nvm_default="$(nvm which default)"
+    export DEFAULT_NODE_VERSION="$("$nvm_default" --version)"
+    # Automatically use nvm version specified in .nvmrc (if any)
+    # Intentionally not very flexible to avoid calling nvm every time we change directory
+    function load-nvmrc {
+        local nvmrc_path=".nvmrc"
 
-# Automatically use nvm version specified in .nvmrc (if any)
-# Intentionally not very flexible to avoid calling nvm every time we change directory
-function load-nvmrc {
-    local nvmrc_path=".nvmrc"
+        if [ -f "$nvmrc_path" ]; then
+            local nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
 
-    if [ -f "$nvmrc_path" ]; then
-        local nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
-
-        if [ "$nvmrc_node_version" = "N/A" ]; then
-            nvm install
-        elif [ "$nvmrc_node_version" != $(nvm version) ]; then
-            nvm use
+            if [ "$nvmrc_node_version" = "N/A" ]; then
+                nvm install
+            elif [ "$nvmrc_node_version" != $(nvm version) ]; then
+                nvm use
+            fi
         fi
-    fi
-}
-add-zsh-hook chpwd load-nvmrc
+    }
 
-# Load nvmrc if I'm switching branches
-branching=false
-function nvm-git-branch {
-    local cmd="$1"
-    if [[ $cmd && $cmd =~ "^git (checkout|branch)" && ! $braching ]]; then
-        branching=true
-    elif [[ $branching ]]; then
-        load-nvmrc
-        branching=false
-    fi
-}
-add-zsh-hook preexec nvm-git-branch
-add-zsh-hook precmd nvm-git-branch
+    # Load nvmrc if I'm switching branches
+    branching=false
+    function nvm-git-branch {
+        local cmd="$1"
+        if [[ $cmd && $cmd =~ "^git (checkout|branch)" && ! $braching ]]; then
+            branching=true
+        elif [[ $branching ]]; then
+            load-nvmrc
+            branching=false
+        fi
+    }
+
+    add-zsh-hook preexec nvm-git-branch
+    add-zsh-hook precmd nvm-git-branch
+    add-zsh-hook chpwd load-nvmrc
+fi
 # NVM end
 
 # Lua ls
@@ -213,15 +217,8 @@ alias luamake=$HOME/lua-language-server/3rd/luamake/luamake
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-source ~/.aliases
-source ~/.functions
-if [[ -f ~/.dotdash ]]; then
-    source ~/.dotdash
-fi
-if [[ -f ~/.custom ]]; then
-    source ~/.custom
-fi
-
+[ -s "$HOME/.aliases" ] && source ~/.aliases
+[ -s "$HOME/.functions" ] && source ~/.functions
 # rust
 export PATH="$HOME/.cargo/bin:$PATH"
 

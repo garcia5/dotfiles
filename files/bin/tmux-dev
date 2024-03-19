@@ -1,54 +1,55 @@
 #!/bin/bash
 
-function projects {
+function work {
     local session='dev'
     if [[ $(tmux list-sessions | grep "^$session:") ]]; then
         return
     fi
-    tmux new-session -d -s "$session" -c '/Users/agarcia/Projects' # working session
+    tmux new-session -d -s "$session" -c "$HOME/work" # working session
 
-    # Open greenhouse-workflow in neovim
-    tmux send-keys -t "$session:1" 'cd greenhouse-workflow' C-m
-    tmux send-keys -t "$session:1" 'v' C-m
-    # open terminal in vertical split pane, resized to be a bit smaller
-    tmux split-window -h -c '/Users/agarcia/projects/greenhouse-workflow'
-    tmux resize-pane -t "$session:1.2" -R 30
-    tmux rename-window -t "$session:1" 'workflow'
-    tmux select-pane -t "$session:workflow.1"
-}
-
-function background_scripts {
-    local session='d'
-    if [[ ! $(tmux list-sessions | grep "^$session:") ]]; then
-        tmux new-session -d -s "$session" -c '/Users/agarcia'
-        # startup okta
-        tmux send-keys -t "$session:1.1" 'oktaaws' C-m
-        tmux send-keys -t "$session:1.1" "$DD_PASSWORD" C-m
-        tmux send-keys -t "$session:1.1" "2" C-m
-        # split to the right
-        tmux split-window -h
-        # startup squadron
-        tmux send-keys -t "$session:1.2" 'squadron vault login -r' C-m
+    # open terminal in vertical split pane
+    tmux split-window -h -c "$HOME/work"
+    # Keep focus in original pane
+    tmux select-pane -t "$session:1.1"
+    # Adjust pane sizes if necessary (this only sort of works)
+    local width=$(tput cols)
+    if [ "$width" -gt 300 ]; then
+        local left_pane_size=$(expr $width \* 2 / 3)
+        tmux resize-pane -t "$session:1.1" -x $left_pane_size
     fi
 }
 
-function personal {
-    local session='personal'
-    if [[ ! $(tmux list-sessions | grep "^$session:") ]]; then
-        tmux new-session -d -s "$session" -c '/Users/agarcia/dotfiles'
+function notes {
+    local session='notes'
+    if [[ $(tmux list-sessions | grep "^$session:") ]]; then
+        return
     fi
+
+    tmux new-session -d -s "$session" -c "$HOME/notes"
+}
+
+function dotfiles {
+    local session='dots'
+    if [[ $(tmux list-sessions | grep "^$session:") ]]; then
+        return
+    fi
+
+    tmux new-session -d -s "$session" -c "$HOME/dotfiles"
+}
+
+function apps {
+    open '/Applications/Slack.app/'
+    open 'https://gmail.com' 'https://calendar.google.com'
 }
 
 function main {
-    projects
-    # background_scripts
-    personal
-
-    # open up gmail, calendar, jira, bitbucket
-    open 'https://gmail.com' 'https://calendar.google.com' 'https://dotdash.atlassian.net/jira/software/c/projects/GCOL/boards/487' 'https://bitbucket.prod.aws.about.com/dashboard'
-
+    dotfiles
+    work
+    notes
     # open slack
-    open '/Applications/Slack.app/'
+    if [[ "$1" == true ]]; then
+        apps
+    fi
 
     # no tmux active
     if [[ ! -n "${TMUX:-}" ]]; then
@@ -57,4 +58,11 @@ function main {
     fi
 }
 
-main
+open_progs=true
+for arg in "$@"; do
+    if [[ "$arg" == "-q" ]]; then
+        open_progs=false
+    fi
+done
+
+main "$open_progs"

@@ -52,15 +52,23 @@ config.tab_max_width = 24
 config.tab_bar_at_bottom = false
 config.use_fancy_tab_bar = false
 wezterm.on("format-tab-title", function(tab, tabs, panes, cfg, hover, max_width)
-    local dir_name = tab.active_pane.current_working_dir:match("([^/]+)$")
-    local process = tab.active_pane.foreground_process_name:match("([^/]+)$")
+    local cwd = tab.active_pane.current_working_dir
+    local process_text = tab.active_pane.foreground_process_name
     local label = ""
-    if process == nil and dir_name == nil then
-        return label
+
+    if process_text == nil then
+        process_text = ""
     end
 
+    if cwd == nil then
+        cwd = ""
+    end
+
+    local dir_name = tostring(cwd):match("([^/]+)$")
+    local process = tostring(process_text):match("([^/]+)$")
+
     if process == nil or process == "zsh" then
-        label = dir_name
+        label = dir_name ~= nil and dir_name or "-*-"
     else
         label = process .. " @ " .. dir_name
     end

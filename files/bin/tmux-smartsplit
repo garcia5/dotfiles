@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# Usage:
+# tmux-smartsplit [CWD]
+
+main {
+    cols="$(tmux display-message -p -F '#{pane_width}')"
+
+    if [[ ! "$cols" ]]; then
+        tmux split-window -h -c "$1"
+        exit 0
+    fi
+
+    if [[ $cols -gt 300 ]]; then
+        tmux split-window -h -c "$1" -l "$(( $cols / 3 ))"
+    else
+        tmux split-window -h -c "$1"
+    fi
+    exit 0
+}
+
+main "$@"

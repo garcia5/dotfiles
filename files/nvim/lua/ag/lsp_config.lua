@@ -98,7 +98,21 @@ end
 
 --#region Set up clients
 -- python
+local get_pipenv_python_path = function ()
+    local pipenv_venv = vim.fn.trim(vim.fn.system("pipenv --venv"))
+    if lspconfig.util.path.exists(pipenv_venv) then
+        return pipenv_venv .. "/bin/python"
+    end
+
+    return nil
+end
 lspconfig.pyright.setup({
+    on_new_config = function(new_config)
+        local python_path = get_pipenv_python_path()
+        if python_path ~= nil then
+            new_config.settings.python.pythonPath = get_pipenv_python_path()
+        end
+    end,
     on_attach = function(client, bufnr)
         custom_attach(client, bufnr, { allowed_clients = { "efm" } })
         -- 'Organize imports' keymap for pyright only

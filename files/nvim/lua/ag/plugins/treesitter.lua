@@ -13,8 +13,6 @@ return {
                 require("ts_context_commentstring").setup()
             end,
         },
-        -- rainbow braces
-        "https://gitlab.com/HiPhish/nvim-ts-rainbow2",
         -- auto insert closing tags
         {
             "windwp/nvim-ts-autotag",
@@ -26,17 +24,18 @@ return {
     },
     config = function()
         vim.opt.foldmethod = "expr" -- use function to determine folds
-        vim.opt.foldexpr = "nvim_treesitter#foldexpr()" -- use treesitter for folding
+        vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()" -- use TS for folding
 
         require("nvim-treesitter.configs").setup({
             -- either "all" or a list of languages
             ensure_installed = "all",
+            ignore_install = { "fusion", "blueprint", "jsonc", "t32" }, -- issues with tarball extraction
             highlight = {
                 -- false will disable the whole extension
                 enable = true,
             },
             indent = {
-                enable = false, -- buggy :/
+                enable = true,
             },
             -- custom text objects
             textobjects = {
@@ -90,16 +89,6 @@ return {
                         ["<Leader>h"] = "@parameter.outer",
                     },
                 },
-            },
-            rainbow = {
-                enable = true,
-                -- Which query to use for finding delimiters
-                query = {
-                    "rainbow-parens", -- parentheses by default
-                    html = "rainbow-tags", -- tags for html
-                },
-                -- Highlight the entire buffer all at once
-                strategy = require("ts-rainbow.strategy.global"),
             },
             autotag = {
                 enable = true,

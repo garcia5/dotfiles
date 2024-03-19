@@ -1,0 +1,32 @@
+# vim: ft=gitconfig
+
+[alias]
+    update = "fetch origin master"
+    cleanup = "! zsh -i -c 'git branch --merged master | grep -v master | xargs git branch -d"
+    rockstars = "shortlog -s -n --no-merges"
+[core]
+	pager = fzf-delta
+[push]
+	autoSetupRemove = true
+[fetch]
+	prune = true
+[pull]
+	rebase = true
+[diff]
+	colorMoved = zebra
+[delta]
+	features = decorations
+    navigate = true
+	file-style = brightgreen
+	hunk-header-style = omit
+	line-numbers = true
+	minus-style = syntax auto
+	minus-emph-style = syntax ul auto
+	minus-empty-line-marker-style = syntax auto
+	plus-style = syntax auto
+	plus-emph-style = syntax ul auto
+	plus-empty-line-marker-style = syntax auto
+[log]
+	graphColors = "#d20f39,#8839ef,#179299,#df8e1d,#40a02b,#fe640b,#7287fd"
+[absorb]
+	maxStack = 20

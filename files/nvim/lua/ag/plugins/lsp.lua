@@ -14,13 +14,16 @@ local lsp_config = {
         "bash",
         "zsh",
         "dart",
+        "scala",
+        "sbt",
+        "java",
     },
 }
 
 local efm = {
     "creativenull/efmls-configs-nvim",
     version = "v1.x.x",
-    dependencies = { 'neovim/nvim-lspconfig' },
+    dependencies = { "neovim/nvim-lspconfig" },
     config = function()
         local custom_attach = require("ag.lsp_config").custom_attach
         local lspconfig = require("lspconfig")
@@ -29,12 +32,15 @@ local efm = {
         local prettier = require("efmls-configs.formatters.prettier_d")
         local stylua = require("efmls-configs.formatters.stylua")
         local black = require("efmls-configs.formatters.black")
+        local flake8 = require("efmls-configs.linters.flake8")
+        local pylint = require('efmls-configs.linters.pylint')
+        local autopep8 = require("efmls-configs.formatters.autopep8")
         local languages = {
             lua = { stylua },
             typescript = { prettier, eslint },
             javascript = { prettier, eslint },
             vue = { prettier, eslint },
-            python = { black },
+            python = { black, autopep8, flake8, pylint },
         }
         local efmls_config = {
             filetypes = vim.tbl_keys(languages),
@@ -61,7 +67,47 @@ local efm = {
     },
 }
 
+local metals = {
+    "scalameta/nvim-metals",
+    dependencies = {
+        "nvim-lua/plenary.nvim",
+    },
+    ft = { "scala", "sbt", "java" },
+    opts = function()
+        local metals_config = require("metals").bare_config()
+
+        metals_config.settings = {
+            showImplicitArguments = true,
+            showInferredType = true,
+            superMethodLensesEnabled = true,
+            serverVersion = "latest.snapshot",
+            sbtScript = "/opt/homebrew/bin/sbt",
+            useGlobalExecutable = true,
+        }
+
+        metals_config.init_options.statusBarProvider = "off"
+
+        metals_config.capabilities = require("cmp_nvim_lsp").default_capabilities()
+
+        metals_config.on_attach = function(client, bufnr)
+            local custom_attach = require("ag.lsp_config").custom_attach
+            custom_attach(client, bufnr, { format_on_save = false, allowed_clients = { "metals" } })
+        end
+
+        return metals_config
+    end,
+    config = function(self, config)
+        local metals_group = vim.api.nvim_create_augroup("nvim-metals", { clear = true })
+        vim.api.nvim_create_autocmd("FileType", {
+            pattern = self.ft,
+            callback = function() require("metals").initialize_or_attach(config) end,
+            group = metals_group,
+        })
+    end,
+}
+
 return {
     lsp_config,
     efm,
+    metals,
 }

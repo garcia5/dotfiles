@@ -34,6 +34,10 @@ function cdp() {
     cd "${HOME}/Projects/${1}"
 }
 compdef '_path_files -/ -W $HOME/Projects' cdp
+function cdw() {
+    cd "${HOME}/work/${1}"
+}
+compdef '_path_files -/ -W $HOME/work' cdw
 
 # FZF
 zle -N ctrl-t-widget
@@ -183,7 +187,7 @@ fzf-cd() {
     fzf \
         --ansi \
         --no-multi \
-        --preview='exa -hal {..}' \
+        --preview='eza -hal {..}' \
         --prompt "Directories> "
 }
 
@@ -193,4 +197,3 @@ source-envfile() {
     source "$1"
     set +a
 }
-

@@ -8,7 +8,7 @@ return {
     config = function()
         vim.g.catppuccin_flavour = "mocha"
         require("catppuccin").setup({
-            transparent_background = false,
+            transparent_background = true,
             term_colors = true,
             compile = {
                 enabled = true,

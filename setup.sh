@@ -55,7 +55,7 @@ function setup_brew {
 }
 
 function install_packages {
-    BREW_PACKAGES=( 'gcc' 'fzf' 'bat' 'ripgrep' 'exa' 'pyenv' 'yarn' 'neovim' 'xz' 'sqlite' 'unixodbc' 'tmux' 'ninja' 'zsh' 'git-delta' 'tree' 'stylua' 'git-absorb' 'lua-language-server' 'efm-langserver' )
+    BREW_PACKAGES=( 'gcc' 'fzf' 'bat' 'ripgrep' 'eza' 'pyenv' 'yarn' 'neovim' 'xz' 'sqlite' 'unixodbc' 'tmux' 'ninja' 'zsh' 'git-delta' 'tree' 'stylua' 'git-absorb' 'lua-language-server' 'efm-langserver' )
 
     echo ""
     echo "installing from brew..."
@@ -282,7 +282,6 @@ for conf in "$@"; do
             setup_tmux
             ;;
         "zsh")
-            install_packages
             setup_zsh
             source "$HOME/.zshrc"
             ;;

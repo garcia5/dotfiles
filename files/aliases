@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # Essentials
-if [[ $(command -v exa) ]]; then
-    alias ll='exa -hal'
-    alias la='exa -a'
-    alias show='exa -hal $(fzf-ls)'
+if [[ $(command -v eza) ]]; then
+    alias ll='eza -hal'
+    alias la='eza -a'
+    alias show='eza -hal $(fzf-ls)'
 else
     alias ll='ls -la'
     alias la='ls -a'
@@ -12,6 +12,8 @@ else
 fi
 alias v='nvim'
 alias c='cd $(fzf-cd)'
+alias td='tmux-dev'
+alias wd="source $HOME/bin/wez-dev"
 
 # Typos
 alias claer='clear'
@@ -34,3 +36,6 @@ alias gpf='gpush --force-with-lease'
 alias gf='git commit --fixup=$(fzf-git-commits)'
 
 alias kitty-update='curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin'
+
+# sqlize, but use clipboard as in/out
+alias pbsqlize='pbpaste | sqlize | pbcopy'

@@ -1,34 +1,36 @@
 #!/bin/bash
 
-function projects {
+function work {
     local max_cols=300
-    projects='/Users/agarcia/Projects/'
-    cd "$projects"
+    work="$HOME/work"
+    cd "$work"
     local percent=50
     if [[ $COLUMNS -gt $max_cols || $COLUMS -eq $max_cols ]]; then
         percent=33
     fi
-    wezterm cli split-pane --cwd "$projects" --right --percent "$percent"
+    wezterm cli split-pane --cwd "$work" --right --percent "$percent"
 }
 
 function dotfiles {
-    wezterm cli spawn --cwd '/Users/agarcia/dotfiles/' --new-window --workspace "dotfiles" -- /bin/zsh -l
+    wezterm cli spawn --cwd "$HOME/dotfiles" --new-window --workspace "dotfiles" -- /bin/zsh -l
+}
+
+function notes {
+    wezterm cli spawn --cwd "$HOME/notes" --new-window --workspace "notes" -- /bin/zsh -l
 }
 
 function main {
-    projects > /dev/null # tab 0
-    dotfiles > /dev/null # tab 1
+    work > /dev/null
+    dotfiles > /dev/null
+    notes > /dev/null
     wezterm cli activate-tab --tab-id 0
 
     if [[ "$1" == true ]]; then
-        # open up gmail, calendar, jira, bitbucket
-        open 'https://gmail.com' 'https://calendar.google.com' 'https://dotdash.atlassian.net/jira/software/c/projects/CMSFRM/boards/1084' 'https://bitbucket.prod.aws.about.com/dashboard'
+        # open up gmail, calendar
+        open 'https://gmail.com' 'https://calendar.google.com'
 
         # open slack
         open '/Applications/Slack.app/'
-
-        # open obsidian
-        open '/Applications/Obsidian.app/'
     fi
 }
 
