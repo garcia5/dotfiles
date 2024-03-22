@@ -2,7 +2,7 @@
 
 # Essentials
 if [[ $(command -v eza) ]]; then
-    alias ll='eza -hal'
+    alias ll='eza -hal --icons=auto --total-size'
     alias la='eza -a'
     alias show='eza -hal $(fzf-ls)'
 else

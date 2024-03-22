@@ -144,7 +144,8 @@ export FZF_DEFAULT_OPTS="--height 60% \
     --scrollbar=▏▕ \
     --reverse \
     --multi \
-    --bind 'ctrl-u:preview-page-up,ctrl-d:preview-page-down' \
+    --bind 'ctrl-u:preview-half-page-up,ctrl-d:preview-half-page-down' \
+    --bind 'ctrl-h:toggle-preview'\
     --bind 'ctrl-y:jump-accept'"
 # catppuccin "mocha" color scheme -- https://github.com/catppuccin/catppuccin#-palette
 export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS \

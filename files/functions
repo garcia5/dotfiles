@@ -166,13 +166,17 @@ fzf-git-changed() {
 
 zle -N fzf-ls-widget
 fzf-ls() {
+    file_preview="bat --color=always --line-range=:40 --style=numbers,changes {}"
+    dir_preview="eza --color=always -T --level 2 {}"
+
     fd -tf |
     fzf \
         --ansi \
         --multi \
         --header "ctrl-d: Directories / ctrl-f: Files" \
-        --bind "ctrl-d:change-prompt(Directories> )+reload(fd -td)" \
-        --bind "ctrl-f:change-prompt(Files> )+reload(fd -tf)" \
+        --bind "ctrl-d:change-prompt(Directories> )+reload(fd -td)+change-preview(${dir_preview})" \
+        --bind "ctrl-f:change-prompt(Files> )+reload(fd -tf)+change-preview(${file_preview})" \
+        --preview "${file_preview}"\
         --prompt "Files> "
 }
 fzf-ls-widget() {
