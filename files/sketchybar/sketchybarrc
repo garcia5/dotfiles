@@ -60,9 +60,7 @@ source "$ITEM_DIR/date-time.sh"
 source "$ITEM_DIR/battery.sh"
 source "$ITEM_DIR/network.sh"
 source "$ITEM_DIR/net.sh"
-source "$ITEM_DIR/amethyst.sh"
 source "$ITEM_DIR/settings.sh"
-source "$ITEM_DIR/bluetooth.sh"
 
 # Center
 source "$ITEM_DIR/now_playing.sh"
