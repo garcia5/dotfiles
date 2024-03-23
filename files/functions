@@ -39,6 +39,27 @@ function cdw() {
 }
 compdef '_path_files -/ -W $HOME/work' cdw
 
+# update all panes in current tab to the given directory
+cda() {
+    local target_dir="$1"
+    if [[ -z "${target_dir}" ]]; then
+        target_dir="$HOME"
+    fi
+
+    local wez_list="$(wezterm cli list --format json)"
+    local cur_pane_id="$WEZTERM_PANE"
+
+    # get current tab
+    local cur_tab_id="$(echo $wez_list | jq -r --arg PANE $WEZTERM_PANE '.[] | select(.pane_id==($PANE | tonumber)).tab_id')"
+    # get all panes in current tab
+    local cur_tab_panes="$(echo $wez_list | jq -r --arg TAB $cur_tab_id '.[] | select(.tab_id==($TAB | tonumber)).pane_id')"
+
+    for pane_id in $(echo $cur_tab_panes); do
+        echo "cd $target_dir" | wezterm cli send-text --no-paste --pane-id "${pane_id}"
+    done
+}
+compdef '_path_files -/' cda
+
 # FZF
 zle -N ctrl-t-widget
 ctrl-t-widget() {
