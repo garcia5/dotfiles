@@ -38,13 +38,9 @@ wezterm.on("window-resized", function(window, pane)
     local cols = tab:get_size().cols
     local overrides = window:get_config_overrides() or {}
     local default_font_size = 14
-    if cols >= 300 then
-        overrides.font_size = 15
-    end
+    if cols >= 300 then overrides.font_size = 15 end
 
-    if overrides.font_size ~= default_font_size then
-        window:set_config_overrides({ font_size = default_font_size })
-    end
+    if overrides.font_size ~= default_font_size then window:set_config_overrides({ font_size = default_font_size }) end
 end)
 
 -- tab bar
@@ -56,13 +52,9 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, cfg, hover, max_width)
     local process_text = tab.active_pane.foreground_process_name
     local label = ""
 
-    if process_text == nil then
-        process_text = ""
-    end
+    if process_text == nil then process_text = "" end
 
-    if cwd == nil then
-        cwd = ""
-    end
+    if cwd == nil then cwd = "" end
 
     local dir_name = tostring(cwd):match("([^/]+)$")
     local process = tostring(process_text):match("([^/]+)$")
@@ -163,6 +155,75 @@ config.keys = {
         key = "x",
         mods = "LEADER",
         action = act.PaneSelect({ mode = "SwapWithActive" }),
+    },
+    {
+        key = "t",
+        mods = "LEADER",
+        action = wezterm.action_callback(function(window, cur_pane)
+            local cur_tab = window:active_tab()
+            local panes = cur_tab:panes_with_info()
+
+            local get_newest_tab = function()
+                local tabs = window:mux_window():tabs_with_info()
+                local max_idx = 0
+                local newest_tab = nil
+                for _, tab in ipairs(tabs) do
+                    if tab.index >= max_idx then
+                        max_idx = tab.index
+                        newest_tab = tab.tab
+                    end
+                end
+
+                return newest_tab
+            end
+
+            local contains = function (tbl, val)
+                for _, entry in ipairs(tbl) do
+                    if entry == val then
+                        return true
+                    end
+                end
+
+                return false
+            end
+
+            window:perform_action(act.SpawnTab({ DomainName = "local" }), cur_pane)
+            local new_tab = get_newest_tab()
+            new_tab:activate()
+
+            local working_new_pane = new_tab:active_pane()
+            local seen_pane_ids = {}
+            local last_left_col = 0
+            local last_top_row = 0
+            while #seen_pane_ids ~= #panes do
+                for _, pane in ipairs(panes) do
+                    if contains(seen_pane_ids, pane.pane:pane_id()) then
+                        goto continue
+                    end
+                    local cwd = pane.pane:get_current_working_dir()
+
+                    -- "main" pane already exists
+                    if pane.left == 0 and pane.top == 0 then
+                        table.insert(seen_pane_ids, pane.pane:pane_id())
+                        goto continue
+                    end
+
+                    -- same starting col -> split into top/bottom
+                    if pane.left == last_left_col then
+                        working_new_pane = working_new_pane:split({ cwd = cwd.path, direction = "Bottom" })
+                        last_top_row = pane.top
+
+                    -- same starting row -> split into left/right
+                    elseif pane.top == last_top_row then
+                        working_new_pane = working_new_pane:split({ cwd = cwd.path, direction = "Right" })
+                        last_left_col = pane.left
+                    end
+
+                    table.insert(seen_pane_ids, pane.pane:pane_id())
+                    ::continue::
+                end
+            end
+        end),
     },
     { key = "+", mods = "CMD", action = act.IncreaseFontSize },
     { key = "-", mods = "CMD", action = act.DecreaseFontSize },
