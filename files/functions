@@ -70,6 +70,8 @@ ctrl-t-widget() {
     # Find only '.spec' files
     elif [[ $LBUFFER =~ '^(yarn|pnpm) test ' ]]; then
         result=$(fzf-js-test | join-lines)
+    elif [[ $LBUFFER =~ 'pytest' ]]; then
+        result=$(fzf-pytest | join-lines)
     # Otherwise do default and fuzzy search all files
     else
         result=$(eval $FZF_CTRL_T_COMMAND | eval "fzf $FZF_CTRL_T_OPTS")
@@ -92,6 +94,19 @@ fzf-js-test() {
         --bind "ctrl-g:change-prompt(Test Files> )+reload($cmd)" \
         --prompt "Test Files> " \
         --preview "bat --color=always --line-range=:40 --style=plain --highlight-line={2} {1}" |
+    cut -d: -f1
+}
+
+fzf-pytest() {
+    local cmd="fd -tf -g 'test_*.py'"
+    eval "$cmd" |
+    fzf \
+        --multi \
+        --header 'ctrl-f: All files / ctrl-g Test files' \
+        --bind "ctrl-f:change-prompt(Files> )+reload($FZF_CTRL_T_COMMAND)" \
+        --bind "ctrl-g:change-prompt(Test Files> )+reload($cmd)" \
+        --prompt "Test Files> " \
+        --preview "bat --color=always {}"
     cut -d: -f1
 }
 
