@@ -69,6 +69,7 @@ local efm = {
 
 local metals = {
     "scalameta/nvim-metals",
+    enabled = false,
     dependencies = {
         "nvim-lua/plenary.nvim",
     },

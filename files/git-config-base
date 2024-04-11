@@ -2,12 +2,14 @@
 
 [alias]
     update = "fetch origin master"
-    cleanup = "! zsh -i -c 'git branch --merged master | grep -v master | xargs git branch -d"
+    cleanup = "! zsh -i -c 'git branch --merged master | grep -v master | xargs git branch -d'"
     rockstars = "shortlog -s -n --no-merges"
 [core]
 	pager = fzf-delta
 [push]
 	autoSetupRemove = true
+[rebase]
+	updateRefs = true
 [fetch]
 	prune = true
 [pull]

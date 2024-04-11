@@ -6,6 +6,7 @@ return {
     "nvim-lualine/lualine.nvim",
     dependencies = {
         "nvim-tree/nvim-web-devicons",
+        "AndreM222/copilot-lualine",
     },
     opts = {
         sections = {
@@ -53,6 +54,24 @@ return {
             },
             lualine_x = {
                 {
+                    "copilot",
+                    show_colors = true,
+                    show_status = true,
+                    color = { gui = "bold" },
+                    symbols = {
+                        status = {
+                            enabled = " ",
+                            sleep = " ",
+                            disabled = " ",
+                            warning = " ",
+                            unknown = " ",
+                        },
+                    },
+                    cond = function() return not IS_START() end,
+                },
+            },
+            lualine_y = {
+                {
                     function()
                         local msg = "No Active Lsp"
                         local buf_ft = vim.api.nvim_buf_get_option(0, "filetype")
@@ -88,9 +107,8 @@ return {
                     sources = { "nvim_diagnostic" },
                 },
             },
-            lualine_y = { { "filetype", cond = function() return not IS_START() end } },
             lualine_z = {
-                { "location", cond = function() return IS_WIDE() and not IS_START() end },
+                { "filetype", cond = function() return not IS_START() end },
             },
         },
         tabline = {

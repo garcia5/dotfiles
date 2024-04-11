@@ -39,11 +39,12 @@ function cdw() {
 }
 compdef '_path_files -/ -W $HOME/work' cdw
 
-# update all panes in current tab to the given directory
-cda() {
-    local target_dir="$1"
-    if [[ -z "${target_dir}" ]]; then
-        target_dir="$HOME"
+# send keys to all visible wezterm panes
+ws() {
+    local cmd="$1"
+
+    if [[ -z "$cmd" ]]; then
+        return
     fi
 
     local wez_list="$(wezterm cli list --format json)"
@@ -55,8 +56,18 @@ cda() {
     local cur_tab_panes="$(echo $wez_list | jq -r --arg TAB $cur_tab_id '.[] | select(.tab_id==($TAB | tonumber)).pane_id')"
 
     for pane_id in $(echo $cur_tab_panes); do
-        echo "cd $target_dir" | wezterm cli send-text --no-paste --pane-id "${pane_id}"
+        echo "${cmd}" | wezterm cli send-text --no-paste --pane-id "${pane_id}"
     done
+}
+
+# update all panes in current tab to the given directory
+cda() {
+    local target_dir="$1"
+    if [[ -z "${target_dir}" ]]; then
+        target_dir="$HOME"
+    fi
+
+    ws "cd ${target_dir}"
 }
 compdef '_path_files -/' cda
 
@@ -116,7 +127,7 @@ fzf-git-checkout() {
     # pass args straight to git-checkout if provided
     arg=$1
     if [[ -n $arg ]]; then
-        git checkout "$@"
+        git switch "$@"
         return
     fi
 
@@ -126,9 +137,9 @@ fzf-git-checkout() {
     fzf \
         --ansi \
         --header "ctrl-a: checkout -b / ctrl-t: checkout --track / ctrl-r: All branches / ctrl-l: Local branches" \
-        --bind "enter:execute(git checkout {..})+accept" \
-        --bind "ctrl-a:execute(git checkout -b {q})+accept" \
-        --bind "ctrl-t:execute(git checkout --track {..})+accept" \
+        --bind "enter:execute(git switch {..})+accept" \
+        --bind "ctrl-a:execute(git switch -c {q})+accept" \
+        --bind "ctrl-t:execute(git switch --track {..})+accept" \
         --bind "ctrl-r:reload($git_cmd --all | $format)+change-prompt(Branches> )" \
         --bind "ctrl-l:reload($git_cmd | $format)+change-prompt(Branches (local)> )" \
         --prompt "Braches> " \

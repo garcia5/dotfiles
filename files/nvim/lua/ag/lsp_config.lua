@@ -110,7 +110,7 @@ lspconfig.pyright.setup({
     on_new_config = function(new_config)
         local python_path = get_pipenv_python_path()
         if python_path ~= nil then
-            new_config.settings.python.pythonPath = get_pipenv_python_path()
+            new_config.settings.python.pythonPath = python_path
         end
     end,
     on_attach = function(client, bufnr)
