@@ -85,12 +85,22 @@ ctrl-t-widget() {
         result=$(fzf-pytest | join-lines)
     # Otherwise do default and fuzzy search all files
     else
-        result=$(eval $FZF_CTRL_T_COMMAND | eval "fzf $FZF_CTRL_T_OPTS")
+        result=$(fzf-ctrl-t | join-lines)
     fi
     zle reset-prompt
     LBUFFER+=$result
 }
 bindkey '' ctrl-t-widget
+
+fzf-ctrl-t() {
+    local cmd='fd -tf --color=always -x printf "{} {/} $(tput setaf 244){//}$(tput sgr0)\n"'
+    local fzf_cmd="fzf $FZF_DEFAULT_OPTS \
+        --preview 'bat --color=always --line-range=:40 --style=numbers,changes {1}' \
+        --ansi \
+        --with-nth '2..'"
+    # Preview files (but not everything else) with bat
+    eval "$cmd" | eval "$fzf_cmd" | awk '{print $1}'
+}
 
 fzf-js-test() {
     local cmd="rg -n -m 1 'describe' --glob '*.spec.ts' --line-number --no-heading"
