@@ -7,118 +7,154 @@ fi
 export NVIM_HOME=$CONFIG_HOME/nvim
 export DF_HOME=$HOME/dotfiles
 
-HAS_BREW=$(command -v brew)
-HAS_PYENV=$(command -v pyenv)
-
-function usage {
-    echo "USAGE: $0 [bash, brew, nvim, tmux, zsh, alacritty, kitty, wez, packages, all]"
-}
+HAS_PYENV="$(command -v pyenv)"
+HAS_BREW="$(command -v brew)"
+HAS_NPM="$(command -v npm)"
+HAS_NVIM="$(command -v nvim)"
 
 function runcmd {
     echo "$@"
-    eval "$@"
+    "$@"
 }
 
-function backup_file {
-    file=$1
-    if [[ -e $file ]]; then
-        if [[ -L $file ]]; then
-            runcmd unlink $file
+function replace_file {
+    local old_file=$1
+    local new_file=$2
+    if [[ -e "${old_file}" ]]; then
+        if [[ -L "${old_file}" ]]; then
+            runcmd unlink "${old_file}"
         else
-            runcmd mv $file "$file.backup"
+            runcmd mv "${old_file}" "${old_file}.backup"
         fi
+    fi
+
+    if [[ -n "${new_file}" && -n "${old_file}" ]]; then
+        ln -s "${new_file}" "${old_file}"
     fi
 }
 
-function backup_dir {
-    dir=$1
-    if [[ -d $dir ]]; then
+function replace_dir {
+    local old_dir=$1
+    local new_dir=$2
+    if [[ -d "${old_dir}" ]]; then
         # Symlink, just remove it
-        if [[ -L $dir ]]; then
-            runcmd unlink $dir
+        if [[ -L "${old_dir}" ]]; then
+            runcmd unlink "${old_dir}"
         else
-            runcmd mv $dir "$dir backup"
+            runcmd mv "${old_dir}" "${old_dir} backup"
         fi
+    fi
+
+    if [[ -n "${new_dir}" && -n "${old_dir}" ]]; then
+        ln -s "${new_dir}" "${old_dir}"
     fi
 }
 
-function setup_brew {
-    exists="$HAS_BREW"
-    # no brew, install it
-    if [[ ! $exists ]]; then
-        echo "No brew installation found, installing..."
-        runcmd /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
-    fi
-    eval $(/opt/homebrew/bin/brew shellenv)
-
-    runcmd brew update
-}
-
-function install_packages {
-    BREW_PACKAGES=( 'gcc' 'fzf' 'bat' 'ripgrep' 'eza' 'pyenv' 'yarn' 'neovim' 'xz' 'sqlite' 'unixodbc' 'tmux' 'ninja' 'zsh' 'git-delta' 'tree' 'stylua' 'git-absorb' 'lua-language-server' 'efm-langserver' )
-
-    echo ""
-    echo "installing from brew..."
-    if [[ ! "$HAS_BREW" ]]; then
-        echo "installing brew first"
-        setup_brew
-    fi
-    runcmd brew update
-    brew_installed=$(brew list)
-    for pkg in ${BREW_PACKAGES[@]}; do
-        if [[ $(echo "$brew_installed" | grep -c "$pkg") -ge 1 ]]; then
-            echo "$pkg already installed, skipping"
-        else
-            runcmd brew install "$pkg"
-            if [[ "$pkg" == "fzf" ]]; then
-                # Actually install fzf
-                $(brew --prefix)/opt/fzf/install
-            fi
-            if [[ "$pkg" == "bat" ]]; then
-                # Install bat themes
-                mkdir -p "$(bat --config-dir)/themes"
-                runcmd curl -o- https://raw.githubusercontent.com/enkia/enki-theme/master/scheme/Enki-Tokyo-Night.tmTheme \
-                        > "$(bat --config-dir)/themes/tokyonight_moon.tmTheme"
-                runcmd curl -o- https://raw.githubusercontent.com/catppuccin/bat/main/Catppuccin-mocha.tmTheme \
-                        > "$(bat --config-dir)/themes/Catppuccin-mocha.tmTheme"
-                runcmd curl -o- https://raw.githubusercontent.com/catppuccin/bat/main/Catppuccin-frappe.tmTheme \
-                        > "$(bat --config-dir)/themes/Catppuccin-frappe.tmTheme"
-                runcmd curl -o- https://raw.githubusercontent.com/catppuccin/bat/main/Catppuccin-latte.tmTheme \
-                        > "$(bat --config-dir)/themes/Catppuccin-latte.tmTheme"
-                runcmd curl -o- https://raw.githubusercontent.com/catppuccin/bat/main/Catppuccin-macchiato.tmTheme \
-                        > "$(bat --config-dir)/themes/Catppuccin-macchiato.tmTheme"
-                runcmd bat cache --build
-            fi
-        fi
-    done
-    # Install sketchybar from tap
-    runcmd brew tap FelixKratz/formulae
-    runcmd brew install sketchybar
-
-    echo "installing from npm..."
+function install_npm {
     if [[ -d "$HOME/.nvm" ]]; then
         echo "found nvm installation $(nvm --verison)"
     else
         echo "installing nvm"
-        runcmd curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
-        source "$HOME/.bashrc"
+        runcmd curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+        export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
     fi
-    if [[ ! $(command -v node) ]]; then
+
+    if [[ -z "$(command -v node)" ]]; then
         echo "installing node"
         runcmd nvm install --latest-npm
     fi
-    NPM_PACKAGES=( 'bash-language-server' 'pyright' 'typescript-language-server' 'vscode-langservers-extracted' 'yaml-language-server' 'eslint_d' '@fsouza/prettierd' '@vue/language-server' 'typescript' )
+}
+
+function install_brew {
+    if [[ -n "${HAS_BREW}" ]]; then
+        echo "Existing brew installation found at ${HAS_BREW}"
+        return
+    fi
+    # no brew, install it
+    echo "No brew installation found, installing..."
+    runcmd /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+    runcmd brew update
+}
+
+function install_sketchybar {
+    runcmd brew tap FelixKratz/formulae
+    runcmd brew install sketchybar
+
+    replace_dir "$CONFIG_HOME/sketchybar" "$DF_HOME/files/sketchybar"
+    runcmd brew services start sketchybar
+}
+
+function install_packages {
+    if [[ -z "${HAS_BREW}" ]]; then
+        echo "No brew installation found, exiting"
+        exit 1
+    fi
+
+    echo ""
+    echo "Installing from brew..."
+    local brew_packages=( 'gcc' 'fzf' 'bat' 'ripgrep' 'eza' 'pyenv' 'yarn' 'neovim' 'xz' 'sqlite' 'unixodbc' 'tmux' 'ninja' 'zsh' 'git-delta' 'stylua' 'git-absorb' 'lua-language-server' 'efm-langserver' 'shellcheck' )
+    local brew_installed
+    brew_installed="$(brew list)"
+    for pkg in "${brew_packages[@]}"; do
+        if [[ "$brew_installed" == *"$pkg"* ]]; then
+            echo "$pkg already installed, skipping"
+        else
+            runcmd brew install "$pkg"
+        fi
+    done
+
+    # extra setup for some pacakges
+    # fzf
+    if [[ -f "$(brew --prefix)/opt/fzf/install" ]]; then
+        "$(brew --prefix)"/opt/fzf/install --no-update-rc
+    fi
+    if [[ -n "$(command -v bat)" ]]; then
+        # bat themes
+        mkdir -p "$(bat --config-dir)/themes"
+        runcmd curl -o- https://raw.githubusercontent.com/enkia/enki-theme/master/scheme/Enki-Tokyo-Night.tmTheme \
+                > "$(bat --config-dir)/themes/tokyonight_moon.tmTheme"
+        runcmd curl -o- https://raw.githubusercontent.com/catppuccin/bat/main/Catppuccin-mocha.tmTheme \
+                > "$(bat --config-dir)/themes/Catppuccin-mocha.tmTheme"
+        runcmd curl -o- https://raw.githubusercontent.com/catppuccin/bat/main/Catppuccin-frappe.tmTheme \
+                > "$(bat --config-dir)/themes/Catppuccin-frappe.tmTheme"
+        runcmd curl -o- https://raw.githubusercontent.com/catppuccin/bat/main/Catppuccin-latte.tmTheme \
+                > "$(bat --config-dir)/themes/Catppuccin-latte.tmTheme"
+        runcmd curl -o- https://raw.githubusercontent.com/catppuccin/bat/main/Catppuccin-macchiato.tmTheme \
+                > "$(bat --config-dir)/themes/Catppuccin-macchiato.tmTheme"
+        runcmd bat cache --build
+    fi
+    if [[ -n "$(command -v pyenv)" ]]; then
+        eval "$(pyenv init -)"
+    fi
+
+    if [[ -z "${HAS_NPM}" ]]; then
+        echo "No npm installation found, exiting"
+        exit 1
+    fi
+    echo "Installing from npm..."
+    local npm_packages=( 'bash-language-server' 'pyright' 'typescript-language-server' 'vscode-langservers-extracted' 'yaml-language-server' 'eslint_d' '@fsouza/prettierd' '@vue/language-server' 'typescript' )
+    local npm_installed
     npm_installed=$(npm -g list)
-    for pkg in ${NPM_PACKAGES[@]}; do
-        if [[ $(echo "$npm_installed" | grep -c "$pkg") -ge 1 ]]; then
+    for pkg in "${npm_packages[@]}"; do
+        if [[ "$npm_installed" == *"$pkg"* ]]; then
             echo "$pkg already installed, skipping"
         else
             runcmd npm i -g "$pkg"
         fi
     done
 
+}
+
+function install_python {
+    if [[ -z "${HAS_PYENV}" ]]; then
+        echo "No pyenv installation found, exiting"
+        exit 1
+    fi
+
     echo ""
-    echo "installing python"
+    echo "Installing python"
     runcmd git clone https://github.com/momo-lab/xxenv-latest.git "$(pyenv root)"/plugins/xxenv-latest
     runcmd pyenv latest install --skip-existing
     if [[ "$PYENV_VERSION" != "" ]]; then
@@ -127,90 +163,65 @@ function install_packages {
     fi
 }
 
-function setup_bash {
-    # .profile sourced automatically by bash
-    file="$HOME/.profile"
-    backup_file $file
-    ln -s "$DF_HOME/files/profile" "$file"
-    # .profile sources .bashrc
-    file="$HOME/.bashrc"
-    backup_file $file
-    ln -s "$DF_HOME/files/bashrc" "$file"
-    # .bashrc sources .aliases
-    file="$HOME/.aliases"
-    backup_file $file
-    ln -s "$DF_HOME/files/aliases" "$file"
-
-    # Color schemes
-    if [[ ! $(-d $HOME/.config/base16-shell) ]]; then
-        echo 'Installing colorschemes'
-        runcmd git clone https://github.com/chriskempson/base16-shell.git $HOME/.config/base16-shell
-    fi
-}
 
 function setup_nvim {
-    if [[ ! "$HAS_BREW" ]]; then
-        setup_brew
+    if [[ -z "${HAS_NVIM}" ]]; then
+        echo "No neovim installation found, installing from brew"
+        brew install neovim > /dev/null 2>&1 || echo "Unable to install neovim, exiting" && exit 1
     fi
-    if [[ ! $(command -v nvim) ]]; then
-        brew install neovim
-    fi
-    mkdir -p "$HOME/.config"
-    backup_dir "$NVIM_HOME"
-    ln -s "$DF_HOME/files/nvim" "$NVIM_HOME"
+    mkdir -p "$NVIM_HOME"
+    replace_dir "$NVIM_HOME" "$DF_HOME/files/nvim"
     # Set up neovim python virtualenv
-    if [[ ! $(-d $HOME/py3nvim) ]]; then
+    if [[ ! -d "$HOME/py3nvim" && "$(python --version)" != 2* ]]; then
         runcmd python -m venv "$HOME/py3nvim"
         runcmd source "$HOME/py3nvim/bin/activate"
         runcmd pip install --upgrade pip
-        runcmd pip install pynvim flake8 black
+        runcmd pip install pynvim
         runcmd deactivate
     fi
-    if [[ $(command -v npm) ]]; then
+    if [[ -n "${HAS_NPM}" && "$(npm ls -g)" != *neovim* ]]; then
         runcmd npm i -g neovim
-    else
-        echo "No npm installation detected, skipping 'npm i -g neovim'"
     fi
 }
 
 function setup_tmux {
-    file="$HOME/.tmux.conf"
-    backup_file $file
-    ln -s "$DF_HOME/files/tmux.conf" "$file"
+    replace_file "$HOME/.tmux.conf" "$DF_HOME/files/tmux.conf" 
 }
 
 function setup_zsh {
-    if [[ ! "$HAS_BREW" ]]; then
-        setup_brew
-    fi
     if [[ ! $(command -v zsh) ]]; then
-        brew install zsh
+        echo "Command zsh not found, install it first"
+        exit 1
     fi
     # get oh-my-zsh first
     if [ ! -d "$HOME/.oh-my-zsh" ]; then
+        echo "Installing oh-my-zsh"
         runcmd sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
     fi
+
+    DEFAULT_ZSH_CUSTOM="$HOME/.oh-my-zsh/custom"
+    mkdir -p "${DEFAULT_ZSH_CUSTOM}/plugins"
+    mkdir -p "${DEFAULT_ZSH_CUSTOM}/themes"
+
     # get plugins
     # vi mode
-    runcmd git clone https://github.com/jeffreytse/zsh-vi-mode \
-      $ZSH_CUSTOM/plugins/zsh-vi-mode
-    # syntax highlighting
-    runcmd git clone https://github.com/zsh-users/zsh-syntax-highlighting.git \
-      $ZSH_CUSTOM/plugins/zsh-syntax-highlighting
+    local vi_mode="${ZSH_CUSTOM:-$DEFAULT_ZSH_CUSTOM}/plugins/zsh-vi-mode"
+    if [[ ! -d "${vi_mode}" ]]; then
+        runcmd git clone https://github.com/jeffreytse/zsh-vi-mode "${vi_mode}"
+    fi
 
-    file="$HOME/.zshrc"
-    backup_file $file
-    ln -s "$DF_HOME/files/zshrc" "$file"
-    # do aliases as well
-    file="$HOME/.aliases"
-    backup_file $file
-    ln -s "$DF_HOME/files/aliases" "$file"
-    # do functions
-    file="$HOME/.functions"
-    backup_file $file
-    ln -s "$DF_HOME/files/functions" "$file"
-    # do custom theme
-    ln -s "$DF_HOME/files/quarter-life.zsh-theme" "$HOME/.oh-my-zsh/themes/quarter-life.zsh-theme"
+    # syntax highlighting
+    local syntax_highlighting="${ZSH_CUSTOM:-$DEFAULT_ZSH_CUSTOM}/plugins/zsh-vi-mode"
+    if [[ ! -d "${syntax_highlighting}" ]]; then
+        runcmd git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "${syntax_highlighting}"
+    fi
+
+    # main
+    replace_file "$HOME/.zshrc" "$DF_HOME/files/zshrc"
+    replace_file "$HOME/.aliases" "$DF_HOME/files/aliases"
+    replace_file "$HOME/.functions" "$DF_HOME/files/functions"
+    # custom theme
+    replace_file "${ZSH_CUSTOM:-$DEFAULT_ZSH_CUSTOM}/themes/quarter-life.zsh-theme" "$DF_HOME/files/quarter-life.zsh-theme" 
 
     # do syntax highlighting themes
     mkdir -p "$HOME/.zsh"
@@ -222,89 +233,85 @@ function setup_zsh {
         > "$HOME/.zsh/catppuccin_mocha-zsh-syntax-highlighting.zsh"
     runcmd curl -o- https://raw.githubusercontent.com/catppuccin/zsh-syntax-highlighting/main/themes/catppuccin_macchiato-zsh-syntax-highlighting.zsh \
         > "$HOME/.zsh/catppuccin_macchiato-zsh-syntax-highlighting.zsh"
+}
 
-    # Do sketchybar here?
-    backup_dir "$CONFIG_HOME/sketchybar/"
-    ln -s "$DF_HOME/files/sketchybar/" "$CONFIG_HOME/sketchybar"
-    if [[ $(command -v sketchybar) ]]; then
-        runcmd brew services start sketchybar
-    fi
-
-    # Do special scripts
-    dir="$HOME/bin/"
-    if [[ ! -d "$dir" ]]; then
-        runcmd "mkdir -p $dir"
-    fi
+function install_scripts {
+    # link files 1 by 1 to avoid overwriting any other custom stuff in there
+    local dir="$HOME/bin"
+    mkdir -p "$dir"
+    local files
     files=$(ls "$DF_HOME/files/bin/")
-    for file in ${files[@]}; do
-        if [[ ! -f "$dir/$file" ]]; then
-            runcmd ln -s "$DF_HOME/files/bin/$file" "$HOME/bin/$file"
-        fi
+    for file in "${files[@]}"; do
+        replace_file "$HOME/bin/$file" "$DF_HOME/files/bin/$file"
     done
 }
 
 function setup_kitty {
-    backup_dir "$CONFIG_HOME/kitty/"
-    ln -s "$DF_HOME/files/kitty" "$CONFIG_HOME/kitty"
+    replace_dir "$CONFIG_HOME/kitty" "$DF_HOME/files/kitty"
 }
 
 function setup_alacritty {
-    backup_dir "$CONFIG_HOME/alacritty/"
-    ln -s "$DF_HOME/files/alacritty/" "$CONFIG_HOME/alacritty"
+    replace_dir "$CONFIG_HOME/alacritty" "$DF_HOME/files/alacritty"
 }
 
 function setup_wez {
     # Download & compile wezterm terminfo
-    local tempfile=$(mktemp) \
-      && curl -o $tempfile https://raw.githubusercontent.com/wez/wezterm/main/termwiz/data/wezterm.terminfo \
-      && tic -x -o ~/.terminfo $tempfile \
-      && rm $tempfile
+    local tempfile
+    tempfile=$(mktemp) \
+      && curl -o "$tempfile" https://raw.githubusercontent.com/wez/wezterm/main/termwiz/data/wezterm.terminfo \
+      && tic -x -o ~/.terminfo "$tempfile" \
+      && rm "$tempfile"
 
-    backup_file "$HOME/.wezterm.lua"
-    ln -s "$DF_HOME/files/wezterm.lua" "$HOME/.wezterm.lua"
+    replace_file "$HOME/.wezterm.lua" "$DF_HOME/files/wezterm.lua"
 }
 
+function setup_dev {
+    # first install package managers
+    install_brew
+    install_npm
+
+    # install packages
+    install_packages
+
+    # install tools
+    install_python
+    setup_tmux
+    setup_nvim
+    install_scripts
+
+    # shell
+    setup_zsh
+
+    # terminal
+    setup_wez
+
+    runcmd source "$HOME/.zshrc"
+}
+
+function usage {
+    echo "USAGE: source $0 [dev, packages, sketchybar, wezterm, kitty, alacritty]"
+}
+
+
 for conf in "$@"; do
-    echo "setting up $conf..."
     case "$conf" in
-        "bash")
-            setup_bash
-            source "$HOME/.profile"
+        "dev")
+            setup_dev
             ;;
-        "brew")
-            setup_brew
+        "packages")
             install_packages
             ;;
-        "nvim")
-            setup_nvim
+        "sketchybar")
+            install_sketchybar
             ;;
-        "tmux")
-            setup_tmux
-            ;;
-        "zsh")
-            setup_zsh
-            source "$HOME/.zshrc"
-            ;;
-        "alacritty")
-            setup_alacritty
+        "wezterm")
+            setup_wez
             ;;
         "kitty")
             setup_kitty
             ;;
-        "wez")
-            setup_wez
-            ;;
-        "all")
-            setup_kitty
+        "alacritty")
             setup_alacritty
-            setup_brew
-            install_packages
-            setup_nvim
-            setup_tmux
-            setup_zsh
-            ;;
-        "install_packages")
-            install_packages
             ;;
         "*")
             usage
