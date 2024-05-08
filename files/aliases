@@ -5,6 +5,7 @@ if [[ $(command -v eza) ]]; then
     alias ll='eza -hal --icons=auto'
     alias la='eza -a'
     alias show='eza -hal $(fzf-ls)'
+    alias tree="eza -T"
 else
     alias ll='ls -la'
     alias la='ls -a'

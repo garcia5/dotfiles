@@ -31,7 +31,7 @@ return {
                 selection_strategy = "reset",
                 sorting_strategy = "descending",
                 layout_strategy = "flex", -- horiz on wide screen, vert on narrow screen
-                path_display = { "truncate" },
+                path_display = { "filename_first" },
                 dynamic_preview_title = true,
                 border = true,
                 color_devicons = true,
@@ -100,11 +100,6 @@ return {
             "<Leader>fl",
             "<cmd>Telescope current_buffer_fuzzy_find<CR>",
             desc = "Find in file",
-        },
-        {
-            "<Leader>co",
-            "<cmd>Telescope colorscheme<CR>",
-            desc = "Switch colorscheme",
         },
         {
             "<Leader>gc",

@@ -50,27 +50,20 @@ return {
                     },
                 }
             end,
+            default_integrations = false,
             integrations = {
                 aerial = true,
                 alpha = true,
-                dashboard = false,
-                flash = true,
                 gitsigns = true,
-                indent_blankline = {
-                    enabled = false,
-                },
                 markdown = true,
-                neogit = false,
                 cmp = true,
-                dap = {
-                    enabled = true,
-                    enable_ui = true,
-                },
                 native_lsp = {
                     enabled = true,
                     inlay_hints = {
                         background = false,
                     },
+                    virtual_text = {},
+                    underlines = {},
                 },
                 semantic_tokens = true,
                 nvimtree = {
@@ -78,10 +71,8 @@ return {
                     show_root = false,
                 },
                 treesitter = true,
+                treesitter_context = true,
                 ts_rainbow2 = true,
-                telescope = {
-                    enabled = false,
-                },
             },
         })
     end,

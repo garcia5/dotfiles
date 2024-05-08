@@ -26,6 +26,7 @@ local efm = {
     dependencies = { "neovim/nvim-lspconfig" },
     config = function()
         local custom_attach = require("ag.lsp_config").custom_attach
+        local get_pipenv_venv_path = require("ag.lsp_config").get_pipenv_venv_path
         local lspconfig = require("lspconfig")
 
         local eslint = require("efmls-configs.linters.eslint_d")
@@ -36,6 +37,7 @@ local efm = {
         local pylint = require('efmls-configs.linters.pylint')
         local autopep8 = require("efmls-configs.formatters.autopep8")
         local shellcheck = require"efmls-configs.linters.shellcheck"
+
         local languages = {
             lua = { stylua },
             typescript = { prettier, eslint },
@@ -45,6 +47,21 @@ local efm = {
             bash = { shellcheck },
             sh = { shellcheck },
         }
+
+        -- special handling for python to handle virtual envs w/o activating
+        local pipenv_venv_path = get_pipenv_venv_path()
+        if pipenv_venv_path ~= nil then
+            local cmd_prefix = pipenv_venv_path .. "/bin/"
+            for _, prog in ipairs(languages["python"]) do
+                if prog["formatCommand"] then
+                    prog["formatCommand"] = cmd_prefix .. prog["formatCommand"]
+                end
+                if prog["lintCommand"] then
+                    prog["lintCommand"] = cmd_prefix .. prog["lintCommand"]
+                end
+            end
+        end
+
         local efmls_config = {
             filetypes = vim.tbl_keys(languages),
             settings = {

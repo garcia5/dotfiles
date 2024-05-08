@@ -10,6 +10,7 @@
 	autoSetupRemove = true
 [rebase]
 	updateRefs = true
+	autoSquash = true
 [fetch]
 	prune = true
 [pull]

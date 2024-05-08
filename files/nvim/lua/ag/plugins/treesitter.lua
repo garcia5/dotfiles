@@ -1,4 +1,4 @@
-return {
+local ts = {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
     dependencies = {
@@ -96,4 +96,22 @@ return {
             },
         })
     end,
+}
+
+local ts_context = {
+    "nvim-treesitter/nvim-treesitter-context",
+    opts = {
+        enable = true,
+        max_lines = -1,
+        min_window_height = 25,
+        line_numbers = true,
+        multiline_threshold = 5, -- Maximum number of lines to show for a single context
+        trim_scope = "outer", -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
+        mode = "topline", -- Line used to calculate context. Choices: 'cursor', 'topline'
+    },
+}
+
+return {
+    ts,
+    ts_context,
 }

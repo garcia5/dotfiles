@@ -83,7 +83,7 @@ plugins=(
 # NOTE: edit command in $EDITOR happens from zsh-vi-mode with `vv`
 # make sure fzf keybindings still apply
 zvm_after_init() {
-    [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+    eval "$(fzf --zsh)"
     [ -f ~/.functions ] && source ~/.functions
     source "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 }

@@ -266,7 +266,7 @@ config.key_tables = {
 local link_rules = wezterm.default_hyperlink_rules()
 table.insert(link_rules, {
     regex = [[\b([A-Z]{2,9}?-\d+?)\b]],
-    format = "https://dotdash.atlassian.net/browse/$1",
+    format = "https://jira.kdc.capitalone.com/browse/$1",
 })
 config.hyperlink_rules = link_rules
 
