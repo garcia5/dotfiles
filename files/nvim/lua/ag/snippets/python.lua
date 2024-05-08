@@ -11,10 +11,12 @@ local fmt = require("luasnip.extras.fmt").fmt
 ---Choice snippet to toggle between python docstring and empty text node
 ---@param order number where in the root snippet the docstring appears
 ---@param default 'DOC' | 'NONE' the default choice to be returned
-local optional_docstring_choice = function(order, default)
+---@param placeholder string | nil default text to put as the docstring placeholder
+local optional_docstring_choice = function(order, default, placeholder)
+    local desc = placeholder or "description"
     local docstr = sn(nil, {
         t({ '"""', "\t" }),
-        i(1, "description"),
+        i(1, desc),
         t({ "", '\t"""', "\t" }),
     })
 
@@ -37,13 +39,7 @@ local function_snippet = s(
     "def",
     fmt(function_fmt, {
         doc = optional_docstring_choice(1, "DOC"),
-        name = c(2, {
-            r(nil, "func_name", i(nil, "public_function")),
-            sn(nil, {
-                t("_"),
-                r(1, "func_name", i(nil, "private_function")),
-            }),
-        }),
+        name = i(2, "function_name"),
         params = i(3),
         ret = c(4, {
             sn(nil, {
@@ -58,6 +54,22 @@ local function_snippet = s(
             ["return_type"] = i(nil, "None"),
             ["func_name"] = i(nil, "function_name"),
         },
+    })
+)
+---
+
+---
+local test_fmt = [[
+def test_{test_name}({params}):
+    {doc}{body}
+]]
+local test_function_snippet = s(
+    "def test",
+    fmt(test_fmt, {
+        doc = optional_docstring_choice(1, "DOC", "Test that ..."),
+        test_name = i(2, "test_name"),
+        params = i(3),
+        body = i(0, "assert True"),
     })
 )
 ---
@@ -95,6 +107,7 @@ local if_name_main_snippet = s("inm", fmt(if_name_main_fmt, { main = i(0) }))
 
 return {
     function_snippet,
+    test_function_snippet,
     class_snippet,
     if_name_main_snippet,
 }
