@@ -35,12 +35,15 @@ local efm = {
         local flake8 = require("efmls-configs.linters.flake8")
         local pylint = require('efmls-configs.linters.pylint')
         local autopep8 = require("efmls-configs.formatters.autopep8")
+        local shellcheck = require"efmls-configs.linters.shellcheck"
         local languages = {
             lua = { stylua },
             typescript = { prettier, eslint },
             javascript = { prettier, eslint },
             vue = { prettier, eslint },
             python = { black, autopep8, flake8, pylint },
+            bash = { shellcheck },
+            sh = { shellcheck },
         }
         local efmls_config = {
             filetypes = vim.tbl_keys(languages),
@@ -64,6 +67,8 @@ local efm = {
         "javascript",
         "vue",
         "python",
+        "bash",
+        "sh",
     },
 }
 
