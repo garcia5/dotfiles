@@ -5,7 +5,7 @@ return {
     "tpope/vim-surround",
     "tpope/vim-repeat",
     -- commenting Just Works
-    { "numToStr/Comment.nvim", config = true },
+    { "numToStr/Comment.nvim", config = true, enabled = false },
     -- autopairs
     {
         "windwp/nvim-autopairs",

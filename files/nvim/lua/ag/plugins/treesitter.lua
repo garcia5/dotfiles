@@ -33,6 +33,7 @@ local ts = {
             highlight = {
                 -- false will disable the whole extension
                 enable = true,
+                additional_vim_regex_highlighting = false,
             },
             indent = {
                 enable = true,
@@ -102,10 +103,10 @@ local ts_context = {
     "nvim-treesitter/nvim-treesitter-context",
     opts = {
         enable = true,
-        max_lines = -1,
+        max_lines = 10, -- How many lines the window should span
         min_window_height = 25,
         line_numbers = true,
-        multiline_threshold = 5, -- Maximum number of lines to show for a single context
+        multiline_threshold = 20, -- Maximum number of lines to show for a single context
         trim_scope = "outer", -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
         mode = "topline", -- Line used to calculate context. Choices: 'cursor', 'topline'
     },

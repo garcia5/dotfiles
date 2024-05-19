@@ -83,16 +83,19 @@ local custom_attach = function(client, bufnr, format_opts)
         require("telescope").load_extension("ui-select")
         vim.lsp.buf.code_action()
     end, with_desc(keymap_opts, "Code Actions")) -- code actions (handled by telescope-ui-select)
-    vim.keymap.set(
-        "n",
-        "<leader>F",
-        function() format_by_client(bufnr, format_opts.allowed_clients or { client.name }) end,
-        with_desc(keymap_opts, "Format")
-    ) -- format
     vim.keymap.set("n", "<Leader>rr", "<cmd>LspRestart<CR>", with_desc(keymap_opts, "Restart all LSP clients")) -- restart clients
 
-    if format_opts.format_on_save then
-        register_format_on_save(bufnr, format_opts.allowed_clients or { client.name })
+    if format_opts ~= nil then
+        vim.keymap.set(
+            "n",
+            "<leader>F",
+            function() format_by_client(bufnr, format_opts.allowed_clients or { client.name }) end,
+            with_desc(keymap_opts, "Format")
+        ) -- format
+
+        if format_opts.format_on_save then
+            register_format_on_save(bufnr, format_opts.allowed_clients or { client.name })
+        end
     end
 end
 

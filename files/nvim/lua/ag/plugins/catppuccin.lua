@@ -48,6 +48,10 @@ return {
                         bg = colors.mantle,
                         fg = colors.mantle,
                     },
+                    -- treesitter context
+                    TreesitterContext = {
+                        bg = colors.mantle,
+                    }
                 }
             end,
             default_integrations = false,

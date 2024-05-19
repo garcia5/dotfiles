@@ -1,3 +1,5 @@
+require("luasnip.session.snippet_collection").clear_snippets("dart")
+
 local success, ls = pcall(require, "luasnip")
 if not success then return end
 local s = ls.snippet

@@ -15,6 +15,13 @@ au("BufEnter", {
     end,
 })
 
+au("VimResized", {
+    desc = "Equalize splits automatically",
+    callback = function ()
+        vim.cmd("wincmd =")
+    end
+})
+
 local term_group = augroup("term", { clear = false })
 au("TermOpen", {
     group = term_group,

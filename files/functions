@@ -185,15 +185,15 @@ fzf-git-branch() {
     local git_cmd="git branch --color=always --sort=-committerdate"
     local format="grep -v HEAD | sed 's/^..//' | sed 's,remotes/,,' | cut -d' ' -f1"
 
-    eval "$git_cmd --all | $format" |
+    eval "$git_cmd | $format" |
     fzf \
         --ansi \
         --multi \
         --prompt "Branches> " \
-        --header "ctrl-r: All branches / ctrl-l: Local branches" \
+        --header "ctrl-a: All branches / ctrl-l: Local branches" \
         --preview-window 'right,50%' \
-        --bind "ctrl-r:reload($git_cmd --all | $format)+change-prompt(Branches> )" \
-        --bind "ctrl-l:reload($git_cmd | $format)+change-prompt(Branches (local)> )" \
+        --bind "ctrl-a:reload($git_cmd --all | $format)+change-prompt(Branches (all)> )" \
+        --bind "ctrl-l:reload($git_cmd | $format)+change-prompt(Branches> )" \
         --preview 'git log --oneline --graph --date=short --color=always --pretty="format:%C(auto)%cd %h%d %s" {}'
 }
 git-branch-widget() {
