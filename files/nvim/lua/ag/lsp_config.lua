@@ -103,22 +103,32 @@ end
 -- python
 local get_pipenv_venv_path = function ()
     local pipenv_venv = vim.fn.trim(vim.fn.system("pipenv --venv"))
+    if pipenv_venv == "" then
+        return nil
+    end
     local split = vim.split(pipenv_venv, "\n")
     for _, line in ipairs(split) do
-        if string.match(line, "^/") ~= nil then
-            if lspconfig.util.path.exists(line) then
+        if string.match(line, "^/") ~= nil and vim.fn.isdirectory(line) then
                 return line
-            end
         end
     end
 
     return nil
 end
+local get_python_path = function ()
+    local venv_path = get_pipenv_venv_path()
+    if venv_path then
+        local python_bin = venv_path .. "/bin/python"
+        return python_bin
+    else
+        return vim.fn.trim(vim.fn.system("python -c 'import sys; print(sys.executable)'"))
+    end
+end
 lspconfig.pyright.setup({
     on_new_config = function(new_config)
-        local python_path = get_pipenv_venv_path()
+        local python_path = get_python_path()
         if python_path ~= nil then
-            new_config.settings.python.pythonPath = python_path .. "/bin/python"
+            new_config.settings.python.pythonPath = python_path
         end
     end,
     on_attach = function(client, bufnr)
