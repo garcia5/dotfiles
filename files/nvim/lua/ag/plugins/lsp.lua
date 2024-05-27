@@ -26,7 +26,7 @@ local efm = {
     dependencies = { "neovim/nvim-lspconfig" },
     config = function()
         local custom_attach = require("ag.lsp_config").custom_attach
-        local get_pipenv_venv_path = require("ag.lsp_config").get_pipenv_venv_path
+        local get_pipenv_venv_path = require("ag.lsp_config").get_python_path
         local lspconfig = require("lspconfig")
 
         local eslint = require("efmls-configs.linters.eslint_d")
