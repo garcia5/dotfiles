@@ -1,6 +1,9 @@
 local lsp_config = {
     "neovim/nvim-lspconfig",
-    config = function() require("ag.lsp_config") end,
+    config = function()
+        require("ag.lsp_config")
+        require("ag.diagnostics")
+    end,
     ft = {
         "vue",
         "typescript",
@@ -25,18 +28,14 @@ local efm = {
     version = "v1.x.x",
     dependencies = { "neovim/nvim-lspconfig" },
     config = function()
-        local custom_attach = require("ag.lsp_config").custom_attach
-        local get_pipenv_venv_path = require("ag.lsp_config").get_pipenv_venv_path
-        local lspconfig = require("lspconfig")
-
         local eslint = require("efmls-configs.linters.eslint_d")
         local prettier = require("efmls-configs.formatters.prettier_d")
         local stylua = require("efmls-configs.formatters.stylua")
         local black = require("efmls-configs.formatters.black")
         local flake8 = require("efmls-configs.linters.flake8")
-        local pylint = require('efmls-configs.linters.pylint')
+        local pylint = require("efmls-configs.linters.pylint")
         local autopep8 = require("efmls-configs.formatters.autopep8")
-        local shellcheck = require"efmls-configs.linters.shellcheck"
+        local shellcheck = require("efmls-configs.linters.shellcheck")
 
         local languages = {
             lua = { stylua },
@@ -48,17 +47,13 @@ local efm = {
             sh = { shellcheck },
         }
 
-        -- special handling for python to handle virtual envs w/o activating
-        local pipenv_venv_path = get_pipenv_venv_path()
+        -- special handling for python to use virtual envs w/o activating
+        local pipenv_venv_path = require("ag.utils").get_pipenv_venv_path()
         if pipenv_venv_path ~= nil then
             local cmd_prefix = pipenv_venv_path .. "/bin/"
             for _, prog in ipairs(languages["python"]) do
-                if prog["formatCommand"] then
-                    prog["formatCommand"] = cmd_prefix .. prog["formatCommand"]
-                end
-                if prog["lintCommand"] then
-                    prog["lintCommand"] = cmd_prefix .. prog["lintCommand"]
-                end
+                if prog["formatCommand"] then prog["formatCommand"] = cmd_prefix .. prog["formatCommand"] end
+                if prog["lintCommand"] then prog["lintCommand"] = cmd_prefix .. prog["lintCommand"] end
             end
         end
 
@@ -74,8 +69,10 @@ local efm = {
             },
         }
 
-        lspconfig.efm.setup(vim.tbl_extend("force", efmls_config, {
-            on_attach = function(client, bufnr) custom_attach(client, bufnr, { allowed_clients = { "efm" } }) end,
+        require("lspconfig").efm.setup(vim.tbl_extend("force", efmls_config, {
+            on_attach = function(client, bufnr)
+                require("ag.lsp_config").custom_attach(client, bufnr, { allowed_clients = { "efm" } })
+            end,
         }))
     end,
     ft = {
@@ -105,10 +102,11 @@ local metals = {
             superMethodLensesEnabled = true,
             serverVersion = "latest.snapshot",
             sbtScript = "/opt/homebrew/bin/sbt",
-            useGlobalExecutable = true,
+            useGlobalExecutable = false,
+            autoImportBuild = "all",
         }
 
-        metals_config.init_options.statusBarProvider = "off"
+        metals_config.init_options.statusBarProvider = "on"
 
         metals_config.capabilities = require("cmp_nvim_lsp").default_capabilities()
 
@@ -120,6 +118,7 @@ local metals = {
         return metals_config
     end,
     config = function(self, config)
+        vim.opt_global.shortmess:remove("F")
         local metals_group = vim.api.nvim_create_augroup("nvim-metals", { clear = true })
         vim.api.nvim_create_autocmd("FileType", {
             pattern = self.ft,

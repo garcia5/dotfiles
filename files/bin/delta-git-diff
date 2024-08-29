@@ -1,7 +1,7 @@
 #!/bin/bash
 
 status_output=$1
-if [[ ! -n "$status_output" ]]; then
+if [[ -z "$status_output" ]]; then
     exit 0
 fi
 

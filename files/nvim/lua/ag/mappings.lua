@@ -3,12 +3,12 @@
 ---@param key string
 ---@param result function | string
 ---@param desc? string
-local mapper = function(mode, key, result, desc) vim.keymap.set(mode, key, result, { noremap = true, silent = true, desc = desc }) end
+local mapper = function(mode, key, result, desc)
+    vim.keymap.set(mode, key, result, { noremap = true, silent = true, desc = desc })
+end
 
 -- command line abbreviations to fix common typos
-local cabbrev = function (before, after)
-    vim.cmd("cnorea " .. before .. " " .. after)
-end
+local cabbrev = function(before, after) vim.cmd("cnorea " .. before .. " " .. after) end
 
 -- Essentials
 mapper("i", "jj", "<Esc>")
@@ -52,6 +52,6 @@ mapper("n", "<Leader>bp", ":bp<CR>", "Prev buffer")
 mapper("n", "<Leader>bd", ":bp | bd #<CR>", "Delete current buffer")
 mapper("n", "+", "=", "Format")
 mapper("i", "<M-r>", [[<Esc>:set paste<CR>i<C-r>"<Esc>:set nopaste<CR>a]], "'set paste' automatically")
-mapper("n", "<Leader>tn", "<cmd>tabn<CR>", "Next tab");
-mapper("n", "<Leader>tp", "<cmd>tabp<CR>", "Prev tab");
-mapper("n", "<Leader>tq", "<cmd>tabcl<CR>", "Close tab");
+mapper("n", "<Leader>tn", "<cmd>tabn<CR>", "Next tab")
+mapper("n", "<Leader>tp", "<cmd>tabp<CR>", "Prev tab")
+mapper("n", "<Leader>tq", "<cmd>tabcl<CR>", "Close tab")

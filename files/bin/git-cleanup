@@ -1,0 +1,23 @@
+#!/bin/bash
+
+main() {
+    local branches
+    branches="$(git branch --list)"
+    local primary
+    if echo "$branches" | grep -q 'main'; then
+        primary="main"
+    elif echo "$branches" | grep -q 'master'; then
+        primary="master"
+    fi
+
+    if [[ -z "$primary" ]]; then
+        exit 0
+    fi
+
+    local cmd
+    cmd="git branch --merged $primary | grep -Ev '$primary|qa|develop' | xargs git branch -d"
+
+    eval "$cmd"
+}
+
+main

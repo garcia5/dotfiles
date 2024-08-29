@@ -94,7 +94,7 @@ function install_packages {
 
     echo ""
     echo "Installing from brew..."
-    local brew_packages=( 'gcc' 'fzf' 'bat' 'ripgrep' 'eza' 'pyenv' 'yarn' 'neovim' 'xz' 'sqlite' 'unixodbc' 'tmux' 'ninja' 'zsh' 'git-delta' 'stylua' 'git-absorb' 'lua-language-server' 'efm-langserver' 'shellcheck' )
+    local brew_packages=( 'gcc' 'fzf' 'bat' 'ripgrep' 'eza' 'pyenv' 'yarn' 'neovim' 'xz' 'sqlite' 'unixodbc' 'tmux' 'ninja' 'zsh' 'git-delta' 'stylua' 'git-absorb' 'lua-language-server' 'efm-langserver' 'shellcheck' 'gh' )
     local brew_installed
     brew_installed="$(brew list)"
     for pkg in "${brew_packages[@]}"; do
@@ -115,13 +115,13 @@ function install_packages {
         mkdir -p "$(bat --config-dir)/themes"
         runcmd curl -o- https://raw.githubusercontent.com/enkia/enki-theme/master/scheme/Enki-Tokyo-Night.tmTheme \
                 > "$(bat --config-dir)/themes/tokyonight_moon.tmTheme"
-        runcmd curl -o- https://raw.githubusercontent.com/catppuccin/bat/main/Catppuccin-mocha.tmTheme \
+        runcmd curl -o- https://raw.githubusercontent.com/catppuccin/bat/main/themes/Catppuccin%20Mocha.tmTheme \
                 > "$(bat --config-dir)/themes/Catppuccin-mocha.tmTheme"
-        runcmd curl -o- https://raw.githubusercontent.com/catppuccin/bat/main/Catppuccin-frappe.tmTheme \
+        runcmd curl -o- https://raw.githubusercontent.com/catppuccin/bat/main/themes/Catppuccin%20Frappe.tmTheme \
                 > "$(bat --config-dir)/themes/Catppuccin-frappe.tmTheme"
-        runcmd curl -o- https://raw.githubusercontent.com/catppuccin/bat/main/Catppuccin-latte.tmTheme \
+        runcmd curl -o- https://raw.githubusercontent.com/catppuccin/bat/main/themes/Catppuccin%20Latte.tmTheme \
                 > "$(bat --config-dir)/themes/Catppuccin-latte.tmTheme"
-        runcmd curl -o- https://raw.githubusercontent.com/catppuccin/bat/main/Catppuccin-macchiato.tmTheme \
+        runcmd curl -o- https://raw.githubusercontent.com/catppuccin/bat/main/themes/Catppuccin%20Macchiato.tmTheme \
                 > "$(bat --config-dir)/themes/Catppuccin-macchiato.tmTheme"
         runcmd bat cache --build
     fi

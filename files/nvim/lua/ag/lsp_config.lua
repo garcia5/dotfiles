@@ -1,44 +1,14 @@
 local lspconfig = require("lspconfig")
 
+local M = {}
+
 -- Give floating windows borders
 vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" })
-
--- Configure diagnostic display
-vim.diagnostic.config({
-    virtual_text = {
-        -- Only display errors w/ virtual text
-        severity = vim.diagnostic.severity.ERROR,
-        -- Prepend with diagnostic source if there is more than one attached to the buffer
-        -- (e.g. (eslint) Error: blah blah blah)
-        source = "if_many",
-        signs = false,
-    },
-    float = {
-        severity_sort = true,
-        source = "if_many",
-        border = "solid",
-        header = {
-            "",
-            "LspDiagnosticsDefaultWarning",
-        },
-        prefix = function(diagnostic)
-            local diag_to_format = {
-                [vim.diagnostic.severity.ERROR] = { "Error", "LspDiagnosticsDefaultError" },
-                [vim.diagnostic.severity.WARN] = { "Warning", "LspDiagnosticsDefaultWarning" },
-                [vim.diagnostic.severity.INFO] = { "Info", "LspDiagnosticsDefaultInfo" },
-                [vim.diagnostic.severity.HINT] = { "Hint", "LspDiagnosticsDefaultHint" },
-            }
-            local res = diag_to_format[diagnostic.severity]
-            return string.format("(%s) ", res[1]), res[2]
-        end,
-    },
-    severity_sort = true,
-})
 
 -- restricted format
 ---@param bufnr number buffer to format
 ---@param allowed_clients string[] client names to allow formatting
-local format_by_client = function(bufnr, allowed_clients)
+local function format_by_client(bufnr, allowed_clients)
     vim.lsp.buf.format({
         bufnr = bufnr,
         filter = function(client)
@@ -50,7 +20,7 @@ end
 
 ---@param bufnr number
 ---@param allowed_clients string[]
-local register_format_on_save = function(bufnr, allowed_clients)
+local function register_format_on_save(bufnr, allowed_clients)
     local format_group = vim.api.nvim_create_augroup("LspFormatting", { clear = true })
     vim.api.nvim_create_autocmd("BufWritePre", {
         group = format_group,
@@ -64,7 +34,7 @@ end
 ---@param format_opts table how to deal with formatting, takes the following keys:
 -- allowed_clients (string[]): names of the lsp clients that are allowed to handle vim.lsp.buf.format() when this client is attached
 -- format_on_save (bool): whether or not to auto format on save
-local custom_attach = function(client, bufnr, format_opts)
+M.custom_attach = function(client, bufnr, format_opts)
     local keymap_opts = { buffer = bufnr, silent = true, noremap = true }
     local with_desc = function(opts, desc) return vim.tbl_extend("force", opts, { desc = desc }) end
 
@@ -101,28 +71,13 @@ end
 
 --#region Set up clients
 -- python
-local get_pipenv_venv_path = function ()
-    local pipenv_venv = vim.fn.trim(vim.fn.system("pipenv --venv"))
-    local split = vim.split(pipenv_venv, "\n")
-    for _, line in ipairs(split) do
-        if string.match(line, "^/") ~= nil then
-            if lspconfig.util.path.exists(line) then
-                return line
-            end
-        end
-    end
-
-    return nil
-end
 lspconfig.pyright.setup({
     on_new_config = function(new_config)
-        local python_path = get_pipenv_venv_path()
-        if python_path ~= nil then
-            new_config.settings.python.pythonPath = python_path .. "/bin/python"
-        end
+        local python_path = require("ag.utils").get_pipenv_venv_path()
+        if python_path ~= nil then new_config.settings.python.pythonPath = python_path .. "/bin/python" end
     end,
     on_attach = function(client, bufnr)
-        custom_attach(client, bufnr, { allowed_clients = { "efm" } })
+        M.custom_attach(client, bufnr, { allowed_clients = { "efm" } })
         -- 'Organize imports' keymap for pyright only
         vim.keymap.set("n", "<Leader>ii", "<cmd>PyrightOrganizeImports<CR>", {
             buffer = bufnr,
@@ -161,7 +116,7 @@ end
 
 -- ts/js/vue
 lspconfig.volar.setup({
-    on_attach = function(client, bufnr) custom_attach(client, bufnr, { allowed_clients = { "efm" } }) end,
+    on_attach = function(client, bufnr) M.custom_attach(client, bufnr, { allowed_clients = { "efm" } }) end,
     -- enable "take over mode" for typescript files as well: https://github.com/johnsoncodehk/volar/discussions/471
     filetypes = { "typescript", "javascript", "vue" },
     on_new_config = function(new_config, new_root_dir)
@@ -173,19 +128,21 @@ lspconfig.volar.setup({
 lspconfig.yamlls.setup({
     autostart = false,
     on_attach = function(client, bufnr)
-        custom_attach(client, bufnr, { allowed_clients = { "efm" }, format_on_save = false })
+        M.custom_attach(client, bufnr, { allowed_clients = { "efm" }, format_on_save = false })
     end,
 })
 
 -- bash
 lspconfig.bashls.setup({
-    on_attach = custom_attach,
+    on_attach = M.custom_attach,
     filetypes = { "bash", "sh", "zsh" },
 })
 
 -- lua
 lspconfig.lua_ls.setup({
-    on_attach = function(client, bufnr) custom_attach(client, bufnr, { allowed_clients = { "efm" } }) end,
+    on_attach = function(client, bufnr)
+        M.custom_attach(client, bufnr, { allowed_clients = { "efm" }, format_on_save = true })
+    end,
     on_init = function(client)
         local path = client.workspace_folders[1].name
         if not vim.loop.fs_stat(path .. "/.luarc.json") and not vim.loop.fs_stat(path .. "/.luarc.jsonc") then
@@ -225,7 +182,7 @@ lspconfig.lua_ls.setup({
 
 -- json w/ common schemas
 lspconfig.jsonls.setup({
-    on_attach = custom_attach,
+    on_attach = M.custom_attach,
     settings = {
         json = {
             schemas = require("schemastore").json.schemas(),
@@ -237,14 +194,14 @@ lspconfig.jsonls.setup({
 -- rust
 lspconfig.rust_analyzer.setup({
     on_attach = function(client, bufnr)
-        custom_attach(client, bufnr, { format_on_save = true, allowed_clients = { "rust_analyzer" } })
+        M.custom_attach(client, bufnr, { format_on_save = true, allowed_clients = { "rust_analyzer" } })
     end,
 })
 
 -- go
 lspconfig.gopls.setup({
     on_attach = function(client, bufnr)
-        custom_attach(client, bufnr, { allowed_clients = { "gopls" }, format_on_save = true })
+        M.custom_attach(client, bufnr, { allowed_clients = { "gopls" }, format_on_save = true })
         -- auto organize imports
         vim.api.nvim_create_autocmd("BufWritePre", {
             pattern = "*.go",
@@ -258,12 +215,9 @@ lspconfig.gopls.setup({
 -- dart
 lspconfig.dartls.setup({
     on_attach = function(client, bufnr)
-        custom_attach(client, bufnr, { allowed_clients = { "dartls" }, format_on_save = true })
+        M.custom_attach(client, bufnr, { allowed_clients = { "dartls" }, format_on_save = true })
     end,
 })
 --#endregion
 
-return {
-    custom_attach = custom_attach,
-    get_pipenv_venv_path = get_pipenv_venv_path,
-}
+return M

@@ -14,10 +14,11 @@ fi
 alias v='nvim'
 alias c='cd $(fzf-cd)'
 alias td='tmux-dev'
-alias wd="source $HOME/bin/wez-dev"
+alias wd='source $HOME/bin/wez-dev'
 
 # Typos
 alias claer='clear'
+alias clera='clear'
 alias :wq='echo "Wrong pane"'
 alias :w='echo "Wrong pane"'
 alias :q='echo "Wrong pane"'
@@ -35,6 +36,7 @@ alias gl="git log \
 alias gc='fzf-git-checkout'
 alias gpf='gpush --force-with-lease'
 alias gf='git commit --fixup=$(fzf-git-commits)'
+alias cpr='gh-create-pr'
 
 alias kitty-update='curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin'
 

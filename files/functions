@@ -1,4 +1,10 @@
 #!/bin/zsh
+export RED='\033[0;31m'
+export GREEN='\033[0;32m'
+export YELLOW='\033[0;33m'
+export BLUE='\033[0;34m'
+export NC='\033[0m' # No Color
+
 join-lines() {
   local item
   while read item; do
@@ -41,7 +47,7 @@ compdef '_path_files -/ -W $HOME/work' cdw
 
 # send keys to all visible wezterm panes
 ws() {
-    local cmd="$1"
+    local cmd="$@"
 
     if [[ -z "$cmd" ]]; then
         return
@@ -93,13 +99,11 @@ ctrl-t-widget() {
 bindkey '' ctrl-t-widget
 
 fzf-ctrl-t() {
-    local cmd='fd -tf --color=always -x printf "{} {/} $(tput setaf 244){//}$(tput sgr0)\n"'
+    local cmd='fd -tf'
     local fzf_cmd="fzf $FZF_DEFAULT_OPTS \
-        --preview 'bat --color=always --line-range=:40 --style=numbers,changes {1}' \
-        --ansi \
-        --with-nth '2..'"
+        --preview 'bat --color=always --line-range=:40 --style=numbers,changes {1}'"
     # Preview files (but not everything else) with bat
-    eval "$cmd" | eval "$fzf_cmd" | awk '{print $1}'
+    eval "$cmd" | eval "$fzf_cmd"
 }
 
 fzf-js-test() {
@@ -111,7 +115,7 @@ fzf-js-test() {
         --delimiter : \
         --nth 1 \
         --header 'ctrl-f: All files / ctrl-g Test files' \
-        --bind "ctrl-f:change-prompt(Files> )+reload($FZF_CTRL_T_COMMAND)" \
+        --bind "ctrl-f:change-prompt(Files> )+reload($FZF_DEFAULT_COMMAND)" \
         --bind "ctrl-g:change-prompt(Test Files> )+reload($cmd)" \
         --prompt "Test Files> " \
         --preview "bat --color=always --line-range=:40 --style=plain --highlight-line={2} {1}" |
@@ -124,7 +128,7 @@ fzf-pytest() {
     fzf \
         --multi \
         --header 'ctrl-f: All files / ctrl-g Test files' \
-        --bind "ctrl-f:change-prompt(Files> )+reload($FZF_CTRL_T_COMMAND)" \
+        --bind "ctrl-f:change-prompt(Files> )+reload($FZF_DEFAULT_COMMAND)" \
         --bind "ctrl-g:change-prompt(Test Files> )+reload($cmd)" \
         --prompt "Test Files> " \
         --preview "bat --color=always {}"
@@ -182,6 +186,7 @@ bindkey '' git-commit-widget
 zle -N git-branch-widget
 fzf-git-branch() {
     is-git-repo || echo 'Not in git repo'
+    local prompt="${1:-Branches}"
     local git_cmd="git branch --color=always --sort=-committerdate"
     local format="grep -v HEAD | sed 's/^..//' | sed 's,remotes/,,' | cut -d' ' -f1"
 
@@ -189,7 +194,7 @@ fzf-git-branch() {
     fzf \
         --ansi \
         --multi \
-        --prompt "Branches> " \
+        --prompt "${prompt}> " \
         --header "ctrl-a: All branches / ctrl-l: Local branches" \
         --preview-window 'right,50%' \
         --bind "ctrl-a:reload($git_cmd --all | $format)+change-prompt(Branches (all)> )" \
@@ -213,7 +218,7 @@ fzf-git-changed() {
         --height '70%' \
         --ansi \
         --header 'ctrl-f: All files / ctrl-g: Changed files' \
-        --bind "ctrl-f:change-prompt(Files> )+reload($FZF_CTRL_T_COMMAND)" \
+        --bind "ctrl-f:change-prompt(Files> )+reload($FZF_DEFAULT_COMMAND)" \
         --bind "ctrl-g:change-prompt(Changed Files> )+reload($cmd)" \
         --prompt "Changed Files> " \
         --preview-window 'right,70%' \

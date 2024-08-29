@@ -12,7 +12,23 @@ config.audible_bell = "Disabled" -- NO BELLS
 config.window_close_confirmation = "NeverPrompt" -- Shutdown w/o requiring confirmation
 
 -- colors
-config.color_scheme = "Catppuccin Mocha"
+function get_appearance()
+    local appearance = "Dark"
+    if wezterm.gui then appearance = wezterm.gui.get_appearance() end
+    return appearance
+end
+
+function scheme_for_appearance(appearance)
+    if appearance:find("Dark") then
+        return "Catppuccin Mocha"
+    else
+        return "Catppuccin Latte"
+    end
+end
+config.color_scheme = scheme_for_appearance(get_appearance())
+config.set_environment_variables = {
+    THEME_MODE = get_appearance(),
+}
 
 -- look & feel
 local font_size = 14.0
@@ -27,7 +43,7 @@ config.font_size = font_size
 config.max_fps = 100
 config.window_padding = {
     left = 5,
-    right = 0,
+    right = 5,
     top = 10,
     bottom = 0,
 }
@@ -81,6 +97,11 @@ config.keys = {
     {
         key = "l",
         mods = "ALT",
+        action = act.ShowLauncherArgs({ flags = "FUZZY|LAUNCH_MENU_ITEMS|WORKSPACES|COMMANDS|TABS" }),
+    },
+    {
+        key = "l",
+        mods = "CMD|SHIFT",
         action = act.ShowLauncherArgs({ flags = "FUZZY|LAUNCH_MENU_ITEMS|WORKSPACES|COMMANDS|TABS" }),
     },
     {
@@ -177,11 +198,9 @@ config.keys = {
                 return newest_tab
             end
 
-            local contains = function (tbl, val)
+            local contains = function(tbl, val)
                 for _, entry in ipairs(tbl) do
-                    if entry == val then
-                        return true
-                    end
+                    if entry == val then return true end
                 end
 
                 return false
@@ -197,9 +216,7 @@ config.keys = {
             local last_top_row = 0
             while #seen_pane_ids ~= #panes do
                 for _, pane in ipairs(panes) do
-                    if contains(seen_pane_ids, pane.pane:pane_id()) then
-                        goto continue
-                    end
+                    if contains(seen_pane_ids, pane.pane:pane_id()) then goto continue end
                     local cwd = pane.pane:get_current_working_dir()
 
                     -- "main" pane already exists

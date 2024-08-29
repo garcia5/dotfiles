@@ -9,12 +9,10 @@ return {
     -- autopairs
     {
         "windwp/nvim-autopairs",
-        config = function()
-            require("nvim-autopairs").setup({
-                map_cr = true, -- send closing symbol to its own line
-                check_ts = true, -- use treesitter
-            })
-        end,
+        opts = {
+            map_cr = true, -- send closing symbol to its own line
+            check_ts = true, -- use treesitter
+        },
         cond = function() return not vim.tbl_contains({ "TelescopePrompt", "fugitive" }, vim.opt.filetype) end,
         event = "InsertEnter",
     },

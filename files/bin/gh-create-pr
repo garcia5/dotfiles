@@ -1,0 +1,113 @@
+#!/bin/zsh
+
+function get_jira_ticket() {
+    local branch="$1"
+    local jira_ticket="$(echo $cur_branch | grep -Eo '\w+-\d+')"
+    echo "$jira_ticket"
+}
+
+function prepare_title() {
+    local cur_branch="$1"
+    local base_branch="$2"
+
+    # parse branch info into PR title
+    # ideally ["feature","bugfix","chore"]/<jira ticket>/<description>
+    # -> feat(description): <user input> [jira ticket]
+    local branch_type="$(echo $cur_branch | cut -d/ -f1)"
+    # simplify subject
+    if [[ "$branch_type" == *feat* ]]; then branch_type="feat"; fi
+    if [[ "$branch_type" == *bug* || "$branch_type" == *fix* ]]; then branch_type="fix"; fi
+
+    local jira_ticket=$(get_jira_ticket $cur_branch)
+    if [ -n "$jira_ticket" ]; then
+        local branch_desc="$(echo $cur_branch | cut -d/ -f3)"
+    else
+        local branch_desc="$(echo $cur_branch | cut -d/ -f2)"
+    fi
+
+    # Compute how we're starting the PR title
+    # feature/my-branch -> feat(my-branch):
+    # lazy-branch-name  -> lazy-branch-name:
+    local title_prefix
+    if [ -n "$branch_desc" ]; then
+        title_prefix="$branch_type($branch_desc):"
+    else
+        title_prefix="$branch_type:"
+    fi
+
+    # Like the GH UI, if we only have a single commit, use its title
+    # as the PR title
+    if [ -n "$(is_single_commit $cur_branch $base_branch)" ]; then
+        local commit_title="$(git log -1 --pretty=%B | head -n1)"
+        title_prefix="$title_prefix $commit_title"
+    fi
+
+    # If we have jira info, attach that to the end of the title
+    [ -n "$jira_ticket" ] && title_prefix="$title_prefix [$jira_ticket]"
+
+    local title_desc
+    title_desc="$(read_with_default $title_prefix)"
+    echo "$title_desc"
+}
+
+function read_with_default() {
+    local input
+    print -z "$1"
+    zle -I
+    read -e input
+    echo "$input"
+}
+
+function is_single_commit() {
+    local cur_branch="$1"
+    local base_branch="$2"
+    local ahead_commits="$(git rev-list --count $base_branch..$cur_branch)"
+    if [ "$ahead_commits" -eq 1 ]; then
+        echo "yes"
+    fi
+}
+
+function create_pr_body {
+    local fname="$1"
+    local cur_branch="$2"
+    local base_branch="$3"
+
+    if [ -n "$(is_single_commit $cur_branch $base_branch)" ]; then
+        local commit_msg="$(git log -1 --pretty=%B | tail +2)"
+        [ -n "$commit_msg" ] && echo "$commit_msg" >> "$tmp_file"
+    fi
+
+    local jira_ticket="$(get_jira_ticket $cur_branch)"
+    [ -n "$jira_ticket" ] && echo "\n\n[$jira_ticket]($JIRA_BASE_URL/browse/$jira_ticket)" >> "$tmp_file"
+    local nvim_cmd="nvim --cmd 'set ft=markdown' --cmd 'set foldlevelstart=99' -- $fname"
+    eval "$nvim_cmd"
+    # TODO: split for nvim?
+    # if [ -z "$WEZTERM_PANE" ]; then
+    #     eval "$nvim_cmd"
+    # else
+    #     # Open nvim in a floating window if we're in wezterm
+    #     local cur_workspace
+    #     cur_workspace="$(wezterm cli list --format json | jq -r --arg PANE $WEZTERM_PANE '.[] | select(.pane_id==($PANE | tonumber)).workspace')"
+    #     local wez_cmd="wezterm cli spawn --new-window --workspace=$cur_workspace -- $nvim_cmd"
+    #     eval "$wez_cmd" > /dev/null
+    # fi
+}
+
+function cpr() {
+    command -v "gh" > /dev/null 2>&1 || (echo -e "${RED}gh cli not installed${NC}" && exit 1)
+
+    # Select PR base branch
+    echo -e "${BLUE}Select base branch${NC}"
+    local base_branch="$(fzf-git-branch 'Base')"
+    local cur_branch="$(git branch --show-current)"
+
+    echo -e "${BLUE}Enter PR title${NC}"
+    local title="$(prepare_title $cur_branch $base_branch)"
+
+    local tmp_file="$(mktemp)"
+    create_pr_body "$tmp_file" "$cur_branch" "$base_branch"
+
+    gh pr new --assignee="@me" --base="$base_branch" --body-file="$tmp_file" --title="$title" "$@"
+}
+
+cpr "$@"

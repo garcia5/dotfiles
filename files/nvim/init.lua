@@ -63,15 +63,20 @@ vim.opt.tabstop = 4 -- <Tab> appears as 4 spaces
 vim.opt.softtabstop = 4 -- <Tab> behaves as 4 spaces when editing
 
 -- Colors
-vim.opt.background = "dark"
 vim.cmd("colorscheme catppuccin")
+if vim.fn.environ()["THEME_MODE"] == "Light" then
+    vim.opt.background = "light"
+else
+    vim.opt.background = "dark"
+end
 
 -- Look and feel
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.signcolumn = "yes" -- show the sign column always
 vim.opt.list = true -- show list chars
-vim.opt.foldtext='' -- show normal buffer content (w/ highlights) through fold
+vim.opt.foldtext = "" -- show normal buffer content (w/ highlights) through fold
+vim.opt.showbreak = "> " -- prefix wrapped lines with '>'
 vim.opt.listchars = {
     -- these list chars
     tab = "<->",

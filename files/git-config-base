@@ -2,7 +2,7 @@
 
 [alias]
     update = "fetch origin master"
-    cleanup = "! zsh -i -c 'git branch --merged master | grep -v master | xargs git branch -d'"
+    cleanup = "! git-cleanup"
     rockstars = "shortlog -s -n --no-merges"
 [core]
 	pager = fzf-delta

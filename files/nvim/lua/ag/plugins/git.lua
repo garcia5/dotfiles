@@ -21,6 +21,11 @@ local gitsigns = {
         },
         signcolumn = true,
         numhl = true,
+        current_line_blame = true,
+        current_line_blame_opts = {
+            virt_text = true,
+            virt_text_pos = "right_align",
+        },
         on_attach = function(bufnr)
             local keymap_opts = { silent = true, noremap = true, buffer = bufnr }
             vim.keymap.set(
@@ -44,14 +49,30 @@ local gitsigns = {
             vim.keymap.set(
                 "n",
                 "<Leader>gn",
-                "<cmd>Gitsigns next_hunk<CR>",
+                function()
+                    require("gitsigns").nav_hunk(
+                        "next",
+                        { wrap = true, navigation_message = true, foldopen = false, preview = false }
+                    )
+                end,
                 vim.tbl_extend("force", keymap_opts, { desc = "Gitsigns goto next" })
             )
             vim.keymap.set(
                 "n",
                 "<Leader>gp",
-                "<cmd>Gitsigns prev_hunk<CR>",
+                function()
+                    require("gitsigns").nav_hunk(
+                        "prev",
+                        { wrap = true, navigation_message = true, foldopen = false, preview = false }
+                    )
+                end,
                 vim.tbl_extend("force", keymap_opts, { desc = "Gitsigns goto prev" })
+            )
+            vim.keymap.set(
+                "n",
+                "<Leader>U",
+                function() require("gitsigns").undo_stage_hunk() end,
+                vim.tbl_extend("force", keymap_opts, { desc = "Undo last stage hunk" })
             )
         end,
     },

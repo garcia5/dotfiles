@@ -9,11 +9,19 @@
 
 #use extended color palette if available
 if [[ $TERM = (*256color|*rxvt*) ]]; then
-  turquoise="%{${(%):-"%F{81}"}%}"
-  orange="%{${(%):-"%F{166}"}%}"
-  purple="%{${(%):-"%F{135}"}%}"
-  hotpink="%{${(%):-"%F{161}"}%}"
-  limegreen="%{${(%):-"%F{118}"}%}"
+    if [[ "$THEME_MODE" == "Light" ]]; then
+      turquoise="%{${(%):-"%F{69}"}%}"
+      orange="%{${(%):-"%F{202}"}%}"
+      purple="%{${(%):-"%F{129}"}%}"
+      hotpink="%{${(%):-"%F{161}"}%}"
+      limegreen="%{${(%):-"%F{34}"}%}"
+    else
+      turquoise="%{${(%):-"%F{81}"}%}"
+      orange="%{${(%):-"%F{166}"}%}"
+      purple="%{${(%):-"%F{135}"}%}"
+      hotpink="%{${(%):-"%F{161}"}%}"
+      limegreen="%{${(%):-"%F{118}"}%}"
+    fi
 else
   turquoise="%{${(%):-"%F{cyan}"}%}"
   orange="%{${(%):-"%F{yellow}"}%}"

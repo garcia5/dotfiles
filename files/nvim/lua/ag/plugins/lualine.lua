@@ -69,6 +69,10 @@ return {
                     },
                     cond = function() return not IS_START() end,
                 },
+                {
+                    "g:metals_status",
+                    cond = IS_WIDE,
+                },
             },
             lualine_y = {
                 {

@@ -2,7 +2,7 @@
 
 function work {
     local session='dev'
-    if [[ $(tmux list-sessions | grep "^$session:") ]]; then
+    if tmux list-sessions | grep -q "^$session:"; then
         return
     fi
     tmux new-session -d -s "$session" -c "$HOME/work" # working session
@@ -12,16 +12,18 @@ function work {
     # Keep focus in original pane
     tmux select-pane -t "$session:1.1"
     # Adjust pane sizes if necessary (this only sort of works)
-    local width=$(tput cols)
+    local width
+    width=$(tput cols)
     if [ "$width" -gt 300 ]; then
-        local left_pane_size=$(expr $width \* 2 / 3)
+        local left_pane_size
+        left_pane_size=$(( width * 2 / 3 ))
         tmux resize-pane -t "$session:1.1" -x $left_pane_size
     fi
 }
 
 function notes {
     local session='notes'
-    if [[ $(tmux list-sessions | grep "^$session:") ]]; then
+    if tmux list-sessions | grep -q "^$session:"; then
         return
     fi
 
@@ -30,7 +32,7 @@ function notes {
 
 function dotfiles {
     local session='dots'
-    if [[ $(tmux list-sessions | grep "^$session:") ]]; then
+    if tmux list-sessions | grep -q "^$session:"; then
         return
     fi
 
@@ -52,7 +54,7 @@ function main {
     fi
 
     # no tmux active
-    if [[ ! -n "${TMUX:-}" ]]; then
+    if [[ -z "${TMUX:-}" ]]; then
         tmux attach-session -t 'dev'
         tmux select-pane -t 'dev:1.1'
     fi

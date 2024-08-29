@@ -25,3 +25,24 @@ All configuration is in [files/sketchybar/](./files/sketchybar/)
 
 TODO:
 - **Use `g` commands more**
+
+## GH PR review plugin
+**Goal:** Add comments to a PR and submit a review from nvim
+
+### Entry
+`:ReviewGithub open <pr number>`
+1. checkout branch associated w/ PR (`gh pr checkout <pr number>`)
+2. diff against base branch base branch = `gh pr view --json baseRefName --jq .baseRefName` -> `:DiffviewOpen <base ref>`
+
+### Functionality
+- [ ] `:ReviewGithub start`
+  - begin new review (?)
+- [ ] `:ReviewGithub comment <comment text>`
+  - modes: n, v
+  - adds comment to current line, selected lines
+- [ ] `:ReviewGithub submit|approve|reject`
+
+### Unknowns
+[!QUESTION] What are the "states" of a pull request?
+[!QUESTION] How do you add/store comments without submitting the review?
+

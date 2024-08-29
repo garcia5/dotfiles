@@ -63,52 +63,9 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
-# Which plugins would you like to load?
-# Standard plugins can be found in ~/.oh-my-zsh/plugins/*
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-
-if [[ -f ~/.custom ]]; then
-    source ~/.custom
-fi
-
-# OMZ config
-plugins=(
-    git
-    ripgrep
-    zsh-interactive-cd
-    zsh-vi-mode
-)
-
-# vi mode
-# NOTE: edit command in $EDITOR happens from zsh-vi-mode with `vv`
-# make sure fzf keybindings still apply
-zvm_after_init() {
-    eval "$(fzf --zsh)"
-    [ -f ~/.functions ] && source ~/.functions
-    source "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-}
-# Do vim surround on the command line
-export ZVM_VI_SURROUND_BINDKEY='classic'
-
-source $ZSH/oh-my-zsh.sh
-
-# Brew
-if [[ -d /opt/homebrew ]]; then
-    eval $(/opt/homebrew/bin/brew shellenv)
-    # Autocomplete
-    if type brew &>/dev/null; then
-      FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
-    fi
-    # Let gcc play with brew
-    export LDFLAGS="-L$(brew --prefix)/opt/zlib/lib -L$(brew --prefix)/opt/bzip2/lib -L$(brew --prefix openssl)/lib"
-    export CPPFLAGS="-I$(brew --prefix)/opt/zlib/include -I$(brew --prefix)/opt/bzip2/include -I$(brew --prefix openssl)/include"
-    export CFLAGS="-I$(brew --prefix openssl)/include \
-        -I$(brew --prefix bzip2)/include \
-        -I$(brew --prefix readline)/include \
-        -I$(xcrun --show-sdk-path)/usr/include"
-fi
-
-# User configuration
+# Zsh setup
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|=*' 'l:|=* r:|=*'
+autoload -U add-zsh-hook # hooks
 
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
@@ -117,25 +74,32 @@ else
   export EDITOR='nvim'
 fi
 
-autoload -Uz compinit && compinit # completion
-zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
-autoload -U add-zsh-hook # hooks
-
-# syntax highlights, must run after compinit - https://github.com/zsh-users/zsh-syntax-highlighting?tab=readme-ov-file#faq
-# https://github.com/catppuccin/zsh-syntax-highlighting
-syntax_highlights="$HOME/.zsh/catppuccin_mocha-zsh-syntax-highlighting.zsh"
-if [[ -f $syntax_highlights ]]; then
-    source "$syntax_highlights"
+# Brew
+if [[ -d /opt/homebrew ]]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+    # Autocomplete from installed apps
+    FPATH="$(brew --prefix)/share/zsh/site-functions:$FPATH"
+    # Let gcc play with brew
+    export LDFLAGS="-L$(brew --prefix)/opt/zlib/lib -L$(brew --prefix)/opt/bzip2/lib -L$(brew --prefix openssl)/lib"
+    export CPPFLAGS="-I$(brew --prefix)/opt/zlib/include -I$(brew --prefix)/opt/bzip2/include -I$(brew --prefix openssl)/include"
+    export CFLAGS="-I$(brew --prefix openssl)/include \
+        -I$(brew --prefix bzip2)/include \
+        -I$(brew --prefix readline)/include \
+        -I$(xcrun --show-sdk-path)/usr/include"
 fi
-source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+# End Brew
 
-# use bat for manpager
-export MANPAGER="sh -c 'col -bx | bat -l man -p'"
-export BAT_THEME="Catppuccin-mocha"
+# use `bat` for manpager
+if type bat &> /dev/null; then
+    export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+    export BAT_THEME="Catppuccin-mocha"
+    [[ "$THEME_MODE" == "Light" ]] && export BAT_THEME="Catppuccin-latte"
+fi
 
-# FZF things
+# FZF
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_COMMAND='fd -tf'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 # Basic global opts
 export FZF_DEFAULT_OPTS="--height 60% \
     --border=none \
@@ -143,16 +107,25 @@ export FZF_DEFAULT_OPTS="--height 60% \
     --scrollbar=▏▕ \
     --reverse \
     --multi \
+    --pointer='' \
     --bind 'ctrl-u:preview-half-page-up,ctrl-d:preview-half-page-down' \
     --bind 'ctrl-h:toggle-preview'\
     --bind 'ctrl-y:jump-accept'"
-# catppuccin "mocha" color scheme -- https://github.com/catppuccin/catppuccin#-palette
+
+# Color schemes -- https://github.com/catppuccin/fzf
+# "mocha"
 export FZF_COLOR_OPTS="--color=bg+:#313244,bg:#1e1e2e,spinner:#f5e0dc,hl:#f38ba8 \
     --color=fg:#cdd6f4,header:#f38ba8,info:#cba6f7,pointer:#f5e0dc \
     --color=marker:#f5e0dc,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8 \
     --color=preview-border:#45475a,preview-scrollbar:#45475a \
     --color=selected-fg:#fab387"
+# "latte"
+[[ "$THEME_MODE" == "Light" ]] && export FZF_COLOR_OPTS=" \
+--color=bg+:#ccd0da,bg:#eff1f5,spinner:#dc8a78,hl:#d20f39 \
+--color=fg:#4c4f69,header:#d20f39,info:#8839ef,pointer:#dc8a78 \
+--color=marker:#dc8a78,fg+:#4c4f69,prompt:#8839ef,hl+:#d20f39"
 export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS $FZF_COLOR_OPTS"
+# FZF End
 
 # Python
 if [[ -d "$HOME/.pyenv" ]]; then
@@ -203,20 +176,44 @@ if [[ -d "$NVM_DIR" ]]; then
 fi
 # NVM end
 
+# OMZ config
+plugins=(
+    git
+    ripgrep
+    zsh-interactive-cd
+    zsh-vi-mode
+)
+# must come *after* FPATH is set by brew to make sure tab complete works
+# automatically runs `compinit`
+source "$ZSH/oh-my-zsh.sh"
+
+# https://github.com/catppuccin/zsh-syntax-highlighting
+syntax_highlights_theme="$HOME/.zsh/catppuccin_mocha-zsh-syntax-highlighting.zsh"
+[[ "$THEME_MODE" == "Light" ]] && syntax_highlights_theme="$HOME/.zsh/catppuccin_latte-zsh-syntax-highlighting.zsh"
+[ -f "$syntax_highlights_theme" ] && source "$syntax_highlights_theme"
+# syntax highlights, must run after compinit - https://github.com/zsh-users/zsh-syntax-highlighting?tab=readme-ov-file#faq
+syntax_highlights="$(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+[ -f "$syntax_highlights" ] && source "$syntax_highlights"
+
+
+# vi mode
+# NOTE: edit command in $EDITOR happens from zsh-vi-mode with `vv`
+
+# make sure fzf keybindings still apply
+zvm_after_init() {
+    eval "$(fzf --zsh)"
+    [ -f "$HOME/.functions" ] && source "$HOME/.functions"
+}
+# Do vim surround on the command line
+export ZVM_VI_SURROUND_BINDKEY='classic'
+# OMZ end
+
 # Lua ls
 export PATH="$PATH:$HOME/lua-language-server/bin"
-alias luamake=$HOME/lua-language-server/3rd/luamake/luamake
+alias luamake="$HOME/lua-language-server/3rd/luamake/luamake"
 
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
-[ -s "$HOME/.aliases" ] && source ~/.aliases
-[ -s "$HOME/.functions" ] && source ~/.functions
+[ -s "$HOME/.aliases" ] && source "$HOME/.aliases"
+[ -s "$HOME/.functions" ] && source "$HOME/.functions"
 # rust
 export PATH="$HOME/.cargo/bin:$PATH"
 
@@ -234,3 +231,8 @@ export PATH="$PATH:$GOROOT/bin"
 
 # flutter
 export PATH="$HOME/devel/flutter/bin:$PATH"
+
+# Machine-specific configs
+if [[ -f "$HOME/.custom" ]]; then
+    . "$HOME/.custom"
+fi

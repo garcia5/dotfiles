@@ -3,7 +3,7 @@
 function work {
     local max_cols=300
     work="$HOME/work"
-    cd "$work"
+    cd "$work" || exit
     local percent=50
     if [[ $COLUMNS -gt $max_cols || $COLUMS -eq $max_cols ]]; then
         percent=33
@@ -28,6 +28,9 @@ function main {
     if [[ "$1" == true ]]; then
         # open up gmail, calendar
         open 'https://gmail.com' 'https://calendar.google.com'
+        if [[ -n "${JIRA_URL}" ]]; then
+            open "$JIRA_URL"
+        fi
 
         # open slack
         open '/Applications/Slack.app/'
