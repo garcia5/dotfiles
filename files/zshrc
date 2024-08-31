@@ -179,10 +179,10 @@ fi
 # OMZ config
 plugins=(
     git
-    ripgrep
     zsh-interactive-cd
     zsh-vi-mode
 )
+
 # must come *after* FPATH is set by brew to make sure tab complete works
 # automatically runs `compinit`
 source "$ZSH/oh-my-zsh.sh"
@@ -191,18 +191,17 @@ source "$ZSH/oh-my-zsh.sh"
 syntax_highlights_theme="$HOME/.zsh/catppuccin_mocha-zsh-syntax-highlighting.zsh"
 [[ "$THEME_MODE" == "Light" ]] && syntax_highlights_theme="$HOME/.zsh/catppuccin_latte-zsh-syntax-highlighting.zsh"
 [ -f "$syntax_highlights_theme" ] && source "$syntax_highlights_theme"
-# syntax highlights, must run after compinit - https://github.com/zsh-users/zsh-syntax-highlighting?tab=readme-ov-file#faq
-syntax_highlights="$(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-[ -f "$syntax_highlights" ] && source "$syntax_highlights"
-
 
 # vi mode
 # NOTE: edit command in $EDITOR happens from zsh-vi-mode with `vv`
 
 # make sure fzf keybindings still apply
 zvm_after_init() {
-    eval "$(fzf --zsh)"
+    source <(fzf --zsh)
     [ -f "$HOME/.functions" ] && source "$HOME/.functions"
+    # syntax highlights, must run last - https://github.com/zsh-users/zsh-syntax-highlighting?tab=readme-ov-file#faq
+    syntax_highlights="$(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+    [ -f "$syntax_highlights" ] && source "$syntax_highlights"
 }
 # Do vim surround on the command line
 export ZVM_VI_SURROUND_BINDKEY='classic'
@@ -233,6 +232,4 @@ export PATH="$PATH:$GOROOT/bin"
 export PATH="$HOME/devel/flutter/bin:$PATH"
 
 # Machine-specific configs
-if [[ -f "$HOME/.custom" ]]; then
-    . "$HOME/.custom"
-fi
+[ -f "$HOME/.custom" ] && . "$HOME/.custom"
