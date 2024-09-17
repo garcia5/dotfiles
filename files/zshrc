@@ -107,7 +107,8 @@ export FZF_DEFAULT_OPTS="--height 60% \
     --scrollbar=▏▕ \
     --reverse \
     --multi \
-    --pointer='' \
+    --pointer='' \
+    --marker='' \
     --bind 'ctrl-u:preview-half-page-up,ctrl-d:preview-half-page-down' \
     --bind 'ctrl-h:toggle-preview'\
     --bind 'ctrl-y:jump-accept'"
@@ -128,12 +129,8 @@ export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS $FZF_COLOR_OPTS"
 # FZF End
 
 # Python
-if [[ -d "$HOME/.pyenv" ]]; then
-    eval "$(pyenv init -)"
-fi
-if [[ -d "$HOME/.rye" ]]; then
-    source "$HOME/.rye/env"
-fi
+[ -d "$HOME/.pyenv" ] && eval "$(pyenv init -)"
+[ -f "$HOME/.rye/env" ] && source "$HOME/.rye/env"
 
 # NVM
 export NVM_DIR="$HOME/.nvm"
@@ -152,7 +149,7 @@ if [[ -d "$NVM_DIR" ]]; then
 
             if [ "$nvmrc_node_version" = "N/A" ]; then
                 nvm install
-            elif [ "$nvmrc_node_version" != $(nvm version) ]; then
+            elif [ "$nvmrc_node_version" != "$(nvm version)" ]; then
                 nvm use
             fi
         fi
@@ -182,7 +179,6 @@ plugins=(
     zsh-interactive-cd
     zsh-vi-mode
 )
-
 # must come *after* FPATH is set by brew to make sure tab complete works
 # automatically runs `compinit`
 source "$ZSH/oh-my-zsh.sh"
@@ -191,17 +187,18 @@ source "$ZSH/oh-my-zsh.sh"
 syntax_highlights_theme="$HOME/.zsh/catppuccin_mocha-zsh-syntax-highlighting.zsh"
 [[ "$THEME_MODE" == "Light" ]] && syntax_highlights_theme="$HOME/.zsh/catppuccin_latte-zsh-syntax-highlighting.zsh"
 [ -f "$syntax_highlights_theme" ] && source "$syntax_highlights_theme"
+# syntax highlights, must run after compinit - https://github.com/zsh-users/zsh-syntax-highlighting?tab=readme-ov-file#faq
+syntax_highlights="$(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+[ -f "$syntax_highlights" ] && source "$syntax_highlights"
+
 
 # vi mode
 # NOTE: edit command in $EDITOR happens from zsh-vi-mode with `vv`
 
 # make sure fzf keybindings still apply
 zvm_after_init() {
-    source <(fzf --zsh)
+    eval "$(fzf --zsh)"
     [ -f "$HOME/.functions" ] && source "$HOME/.functions"
-    # syntax highlights, must run last - https://github.com/zsh-users/zsh-syntax-highlighting?tab=readme-ov-file#faq
-    syntax_highlights="$(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-    [ -f "$syntax_highlights" ] && source "$syntax_highlights"
 }
 # Do vim surround on the command line
 export ZVM_VI_SURROUND_BINDKEY='classic'
@@ -232,4 +229,4 @@ export PATH="$PATH:$GOROOT/bin"
 export PATH="$HOME/devel/flutter/bin:$PATH"
 
 # Machine-specific configs
-[ -f "$HOME/.custom" ] && . "$HOME/.custom"
+[[ -f "$HOME/.custom" ]] && . "$HOME/.custom"

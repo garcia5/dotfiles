@@ -39,7 +39,7 @@ function prepare_title() {
     # as the PR title
     if [ -n "$(is_single_commit $cur_branch $base_branch)" ]; then
         local commit_title="$(git log -1 --pretty=%B | head -n1)"
-        title_prefix="$title_prefix $commit_title"
+        title_prefix="$commit_title" # completely overwrites $title_prefix to avoid duplicate "chore(foo):"
     fi
 
     # If we have jira info, attach that to the end of the title
@@ -51,11 +51,9 @@ function prepare_title() {
 }
 
 function read_with_default() {
-    local input
-    print -z "$1"
-    zle -I
-    read -e input
-    echo "$input"
+    local input="$1"
+    vared -M emacs input # https://stackoverflow.com/questions/67046056/line-editing-with-zshs-vared-from-within-script
+    print -lr -- "$input"
 }
 
 function is_single_commit() {

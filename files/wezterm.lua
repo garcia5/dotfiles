@@ -12,17 +12,17 @@ config.audible_bell = "Disabled" -- NO BELLS
 config.window_close_confirmation = "NeverPrompt" -- Shutdown w/o requiring confirmation
 
 -- colors
-function get_appearance()
+local function get_appearance()
     local appearance = "Dark"
     if wezterm.gui then appearance = wezterm.gui.get_appearance() end
     return appearance
 end
 
-function scheme_for_appearance(appearance)
-    if appearance:find("Dark") then
-        return "Catppuccin Mocha"
-    else
+local function scheme_for_appearance(appearance)
+    if appearance:find("Light") then
         return "Catppuccin Latte"
+    else
+        return "Catppuccin Mocha"
     end
 end
 config.color_scheme = scheme_for_appearance(get_appearance())
@@ -105,10 +105,11 @@ config.keys = {
         action = act.ShowLauncherArgs({ flags = "FUZZY|LAUNCH_MENU_ITEMS|WORKSPACES|COMMANDS|TABS" }),
     },
     {
-        key = "P",
+        key = "p",
         mods = "CMD",
         action = wezterm.action.ActivateCommandPalette,
     },
+    -- "smart" split horizontally based on width
     {
         key = "|",
         mods = "LEADER",
@@ -118,6 +119,12 @@ config.keys = {
             if dimensions.cols >= 300 then size = 0.33 end
             pane:split({ direction = "Right", size = size })
         end),
+    },
+    -- "normal" split horizontally
+    {
+        key = "\\",
+        mods = "LEADER",
+        action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }),
     },
     {
         key = "_",

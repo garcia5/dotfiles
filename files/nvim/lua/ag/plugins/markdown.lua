@@ -40,6 +40,11 @@ return {
                     icon = " ",
                     highlight = "RenderMarkdownTableLink",
                 },
+                docs = {
+                    pattern = "^http[s]?://docs.google.com",
+                    icon = "󰈙 ",
+                    highlight = "RenderMarkdownTableLink",
+                },
             },
         },
         overrides = {
