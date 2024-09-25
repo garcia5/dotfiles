@@ -16,6 +16,9 @@ alias c='cd $(fzf-cd)'
 alias td='tmux-dev'
 alias wd='source $HOME/bin/wez-dev'
 
+alias pp='pbpaste'
+alias pc='pbcopy'
+
 # Typos
 alias claer='clear'
 alias clera='clear'
