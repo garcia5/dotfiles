@@ -192,8 +192,10 @@ export PATH="$PNPM_HOME:$PATH"
 export PATH="$PATH:/Applications/WezTerm.app/Contents/MacOS"
 
 # go
-export GOROOT="$(brew --prefix)/Cellar/go/1.20.3/libexec"
-export PATH="$PATH:$GOROOT/bin"
+if command -v go; then
+    export PATH="$PATH:$(go env GOROOT)/bin"
+    export PATH="$PATH:$(go env GOPATH)/bin"
+fi
 
 # flutter
 export PATH="$HOME/devel/flutter/bin:$PATH"
