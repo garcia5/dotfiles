@@ -192,7 +192,7 @@ export PATH="$PNPM_HOME:$PATH"
 export PATH="$PATH:/Applications/WezTerm.app/Contents/MacOS"
 
 # go
-if command -v go; then
+if command -v go > /dev/null 2>&1; then
     export PATH="$PATH:$(go env GOROOT)/bin"
     export PATH="$PATH:$(go env GOPATH)/bin"
 fi

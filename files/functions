@@ -101,7 +101,8 @@ bindkey '' ctrl-t-widget
 fzf-ctrl-t() {
     local cmd='fd -tf'
     local fzf_cmd="fzf $FZF_DEFAULT_OPTS \
-        --preview 'bat --color=always --line-range=:40 --style=numbers,changes {1}'"
+        --preview 'bat --color=always --line-range=:40 --style=numbers,changes {}' \
+        --bind 'enter:execute(echo {q})+accept'"
     # Preview files (but not everything else) with bat
     eval "$cmd" | eval "$fzf_cmd"
 }
@@ -146,7 +147,7 @@ fzf-git-checkout() {
     fi
 
     local git_cmd="git branch --color=always --sort=-committerdate"
-    local format="grep -v HEAD | sed 's/^..//' | sed 's,remotes/,,' | cut -d' ' -f1"
+    local format="grep -v HEAD | sed 's/^..//' | sed -r 's,remotes/[A-Za-z0-9_-]*/,,' | cut -d' ' -f1"
     eval "$git_cmd --all | $format" |
     fzf \
         --ansi \
