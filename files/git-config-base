@@ -16,10 +16,10 @@
 [pull]
 	rebase = true
 [diff]
-	colorMoved = zebra
+	colorMoved = default
 [delta]
 	features = decorations
-    navigate = true
+	navigate = true
 	file-style = brightgreen
 	hunk-header-style = omit
 	line-numbers = true
@@ -29,6 +29,8 @@
 	plus-style = syntax auto
 	plus-emph-style = syntax ul auto
 	plus-empty-line-marker-style = syntax auto
+	map-styles = bold purple => syntax darkorchid, bold cyan => syntax steelblue
+
 [log]
 	graphColors = "#d20f39,#8839ef,#179299,#df8e1d,#40a02b,#fe640b,#7287fd"
 [absorb]
