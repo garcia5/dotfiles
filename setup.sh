@@ -116,13 +116,13 @@ function install_packages {
         runcmd curl -o- https://raw.githubusercontent.com/enkia/enki-theme/master/scheme/Enki-Tokyo-Night.tmTheme \
                 > "$(bat --config-dir)/themes/tokyonight_moon.tmTheme"
         runcmd curl -o- https://raw.githubusercontent.com/catppuccin/bat/main/themes/Catppuccin%20Mocha.tmTheme \
-                > "$(bat --config-dir)/themes/Catppuccin-mocha.tmTheme"
+                > "$(bat --config-dir)/themes/Catppuccin Mocha.tmTheme"
         runcmd curl -o- https://raw.githubusercontent.com/catppuccin/bat/main/themes/Catppuccin%20Frappe.tmTheme \
-                > "$(bat --config-dir)/themes/Catppuccin-frappe.tmTheme"
+                > "$(bat --config-dir)/themes/Catppuccin Frappe.tmTheme"
         runcmd curl -o- https://raw.githubusercontent.com/catppuccin/bat/main/themes/Catppuccin%20Latte.tmTheme \
-                > "$(bat --config-dir)/themes/Catppuccin-latte.tmTheme"
+                > "$(bat --config-dir)/themes/Catppuccin Latte.tmTheme"
         runcmd curl -o- https://raw.githubusercontent.com/catppuccin/bat/main/themes/Catppuccin%20Macchiato.tmTheme \
-                > "$(bat --config-dir)/themes/Catppuccin-macchiato.tmTheme"
+                > "$(bat --config-dir)/themes/Catppuccin Macchiato.tmTheme"
         runcmd bat cache --build
     fi
     if [[ -n "$(command -v pyenv)" ]]; then

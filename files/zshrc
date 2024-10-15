@@ -91,9 +91,8 @@ fi
 
 # use `bat` for manpager
 if type bat &> /dev/null; then
-    export MANPAGER="sh -c 'col -bx | bat -l man -p'"
-    export BAT_THEME="Catppuccin-mocha"
-    [[ "$THEME_MODE" == "Light" ]] && export BAT_THEME="Catppuccin-latte"
+    export BAT_THEME="Catppuccin Mocha"
+    [[ "$THEME_MODE" == "Light" ]] && export BAT_THEME="Catppuccin Latte"
 fi
 
 [ -f ~/.fzf.custom ] && source ~/.fzf.custom
