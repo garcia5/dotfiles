@@ -1,9 +1,9 @@
 # vim: ft=gitconfig
 
 [alias]
-    update = "fetch origin master"
-    cleanup = "! git-cleanup"
-    rockstars = "shortlog -s -n --no-merges"
+	update = "fetch origin"
+	cleanup = "! git-cleanup"
+	rockstars = "shortlog -s -n --no-merges"
 [core]
 	pager = fzf-delta
 [push]
