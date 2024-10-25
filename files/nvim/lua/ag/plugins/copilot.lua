@@ -96,6 +96,7 @@ local chat = {
         {
             "<Leader>co",
             function() require("CopilotChat").open() end,
+            mode = { "n", "v" },
         },
     },
     cmd = {
