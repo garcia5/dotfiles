@@ -60,12 +60,16 @@ wezterm.on("window-resized", function(window, pane)
 end)
 
 -- tab bar
-config.tab_max_width = 24
-config.tab_bar_at_bottom = false
+config.tab_max_width = 36
+config.tab_bar_at_bottom = true
 config.use_fancy_tab_bar = false
 wezterm.on("format-tab-title", function(tab, tabs, panes, cfg, hover, max_width)
     local cwd = tab.active_pane.current_working_dir
     local process_text = tab.active_pane.foreground_process_name
+    local is_zoomed = false
+    for _, pane in ipairs(panes) do
+        if pane.is_zoomed then is_zoomed = true end
+    end
     local label = ""
 
     if process_text == nil then process_text = "" end
@@ -80,6 +84,8 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, cfg, hover, max_width)
     else
         label = process .. " @ " .. dir_name
     end
+
+    if is_zoomed then label = "*" .. label end
 
     if #label > max_width - 2 then label = string.sub(label, 1, max_width - 3) .. "…" end
 
