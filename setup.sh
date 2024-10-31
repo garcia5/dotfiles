@@ -55,7 +55,7 @@ function install_npm {
         echo "found nvm installation $(nvm --verison)"
     else
         echo "installing nvm"
-        runcmd curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
         export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
         [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
     fi
@@ -136,34 +136,34 @@ function install_packages {
 function install_colorscheme {
     # zsh syntax highlighting
     mkdir -p "$HOME/.zsh"
-    runcmd curl -o- https://raw.githubusercontent.com/catppuccin/zsh-syntax-highlighting/main/themes/catppuccin_frappe-zsh-syntax-highlighting.zsh \
+    curl -o- https://raw.githubusercontent.com/catppuccin/zsh-syntax-highlighting/main/themes/catppuccin_frappe-zsh-syntax-highlighting.zsh \
         > "$HOME/.zsh/catppuccin_frappe-zsh-syntax-highlighting.zsh"
-    runcmd curl -o- https://raw.githubusercontent.com/catppuccin/zsh-syntax-highlighting/main/themes/catppuccin_latte-zsh-syntax-highlighting.zsh \
+    curl -o- https://raw.githubusercontent.com/catppuccin/zsh-syntax-highlighting/main/themes/catppuccin_latte-zsh-syntax-highlighting.zsh \
         > "$HOME/.zsh/catppuccin_latte-zsh-syntax-highlighting.zsh"
-    runcmd curl -o- https://raw.githubusercontent.com/catppuccin/zsh-syntax-highlighting/main/themes/catppuccin_mocha-zsh-syntax-highlighting.zsh \
+    curl -o- https://raw.githubusercontent.com/catppuccin/zsh-syntax-highlighting/main/themes/catppuccin_mocha-zsh-syntax-highlighting.zsh \
         > "$HOME/.zsh/catppuccin_mocha-zsh-syntax-highlighting.zsh"
-    runcmd curl -o- https://raw.githubusercontent.com/catppuccin/zsh-syntax-highlighting/main/themes/catppuccin_macchiato-zsh-syntax-highlighting.zsh \
+    curl -o- https://raw.githubusercontent.com/catppuccin/zsh-syntax-highlighting/main/themes/catppuccin_macchiato-zsh-syntax-highlighting.zsh \
         > "$HOME/.zsh/catppuccin_macchiato-zsh-syntax-highlighting.zsh"
 
     if command -v bat; then
         # bat themes
         mkdir -p "$(bat --config-dir)/themes"
-        runcmd curl -o- https://raw.githubusercontent.com/enkia/enki-theme/master/scheme/Enki-Tokyo-Night.tmTheme \
+        curl -o- https://raw.githubusercontent.com/enkia/enki-theme/master/scheme/Enki-Tokyo-Night.tmTheme \
                 > "$(bat --config-dir)/themes/tokyonight_moon.tmTheme"
-        runcmd curl -o- https://raw.githubusercontent.com/catppuccin/bat/main/themes/Catppuccin%20Mocha.tmTheme \
+        curl -o- https://raw.githubusercontent.com/catppuccin/bat/main/themes/Catppuccin%20Mocha.tmTheme \
                 > "$(bat --config-dir)/themes/Catppuccin Mocha.tmTheme"
-        runcmd curl -o- https://raw.githubusercontent.com/catppuccin/bat/main/themes/Catppuccin%20Frappe.tmTheme \
+        curl -o- https://raw.githubusercontent.com/catppuccin/bat/main/themes/Catppuccin%20Frappe.tmTheme \
                 > "$(bat --config-dir)/themes/Catppuccin Frappe.tmTheme"
-        runcmd curl -o- https://raw.githubusercontent.com/catppuccin/bat/main/themes/Catppuccin%20Latte.tmTheme \
+        curl -o- https://raw.githubusercontent.com/catppuccin/bat/main/themes/Catppuccin%20Latte.tmTheme \
                 > "$(bat --config-dir)/themes/Catppuccin Latte.tmTheme"
-        runcmd curl -o- https://raw.githubusercontent.com/catppuccin/bat/main/themes/Catppuccin%20Macchiato.tmTheme \
+        curl -o- https://raw.githubusercontent.com/catppuccin/bat/main/themes/Catppuccin%20Macchiato.tmTheme \
                 > "$(bat --config-dir)/themes/Catppuccin Macchiato.tmTheme"
         runcmd bat cache --build
     fi
 
     if command -v delta; then
         # delta themes
-        runcmd curl -o- https://raw.githubusercontent.com/catppuccin/delta/refs/heads/main/catppuccin.gitconfig \
+        curl -o- https://raw.githubusercontent.com/catppuccin/delta/refs/heads/main/catppuccin.gitconfig \
             > "${HOME}/.catppuccin-delta.gitconfig"
     fi
 }
@@ -301,7 +301,7 @@ function setup_dev {
 }
 
 function usage {
-    echo "USAGE: source $0 [dev, packages, sketchybar, wezterm, kitty, alacritty]"
+    echo "USAGE: source $0 [dev, packages, sketchybar, wezterm, kitty, alacritty, colors]"
 }
 
 
@@ -324,6 +324,9 @@ for conf in "$@"; do
             ;;
         "alacritty")
             setup_alacritty
+            ;;
+        "colors")
+            install_colorscheme
             ;;
         "*")
             usage
