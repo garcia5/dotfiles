@@ -4,11 +4,10 @@ function work {
     local max_cols=300
     work="$HOME/work"
     cd "$work" || exit
-    local percent=50
     if [[ $COLUMNS -gt $max_cols || $COLUMS -eq $max_cols ]]; then
         percent=33
+        wezterm cli split-pane --cwd "$work" --right --percent "$percent"
     fi
-    wezterm cli split-pane --cwd "$work" --right --percent "$percent"
 }
 
 function dotfiles {
