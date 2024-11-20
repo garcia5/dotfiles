@@ -40,7 +40,7 @@ config.window_frame = {
 config.window_decorations = "RESIZE"
 config.font = wezterm.font("JetBrainsMono Nerd Font Mono", { weight = "Medium" })
 config.font_size = font_size
-config.max_fps = 120
+config.max_fps = 240
 config.window_padding = {
     left = 5,
     right = 5,
@@ -67,7 +67,7 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, cfg, hover, max_width)
     local cwd = tab.active_pane.current_working_dir
     local process_text = tab.active_pane.foreground_process_name
     local is_zoomed = false
-    for _, pane in ipairs(panes) do
+    for _, pane in ipairs(tab.panes) do
         if pane.is_zoomed then is_zoomed = true end
     end
     local label = ""
