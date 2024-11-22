@@ -57,6 +57,11 @@ local efm = {
             end
         end
 
+        -- explicitly point stylua to my config
+        local format_cmd = languages["lua"][1]["formatCommand"]
+        local new_cmd = format_cmd:gsub("(stylua)", "%1 --config-path .stylua.toml")
+        languages["lua"][1]["formatCommand"] = new_cmd
+
         local efmls_config = {
             filetypes = vim.tbl_keys(languages),
             settings = {
