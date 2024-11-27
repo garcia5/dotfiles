@@ -9,6 +9,8 @@ local c = ls.choice_node
 local r = ls.restore_node
 local fmt = require("luasnip.extras.fmt").fmt
 
+local M = {}
+
 ---Choice snippet to toggle between python docstring and empty text node
 ---@param order number where in the root snippet the docstring appears
 ---@param default 'DOC' | 'NONE' the default choice to be returned
@@ -36,7 +38,7 @@ local function_fmt = [[
 def {name}({params}){ret}:
 	{doc}{body}
 ]]
-local function_snippet = s(
+M.function_snippet = s(
     "def",
     fmt(function_fmt, {
         doc = optional_docstring_choice(1, "DOC"),
@@ -64,7 +66,7 @@ local test_fmt = [[
 def test_{test_name}({params}):
     {doc}{body}
 ]]
-local test_function_snippet = s(
+M.test_function_snippet = s(
     "def test",
     fmt(test_fmt, {
         doc = optional_docstring_choice(1, "DOC", "Test that ..."),
@@ -80,7 +82,7 @@ local class_fmt = [[
 class {cls}{parent}:
 	{doc}{body}
 ]]
-local class_snippet = s(
+M.class_snippet = s(
     "class",
     fmt(class_fmt, {
         doc = optional_docstring_choice(1, "DOC"),
@@ -103,12 +105,14 @@ local if_name_main_fmt = [[
 if __name__ == "__main__":
 	{main}
 ]]
-local if_name_main_snippet = s("inm", fmt(if_name_main_fmt, { main = i(0) }))
+M.if_name_main_snippet = s("inm", fmt(if_name_main_fmt, { main = i(0) }))
 ---
 
-return {
-    function_snippet,
-    test_function_snippet,
-    class_snippet,
-    if_name_main_snippet,
-}
+---
+local printf_fmt = [[
+print(f"{str}")
+]]
+M.printf = s("printf", fmt(printf_fmt, { str = i(0) }))
+---
+
+return M

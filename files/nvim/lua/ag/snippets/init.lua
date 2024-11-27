@@ -5,5 +5,5 @@ local typescript = require("ag.snippets.typescript")
 return {
     typescript = typescript,
     dart = dart,
-    python = python,
+    python = vim.tbl_values(python),
 }
