@@ -67,14 +67,30 @@ local chat = {
     "CopilotC-Nvim/CopilotChat.nvim",
     branch = "canary",
     dependencies = {
-        { "zbirenbaum/copilot.lua" }, -- or github/copilot.vim
-        { "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
+        { "zbirenbaum/copilot.lua" },
+        { "nvim-lua/plenary.nvim" },
     },
     opts = {
         debug = false,
         window = {
             layout = "float",
             border = "rounded",
+        },
+        prompts = {
+            PythonExpert = {
+                system_prompt = "You are an expert Python developer with knowledge of language best practices, helping an experienced software engineer in their day to day work",
+            },
+        },
+        mappings = {
+            -- Swap default "submit" and "accept" mappings - I don't really use diff mappings and <C-y> is more common for me
+            submit_prompt = {
+                normal = "<CR>",
+                insert = "<C-y>",
+            },
+            accept_diff = {
+                normal = "<C-s>",
+                insert = "<C-s>",
+            },
         },
     },
     keys = {
