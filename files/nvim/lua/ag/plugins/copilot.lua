@@ -65,7 +65,7 @@ local copilot = {
 
 local chat = {
     "CopilotC-Nvim/CopilotChat.nvim",
-    branch = "canary",
+    branch = "main",
     dependencies = {
         { "zbirenbaum/copilot.lua" },
         { "nvim-lua/plenary.nvim" },
