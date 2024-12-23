@@ -64,6 +64,7 @@ return {
             gitsigns = true,
             diffview = true,
             cmp = true,
+            blink_cmp = true,
             native_lsp = {
                 enabled = true,
                 inlay_hints = {

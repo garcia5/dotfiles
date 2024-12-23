@@ -1,6 +1,7 @@
 return {
     "hrsh7th/nvim-cmp",
     event = "InsertEnter",
+    enabled = false,
     dependencies = {
         -- completion sources
         "hrsh7th/cmp-nvim-lsp",
@@ -72,8 +73,8 @@ return {
                     mode = "text_symbol",
                     maxwidth = 50,
                     ellipsis_char = "...",
-                    before = function (entry, vim_item)
-                        vim_item.menu_hl_group = 'Comment'
+                    before = function(entry, vim_item)
+                        vim_item.menu_hl_group = "Comment"
 
                         local source_names = {
                             luasnip = "snip",
