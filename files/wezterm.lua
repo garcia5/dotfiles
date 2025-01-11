@@ -40,12 +40,12 @@ config.window_frame = {
 config.window_decorations = "RESIZE"
 config.font = wezterm.font("JetBrainsMono Nerd Font Mono", { weight = "Medium" })
 config.font_size = font_size
-config.max_fps = 100
+config.max_fps = 120
 config.window_padding = {
     left = 5,
     right = 5,
     top = 10,
-    bottom = 0,
+    bottom = 10,
 }
 
 wezterm.on("window-resized", function(window, pane)
