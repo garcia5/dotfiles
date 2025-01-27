@@ -1,0 +1,62 @@
+[bell]
+animation = "EaseOutExpo"
+command = "None"
+duration = 10
+
+[cursor]
+unfocused_hollow = true
+vi_mode_style = "Block"
+
+[cursor.style]
+blinking = "Off"
+shape = "Beam"
+
+[font]
+size = 14.0
+use_thin_strokes = true
+
+[font.normal]
+family = "JetBrainsMono Nerd Font Mono"
+style = "Regular"
+
+[hints]
+alphabet = "jfkdls;ahgurieowpq"
+
+[[hints.enabled]]
+command = "open"
+post_processing = true
+regex = "(ipfs:|ipns:|magnet:|mailto:|gemini:|gopher:|https:|http:|news:|file:|git:|ssh:|ftp:)[^\u0000-\u001F\u007F-<>\"\\s{-}\\^⟨⟩`]+"
+
+[hints.enabled.binding]
+key = "U"
+mods = "Control|Shift"
+
+[hints.enabled.mouse]
+enabled = true
+mods = "Command"
+
+[scrolling]
+history = 10000
+multiplier = 3
+
+[selection]
+semantic_escape_chars = ''',│`|:"' ()[]{}<>	/'''
+
+[terminal.shell]
+args = ["--login"]
+program = "/bin/zsh"
+
+[window]
+decorations = "buttonless"
+dynamic_padding = true
+dynamic_title = false
+
+[window.padding]
+x = 5
+y = 5
+
+[general]
+live_config_reload = true
+import = ["/Users/xpu779/.config/alacritty/colors/catppuccin.toml", "/Users/xpu779/.config/alacritty/keymaps.toml"]
+
+[terminal]

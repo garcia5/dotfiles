@@ -31,7 +31,7 @@ function notes {
 }
 
 function dotfiles {
-    local session='dots'
+    local session='dotfiles'
     if tmux list-sessions | grep -q "^$session:"; then
         return
     fi
