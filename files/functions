@@ -101,6 +101,7 @@ bindkey '' ctrl-t-widget
 fzf-ctrl-t() {
     local cmd='fd -tf'
     local fzf_cmd="fzf $FZF_DEFAULT_OPTS \
+        --list-label='Files' \
         --preview 'bat --color=always --line-range=:40 --style=numbers,changes {}' \
         --bind 'enter:execute(echo {q})+accept'"
     # Preview files (but not everything else) with bat
@@ -109,16 +110,16 @@ fzf-ctrl-t() {
 
 fzf-js-test() {
     local cmd="rg -n -m 1 'describe' --glob '*.spec.ts' --line-number --no-heading"
+    local fzf_cmd=fzf $FZF_DEFUALT_OPTS \
     eval "$cmd" |
-    fzf \
         --multi \
         --height 100% \
         --delimiter : \
         --nth 1 \
-        --header 'ctrl-f: All files / ctrl-g Test files' \
-        --bind "ctrl-f:change-prompt(Files> )+reload($FZF_DEFAULT_COMMAND)" \
-        --bind "ctrl-g:change-prompt(Test Files> )+reload($cmd)" \
-        --prompt "Test Files> " \
+        --list-label='Test Files' \
+        --header 'ctrl-f: All files | ctrl-g Test files' \
+        --bind "ctrl-f:change-list-label(Files)+reload($FZF_DEFAULT_COMMAND)" \
+        --bind "ctrl-g:change-list-label(Test Files)+reload($cmd)" \
         --preview "bat --color=always --line-range=:40 --style=plain --highlight-line={2} {1}" |
     cut -d: -f1
 }
@@ -128,11 +129,11 @@ fzf-pytest() {
     eval "$cmd" |
     fzf \
         --multi \
-        --header 'ctrl-f: All files / ctrl-g Test files' \
-        --bind "ctrl-f:change-prompt(Files> )+reload($FZF_DEFAULT_COMMAND)" \
-        --bind "ctrl-g:change-prompt(Test Files> )+reload($cmd)" \
-        --prompt "Test Files> " \
-        --preview "bat --color=always {}"
+        --header 'ctrl-f: All files | ctrl-g Test files' \
+        --bind "ctrl-f:change-list-label(Files)+reload($FZF_DEFAULT_COMMAND)" \
+        --bind "ctrl-g:change-list-label(Test Files)+reload($cmd)" \
+        --list-label "Test Files" \
+        --preview "bat --color=always {}" |
     cut -d: -f1
 }
 
@@ -151,13 +152,13 @@ fzf-git-checkout() {
     eval "$git_cmd --all | $format" |
     fzf \
         --ansi \
-        --header "ctrl-a: checkout -b / ctrl-t: checkout --track / ctrl-r: All branches / ctrl-l: Local branches" \
+        --header "ctrl-a: checkout -b | ctrl-t: checkout --track | ctrl-r: All branches | ctrl-l: Local branches" \
         --bind "enter:execute(git switch {..})+accept" \
         --bind "ctrl-a:execute(git switch -c {q})+accept" \
         --bind "ctrl-t:execute(git switch --track {..})+accept" \
-        --bind "ctrl-r:reload($git_cmd --all | $format)+change-prompt(Branches> )" \
-        --bind "ctrl-l:reload($git_cmd | $format)+change-prompt(Branches (local)> )" \
-        --prompt "Braches> " \
+        --bind "ctrl-r:reload($git_cmd --all | $format)+change-list-label(Branches)" \
+        --bind "ctrl-l:reload($git_cmd | $format)+change-list-label(Branches (local))" \
+        --list-label "Git Braches" \
         --preview-window 'right:50%' \
         --preview 'git log --oneline --graph --date=short --color=always --pretty="format:%C(auto)%cd %h%d %s" {}'
 }
@@ -172,7 +173,7 @@ fzf-git-commits() {
         --ansi \
         --multi \
         --height '70%' \
-        --prompt "Commits> " \
+        --list-label "Commits" \
         --preview-window 'down,70%' \
         --preview 'git show --color=always --format=short --stat -p {1} | fzf-delta' |
     cut -d' ' -f1
@@ -195,11 +196,11 @@ fzf-git-branch() {
     fzf \
         --ansi \
         --multi \
-        --prompt "${prompt}> " \
-        --header "ctrl-a: All branches / ctrl-l: Local branches" \
+        --list-label "${prompt}" \
+        --header "ctrl-a: All branches | ctrl-l: Local branches" \
         --preview-window 'right,50%' \
-        --bind "ctrl-a:reload($git_cmd --all | $format)+change-prompt(Branches (all)> )" \
-        --bind "ctrl-l:reload($git_cmd | $format)+change-prompt(Branches> )" \
+        --bind "ctrl-a:reload($git_cmd --all | $format)+change-list-label(Branches (all))" \
+        --bind "ctrl-l:reload($git_cmd | $format)+change-list-label(Branches)" \
         --preview 'git log --oneline --graph --date=short --color=always --pretty="format:%C(auto)%cd %h%d %s" {}'
 }
 git-branch-widget() {
@@ -218,10 +219,10 @@ fzf-git-changed() {
         --multi \
         --height '70%' \
         --ansi \
-        --header 'ctrl-f: All files / ctrl-g: Changed files' \
-        --bind "ctrl-f:change-prompt(Files> )+reload($FZF_DEFAULT_COMMAND)" \
-        --bind "ctrl-g:change-prompt(Changed Files> )+reload($cmd)" \
-        --prompt "Changed Files> " \
+        --header 'ctrl-f: All files | ctrl-g: Changed files' \
+        --bind "ctrl-f:change-list-label(Files)+reload($FZF_DEFAULT_COMMAND)" \
+        --bind "ctrl-g:change-list-label(Changed Files)+reload($cmd)" \
+        --list-label "Changed Files" \
         --preview-window 'right,70%' \
         --preview 'delta-git-diff {..}' |
     sed 's/.* //'
@@ -237,10 +238,10 @@ fzf-ls() {
         --ansi \
         --multi \
         --header "ctrl-d: Directories / ctrl-f: Files" \
-        --bind "ctrl-d:change-prompt(Directories> )+reload(fd -td)+change-preview(${dir_preview})" \
-        --bind "ctrl-f:change-prompt(Files> )+reload(fd -tf)+change-preview(${file_preview})" \
+        --bind "ctrl-d:change-list-label(Directories)+reload(fd -td)+change-preview(${dir_preview})" \
+        --bind "ctrl-f:change-list-label(Files)+reload(fd -tf)+change-preview(${file_preview})" \
         --preview "${file_preview}"\
-        --prompt "Files> "
+        --list-label "Files"
 }
 fzf-ls-widget() {
     result=$(fzf-ls | join-lines)
@@ -255,7 +256,7 @@ fzf-cd() {
         --ansi \
         --no-multi \
         --preview='eza -hal {..}' \
-        --prompt "Directories> "
+        --list-label "Directories"
 }
 
 # Others

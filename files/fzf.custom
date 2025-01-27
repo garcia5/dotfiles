@@ -4,6 +4,7 @@
 export FZF_DEFAULT_COMMAND='fd -tf'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 # Basic global opts
+border_style="rounded"
 export FZF_DEFAULT_OPTS="--height 60% \
     --border=none \
     --info=inline-right \
@@ -12,6 +13,11 @@ export FZF_DEFAULT_OPTS="--height 60% \
     --multi \
     --pointer='' \
     --marker='' \
+    --input-label='Search' \
+    --list-border=$border_style \
+    --header-border=$border_style \
+    --input-border=$border_style \
+    --preview-label='Preview' \
     --bind 'ctrl-u:preview-half-page-up,ctrl-d:preview-half-page-down' \
     --bind 'ctrl-h:toggle-preview'\
     --bind 'ctrl-y:jump-accept'"
@@ -19,13 +25,21 @@ export FZF_DEFAULT_OPTS="--height 60% \
 # Color schemes -- https://github.com/catppuccin/fzf
 # "mocha"
 export FZF_COLOR_OPTS="--color=bg+:#313244,bg:#1e1e2e,spinner:#f5e0dc,hl:#f38ba8 \
-    --color=fg:#cdd6f4,header:#f38ba8,info:#cba6f7,pointer:#f5e0dc \
+    --color=fg:#cdd6f4,info:#cba6f7,pointer:#f5e0dc \
     --color=marker:#f5e0dc,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8 \
-    --color=preview-border:#45475a,preview-scrollbar:#45475a \
-    --color=selected-fg:#fab387"
+    --color=list-border:#a6e3a1,list-label:#a6e3a1 \
+    --color=input-border:#cba6f7,input-label:#cba6f7 \
+    --color=preview-border:#f38ba8,preview-label:#f39ba8 \
+    --color=header-border:#89b4fa,header-label:#89b4fa"
+
 # "latte"
 [[ "$THEME_MODE" == "Light" ]] && export FZF_COLOR_OPTS=" \
 --color=bg+:#ccd0da,bg:#eff1f5,spinner:#dc8a78,hl:#d20f39 \
 --color=fg:#4c4f69,header:#d20f39,info:#8839ef,pointer:#dc8a78 \
---color=marker:#dc8a78,fg+:#4c4f69,prompt:#8839ef,hl+:#d20f39"
+--color=marker:#dc8a78,fg+:#4c4f69,prompt:#8839ef,hl+:#d20f39 \
+--color=list-border:#40a02b,list-label:#40a02b \
+--color=input-border:#8839ef,input-label:#8839ef \
+--color=preview-border:#d20f39,preview-label:#d20f39 \
+--color=header-border:#1e66f5,header-label:#1e66f5"
+
 export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS $FZF_COLOR_OPTS"
