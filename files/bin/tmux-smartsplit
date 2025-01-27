@@ -3,20 +3,21 @@
 # Usage:
 # tmux-smartsplit [CWD]
 
-main {
+main() {
     cols="$(tmux display-message -p -F '#{pane_width}')"
+    cur_path="$(tmux display-message -p -F '#{pane_current_path}')"
 
     if [[ ! "$cols" ]]; then
-        tmux split-window -h -c "$1"
+        tmux split-window -h -c "$cur_path"
         exit 0
     fi
 
     if [[ $cols -gt 300 ]]; then
-        tmux split-window -h -c "$1" -l "$(( $cols / 3 ))"
+        tmux split-window -h -c "$cur_path" -l "$(( cols / 3 ))"
     else
-        tmux split-window -h -c "$1"
+        tmux split-window -h -c "$cur_path"
     fi
     exit 0
 }
 
-main "$@"
+main
