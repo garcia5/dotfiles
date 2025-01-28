@@ -57,6 +57,6 @@ y = 5
 
 [general]
 live_config_reload = true
-import = ["/Users/xpu779/.config/alacritty/colors/catppuccin.toml", "/Users/xpu779/.config/alacritty/keymaps.toml"]
+import = ["/Users/xpu779/.config/alacritty/colors/catppuccin-mocha.toml", "/Users/xpu779/.config/alacritty/keymaps.toml"]
 
 [terminal]
