@@ -87,7 +87,7 @@ local ts = {
                     ["<Leader>l"] = "@parameter.inner",
                 },
                 swap_previous = {
-                    ["<Leader>h"] = "@parameter.outer",
+                    ["<Leader>h"] = "@parameter.inner",
                 },
             },
         },
@@ -118,17 +118,6 @@ local ts_context = {
         multiline_threshold = 5, -- Maximum number of lines to show for a single context
         trim_scope = "outer", -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
         mode = "topline", -- Line used to calculate context. Choices: 'cursor', 'topline'
-    },
-    keys = {
-        {
-            "<Leader>tc",
-            "<cmd>TSContextToggle<CR>",
-            desc = "Toggle treesitter context",
-        },
-    },
-    cmd = {
-        "TSContextEnable",
-        "TSContextToggle",
     },
 }
 
