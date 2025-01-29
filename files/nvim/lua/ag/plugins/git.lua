@@ -1,10 +1,26 @@
 local fugitive = {
     "tpope/vim-fugitive",
+    dependencies = {
+        "tpope/vim-rhubarb",
+    },
+    init = function()
+        local ent_url = vim.fn.environ()["GH_ENTERPRISE_URL"]
+        if ent_url ~= nil then
+            vim.g.github_enterprise_urls = {
+                [ent_url] = "https://" .. ent_url,
+            }
+        end
+    end,
     keys = {
         {
             "<Leader>gs",
             ":tab Git<CR>",
             desc = "Git status in new tab",
+        },
+        {
+            "<Leader>gx",
+            ":GBrowse<CR>",
+            desc = "Open current file in GitHub",
         },
     },
     cmd = "Git",
