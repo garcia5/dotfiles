@@ -5,7 +5,7 @@ export FZF_DEFAULT_COMMAND='fd -tf'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 # Basic global opts
 border_style="rounded"
-export FZF_DEFAULT_OPTS="--height 60% \
+export FZF_DEFAULT_OPTS="--height 75% \
     --border=none \
     --info=inline-right \
     --scrollbar=▏▕ \

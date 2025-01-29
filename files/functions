@@ -100,8 +100,9 @@ bindkey '' ctrl-t-widget
 
 fzf-ctrl-t() {
     local cmd='fd -tf'
-    local fzf_cmd="fzf $FZF_DEFAULT_OPTS \
-        --list-label='Files' \
+    local fzf_cmd="fzf \
+        --scheme path \
+        --list-label 'Files' \
         --preview 'bat --color=always --line-range=:40 --style=numbers,changes {}' \
         --bind 'enter:execute(echo {q})+accept'"
     # Preview files (but not everything else) with bat
@@ -110,18 +111,18 @@ fzf-ctrl-t() {
 
 fzf-js-test() {
     local cmd="rg -n -m 1 'describe' --glob '*.spec.ts' --line-number --no-heading"
-    local fzf_cmd=fzf $FZF_DEFUALT_OPTS \
-    eval "$cmd" |
+    local fzf_cmd="fzf \
         --multi \
+        --scheme path \
         --height 100% \
         --delimiter : \
         --nth 1 \
         --list-label='Test Files' \
         --header 'ctrl-f: All files | ctrl-g Test files' \
-        --bind "ctrl-f:change-list-label(Files)+reload($FZF_DEFAULT_COMMAND)" \
-        --bind "ctrl-g:change-list-label(Test Files)+reload($cmd)" \
-        --preview "bat --color=always --line-range=:40 --style=plain --highlight-line={2} {1}" |
-    cut -d: -f1
+        --bind 'ctrl-f:change-list-label(Files)+reload($FZF_DEFAULT_COMMAND)' \
+        --bind 'ctrl-g:change-list-label(Test Files)+reload($cmd)' \
+        --preview 'bat --color=always --line-range=:40 --style=plain --highlight-line={2} {1}'"
+    eval "$cmd" | "$fzf_cmd" | cut -d: -f1
 }
 
 fzf-pytest() {
@@ -129,6 +130,7 @@ fzf-pytest() {
     eval "$cmd" |
     fzf \
         --multi \
+        --scheme path \
         --header 'ctrl-f: All files | ctrl-g Test files' \
         --bind "ctrl-f:change-list-label(Files)+reload($FZF_DEFAULT_COMMAND)" \
         --bind "ctrl-g:change-list-label(Test Files)+reload($cmd)" \
@@ -159,7 +161,6 @@ fzf-git-checkout() {
         --bind "ctrl-r:reload($git_cmd --all | $format)+change-list-label(Branches)" \
         --bind "ctrl-l:reload($git_cmd | $format)+change-list-label(Branches (local))" \
         --list-label "Git Braches" \
-        --preview-window 'right:50%' \
         --preview 'git log --oneline --graph --date=short --color=always --pretty="format:%C(auto)%cd %h%d %s" {}'
 }
 
@@ -168,14 +169,18 @@ fzf-git-commits() {
     is-git-repo || echo 'Not in git repo'
 
     cmd="git log --date-order --abbrev-commit --oneline --decorate --color=always"
+    preview_cmd="git show --color=always --format=medium --stat -p {1} | fzf-delta"
+    diffview_cmd="nvim +'DiffviewOpen {1}'"
     eval "$cmd" |
     fzf \
         --ansi \
         --multi \
-        --height '70%' \
         --list-label "Commits" \
-        --preview-window 'down,70%' \
-        --preview 'git show --color=always --format=short --stat -p {1} | fzf-delta' |
+        --header "Ctrl-a: open in delta | Ctrl-t: open in nvim" \
+        --header-lines 0 \
+        --bind "ctrl-a:execute($preview_cmd)" \
+        --bind "ctrl-t:become($diffview_cmd)" \
+        --preview "$preview_cmd" |
     cut -d' ' -f1
 }
 git-commit-widget() {
@@ -198,7 +203,6 @@ fzf-git-branch() {
         --multi \
         --list-label "${prompt}" \
         --header "ctrl-a: All branches | ctrl-l: Local branches" \
-        --preview-window 'right,50%' \
         --bind "ctrl-a:reload($git_cmd --all | $format)+change-list-label(Branches (all))" \
         --bind "ctrl-l:reload($git_cmd | $format)+change-list-label(Branches)" \
         --preview 'git log --oneline --graph --date=short --color=always --pretty="format:%C(auto)%cd %h%d %s" {}'
@@ -219,6 +223,7 @@ fzf-git-changed() {
         --multi \
         --height '70%' \
         --ansi \
+        --scheme path \
         --header 'ctrl-f: All files | ctrl-g: Changed files' \
         --bind "ctrl-f:change-list-label(Files)+reload($FZF_DEFAULT_COMMAND)" \
         --bind "ctrl-g:change-list-label(Changed Files)+reload($cmd)" \
@@ -237,6 +242,7 @@ fzf-ls() {
     fzf \
         --ansi \
         --multi \
+        --scheme path \
         --header "ctrl-d: Directories / ctrl-f: Files" \
         --bind "ctrl-d:change-list-label(Directories)+reload(fd -td)+change-preview(${dir_preview})" \
         --bind "ctrl-f:change-list-label(Files)+reload(fd -tf)+change-preview(${file_preview})" \
