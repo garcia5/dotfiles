@@ -1,7 +1,6 @@
 [bell]
-animation = "EaseOutExpo"
 command = "None"
-duration = 10
+duration = 0
 
 [cursor]
 unfocused_hollow = true
@@ -13,7 +12,6 @@ shape = "Beam"
 
 [font]
 size = 14.0
-use_thin_strokes = true
 
 [font.normal]
 family = "JetBrainsMono Nerd Font Mono"
@@ -50,6 +48,8 @@ program = "/bin/zsh"
 decorations = "buttonless"
 dynamic_padding = true
 dynamic_title = false
+startup_mode = "Maximized"
+option_as_alt = "OnlyLeft"
 
 [window.padding]
 x = 5
@@ -57,6 +57,6 @@ y = 5
 
 [general]
 live_config_reload = true
-import = ["/Users/xpu779/.config/alacritty/colors/catppuccin-mocha.toml", "/Users/xpu779/.config/alacritty/keymaps.toml"]
+import = ["colors/catppuccin-mocha.toml", "keymaps.toml"]
 
 [terminal]

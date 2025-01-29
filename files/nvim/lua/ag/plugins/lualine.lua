@@ -113,6 +113,8 @@ return {
             },
             lualine_z = {
                 { "filetype", cond = function() return not IS_START() end },
+                { "location", cond = function() return IS_WIDE() and not IS_START() end },
+                { "progress", cond = function() return IS_WIDE() and not IS_START() end },
             },
         },
         tabline = {

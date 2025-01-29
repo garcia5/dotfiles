@@ -1,7 +1,7 @@
 [keyboard]
 [[keyboard.bindings]]
 action = "ToggleViMode"
-key = "Space"
+key = "J"
 mode = "~Search"
 mods = "Shift|Control"
 
@@ -14,11 +14,6 @@ mods = "Shift|Control"
 [[keyboard.bindings]]
 action = "ClearSelection"
 key = "Escape"
-mode = "Vi|~Search"
-
-[[keyboard.bindings]]
-action = "ToggleViMode"
-key = "I"
 mode = "Vi|~Search"
 
 [[keyboard.bindings]]
