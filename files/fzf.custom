@@ -35,6 +35,16 @@ export FZF_DEFAULT_OPTS="--height 90% \
     --bind 'ctrl-h:toggle-preview'\
     --bind 'ctrl-y:jump-accept'"
 
+# Default ctrl-t display options
+export FZF_CTRL_T_OPTS="--scheme path \
+    --preview 'bat --color=always --style=numbers,changes {}' \
+    --list-label 'Files'"
+
+export FZF_CTRL_R_OPTS="--scheme history \
+    --list-label 'History'
+    --bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort' \
+    --header 'ctrl-y: Copy command to clipboard'"
+
 # Color schemes -- https://github.com/catppuccin/fzf
 # "mocha"
 export FZF_COLOR_OPTS="--color=bg+:#313244,bg:#1e1e2e,spinner:#f5e0dc,hl:#f38ba8 \

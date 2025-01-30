@@ -75,7 +75,7 @@ else
 fi
 
 # Brew
-if [[ -d /opt/homebrew ]]; then
+if [ -d /opt/homebrew ]; then
     eval "$(/opt/homebrew/bin/brew shellenv)"
     # Autocomplete from installed apps
     FPATH="$(brew --prefix)/share/zsh/site-functions:$FPATH"
@@ -203,4 +203,4 @@ fi
 export PATH="$HOME/devel/flutter/bin:$PATH"
 
 # Machine-specific configs
-# [[ -f "$HOME/.custom" ]] && . "$HOME/.custom"
+[ -f "$HOME/.custom" ] && . "$HOME/.custom"
