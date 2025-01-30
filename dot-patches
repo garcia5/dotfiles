@@ -1,0 +1,58 @@
+#!/bin/bash
+# Helper to more easily generate/apply commit patches in case work firewalls don't let me push to public github
+
+
+function gen_patches() {
+    branch_name="$(git branch --show-current)"
+    if [ "$branch_name" == "master" ]; then
+        echo "Already on master, nothing to do"
+        exit 0
+    fi
+
+    patch_from="$2"
+    if [ -z "$patch_from" ]; then
+        patch_from="origin/master"
+    fi
+
+    today=$(date +%Y-%m-%d)
+    patch_dir="${HOME}/Documents/patches-${today}"
+    if [ -d "$patch_dir" ]; then
+        rm -rf "$patch_dir"
+    fi
+    mkdir -p "$patch_dir"
+
+    # Generate patches
+    gen_patch_cmd="git format-patch -o ${patch_dir} ${patch_from}..HEAD"
+    echo "$gen_patch_cmd" && eval "$gen_patch_cmd"
+
+    # Zip result
+    zip_cmd="zip -j ${patch_dir}/patch-${today}.zip ${patch_dir}/*.patch"
+    echo "$zip_cmd" && eval "$zip_cmd"
+
+    echo "Patch output written to ${patch_dir}/patch-${today}.zip"
+    exit 0
+}
+
+function apply_patches {
+    patch_dir="$2"
+
+    if [ ! -d "$patch_dir" ]; then
+        echo "$patch_dir does not exist, exiting"
+        exit 1
+    fi
+
+    cmd="git am ${patch_dir}/*.patch"
+    echo "$cmd" && eval "$cmd"
+}
+
+case "$1" in
+    "gen")
+        gen_patches "$2"
+        ;;
+    "appply")
+        apply_patches "$2"
+        ;;
+    "*")
+        echo "$0 [gen,apply]"
+        exit 1
+esac
