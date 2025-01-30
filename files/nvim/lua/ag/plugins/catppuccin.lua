@@ -71,7 +71,9 @@ return {
                     background = false,
                 },
                 virtual_text = {},
-                underlines = {},
+                underlines = {
+                    errors = { "underline" },
+                },
             },
             semantic_tokens = true,
             nvimtree = {

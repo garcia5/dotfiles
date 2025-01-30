@@ -83,10 +83,24 @@ local efm = {
             },
         }
 
+        -- custom handler to clean up linter diagnostics
+        local custom_publish_diagnostics = function(_, result, ctx, config)
+            for _, diagnostic in pairs(result.diagnostics) do
+                -- flake8 reports everything as error, force it back to hint (it's never that serious)
+                if diagnostic.source == "efm/flake8" and diagnostic.severity == vim.diagnostic.severity.ERROR then
+                    diagnostic.severity = vim.diagnostic.severity.HINT
+                end
+            end
+            vim.lsp.diagnostic.on_publish_diagnostics(_, result, ctx, config)
+        end
+
         require("lspconfig").efm.setup(vim.tbl_extend("force", efmls_config, {
             on_attach = function(client, bufnr)
                 require("ag.lsp_config").custom_attach(client, bufnr, { allowed_clients = { "efm" } })
             end,
+            handlers = {
+                ["textDocument/publishDiagnostics"] = custom_publish_diagnostics,
+            },
         }))
     end,
     ft = {

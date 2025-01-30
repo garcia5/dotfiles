@@ -40,18 +40,15 @@ M.custom_attach = function(client, bufnr, format_opts)
     vim.keymap.set("n", "<c-]>", vim.lsp.buf.definition, with_desc(keymap_opts, "Goto Definition"))
     vim.keymap.set("n", "<leader>gr", "<cmd>Glance references<CR>", with_desc(keymap_opts, "Find References"))
     vim.keymap.set("n", "gr", vim.lsp.buf.rename, with_desc(keymap_opts, "Rename"))
-
-    -- diagnostics
-    vim.keymap.set("n", "<leader>dk", vim.diagnostic.open_float, with_desc(keymap_opts, "View Current Diagnostic")) -- diagnostic(s) on current line
-    vim.keymap.set("n", "<leader>dn", vim.diagnostic.goto_next, with_desc(keymap_opts, "Goto next diagnostic")) -- move to next diagnostic in buffer
-    vim.keymap.set("n", "<leader>dp", vim.diagnostic.goto_prev, with_desc(keymap_opts, "Goto prev diagnostic")) -- move to prev diagnostic in buffer
-    vim.keymap.set("n", "<leader>da", vim.diagnostic.setqflist, with_desc(keymap_opts, "Populate qf list")) -- show all buffer diagnostics in qflist
     vim.keymap.set("n", "H", function()
         -- make sure telescope is loaded for code actions
         require("telescope").load_extension("ui-select")
         vim.lsp.buf.code_action()
     end, with_desc(keymap_opts, "Code Actions")) -- code actions (handled by telescope-ui-select)
-    vim.keymap.set("n", "<Leader>rr", "<cmd>LspRestart<CR>", with_desc(keymap_opts, "Restart all LSP clients")) -- restart clients
+    vim.keymap.set("n", "<Leader>rr", function()
+        vim.lsp.stop_client(vim.lsp.get_clients())
+        vim.cmd("edit")
+    end, with_desc(keymap_opts, "Restart all LSP clients")) -- restart clients
 
     if format_opts ~= nil then
         vim.keymap.set(

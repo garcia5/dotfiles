@@ -33,6 +33,8 @@ require("lazy").setup("ag.plugins", {
 
 -- Keymaps
 require("ag.mappings")
+-- Diagnostics
+require("ag.diagnostics")
 
 -- Behaviors
 vim.opt.belloff = "all" -- NO BELLS!
