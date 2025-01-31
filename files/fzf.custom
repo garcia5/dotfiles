@@ -3,9 +3,20 @@
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_COMMAND='fd -tf'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-# Basic global opts
+
+# "smart" layout -> vertical on small terminals, horiz on wide ones
+TRANSFORMER='
+    if [[ ${FZF_COLS:-$COLUMNS} -lt 120 ]]; then
+        echo "+change-preview-window(50%,down)"
+    else
+        echo "+change-preview-window(right)"
+    fi
+'
+
 border_style="rounded"
-export FZF_DEFAULT_OPTS="--height 75% \
+
+# Global opts
+export FZF_DEFAULT_OPTS="--height 90% \
     --border=none \
     --info=inline-right \
     --scrollbar=▏▕ \
@@ -17,8 +28,10 @@ export FZF_DEFAULT_OPTS="--height 75% \
     --list-border=$border_style \
     --header-border=$border_style \
     --input-border=$border_style \
-    --preview-label='Preview' \
-    --bind 'ctrl-u:preview-half-page-up,ctrl-d:preview-half-page-down' \
+    --preview-label='Preview (<C-h> to toggle)' \
+    --bind 'resize:transform:$TRANSFORMER' \
+    --bind 'start:transform:$TRANSFORMER' \
+    --bind 'ctrl-b:preview-half-page-up,ctrl-f:preview-half-page-down' \
     --bind 'ctrl-h:toggle-preview'\
     --bind 'ctrl-y:jump-accept'"
 
@@ -27,6 +40,7 @@ export FZF_DEFAULT_OPTS="--height 75% \
 export FZF_COLOR_OPTS="--color=bg+:#313244,bg:#1e1e2e,spinner:#f5e0dc,hl:#f38ba8 \
     --color=fg:#cdd6f4,info:#cba6f7,pointer:#f5e0dc \
     --color=marker:#f5e0dc,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8 \
+    --color=selected-bg:#45475a \
     --color=list-border:#a6e3a1,list-label:#a6e3a1 \
     --color=input-border:#cba6f7,input-label:#cba6f7 \
     --color=preview-border:#f38ba8,preview-label:#f39ba8 \
@@ -37,6 +51,7 @@ export FZF_COLOR_OPTS="--color=bg+:#313244,bg:#1e1e2e,spinner:#f5e0dc,hl:#f38ba8
 --color=bg+:#ccd0da,bg:#eff1f5,spinner:#dc8a78,hl:#d20f39 \
 --color=fg:#4c4f69,header:#d20f39,info:#8839ef,pointer:#dc8a78 \
 --color=marker:#dc8a78,fg+:#4c4f69,prompt:#8839ef,hl+:#d20f39 \
+--color=selected-bg:#bcc0cc \
 --color=list-border:#40a02b,list-label:#40a02b \
 --color=input-border:#8839ef,input-label:#8839ef \
 --color=preview-border:#d20f39,preview-label:#d20f39 \
