@@ -29,8 +29,7 @@ export FZF_DEFAULT_OPTS="--height 90% \
     --header-border=$border_style \
     --input-border=$border_style \
     --preview-label='Preview (<C-h> to toggle)' \
-    --bind 'resize:transform:$TRANSFORMER' \
-    --bind 'start:transform:$TRANSFORMER' \
+    --bind 'resize,start:transform:$TRANSFORMER' \
     --bind 'ctrl-b:preview-half-page-up,ctrl-f:preview-half-page-down' \
     --bind 'ctrl-h:toggle-preview'\
     --bind 'ctrl-y:jump-accept'"

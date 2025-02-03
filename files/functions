@@ -14,7 +14,7 @@ join-lines() {
 
 # Git
 cg () {
-    is-git-repo || echo 'Not in git repo' && exit 0
+    is-git-repo || { echo 'Not in git repo'; return 0 }
     cd $(git rev-parse --show-toplevel)
 }
 
@@ -23,7 +23,7 @@ is-git-repo() {
 }
 
 gpush() {
-    is-git-repo || echo 'Not in git repo' && exit 0
+    is-git-repo || { echo 'Not in git repo'; return 0 }
 
     cur_branch=$(git branch --show-current)
     has_remote=$(git branch -r --list "origin/$cur_branch")
@@ -138,7 +138,7 @@ fzf-pytest() {
 }
 
 fzf-git-checkout() {
-    is-git-repo || echo 'Not in git repo' && exit 0
+    is-git-repo || { echo 'Not in git repo'; return 0 }
 
     # pass args straight to git-checkout if provided
     arg=$1
@@ -164,7 +164,7 @@ fzf-git-checkout() {
 
 zle -N git-commit-widget
 fzf-git-commits() {
-    is-git-repo || echo 'Not in git repo' && exit 0
+    is-git-repo || { echo 'Not in git repo'; return 0 }
 
     cmd="git log --date-order --abbrev-commit --oneline --decorate --color=always"
     diff_cmd="git show --color=always --format=medium --stat -p {1} | fzf-delta"
@@ -191,7 +191,7 @@ bindkey '' git-commit-widget
 
 zle -N git-branch-widget
 fzf-git-branch() {
-    is-git-repo || echo 'Not in git repo' && exit 0
+    is-git-repo || { echo 'Not in git repo'; return 0 }
     local prompt="${1:-Branches}"
     local git_cmd="git branch --color=always --sort=-committerdate"
     local format="grep -v HEAD | sed 's/^..//' | sed 's,remotes/,,' | cut -d' ' -f1"
@@ -214,7 +214,6 @@ git-branch-widget() {
 bindkey '' git-branch-widget
 
 fzf-git-changed() {
-    is-git-repo || echo 'Not in git repo' && exit 0
     cmd="git -c color.status=always status --short"
     diff_cmd="delta-git-diff {}"
     bat_cmd="bat --color=always {}"
@@ -222,7 +221,6 @@ fzf-git-changed() {
     eval "$cmd" |
     fzf \
         --multi \
-        --height '70%' \
         --ansi \
         --scheme path \
         --header 'ctrl-f: All files | ctrl-g: Changed files' \
