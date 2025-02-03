@@ -21,37 +21,8 @@ return {
             comments = { "italic" },
         },
         custom_highlights = function(colors)
-            local prompt = colors.surface0
-            -- borderless telescope
             return {
-                TelescopeNormal = {
-                    bg = colors.mantle,
-                    fg = colors.text,
-                },
-                TelescopeBorder = {
-                    bg = colors.mantle,
-                    fg = colors.mantle,
-                },
-                TelescopePromptNormal = {
-                    bg = prompt,
-                },
-                TelescopePromptBorder = {
-                    bg = prompt,
-                    fg = prompt,
-                },
-                TelescopePromptTitle = {
-                    bg = prompt,
-                    fg = prompt,
-                },
-                TelescopePreviewTitle = {
-                    bg = colors.mantle,
-                    fg = colors.mantle,
-                },
-                TelescopeResultsTitle = {
-                    bg = colors.mantle,
-                    fg = colors.mantle,
-                },
-                -- treesitter context
+                -- More pronounced treesitter context background
                 TreesitterContext = {
                     bg = colors.mantle,
                 },
@@ -61,10 +32,9 @@ return {
         integrations = {
             aerial = true,
             alpha = true,
-            gitsigns = true,
-            diffview = true,
-            cmp = true,
             blink_cmp = true,
+            diffview = true,
+            gitsigns = true,
             native_lsp = {
                 enabled = true,
                 inlay_hints = {
@@ -75,15 +45,18 @@ return {
                     errors = { "underline" },
                 },
             },
-            semantic_tokens = true,
             nvimtree = {
                 enabled = true,
                 show_root = false,
             },
             render_markdown = true,
+            semantic_tokens = true,
+            telescope = {
+                enabled = true,
+                style = "nvchad",
+            },
             treesitter = true,
             treesitter_context = true,
-            ts_rainbow2 = true,
         },
     },
 }

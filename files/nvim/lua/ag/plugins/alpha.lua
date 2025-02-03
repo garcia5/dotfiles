@@ -40,7 +40,7 @@ return {
 
         ---@param fn string filename
         ---@param sc string shortcut key
-        ---@param short_fn function shortening function
+        ---@param short_fn string | nil shortened filename
         ---@return table
         local function file_button(fn, sc, short_fn)
             short_fn = short_fn or fn
@@ -72,8 +72,8 @@ return {
 
         ---Get most recently used files
         ---@param cwd string current dir
-        ---@param num_items number number of recent files to fetch
-        ---@param opts table
+        ---@param num_items number|nil number of recent files to fetch
+        ---@param opts table|nil
         ---@return table
         local function mru(cwd, num_items, opts)
             opts = opts or mru_opts
