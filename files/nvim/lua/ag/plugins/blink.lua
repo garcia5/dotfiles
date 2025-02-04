@@ -1,5 +1,6 @@
 return {
     "saghen/blink.cmp",
+    event = "InsertEnter",
     dependencies = {
         {
             "L3MON4D3/LuaSnip",
@@ -37,7 +38,14 @@ return {
         },
 
         sources = {
-            default = { "snippets", "lsp", "path", "buffer" },
+            default = { "snippets", "lsp", "path", "buffer", "markdown" },
+            providers = {
+                markdown = {
+                    name = "RenderMarkdown",
+                    module = "render-markdown.integ.blink",
+                    fallbacks = { "lsp" },
+                },
+            },
             cmdline = {}, -- disable command line completion, it breaks "cabbrev"s
         },
 

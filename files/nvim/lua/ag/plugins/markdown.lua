@@ -12,6 +12,9 @@ return {
         latex = {
             enabled = false,
         },
+        anti_conceal = {
+            enabled = true,
+        },
         heading = {
             position = "overlay",
             border = true,
@@ -36,7 +39,7 @@ return {
         link = {
             custom = {
                 github = {
-                    pattern = "^http[s]?://[%w%.%-]*github%.[%w%.%-]*%.com",
+                    pattern = "^http[s]?://[%w%.%-]*github[%w%.%-]*%.com",
                     icon = " ",
                     highlight = "RenderMarkdownTableLink",
                 },

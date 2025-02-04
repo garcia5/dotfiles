@@ -41,6 +41,9 @@ mapper("t", "<C-j>", [[<C-\><C-n><C-w>j]], "Window down")
 mapper("t", "<C-h>", [[<C-\><C-n><C-w>h]], "Window left")
 mapper("t", "<C-k>", [[<C-\><C-n><C-w>k]], "Window up")
 mapper("t", "<C-l>", [[<C-\><C-n><C-w>l]], "Window right")
+-- Quickfix
+mapper("n", "<M-j>", "<cmd>cnext<CR>", "Next quickfix")
+mapper("n", "<M-k>", "<cmd>cprev<CR>", "Prev quickfix")
 
 -- Others
 mapper("n", "<Down>", [["pdd"pp]], "Move line down")
