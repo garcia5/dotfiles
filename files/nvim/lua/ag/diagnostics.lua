@@ -38,3 +38,10 @@ vim.keymap.set("n", "<leader>dk", vim.diagnostic.open_float, { silent = true, de
 vim.keymap.set("n", "<leader>dn", vim.diagnostic.goto_next, { silent = true, desc = "Goto next diagnostic" })
 vim.keymap.set("n", "<leader>dp", vim.diagnostic.goto_prev, { silent = true, desc = "Goto prev diagnostic" })
 vim.keymap.set("n", "<leader>da", vim.diagnostic.setqflist, { silent = true, desc = "Populate qf list" })
+vim.keymap.set("n", "<leader>do", function()
+    if vim.diagnostic.is_enabled() then
+        vim.diagnostic.enable(false)
+    else
+        vim.diagnostic.enable()
+    end
+end, { silent = true, desc = "Toggle diagnostics" })

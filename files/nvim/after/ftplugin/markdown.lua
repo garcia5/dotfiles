@@ -4,16 +4,16 @@ local function get_text_inside_double_square_brackets()
     local cursor_row = cursor_pos[1]
 
     local line = vim.fn.getline(cursor_row)
-    local fname = line:match("%[%[(.+)%]%]")
+    local text = line:match("%[%[(.+)%]%]")
 
-    return fname
+    return text
 end
 
 vim.keymap.set("n", "<C-]>", function()
     local text = get_text_inside_double_square_brackets()
     if text ~= nil then
         local fname = get_text_inside_double_square_brackets() .. ".md"
-        vim.cmd('find ++edit' .. fname, {desc="Goto file reference"})
+        vim.cmd("find ++edit" .. fname, { desc = "Goto file reference" })
     end
 end)
 

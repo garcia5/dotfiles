@@ -54,6 +54,13 @@ vim.opt.splitbelow = true -- prefer splitting below
 vim.opt.splitkeep = "screen" -- keep text on screen the same when splitting
 vim.opt.wrap = false -- don't wrap my text
 vim.opt.linebreak = true -- if I toggle `wrap` ON, only break between words
+vim.opt.diffopt = "internal,filler,closeoff,indent-heuristic,linematch:60,algorithm:histogram" -- smarter diff detection
+-- internal            : builtin diff library
+-- filler              : show "filler" lines to keep text aligned
+-- closeoff            : automatically run ":diffoff" if there's only 1 diff buffer left open
+-- indent-heuristic    : take into account indentation when computing diffs
+-- linematch:{n}       : re-arrange up to {n} lines in a hunk to place similar lines side-by-side
+-- algorighm:histogram : https://tiarkrompf.github.io/notes/?/diff-algorithm/
 
 -- Indentation
 vim.opt.autoindent = true -- continue indentation to new line

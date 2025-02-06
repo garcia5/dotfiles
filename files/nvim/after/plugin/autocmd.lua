@@ -17,9 +17,7 @@ au("BufEnter", {
 
 au("VimResized", {
     desc = "Equalize splits automatically",
-    callback = function ()
-        vim.cmd("wincmd =")
-    end
+    callback = function() vim.cmd("wincmd =") end,
 })
 
 local term_group = augroup("term", { clear = false })
@@ -89,18 +87,15 @@ au("BufReadPost", {
 -- Aerial specific mapping
 au("FileType", {
     pattern = "aerial",
-    callback = function() vim.keymap.set("n", "q", ":q<CR>", { noremap = true, silent = true, buffer = true, desc = "quit aerial" }) end,
+    callback = function()
+        vim.keymap.set("n", "q", ":q<CR>", { noremap = true, silent = true, buffer = true, desc = "quit aerial" })
+    end,
 })
 
 au("FileType", {
     pattern = "vue",
     desc = "Treesitter indenting for vue files",
     command = "TSBufEnable indent",
-})
-
-au("FileType", {
-    pattern = "qf",
-    command = "set number",
 })
 
 au("FileType", {
@@ -116,26 +111,16 @@ au("FileType", {
 au("FileType", {
     pattern = "yaml",
     desc = "Only start yamlls for files that are not pnpm-lock.yaml",
-    callback = function (event)
+    callback = function(event)
         -- pnpm-lock file, do nothing
-        if string.find(event.file, "pnpm%-lock.yaml") then
-            return
-        end
+        if string.find(event.file, "pnpm%-lock.yaml") then return end
         -- yamlls already running, do nothing
         local clients = vim.lsp.get_active_clients()
         for _, client in ipairs(clients) do
-            if client.name == "yamlls" then
-                return
-            end
+            if client.name == "yamlls" then return end
         end
 
         -- Start yaml language server
         vim.cmd([[LspStart yamlls]])
-    end
-})
-
--- Debugger repl autocomplete
-au("FileType", {
-    pattern = "dap-repl",
-    callback = function() require("dap.ext.autocompl").attach() end,
+    end,
 })
