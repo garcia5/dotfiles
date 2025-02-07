@@ -5,21 +5,6 @@ local exit_if_last = function()
     if vim.fn.winnr("$") == 1 then vim.cmd("q") end
 end
 
--- Global formatopts
-au("BufEnter", {
-    pattern = "*",
-    desc = "Set global formatopts",
-    callback = function()
-        local buftype = vim.opt.buftype:get()
-        if buftype ~= "terminal" then vim.opt.formatoptions = "lcrqjn" end
-    end,
-})
-
-au("VimResized", {
-    desc = "Equalize splits automatically",
-    callback = function() vim.cmd("wincmd =") end,
-})
-
 local term_group = augroup("term", { clear = false })
 au("TermOpen", {
     group = term_group,

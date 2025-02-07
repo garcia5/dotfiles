@@ -109,6 +109,7 @@ vim.opt.fillchars:append({
 })
 vim.opt.cursorline = true -- hightlight line cursor is on
 vim.opt.laststatus = 3 -- single global statusline
+vim.opt.formatoptions = "lcrqjn" -- default format options, can be overridden by builtin ftplugins
 
 -- Searching
 vim.opt.wildmenu = true -- tab complete on command line
