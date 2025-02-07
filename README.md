@@ -43,6 +43,9 @@ TODO:
 - [ ] `:ReviewGithub submit|approve|reject`
 
 ### Unknowns
-[!QUESTION] What are the "states" of a pull request?
-[!QUESTION] How do you add/store comments without submitting the review?
+> [!QUESTION]
+> What are the "states" of a pull request?
+
+> [!QUESTION]
+> How do you add/store comments without submitting the review?
 

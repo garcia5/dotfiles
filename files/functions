@@ -148,7 +148,7 @@ fzf-git-checkout() {
     fi
 
     local git_cmd="git branch --color=always --sort=-committerdate"
-    local format="grep -v HEAD | sed 's/^..//' | sed -r 's,remotes/[A-Za-z0-9_-]*/,,' | cut -d' ' -f1"
+    local format="grep -v HEAD | sed 's/^..//' | sed 's,remotes/,,' | cut -d' ' -f1"
     eval "$git_cmd --all | $format" |
     fzf \
         --ansi \
@@ -156,9 +156,9 @@ fzf-git-checkout() {
         --bind "enter:execute(git switch {..})+accept" \
         --bind "ctrl-a:execute(git switch -c {q})+accept" \
         --bind "ctrl-t:execute(git switch --track {..})+accept" \
-        --bind "ctrl-r:reload($git_cmd --all | $format)+change-list-label(Branches)" \
-        --bind "ctrl-l:reload($git_cmd | $format)+change-list-label(Branches (local))" \
-        --list-label "Git Braches" \
+        --bind "ctrl-r:reload($git_cmd --all | $format)+change-list-label(All Branches)" \
+        --bind "ctrl-l:reload($git_cmd | $format)+change-list-label(Local Branches)" \
+        --list-label "All Branches" \
         --preview 'git log --oneline --graph --date=short --color=always --pretty="format:%C(auto)%cd %h%d %s" {}'
 }
 
