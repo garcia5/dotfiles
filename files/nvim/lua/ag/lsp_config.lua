@@ -3,6 +3,8 @@ local M = {}
 -- Give floating windows borders
 vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" })
 
+vim.lsp.log.set_level(vim.log.levels.DEBUG)
+
 -- restricted format
 ---@param bufnr number buffer to format
 ---@param allowed_clients string[] client names to allow formatting
@@ -64,133 +66,159 @@ M.custom_attach = function(client, bufnr, format_opts)
     end
 end
 
-M.servers = function()
-    return {
-        pyright = {
-            on_new_config = function(new_config)
-                local python_path = require("ag.utils").get_python_path()
-                if python_path ~= nil then new_config.settings.python.pythonPath = python_path end
-            end,
-            on_attach = function(client, bufnr)
-                M.custom_attach(client, bufnr, { allowed_clients = { "efm" } })
-                -- 'Organize imports' keymap for pyright only
-                vim.keymap.set("n", "<Leader>ii", "<cmd>PyrightOrganizeImports<CR>", {
-                    buffer = bufnr,
-                    silent = true,
-                    noremap = true,
-                })
-            end,
-            settings = {
-                pyright = {
-                    disableOrganizeImports = false,
-                    analysis = {
-                        useLibraryCodeForTypes = true,
-                        autoSearchPaths = true,
-                        diagnosticMode = "workspace",
-                        autoImportCompletions = true,
-                    },
+M.servers = {
+    pyright = {
+        on_new_config = function(new_config)
+            local python_path = require("ag.utils").get_python_path()
+            if python_path ~= nil then new_config.settings.python.pythonPath = python_path end
+        end,
+        on_attach = function(client, bufnr)
+            M.custom_attach(client, bufnr, { allowed_clients = { "efm" } })
+            -- 'Organize imports' keymap for pyright only
+            vim.keymap.set("n", "<Leader>ii", "<cmd>PyrightOrganizeImports<CR>", {
+                buffer = bufnr,
+                silent = true,
+                noremap = true,
+            })
+        end,
+        settings = {
+            pyright = {
+                disableOrganizeImports = false,
+                analysis = {
+                    useLibraryCodeForTypes = true,
+                    autoSearchPaths = true,
+                    diagnosticMode = "workspace",
+                    autoImportCompletions = true,
                 },
             },
         },
-        volar = {
-            on_attach = function(client, bufnr) M.custom_attach(client, bufnr, { allowed_clients = { "efm" } }) end,
-            -- enable "take over mode" for typescript files as well: https://github.com/johnsoncodehk/volar/discussions/471
-            filetypes = { "typescript", "javascript", "vue" },
-            on_new_config = function(new_config, new_root_dir)
-                new_config.init_options.typescript.tsdk = require("ag.utils").get_typescript_server_path(new_root_dir)
-            end,
-        },
+    },
+    volar = {
+        on_attach = function(client, bufnr) M.custom_attach(client, bufnr, { allowed_clients = { "efm" } }) end,
+        -- enable "take over mode" for typescript files as well: https://github.com/johnsoncodehk/volar/discussions/471
+        filetypes = { "typescript", "javascript", "vue" },
+        on_new_config = function(new_config, new_root_dir)
+            new_config.init_options.typescript.tsdk = require("ag.utils").get_typescript_server_path(new_root_dir)
+        end,
+    },
 
-        yamlls = {
-            autostart = false,
-            on_attach = function(client, bufnr)
-                M.custom_attach(client, bufnr, { allowed_clients = { "efm" }, format_on_save = false })
-            end,
+    yamlls = {
+        on_attach = M.custom_attach,
+        settings = {
+            yaml = {
+                customTags = {
+                    "!fn",
+                    "!And",
+                    "!If",
+                    "!Not",
+                    "!Not sequence",
+                    "!Equals",
+                    "!Equals sequence",
+                    "!Or",
+                    "!FindInMap sequence",
+                    "!Base64",
+                    "!Cidr",
+                    "!Ref",
+                    "!Sub",
+                    "!Sub sequence",
+                    "!GetAtt",
+                    "!GetAZs",
+                    "!ImportValue",
+                    "!Select",
+                    "!Split",
+                    "!Join sequence",
+                    "!GetAtt",
+                    "!GetAtt sequence",
+                },
+                schemaStore = {
+                    enable = false,
+                },
+            },
         },
+    },
 
-        bashls = {
-            on_attach = M.custom_attach,
-            filetypes = { "bash", "sh", "zsh" },
-        },
+    bashls = {
+        on_attach = M.custom_attach,
+        filetypes = { "bash", "sh", "zsh" },
+    },
 
-        lua_ls = {
-            on_attach = function(client, bufnr)
-                M.custom_attach(client, bufnr, { allowed_clients = { "efm" }, format_on_save = true })
-            end,
-            on_init = function(client)
-                if client.workspace_folders then
-                    local path = client.workspace_folders[1].name
-                    if vim.fn.filereadable(path .. "/.luarc.json") or vim.fn.filereadable(path .. "/.luarc.jsonc") then
-                        return
-                    end
+    lua_ls = {
+        on_attach = function(client, bufnr)
+            M.custom_attach(client, bufnr, { allowed_clients = { "efm" }, format_on_save = true })
+        end,
+        on_init = function(client)
+            if client.workspace_folders then
+                local path = client.workspace_folders[1].name
+                if vim.fn.filereadable(path .. "/.luarc.json") or vim.fn.filereadable(path .. "/.luarc.jsonc") then
+                    return
                 end
+            end
 
-                client.config.settings.Lua = vim.tbl_deep_extend("force", client.config.settings.Lua, {
-                    runtime = {
-                        -- Tell the language server which version of Lua you're using
-                        -- (most likely LuaJIT in the case of Neovim)
-                        version = "LuaJIT",
+            client.config.settings.Lua = vim.tbl_deep_extend("force", client.config.settings.Lua, {
+                runtime = {
+                    -- Tell the language server which version of Lua you're using
+                    -- (most likely LuaJIT in the case of Neovim)
+                    version = "LuaJIT",
+                },
+                -- Make the server aware of Neovim runtime files
+                workspace = {
+                    checkThirdParty = false,
+                    library = {
+                        vim.env.VIMRUNTIME,
                     },
-                    -- Make the server aware of Neovim runtime files
-                    workspace = {
-                        checkThirdParty = false,
-                        library = {
-                            vim.env.VIMRUNTIME,
-                        },
-                    },
-                })
-            end,
-            settings = {
-                Lua = {
-                    diagnostics = {
-                        -- Get the language server to recognize the `vim` global
-                        globals = { "vim" },
-                    },
+                },
+            })
+        end,
+        settings = {
+            Lua = {
+                diagnostics = {
+                    -- Get the language server to recognize the `vim` global
+                    globals = { "vim" },
                 },
             },
         },
+    },
 
-        jsonls = {
-            on_attach = M.custom_attach,
-            -- settings = {
-            --     json = {
-            --         schemas = require("schemastore").json.schemas(),
-            --         validate = { enable = true },
-            --     },
-            -- },
-        },
+    jsonls = {
+        on_attach = M.custom_attach,
+        -- settings = {
+        --     json = {
+        --         schemas = require("schemastore").json.schemas(),
+        --         validate = { enable = true },
+        --     },
+        -- },
+    },
 
-        -- rust
-        rust_analyzer = {
-            on_attach = function(client, bufnr)
-                M.custom_attach(client, bufnr, { format_on_save = true, allowed_clients = { "rust_analyzer" } })
-            end,
-        },
+    -- rust
+    rust_analyzer = {
+        on_attach = function(client, bufnr)
+            M.custom_attach(client, bufnr, { format_on_save = true, allowed_clients = { "rust_analyzer" } })
+        end,
+    },
 
-        -- go
-        gopls = {
-            on_attach = function(client, bufnr)
-                M.custom_attach(client, bufnr, { allowed_clients = { "gopls" }, format_on_save = true })
-                -- auto organize imports
-                vim.api.nvim_create_autocmd("BufWritePre", {
-                    pattern = "*.go",
-                    callback = function()
-                        vim.lsp.buf.code_action({
-                            context = { only = { "source.organizeImports" } },
-                            apply = true,
-                        })
-                    end,
-                })
-            end,
-        },
+    -- go
+    gopls = {
+        on_attach = function(client, bufnr)
+            M.custom_attach(client, bufnr, { allowed_clients = { "gopls" }, format_on_save = true })
+            -- auto organize imports
+            vim.api.nvim_create_autocmd("BufWritePre", {
+                pattern = "*.go",
+                callback = function()
+                    vim.lsp.buf.code_action({
+                        context = { only = { "source.organizeImports" } },
+                        apply = true,
+                    })
+                end,
+            })
+        end,
+    },
 
-        -- dart
-        dartls = {
-            on_attach = function(client, bufnr)
-                M.custom_attach(client, bufnr, { allowed_clients = { "dartls" }, format_on_save = true })
-            end,
-        },
-    }
-end
+    -- dart
+    dartls = {
+        on_attach = function(client, bufnr)
+            M.custom_attach(client, bufnr, { allowed_clients = { "dartls" }, format_on_save = true })
+        end,
+    },
+}
 
 return M

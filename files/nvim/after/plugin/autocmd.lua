@@ -92,20 +92,3 @@ au("FileType", {
         end
     end,
 })
-
-au("FileType", {
-    pattern = "yaml",
-    desc = "Only start yamlls for files that are not pnpm-lock.yaml",
-    callback = function(event)
-        -- pnpm-lock file, do nothing
-        if string.find(event.file, "pnpm%-lock.yaml") then return end
-        -- yamlls already running, do nothing
-        local clients = vim.lsp.get_active_clients()
-        for _, client in ipairs(clients) do
-            if client.name == "yamlls" then return end
-        end
-
-        -- Start yaml language server
-        vim.cmd([[LspStart yamlls]])
-    end,
-})

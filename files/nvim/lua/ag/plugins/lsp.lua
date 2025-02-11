@@ -2,7 +2,7 @@ local lsp_config = {
     "neovim/nvim-lspconfig",
     dependencies = { "saghen/blink.cmp", "b0o/schemastore.nvim" },
     opts = {
-        servers = require("ag.lsp_config").servers(),
+        servers = require("ag.lsp_config").servers,
     },
     config = function(_, opts)
         local lspconfig = require("lspconfig")
