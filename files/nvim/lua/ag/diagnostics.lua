@@ -7,11 +7,9 @@ vim.diagnostic.config({
         -- Prepend with diagnostic source if there is more than one attached to the buffer
         -- (e.g. (eslint) Error: blah blah blah)
         source = "if_many",
+        hl_mode = "blend",
     },
-    underline = {
-        -- underline ane error level diagnostics
-        severity = vim.diagnostic.severity.ERROR,
-    },
+    underline = true,
     float = {
         severity_sort = true,
         source = "if_many",

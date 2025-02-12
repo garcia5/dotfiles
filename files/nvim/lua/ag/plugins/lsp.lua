@@ -85,8 +85,20 @@ local efm = {
 
         -- custom handler to clean up linter diagnostics
         local custom_publish_diagnostics = function(_, result, ctx, config)
+            -- filter out duplicitive diagnostics from flake8 that pyright
+            -- already covers
+            local flake8_ignore_codes = {
+                "841", -- F841: unused variable
+                "401", -- F401: unused import
+            }
+            result.diagnostics = vim.tbl_filter(function(diagnostic)
+                if diagnostic.source ~= "efm/flake8" then return true end
+                return not vim.list_contains(flake8_ignore_codes, diagnostic.code)
+            end, result.diagnostics)
+
             for _, diagnostic in pairs(result.diagnostics) do
-                -- flake8 reports everything as error, force it back to hint (it's never that serious)
+                -- flake8 reports everything as error, force it back to hint
+                -- (it's never that serious)
                 if diagnostic.source == "efm/flake8" and diagnostic.severity == vim.diagnostic.severity.ERROR then
                     diagnostic.severity = vim.diagnostic.severity.HINT
                 end
