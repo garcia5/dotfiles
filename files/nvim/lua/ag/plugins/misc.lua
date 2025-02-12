@@ -41,4 +41,6 @@ return {
     { "godlygeek/tabular", cmd = "Tabularize" },
     -- json schema provider
     "b0o/schemastore.nvim",
+    -- forecast-cli plugin
+    { dir = "~/work/forecast.nvim", dev = true },
 }
