@@ -42,5 +42,5 @@ return {
     -- json schema provider
     "b0o/schemastore.nvim",
     -- forecast-cli plugin
-    { dir = "~/work/forecast.nvim", dev = true },
+    { dir = "~/work/forecast.vim", dev = true },
 }
