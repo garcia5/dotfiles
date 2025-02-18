@@ -79,16 +79,6 @@ function create_pr_body {
     [ -n "$jira_ticket" ] && echo "\n\n[$jira_ticket]($JIRA_BASE_URL/browse/$jira_ticket)" >> "$tmp_file"
     local nvim_cmd="nvim --cmd 'set ft=markdown' --cmd 'set foldlevelstart=99' -- $fname"
     eval "$nvim_cmd"
-    # TODO: split for nvim?
-    # if [ -z "$WEZTERM_PANE" ]; then
-    #     eval "$nvim_cmd"
-    # else
-    #     # Open nvim in a floating window if we're in wezterm
-    #     local cur_workspace
-    #     cur_workspace="$(wezterm cli list --format json | jq -r --arg PANE $WEZTERM_PANE '.[] | select(.pane_id==($PANE | tonumber)).workspace')"
-    #     local wez_cmd="wezterm cli spawn --new-window --workspace=$cur_workspace -- $nvim_cmd"
-    #     eval "$wez_cmd" > /dev/null
-    # fi
 }
 
 function cpr() {

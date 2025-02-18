@@ -115,12 +115,13 @@ fzf-js-test() {
         --scheme path \
         --delimiter : \
         --nth 1 \
+        --accept-nth 1 \
         --list-label='Test Files' \
         --header 'ctrl-f: All files | ctrl-g Test files' \
         --bind 'ctrl-f:change-list-label(Files)+reload($FZF_DEFAULT_COMMAND)' \
         --bind 'ctrl-g:change-list-label(Test Files)+reload($cmd)' \
         --preview 'bat --color=always --style=plain --highlight-line={2} {1}'"
-    eval "$cmd" | "$fzf_cmd" | cut -d: -f1
+    eval "$cmd" | "$fzf_cmd"
 }
 
 fzf-pytest() {
@@ -133,8 +134,7 @@ fzf-pytest() {
         --bind "ctrl-f:change-list-label(Files)+reload($FZF_DEFAULT_COMMAND)" \
         --bind "ctrl-g:change-list-label(Test Files)+reload($cmd)" \
         --list-label "Test Files" \
-        --preview "bat --color=always {}" |
-    cut -d: -f1
+        --preview "bat --color=always {}"
 }
 
 fzf-git-checkout() {
@@ -168,18 +168,18 @@ fzf-git-commits() {
 
     cmd="git log --date-order --abbrev-commit --oneline --decorate --color=always"
     diff_cmd="git show --color=always --format=medium --stat -p {1} | fzf-delta"
-    diffview_cmd='nvim -c DiffviewOpen {1}'
+    diffview_cmd='nvim -c "DiffviewOpen {1}^..{1}"'
     eval "$cmd" |
     fzf \
         --ansi \
         --multi \
         --scheme 'history' \
         --list-label "Commits" \
+        --accept-nth 1 \
         --header "Ctrl-a: open in delta | Ctrl-t: open in nvim" \
         --bind "ctrl-a:execute($diff_cmd)" \
         --bind "ctrl-t:execute($diffview_cmd)+abort" \
-        --preview "$diff_cmd" |
-    cut -d' ' -f1
+        --preview "$diff_cmd"
 }
 
 git-commit-widget() {
