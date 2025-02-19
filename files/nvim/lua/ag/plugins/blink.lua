@@ -25,12 +25,6 @@ return {
 
             ["<C-b>"] = { "scroll_documentation_up", "fallback" },
             ["<C-f>"] = { "scroll_documentation_down", "fallback" },
-
-            -- Use <Tab> to trigger and <CR> to accept for command line
-            cmdline = {
-                preset = "enter",
-                ["<Tab>"] = { "show" },
-            },
         },
 
         appearance = {
@@ -46,7 +40,10 @@ return {
                     fallbacks = { "lsp" },
                 },
             },
-            cmdline = {}, -- disable command line completion, it breaks "cabbrev"s
+        },
+
+        cmdline = {
+            sources = {},
         },
 
         completion = {
