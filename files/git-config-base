@@ -33,6 +33,6 @@
 	plus-empty-line-marker-style = syntax auto
 
 [log]
-	graphColors = "#d20f39,#8839ef,#179299,#df8e1d,#40a02b,#fe640b,#7287fd"
+	graphColors = "#df8e1d,#40a02b,#8839ef,#d20f39,#179299,#fe640b,#7287fd"
 [absorb]
 	maxStack = 20

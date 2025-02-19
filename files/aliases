@@ -35,7 +35,7 @@ alias gl="git log \
     --graph \
     --stat \
     --stat-graph-width=15 \
-    --pretty='%Cred%h%Creset -%C(auto)%d%Creset %C(bold)%C(#f2cdcd)%s%Creset %Cgreen(%ar) %C(bold blue)<%an>%Creset'"
+    --pretty='%C(#a6e3a1)%h%Creset -%C(auto)%d%Creset %C(bold)%C(#f5e0dc)%s%Creset %C(#a6adc8)(%as - %an)%Creset'"
 alias gc='fzf-git-checkout'
 alias gpf='gpush --force-with-lease'
 alias gf='git commit --fixup=$(fzf-git-commits)'
