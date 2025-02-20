@@ -34,7 +34,7 @@ function gen_patches() {
 }
 
 function apply_patches {
-    patch_dir="$2"
+    patch_dir="$1"
 
     if [ ! -d "$patch_dir" ]; then
         echo "$patch_dir does not exist, exiting"
@@ -49,7 +49,7 @@ case "$1" in
     "gen")
         gen_patches "$2"
         ;;
-    "appply")
+    "apply")
         apply_patches "$2"
         ;;
     "*")
