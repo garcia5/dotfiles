@@ -59,4 +59,6 @@ y = 5
 live_config_reload = true
 import = ["colors/catppuccin-mocha.toml", "keymaps.toml"]
 
-[terminal]
+[env]
+# https://unix.stackexchange.com/questions/597445/why-would-i-set-term-to-xterm-256color-when-using-alacritty
+TERM = "alacritty"
