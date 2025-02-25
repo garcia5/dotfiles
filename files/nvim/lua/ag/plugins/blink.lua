@@ -43,7 +43,7 @@ return {
         },
 
         cmdline = {
-            sources = {},
+            enabled = false,
         },
 
         completion = {
@@ -56,7 +56,7 @@ return {
             },
 
             -- show ghost text of top completion item
-            ghost_text = { enabled = true },
+            ghost_text = { enabled = false },
 
             -- use entire word under cursor for completion, not just the part before the cursor
             keyword = { range = "full" },
@@ -69,11 +69,15 @@ return {
                     from_bottom = true,
                     from_top = true,
                 },
+                selection = {
+                    preselect = false,
+                    auto_insert = true,
+                },
             },
 
             menu = {
-                -- Hide completion menu by default, let ghost text take care of the common case for me without the clutter of the menu
-                auto_show = false,
+                -- Show completion menu by default
+                auto_show = true,
                 -- menu looks more like nvim-cmp
                 border = "single",
                 draw = {
