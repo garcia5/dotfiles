@@ -22,19 +22,6 @@ is-git-repo() {
     git rev-parse HEAD > /dev/null 2>&1
 }
 
-gpush() {
-    is-git-repo || { echo 'Not in git repo'; return 0 }
-
-    cur_branch=$(git branch --show-current)
-    has_remote=$(git branch -r --list "origin/$cur_branch")
-    if [[ $has_remote ]]; then
-        git push "$@"
-    else
-        echo "No remote branch found, creating one"
-        git push --set-upstream origin "$cur_branch" "$@"
-    fi
-}
-
 # CD helpers
 function cdp() {
     cd "${HOME}/Projects/${1}"

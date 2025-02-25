@@ -40,6 +40,7 @@ alias gc='fzf-git-checkout'
 alias gpf='gpush --force-with-lease'
 alias gf='git commit --fixup=$(fzf-git-commits)'
 alias cpr='gh-create-pr'
+alias gpush='git push'
 
 alias kitty-update='curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin'
 

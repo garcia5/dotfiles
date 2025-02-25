@@ -4,19 +4,39 @@
 	update = "fetch origin"
 	cleanup = "! git-cleanup"
 	rockstars = "shortlog -s -n --no-merges"
+[init]
+	defaultBranch = main
+[merge]
+	conflictstyle = zdiff3
+[column]
+	ui = auto
+[help]
+	autocorrect = prompt # prompt to fix 'git comit' to 'git commit' (for example)
+[branch]
+	sort = -committerdate
+[tag]
+	sort = version:refname
 [core]
 	pager = fzf-delta
 [push]
-	autoSetupRemove = true
+	autoSetupRemote = true
 [rebase]
 	updateRefs = true
-	autoSquash = true
+	autosquash = true
+	autostash = true
+[rerere]
+	enabled = true
+	autoupdate = true
 [fetch]
 	prune = true
 [pull]
 	rebase = true
 [diff]
 	colorMoved = default
+	algorithm = histogram
+	renames = true
+[log]
+	graphColors = "#df8e1d,#40a02b,#8839ef,#d20f39,#179299,#fe640b,#7287fd"
 [include]
 	path = "~/.catppuccin-delta.gitconfig"
 [delta]
@@ -31,8 +51,5 @@
 	plus-style = syntax auto
 	plus-emph-style = syntax ul auto
 	plus-empty-line-marker-style = syntax auto
-
-[log]
-	graphColors = "#df8e1d,#40a02b,#8839ef,#d20f39,#179299,#fe640b,#7287fd"
 [absorb]
 	maxStack = 20
