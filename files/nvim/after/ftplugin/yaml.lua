@@ -5,6 +5,6 @@ vim.bo.softtabstop = 2
 vim.keymap.set(
     "n",
     "<Leader>cf",
-    "<cmd>Forecast<CR>",
-    { silent = true, noremap = true, desc = "Validate cloudformation template", buffer = 0 }
+    "<cmd>Forecast! %<CR>",
+    { silent = true, noremap = true, desc = "Run forecast cli on current file", buffer = 0 }
 )

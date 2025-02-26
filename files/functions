@@ -69,7 +69,7 @@ zle -N ctrl-t-widget
 ctrl-t-widget() {
     local result=''
     # If the current command is 'git add ', 'git restore ', or 'git checkout ' fuzzy find changed files
-    if [[ $LBUFFER =~ '^git (add|restore|checkout|stash) ' ]]; then
+    if [[ $LBUFFER =~ '^git (add|restore|checkout|stash) ' || $LBUFFER =~ '^ga ' ]]; then
         result=$(fzf-git-changed | join-lines)
     # Find only '.spec' files
     elif [[ $LBUFFER =~ '^(yarn|pnpm) test ' ]]; then

@@ -176,12 +176,15 @@ zvm_after_init() {
 export ZVM_VI_SURROUND_BINDKEY='classic'
 # OMZ end
 
-# Lua ls
-export PATH="$PATH:$HOME/lua-language-server/bin"
-alias luamake="$HOME/lua-language-server/3rd/luamake/luamake"
-
+# Other configs
 [ -s "$HOME/.aliases" ] && source "$HOME/.aliases"
 [ -s "$HOME/.functions" ] && source "$HOME/.functions"
+# End other configs
+
+# PATH
+# Lua ls
+export PATH="$PATH:$HOME/lua-language-server/bin"
+
 # rust
 export PATH="$HOME/.cargo/bin:$PATH"
 
@@ -203,6 +206,7 @@ fi
 
 # flutter
 export PATH="$HOME/devel/flutter/bin:$PATH"
+# end PATH
 
 # Machine-specific configs
 [ -f "$HOME/.custom" ] && . "$HOME/.custom"
