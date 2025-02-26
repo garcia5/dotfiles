@@ -26,7 +26,7 @@ background = "#a6adc8"
 
 [colors.hints.start]
 foreground = "#1e1e2e"
-background = "#f9e2af"
+background = "#f38ba8"
 
 [colors.hints.end]
 foreground = "#1e1e2e"
