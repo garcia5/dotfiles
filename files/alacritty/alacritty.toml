@@ -20,18 +20,23 @@ style = "Regular"
 [hints]
 alphabet = "jfkdls;ahgurieowpq"
 
+# open links
 [[hints.enabled]]
 command = "open"
 post_processing = true
 regex = "(ipfs:|ipns:|magnet:|mailto:|gemini:|gopher:|https:|http:|news:|file:|git:|ssh:|ftp:)[^\u0000-\u001F\u007F-<>\"\\s{-}\\^⟨⟩`]+"
-
 [hints.enabled.binding]
 key = "U"
 mods = "Control|Shift"
 
-[hints.enabled.mouse]
-enabled = true
-mods = "Command"
+# copy aws ARN
+[[hints.enabled]]
+action = "Copy"
+post_processing = true
+regex = "(arn:aws:)[A-Za-z0-9:/\\-_]+"
+[hints.enabled.binding]
+key = "A"
+mods = "Control|Shift"
 
 [scrolling]
 history = 10000

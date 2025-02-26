@@ -192,6 +192,8 @@ export PATH="$PNPM_HOME:$PATH"
 
 # wez
 export PATH="$PATH:/Applications/WezTerm.app/Contents/MacOS"
+# alacritty
+export PATH="$PATH:/Applications/Alacritty.app/Contents/MacOS"
 
 # go
 if command -v go > /dev/null 2>&1; then
