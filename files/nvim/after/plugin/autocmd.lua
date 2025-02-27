@@ -33,6 +33,11 @@ au("BufEnter", {
     end,
 })
 
+au("VimResized", {
+    command = "wincmd =",
+    desc = "Keep splits even when vim resized"
+})
+
 local gitcommit_group = augroup("gitcommit", { clear = true })
 au("FileType", {
     group = gitcommit_group,
