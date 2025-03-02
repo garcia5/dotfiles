@@ -51,9 +51,9 @@ return {
             },
             render_markdown = true,
             semantic_tokens = true,
-            telescope = {
+            snacks = {
                 enabled = true,
-                style = "nvchad",
+                indent_scope_color = "blue",
             },
             treesitter = true,
             treesitter_context = true,
