@@ -126,7 +126,7 @@ return {
             val = {
                 { type = "text", val = "Quick links", opts = { hl = "SpecialComment", position = "center" } },
                 { type = "padding", val = 1 },
-                dashboard.button("e", "  New file", ":enew <CR>:NvimTreeToggle<CR>"),
+                dashboard.button("e", "  New file", ":enew <CR>:lua require('snacks').explorer.open()<CR>"),
                 dashboard.button("f", "  Find file", ":lua require('snacks').picker.files()<CR>"),
                 dashboard.button("g", "  Live grep", ":lua require('snacks').picker.grep()<CR>"),
                 dashboard.button("d", "  Open Diffview", ":DiffviewOpen<CR>"),

@@ -45,10 +45,6 @@ return {
                     errors = { "underline" },
                 },
             },
-            nvimtree = {
-                enabled = true,
-                show_root = false,
-            },
             render_markdown = true,
             semantic_tokens = true,
             snacks = {

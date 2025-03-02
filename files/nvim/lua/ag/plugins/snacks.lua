@@ -4,13 +4,13 @@ return {
     lazy = false,
     ---@type snacks.Config
     opts = {
+        explorer = {
+            enabled = true,
+        },
         indent = {
             enabled = true,
             animate = {
-                duration = {
-                    step = 10,
-                    total = 100,
-                },
+                enabled = false,
             },
         },
         picker = {
@@ -28,12 +28,19 @@ return {
                 },
             },
         },
+        statuscolumn = {
+            enabled = true,
+        },
     },
     keys = {
+        -- pickers
         { "<leader>fb", function() Snacks.picker.buffers() end, desc = "Fuzzy find buffers" },
         { "<leader>ff", function() Snacks.picker.files() end, desc = "Fuzzy find Files" },
         { "<leader>gg", function() Snacks.picker.grep() end, desc = "Live grep" },
         { "<leader>qf", function() Snacks.picker.qflist() end, desc = "Fuzzy find in qflist" },
         { "<leader>fl", function() Snacks.picker.lines() end, desc = "Fuzzy find in file" },
+        -- explorer (also a picker)
+        { "<leader>nt", function() Snacks.explorer.open() end, desc = "Open filetree" },
+        { "<leader>nf", function() Snacks.explorer.reveal() end, desc = "Open current file in filetree" },
     },
 }
