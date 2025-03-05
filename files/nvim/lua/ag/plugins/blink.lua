@@ -11,7 +11,7 @@ return {
     version = "v0.*",
     opts = {
         -- disable for special buffers
-        enabled = function() return not vim.tbl_contains({ "snacks_picker_input", "CopilotChat" }, vim.bo.filetype) end,
+        enabled = function() return not vim.tbl_contains({ "snacks_picker_input", "copilot-chat" }, vim.bo.filetype) end,
 
         -- For the most part keep default keymaps, but trigger with <C-h> instead of <C-space>
         keymap = {

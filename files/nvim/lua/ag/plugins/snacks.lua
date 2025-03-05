@@ -2,7 +2,6 @@ return {
     "folke/snacks.nvim",
     priority = 1000,
     lazy = false,
-    ---@type snacks.Config
     opts = {
         explorer = {
             enabled = true,
@@ -12,6 +11,14 @@ return {
             animate = {
                 enabled = false,
             },
+            filter = function(buf)
+                local disabled_buftypes = { "copilot-chat", "snacks_picker_input" }
+                local buftype = vim.b[buf].buftype
+                return not vim.tbl_contains(disabled_buftypes, buftype)
+            end,
+        },
+        notifier = {
+            enabled = true,
         },
         picker = {
             enabled = true,
@@ -24,8 +31,12 @@ return {
                     truncate = 40, -- truncate the file path to (roughly) this length
                     filename_only = false, -- only show the filename
                     icon_width = 2, -- width of the icon (in characters)
-                    git_status_hl = true, -- use the git status highlight group for the filename
+                    git_status_hl = false, -- use the git status highlight group for the filename
                 },
+            },
+            jump = {
+                reuse_win = true, -- reuse an existing window if the buffer is already open
+                jumplist = true, -- save current position in the jumplist
             },
         },
         statuscolumn = {
@@ -34,13 +45,14 @@ return {
     },
     keys = {
         -- pickers
-        { "<leader>fb", function() Snacks.picker.buffers() end, desc = "Fuzzy find buffers" },
-        { "<leader>ff", function() Snacks.picker.files() end, desc = "Fuzzy find Files" },
-        { "<leader>gg", function() Snacks.picker.grep() end, desc = "Live grep" },
-        { "<leader>qf", function() Snacks.picker.qflist() end, desc = "Fuzzy find in qflist" },
-        { "<leader>fl", function() Snacks.picker.lines() end, desc = "Fuzzy find in file" },
+        { "<leader>fb", function() require("snacks").picker.buffers() end, desc = "Fuzzy find buffers" },
+        { "<leader>ff", function() require("snacks").picker.files() end, desc = "Fuzzy find Files" },
+        { "<leader>gg", function() require("snacks").picker.grep() end, desc = "Live grep" },
+        { "<leader>qf", function() require("snacks").picker.qflist() end, desc = "Fuzzy find in qflist" },
+        { "<leader>fl", function() require("snacks").picker.lines() end, desc = "Fuzzy find in file" },
+        { "<leader>fs", function() require("snacks").picker.lsp_symbols() end, desc = "Find LSP symbols" },
         -- explorer (also a picker)
-        { "<leader>nt", function() Snacks.explorer.open() end, desc = "Open filetree" },
-        { "<leader>nf", function() Snacks.explorer.reveal() end, desc = "Open current file in filetree" },
+        { "<leader>nt", function() require("snacks").explorer.open() end, desc = "Open filetree" },
+        { "<leader>nf", function() require("snacks").explorer.reveal() end, desc = "Open current file in filetree" },
     },
 }

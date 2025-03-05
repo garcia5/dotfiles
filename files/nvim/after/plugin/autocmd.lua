@@ -33,9 +33,15 @@ au("BufEnter", {
     end,
 })
 
+au("BufEnter", {
+    pattern = "*",
+    desc = "Never auto-format text in insert mode",
+    command = "set formatoptions-=t",
+})
+
 au("VimResized", {
     command = "wincmd =",
-    desc = "Keep splits even when vim resized"
+    desc = "Keep splits even when vim resized",
 })
 
 local gitcommit_group = augroup("gitcommit", { clear = true })
