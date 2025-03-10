@@ -70,6 +70,7 @@ vim.opt.expandtab = true -- <Tab> inserts spaces
 vim.opt.shiftwidth = 4 -- >>, << shift line by 4 spaces
 vim.opt.tabstop = 4 -- <Tab> appears as 4 spaces
 vim.opt.softtabstop = 4 -- <Tab> behaves as 4 spaces when editing
+vim.opt.breakindent = true -- when `wrap` is on, continue line at same indentation level as previous
 
 -- Colors
 vim.cmd("colorscheme catppuccin")
