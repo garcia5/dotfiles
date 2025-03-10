@@ -2,8 +2,10 @@
 
 function work {
     local session='dev'
-    if tmux list-sessions | grep -q "^$session:"; then
-        return
+    if [ -n "${TMUX}" ]; then
+        if tmux list-sessions | grep -q "^$session:"; then
+            return
+        fi
     fi
     tmux new-session -d -s "$session" -c "$HOME/work" # working session
 
@@ -15,16 +17,16 @@ function work {
     local width
     width=$(tput cols)
     if [ "$width" -gt 300 ]; then
-        local left_pane_size
-        left_pane_size=$(( width * 2 / 3 ))
-        tmux resize-pane -t "$session:1.1" -x $left_pane_size
+        tmux resize-pane -t "$session:1.1" -x '33%'
     fi
 }
 
 function notes {
     local session='notes'
-    if tmux list-sessions | grep -q "^$session:"; then
-        return
+    if [ -n "${TMUX}" ]; then
+        if tmux list-sessions | grep -q "^$session:"; then
+            return
+        fi
     fi
 
     tmux new-session -d -s "$session" -c "$HOME/notes"
@@ -32,8 +34,10 @@ function notes {
 
 function dotfiles {
     local session='dotfiles'
-    if tmux list-sessions | grep -q "^$session:"; then
-        return
+    if [ -n "${TMUX}" ]; then
+        if tmux list-sessions | grep -q "^$session:"; then
+            return
+        fi
     fi
 
     tmux new-session -d -s "$session" -c "$HOME/dotfiles"
@@ -42,6 +46,7 @@ function dotfiles {
 function apps {
     open '/Applications/Slack.app/'
     open 'https://gmail.com' 'https://calendar.google.com'
+    [ -n "${JIRA_URL}" ] && open "${JIRA_URL}"
 }
 
 function main {
