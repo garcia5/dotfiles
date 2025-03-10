@@ -45,8 +45,37 @@ return {
     },
     keys = {
         -- pickers
-        { "<leader>fb", function() require("snacks").picker.buffers() end, desc = "Fuzzy find buffers" },
-        { "<leader>ff", function() require("snacks").picker.files() end, desc = "Fuzzy find Files" },
+        {
+            "<leader>fb",
+            function()
+                require("snacks").picker.buffers({
+                    win = {
+                        input = {
+                            keys = {
+                                ["<c-d>"] = { "bufdelete", mode = { "n", "i" } },
+                                ["<c-x>"] = { "edit_split", mode = { "n", "i" } },
+                            },
+                        },
+                    },
+                })
+            end,
+            desc = "Fuzzy find buffers",
+        },
+        {
+            "<leader>ff",
+            function()
+                require("snacks").picker.files({
+                    win = {
+                        input = {
+                            keys = {
+                                ["<c-x>"] = { "edit_split", mode = { "n", "i" } },
+                            },
+                        },
+                    },
+                })
+            end,
+            desc = "Fuzzy find Files",
+        },
         { "<leader>gg", function() require("snacks").picker.grep() end, desc = "Live grep" },
         { "<leader>qf", function() require("snacks").picker.qflist() end, desc = "Fuzzy find in qflist" },
         { "<leader>fl", function() require("snacks").picker.lines() end, desc = "Fuzzy find in file" },
