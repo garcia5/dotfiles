@@ -1,7 +1,5 @@
 local IS_WIDE = function() return vim.o.columns > 150 end
 
-local IS_START = function() return vim.opt.filetype:get() == "alpha" end
-
 return {
     "nvim-lualine/lualine.nvim",
     dependencies = {
@@ -17,7 +15,6 @@ return {
                 {
                     "mode",
                     fmt = function(m) return IS_WIDE() and m or m:sub(1, 1) end,
-                    cond = function() return not IS_START() end,
                 },
             },
             lualine_b = { "branch" },
@@ -33,7 +30,6 @@ return {
                 -- add empty section to center filename
                 {
                     "%=",
-                    separator = "",
                 },
                 -- A hack to change the path type if the window gets too short. Lualine doesn't accept a function for the
                 -- `path` option, so just swap out the entire component
@@ -42,14 +38,14 @@ return {
                     path = 1, -- full file path
                     color = { fg = "#ffffff", gui = "bold" },
                     shorting_target = 30,
-                    cond = function() return IS_WIDE() and not IS_START() end,
+                    cond = IS_WIDE,
                 },
                 {
                     "filename",
                     path = 0, -- just the filename
                     color = { fg = "#ffffff", gui = "bold" },
                     shorting_target = 30,
-                    cond = function() return not IS_WIDE() and not IS_START() end,
+                    cond = function() return not IS_WIDE() end,
                 },
             },
             lualine_x = {
@@ -67,44 +63,14 @@ return {
                             unknown = " ",
                         },
                     },
-                    cond = function() return not IS_START() end,
-                },
-                {
-                    "g:metals_status",
-                    cond = IS_WIDE,
                 },
             },
             lualine_y = {
                 {
-                    function()
-                        local msg = "No Active Lsp"
-                        local buf_ft = vim.api.nvim_buf_get_option(0, "filetype")
-                        local clients = vim.lsp.get_active_clients()
-                        if next(clients) == nil then return msg end
-
-                        local client_names = {}
-                        local active_client = false
-                        for _, client in ipairs(clients) do
-                            local filetypes = client.config.filetypes
-                            if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
-                                active_client = true
-                                if not client_names[client.name] then client_names[client.name] = 1 end
-                            end
-                        end
-
-                        if active_client then
-                            local names = {}
-                            for name, _ in pairs(client_names) do
-                                table.insert(names, name)
-                            end
-                            return table.concat(names, ", ")
-                        end
-
-                        return "No Active Lsp"
-                    end,
+                    "lsp_status",
                     icon = " LSP:",
                     color = { gui = "bold" },
-                    cond = function() return IS_WIDE() and not IS_START() end,
+                    cond = IS_WIDE,
                 },
                 {
                     "diagnostics",
@@ -112,9 +78,9 @@ return {
                 },
             },
             lualine_z = {
-                { "filetype", cond = function() return not IS_START() end },
-                { "location", cond = function() return IS_WIDE() and not IS_START() end },
-                { "progress", cond = function() return IS_WIDE() and not IS_START() end },
+                { "filetype" },
+                { "location", cond = IS_WIDE },
+                { "progress", cond = IS_WIDE },
             },
         },
         tabline = {
@@ -122,8 +88,7 @@ return {
                 {
                     "buffers",
                     mode = 0, -- name only
-                    max_length = vim.o.columns / 3,
-                    cond = function() return not IS_START() end,
+                    max_length = vim.o.columns / 2,
                     use_mode_colors = true,
                 },
             },
@@ -138,13 +103,13 @@ return {
             component_separators = { left = "", right = "" },
             theme = "catppuccin",
             globalstatus = true,
+            disabled_filetypes = { "alpha" },
         },
         extensions = {
             "aerial",
             "fugitive",
             "lazy",
             "man",
-            "nvim-tree",
             "quickfix",
         },
     },
