@@ -2,19 +2,19 @@ local copilot = {
     "zbirenbaum/copilot.lua",
     keys = {
         {
-            "<C-.>",
+            "<M-j>",
             function() require("copilot.suggestion").next() end,
             mode = "i",
             desc = "Next copilot suggestion",
         },
         {
-            "<C-,>",
+            "<M-k>",
             function() require("copilot.suggestion").prev() end,
             mode = "i",
             desc = "Prev copilot suggestion",
         },
         {
-            "<C-/>",
+            "<M-y>",
             function() require("copilot.suggestion").accept_line() end,
             mode = "i",
             desc = "Accept copilot suggestion",
@@ -29,9 +29,9 @@ local copilot = {
             auto_trigger = false,
             hide_during_completion = true,
             keymap = {
-                accept = "<C-/>",
-                next = "<C-.>",
-                prev = "<C-,>",
+                accept = "<M-y>",
+                next = "<M-j>",
+                prev = "<M-k>",
                 dismiss = "<C-c>",
             },
         },
@@ -52,13 +52,6 @@ local copilot = {
             ["*"] = true,
         },
     },
-    init = function()
-        -- auto show/hide when cmp menu is active
-        local success, cmp = pcall(require, "cmp")
-        if not success then return end
-        cmp.event:on("menu_opened", function() vim.b.copilot_suggestion_hidden = true end)
-        cmp.event:on("menu_closed", function() vim.b.copilot_suggestion_hidden = false end)
-    end,
 }
 
 local chat = {
