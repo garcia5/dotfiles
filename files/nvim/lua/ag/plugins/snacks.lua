@@ -35,7 +35,7 @@ return {
                 },
             },
             jump = {
-                reuse_win = true, -- reuse an existing window if the buffer is already open
+                reuse_win = false, -- reuse an existing window if the buffer is already open
                 jumplist = true, -- save current position in the jumplist
             },
         },
