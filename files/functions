@@ -165,20 +165,25 @@ zle -N git-commit-widget
 fzf-git-commits() {
     is-git-repo || { echo 'Not in git repo'; return 0 }
 
-    cmd="git log --date-order --abbrev-commit --oneline --decorate --color=always"
-    diff_cmd="git show --color=always --format=medium --stat -p {1} | fzf-delta"
-    diffview_cmd='nvim -c "DiffviewOpen {1}^..{1}"'
-    eval "$cmd" |
-    fzf \
+    local fzf_cmd="fzf \
         --ansi \
         --multi \
         --scheme 'history' \
-        --list-label "Commits" \
+        --list-label 'Commits' \
         --accept-nth 1 \
-        --header "Ctrl-a: open in delta | Ctrl-t: open in nvim" \
-        --bind "ctrl-a:execute($diff_cmd)" \
-        --bind "ctrl-t:execute($diffview_cmd)+abort" \
-        --preview "$diff_cmd"
+        --header 'Ctrl-a: open in delta | Ctrl-t: open in nvim' \
+        --bind 'ctrl-a:execute($diff_cmd)' \
+        --bind 'ctrl-t:execute($diffview_cmd)+abort' \
+        --preview '$diff_cmd'"
+
+    if [[ "$1" == "-q" ]]; then
+        fzf_cmd="$fzf_cmd --sync --bind 'start:jump'"
+    fi
+
+    cmd="git log --date-order --abbrev-commit --oneline --decorate --color=always"
+    diff_cmd="git show --color=always --format=medium --stat -p {1} | fzf-delta"
+    diffview_cmd='nvim -c "DiffviewOpen {1}^..{1}"'
+    eval "$cmd" | eval "$fzf_cmd"
 }
 
 git-commit-widget() {
