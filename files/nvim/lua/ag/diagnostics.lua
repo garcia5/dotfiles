@@ -1,15 +1,12 @@
 -- global diagnostic config
 vim.diagnostic.config({
     severity_sort = true,
+    virtual_lines = false,
     virtual_text = {
-        -- Only display errors w/ virtual text
         severity = vim.diagnostic.severity.ERROR,
-        -- Prepend with diagnostic source if there is more than one attached to the buffer
-        -- (e.g. (eslint) Error: blah blah blah)
         source = "if_many",
         hl_mode = "blend",
     },
-    underline = true,
     float = {
         severity_sort = true,
         source = "if_many",
@@ -32,9 +29,22 @@ vim.diagnostic.config({
 })
 
 -- keymaps
-vim.keymap.set("n", "<leader>dk", vim.diagnostic.open_float, { silent = true, desc = "View Current Diagnostic" })
-vim.keymap.set("n", "<leader>dn", vim.diagnostic.goto_next, { silent = true, desc = "Goto next diagnostic" })
-vim.keymap.set("n", "<leader>dp", vim.diagnostic.goto_prev, { silent = true, desc = "Goto prev diagnostic" })
+vim.keymap.set("n", "<leader>dk", function()
+    local new_config = not vim.diagnostic.config().virtual_lines
+    vim.diagnostic.config({ virtual_lines = new_config })
+end, { silent = true, desc = "View Current Line Diagnostics" })
+vim.keymap.set(
+    "n",
+    "<leader>dn",
+    function() vim.diagnostic.jump({ count = 1 }) end,
+    { silent = true, desc = "Goto next diagnostic" }
+)
+vim.keymap.set(
+    "n",
+    "<leader>dp",
+    function() vim.diagnostic.jump({ count = -1 }) end,
+    { silent = true, desc = "Goto prev diagnostic" }
+)
 vim.keymap.set("n", "<leader>da", vim.diagnostic.setqflist, { silent = true, desc = "Populate qf list" })
 vim.keymap.set("n", "<leader>do", function()
     if vim.diagnostic.is_enabled() then

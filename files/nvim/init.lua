@@ -35,10 +35,12 @@ require("lazy").setup("ag.plugins", {
 require("ag.mappings")
 -- Diagnostics
 require("ag.diagnostics")
+-- Built in LSP configuration
+require("ag.lsp")
 
 -- Behaviors
 vim.opt.belloff = "all" -- NO BELLS!
-vim.opt.completeopt = { "menuone", "noselect" } -- ins-completion how I like it
+vim.opt.completeopt = { "menuone", "noselect", "fuzzy" } -- ins-completion how I like it
 vim.opt.swapfile = false -- no swap files
 vim.opt.inccommand = "nosplit" -- preview %s commands live as I type
 vim.opt.undofile = true -- keep track of my 'undo's between sessions
