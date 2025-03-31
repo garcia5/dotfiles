@@ -1,12 +1,20 @@
 -- global diagnostic config
 vim.diagnostic.config({
     severity_sort = true,
-    virtual_lines = false,
-    virtual_text = {
-        severity = vim.diagnostic.severity.ERROR,
-        source = "if_many",
-        hl_mode = "blend",
+    virtual_lines = {
+        current_line = true,
+        -- only show ERROR level diagnostics with virtual lines
+        format = function(diagnostic)
+            if diagnostic.severity ~= vim.diagnostic.severity.ERROR then return nil end
+            return "[" .. diagnostic.source .. "] " .. diagnostic.message
+        end,
     },
+    virtual_text = false,
+    -- virtual_text = {
+    --     severity = vim.diagnostic.severity.ERROR,
+    --     source = "if_many",
+    --     hl_mode = "blend",
+    -- },
     float = {
         severity_sort = true,
         source = "if_many",
@@ -29,10 +37,12 @@ vim.diagnostic.config({
 })
 
 -- keymaps
-vim.keymap.set("n", "<leader>dk", function()
-    local new_config = not vim.diagnostic.config().virtual_lines
-    vim.diagnostic.config({ virtual_lines = new_config })
-end, { silent = true, desc = "View Current Line Diagnostics" })
+vim.keymap.set(
+    "n",
+    "<leader>dk",
+    function() vim.diagnostic.open_float({ border = "rounded" }) end,
+    { silent = true, desc = "View Current Line Diagnostics" }
+)
 vim.keymap.set(
     "n",
     "<leader>dn",

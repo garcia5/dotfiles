@@ -11,18 +11,16 @@ vim.lsp.config.volar = {
 }
 
 vim.lsp.config.bashls = {
-    cmd = { "bash-languge-server", "--stdio" },
+    cmd = { "bash-language-server", "start" },
     on_attach = custom_attach,
     filetypes = { "bash", "sh", "zsh" },
 }
-vim.lsp.enable("bashls")
 
 vim.lsp.config.jsonls = {
     filetypes = { "json" },
     cmd = { "vscode-json-language-server", "--stdio" },
     on_attach = custom_attach,
 }
-vim.lsp.enable("jsonls")
 
 -- rust
 vim.lsp.config.rust_analyzer = {
@@ -56,4 +54,3 @@ vim.lsp.config.dartls = {
         custom_attach(client, bufnr, { allowed_clients = { "dartls" }, format_on_save = true })
     end,
 }
-

@@ -71,11 +71,8 @@ end
 vim.lsp.config.efm = vim.tbl_extend("force", efmls_config, {
     cmd = { "efm-langserver" },
     filetypes = vim.tbl_keys(languages),
-    on_attach = function(client, bufnr)
-        custom_attach(client, bufnr, { allowed_clients = { "efm" } })
-    end,
+    on_attach = function(client, bufnr) custom_attach(client, bufnr, { allowed_clients = { "efm" } }) end,
     handlers = {
         ["textDocument/publishDiagnostics"] = custom_publish_diagnostics,
     },
 })
-vim.lsp.enable("efm")

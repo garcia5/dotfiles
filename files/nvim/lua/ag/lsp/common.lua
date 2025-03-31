@@ -38,6 +38,12 @@ M.custom_attach = function(client, bufnr, format_opts)
     vim.keymap.set("n", "<leader>gr", vim.lsp.buf.references, with_desc(keymap_opts, "Find References"))
     vim.keymap.set("n", "gr", vim.lsp.buf.rename, with_desc(keymap_opts, "Rename"))
     vim.keymap.set("n", "H", vim.lsp.buf.code_action, with_desc(keymap_opts, "Code Actions"))
+    vim.keymap.set(
+        "n",
+        "<Leader>ti",
+        function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled()) end,
+        with_desc(keymap_opts, "Toggle inlay hints")
+    )
     vim.keymap.set("n", "<Leader>rr", function()
         vim.lsp.stop_client(vim.lsp.get_clients())
         vim.cmd("edit")
@@ -55,6 +61,27 @@ M.custom_attach = function(client, bufnr, format_opts)
             register_format_on_save(bufnr, format_opts.allowed_clients or { client.name })
         end
     end
+end
+
+---If the configured client's "cmd" is available, enable it
+---Otherwise do nothing
+---@param client string
+M.register_if_installed = function(client)
+    local config = vim.lsp.config[client]
+    if config == nil or config.cmd == nil then return end
+
+    local cmd = nil
+    if type(config.cmd) == "table" then
+        cmd = config.cmd[1]
+    elseif type(config.cmd) == "string" then
+        cmd = config.cmd
+    end
+
+    if cmd == nil then return end
+
+    local output = vim.fn.trim(vim.fn.system({ "which", cmd }))
+
+    if vim.fn.filereadable(output) then vim.lsp.enable(client) end
 end
 
 return M
