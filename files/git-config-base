@@ -43,7 +43,7 @@
 [delta]
 	features = decorations catppuccin-mocha
 	navigate = true
-	file-style = brightgreen
+	file-style = brightgreen overline
 	hunk-header-style = omit
 	line-numbers = true
 	minus-style = syntax auto
