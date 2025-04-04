@@ -61,7 +61,10 @@ local custom_publish_diagnostics = function(_, result, ctx, _)
     for _, diagnostic in pairs(result.diagnostics) do
         -- flake8 reports everything as error, force it back to hint
         -- (it's never that serious)
-        if diagnostic.source == "efm/flake8" and diagnostic.severity == vim.diagnostic.severity.ERROR then
+        if
+            (diagnostic.source == "efm/flake8" or diagnostic.source == "efm/pylint")
+            and diagnostic.severity == vim.diagnostic.severity.ERROR
+        then
             diagnostic.severity = vim.diagnostic.severity.HINT
         end
     end

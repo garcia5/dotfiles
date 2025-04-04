@@ -55,7 +55,7 @@ au("FileType", {
 au("BufEnter", {
     pattern = "Dockerfile.*",
     desc = "Detect Dockerfiles with different extensions",
-    callback = function() vim.opt_local.filetype = "Dockerfile" end,
+    callback = function() vim.opt_local.filetype = "dockerfile" end,
 })
 
 au("BufEnter", {
