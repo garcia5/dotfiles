@@ -63,6 +63,7 @@ local chat = {
     },
     opts = {
         debug = false,
+        model = "gpt-4o",
         window = {
             layout = "float",
             border = "rounded",
