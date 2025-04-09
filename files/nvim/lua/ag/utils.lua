@@ -2,7 +2,7 @@ local M = {}
 
 ---Get the path to the current pipenv managed virtual environment (if one exists)
 ---@return string | nil
-M.get_pipenv_venv_path = function()
+local get_pipenv_venv_path = function()
     local pipenv_venv = vim.fn.trim(vim.fn.system("pipenv --venv"))
     if pipenv_venv == "" then return nil end
     local split = vim.split(pipenv_venv, "\n")
@@ -15,8 +15,24 @@ M.get_pipenv_venv_path = function()
     return nil
 end
 
+local get_venv_path = function()
+    if vim.fn.isdirectory(".venv") then return ".venv" end
+    return nil
+end
+
+---Get the path to the virtual environment for the current project
+---@return string | nil
+M.get_python_venv_path = function()
+    local venv = get_venv_path()
+    if venv ~= nil then return venv end
+    local pipenv = get_pipenv_venv_path()
+    if pipenv ~= nil then return pipenv end
+end
+
+---Get the python executable path for the current project
+---@return string
 M.get_python_path = function()
-    local venv_path = M.get_pipenv_venv_path()
+    local venv_path = M.get_python_venv_path()
     if venv_path ~= nil then
         return venv_path .. "/bin/python"
     else

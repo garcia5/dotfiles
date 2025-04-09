@@ -11,7 +11,7 @@ return {
     config = function()
         local get_pytest_prefix = function()
             local cmd = "pytest"
-            local pipenv_venv_path = require("ag.utils").get_pipenv_venv_path()
+            local pipenv_venv_path = require("ag.utils").get_python_venv_path()
             if pipenv_venv_path ~= nil then cmd = pipenv_venv_path .. "/bin/pytest" end
 
             return cmd

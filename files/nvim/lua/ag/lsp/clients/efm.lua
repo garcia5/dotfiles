@@ -5,6 +5,7 @@ local eslint = require("efmls-configs.linters.eslint_d")
 local flake8 = require("efmls-configs.linters.flake8")
 local prettier = require("efmls-configs.formatters.prettier_d")
 local pylint = require("efmls-configs.linters.pylint")
+local ruff = require("efmls-configs.linters.ruff")
 local shellcheck = require("efmls-configs.linters.shellcheck")
 local stylua = require("efmls-configs.formatters.stylua")
 
@@ -13,15 +14,15 @@ local languages = {
     typescript = { prettier, eslint },
     javascript = { prettier, eslint },
     vue = { prettier, eslint },
-    python = { black, autopep8, flake8, pylint },
+    python = { black, autopep8, flake8, pylint, ruff },
     bash = { shellcheck },
     sh = { shellcheck },
 }
 
 -- special handling for python to use virtual envs w/o activating
-local pipenv_venv_path = require("ag.utils").get_pipenv_venv_path()
-if pipenv_venv_path ~= nil then
-    local cmd_prefix = pipenv_venv_path .. "/bin/"
+local python_venv_path = require("ag.utils").get_python_venv_path()
+if python_venv_path ~= nil then
+    local cmd_prefix = python_venv_path .. "/bin/"
     for _, prog in ipairs(languages["python"]) do
         if prog["formatCommand"] then prog["formatCommand"] = cmd_prefix .. prog["formatCommand"] end
         if prog["lintCommand"] then prog["lintCommand"] = cmd_prefix .. prog["lintCommand"] end
