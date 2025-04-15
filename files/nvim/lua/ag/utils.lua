@@ -16,7 +16,7 @@ local get_pipenv_venv_path = function()
 end
 
 local get_venv_path = function()
-    if vim.fn.isdirectory(".venv") then return ".venv" end
+    if vim.fn.isdirectory(".venv") ~= 0 then return ".venv" end
     return nil
 end
 
@@ -27,6 +27,8 @@ M.get_python_venv_path = function()
     if venv ~= nil then return venv end
     local pipenv = get_pipenv_venv_path()
     if pipenv ~= nil then return pipenv end
+
+    return nil
 end
 
 ---Get the python executable path for the current project

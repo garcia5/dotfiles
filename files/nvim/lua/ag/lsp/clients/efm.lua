@@ -5,7 +5,8 @@ local eslint = require("efmls-configs.linters.eslint_d")
 local flake8 = require("efmls-configs.linters.flake8")
 local prettier = require("efmls-configs.formatters.prettier_d")
 local pylint = require("efmls-configs.linters.pylint")
-local ruff = require("efmls-configs.linters.ruff")
+local ruff_fmt = require("efmls-configs.formatters.ruff")
+local ruff_lint = require("efmls-configs.linters.ruff")
 local shellcheck = require("efmls-configs.linters.shellcheck")
 local stylua = require("efmls-configs.formatters.stylua")
 
@@ -14,7 +15,7 @@ local languages = {
     typescript = { prettier, eslint },
     javascript = { prettier, eslint },
     vue = { prettier, eslint },
-    python = { black, autopep8, flake8, pylint, ruff },
+    python = { black, autopep8, flake8, pylint, ruff_lint, ruff_fmt },
     bash = { shellcheck },
     sh = { shellcheck },
 }
