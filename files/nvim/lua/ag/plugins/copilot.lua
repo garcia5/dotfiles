@@ -120,6 +120,7 @@ local chat = {
         "CopilotChatFixDiagnostic",
         "CopilotChatCommit",
         "CopilotChatCommitStaged",
+        "CopilotChatModels",
     },
 }
 
