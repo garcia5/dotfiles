@@ -17,7 +17,7 @@ function work {
     local width
     width=$(tput cols)
     if [ "$width" -gt 300 ]; then
-        tmux resize-pane -t "$session:1.1" -x '33%'
+        tmux resize-pane -t "$session:1.1" -x '66%'
     fi
 }
 
@@ -45,6 +45,7 @@ function dotfiles {
 
 function apps {
     open '/Applications/Slack.app/'
+    open '/Applications/Obsidian.app/'
     open 'https://gmail.com' 'https://calendar.google.com'
     [ -n "${JIRA_URL}" ] && open "${JIRA_URL}"
 }
@@ -52,7 +53,6 @@ function apps {
 function main {
     dotfiles
     work
-    notes
     # open slack
     if [[ "$1" == true ]]; then
         apps
