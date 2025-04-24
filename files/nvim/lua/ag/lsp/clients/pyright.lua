@@ -25,7 +25,7 @@ vim.lsp.config.pyright = {
     end,
     on_attach = function(client, bufnr)
         custom_attach(client, bufnr, { allowed_clients = { "efm" } })
-        vim.keymap.set("n", "<Leader>ii", pyright_organize_imports, {
+        vim.keymap.set("n", "<Leader>ii", function() pyright_organize_imports(client) end, {
             buffer = bufnr,
             silent = true,
             noremap = true,
