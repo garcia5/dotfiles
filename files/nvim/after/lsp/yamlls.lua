@@ -1,6 +1,6 @@
 local custom_attach = require("ag.lsp.common").custom_attach
 
-vim.lsp.config.yamlls = {
+return {
     cmd = { "yaml-language-server", "--stdio" },
     filetypes = { "yaml" },
     on_attach = custom_attach,

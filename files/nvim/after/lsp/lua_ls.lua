@@ -1,6 +1,6 @@
 local custom_attach = require("ag.lsp.common").custom_attach
 
-vim.lsp.config.lua_ls = {
+return {
     cmd = { "lua-language-server", "--stdio" },
     filetypes = { "lua" },
     on_attach = function(client, bufnr)

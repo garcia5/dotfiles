@@ -31,23 +31,13 @@ if python_venv_path ~= nil then
 end
 
 -- explicitly point stylua to my config
-local format_cmd = languages["lua"][1]["formatCommand"]
-local new_cmd = format_cmd:gsub("(stylua)", "%1 --config-path .stylua.toml")
-languages["lua"][1]["formatCommand"] = new_cmd
+local stylua_format_cmd = languages["lua"][1]["formatCommand"]
+if not stylua_format_cmd:match(".*config%-path.*") then
+    local new_cmd = stylua_format_cmd:gsub("(stylua)", "%1 --config-path .stylua.toml")
+    languages["lua"][1]["formatCommand"] = new_cmd
+end
 
-local efmls_config = {
-    filetypes = vim.tbl_keys(languages),
-    settings = {
-        rootMarkers = { ".git/" },
-        languages = languages,
-    },
-    init_options = {
-        documentFormatting = true,
-        documentRangeFormatting = true,
-    },
-}
-
--- custom handler to clean up linter diagnostics
+---custom handler to clean up linter diagnostics
 local custom_publish_diagnostics = function(_, result, ctx, _)
     -- filter out duplicitive diagnostics from flake8 that pyright
     -- already covers
@@ -73,7 +63,19 @@ local custom_publish_diagnostics = function(_, result, ctx, _)
     vim.lsp.diagnostic.on_publish_diagnostics(_, result, ctx)
 end
 
-vim.lsp.config.efm = vim.tbl_extend("force", efmls_config, {
+local efmls_config = {
+    filetypes = vim.tbl_keys(languages),
+    settings = {
+        rootMarkers = { ".git/" },
+        languages = languages,
+    },
+    init_options = {
+        documentFormatting = true,
+        documentRangeFormatting = true,
+    },
+}
+
+return vim.tbl_extend("force", efmls_config, {
     cmd = { "efm-langserver" },
     filetypes = vim.tbl_keys(languages),
     on_attach = function(client, bufnr) custom_attach(client, bufnr, { allowed_clients = { "efm" } }) end,

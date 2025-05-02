@@ -9,7 +9,7 @@ local pyright_organize_imports = function(client)
     client:request("workspace/executeCommand", params, nil, 0)
 end
 
-vim.lsp.config.pyright = {
+return {
     filetypes = { "python" },
     cmd = { "pyright-langserver", "--stdio" },
     -- manually set root_dir to avoid it getting overriden by the `pythonPath` setting
