@@ -179,7 +179,7 @@ fzf-git-commits() {
         --preview '$diff_cmd'"
 
     if [[ "$1" == "-q" ]]; then
-        fzf_cmd="$fzf_cmd --sync --bind 'start:jump'"
+        fzf_cmd="$fzf_cmd --sync --bind 'start:jump-accept'"
     fi
 
     cmd="git log --date-order --abbrev-commit --oneline --decorate --color=always"
