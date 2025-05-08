@@ -38,6 +38,44 @@ return {
                 reuse_win = false, -- reuse an existing window if the buffer is already open
                 jumplist = true, -- save current position in the jumplist
             },
+            win = {
+                list = {
+                    keys = {
+                        ["<c-x>"] = "edit_split",
+                    },
+                },
+                input = {
+                    keys = {
+                        ["<c-x>"] = "edit_split",
+                    },
+                },
+            },
+            sources = {
+                explorer = {
+                    follow_file = true,
+                    diagnostics = false,
+                    diagnostics_open = false,
+                    win = {
+                        list = {
+                            keys = {
+                                ["<CR>"] = { "open_from_explorer" },
+                            },
+                        },
+                    },
+                },
+            },
+            -- always ask what window to open a file in if there are multiple open
+            actions = {
+                open_from_explorer = function(picker)
+                    local cur_item = picker:current()
+                    if cur_item.dir then
+                        picker:action("confirm")
+                    else
+                        picker:action("pick_win")
+                        picker:action("jump")
+                    end
+                end,
+            },
         },
         statuscolumn = {
             enabled = true,
@@ -53,7 +91,6 @@ return {
                         input = {
                             keys = {
                                 ["<c-d>"] = { "bufdelete", mode = { "n", "i" } },
-                                ["<c-x>"] = { "edit_split", mode = { "n", "i" } },
                             },
                         },
                     },
@@ -61,21 +98,7 @@ return {
             end,
             desc = "Fuzzy find buffers",
         },
-        {
-            "<leader>ff",
-            function()
-                require("snacks").picker.files({
-                    win = {
-                        input = {
-                            keys = {
-                                ["<c-x>"] = { "edit_split", mode = { "n", "i" } },
-                            },
-                        },
-                    },
-                })
-            end,
-            desc = "Fuzzy find Files",
-        },
+        { "<leader>ff", function() require("snacks").picker.files() end, desc = "Fuzzy find Files" },
         { "<leader>gg", function() require("snacks").picker.grep() end, desc = "Live grep" },
         { "<leader>qf", function() require("snacks").picker.qflist() end, desc = "Fuzzy find in qflist" },
         { "<leader>fl", function() require("snacks").picker.lines() end, desc = "Fuzzy find in file" },
