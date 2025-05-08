@@ -25,8 +25,16 @@ local python_venv_path = require("ag.utils").get_python_venv_path()
 if python_venv_path ~= nil then
     local cmd_prefix = python_venv_path .. "/bin/"
     for _, prog in ipairs(languages["python"]) do
-        if prog["formatCommand"] then prog["formatCommand"] = cmd_prefix .. prog["formatCommand"] end
-        if prog["lintCommand"] then prog["lintCommand"] = cmd_prefix .. prog["lintCommand"] end
+        local cmd = prog["formatCommand"]
+        if cmd == nil then
+            cmd = prog["lintCommand"]
+        end
+
+        -- only prepend virtual env if it's not already there
+        if cmd ~= nil and cmd:find(cmd_prefix, 1, true) == nil then
+            if prog["formatCommand"] then prog["formatCommand"] = cmd_prefix .. cmd end
+            if prog["lintCommand"] then prog["lintCommand"] = cmd_prefix .. cmd end
+        end
     end
 end
 
