@@ -5,13 +5,6 @@ export YELLOW='\033[0;33m'
 export BLUE='\033[0;34m'
 export NC='\033[0m' # No Color
 
-join-lines() {
-  local item
-  while read item; do
-    echo -n "${(q)item} "
-  done
-}
-
 # Git
 cg () {
     is-git-repo || { echo 'Not in git repo'; return 0 }
@@ -70,15 +63,15 @@ ctrl-t-widget() {
     local result=''
     # If the current command is 'git add ', 'git restore ', or 'git checkout ' fuzzy find changed files
     if [[ $LBUFFER =~ '^git (add|restore|checkout|stash) ' || $LBUFFER =~ '^ga ' ]]; then
-        result=$(fzf-git-changed | join-lines)
+        result=$(fzf-git-changed)
     # Find only '.spec' files
     elif [[ $LBUFFER =~ '^(yarn|pnpm) test ' ]]; then
-        result=$(fzf-js-test | join-lines)
+        result=$(fzf-js-test)
     elif [[ $LBUFFER =~ 'pytest' ]]; then
-        result=$(fzf-pytest | join-lines)
+        result=$(fzf-pytest)
     # Otherwise do default and fuzzy search all files
     else
-        result=$(fzf-ctrl-t | join-lines)
+        result=$(fzf-ctrl-t)
     fi
     zle reset-prompt
     LBUFFER+=$result
@@ -101,16 +94,17 @@ fzf-ctrl-t() {
     local cmd='fd -tf'
     local fzf_cmd="fzf \
         --scheme path \
+        --print0 \
         --list-label 'Files' \
-        --preview 'bat --color=always --style=numbers,changes {}' \
-        --bind 'enter:execute(echo {q})+accept'"
-    eval "$cmd" | eval "$fzf_cmd"
+        --preview 'bat --color=always --style=numbers,changes {}'"
+    eval "$cmd" | eval "$fzf_cmd" | xargs -0 echo
 }
 
 fzf-js-test() {
     local cmd="rg -n -m 1 'describe' --glob '*.spec.ts' --line-number --no-heading"
     local fzf_cmd="fzf \
         --multi \
+        --print0 \
         --scheme path \
         --delimiter : \
         --nth 1 \
@@ -120,7 +114,7 @@ fzf-js-test() {
         --bind 'ctrl-f:change-list-label(Files)+reload($FZF_DEFAULT_COMMAND)' \
         --bind 'ctrl-g:change-list-label(Test Files)+reload($cmd)' \
         --preview 'bat --color=always --style=plain --highlight-line={2} {1}'"
-    eval "$cmd" | "$fzf_cmd"
+    eval "$cmd" | "$fzf_cmd" | xargs -0 echo
 }
 
 fzf-pytest() {
@@ -128,12 +122,13 @@ fzf-pytest() {
     eval "$cmd" |
     fzf \
         --multi \
+        --print0 \
         --scheme path \
         --header 'ctrl-f: All files | ctrl-g Test files' \
         --bind "ctrl-f:change-list-label(Files)+reload($FZF_DEFAULT_COMMAND)" \
         --bind "ctrl-g:change-list-label(Test Files)+reload($cmd)" \
         --list-label "Test Files" \
-        --preview "bat --color=always {}"
+        --preview "bat --color=always {}" | xargs -0 echo
 }
 
 fzf-git-checkout() {
@@ -170,6 +165,7 @@ fzf-git-commits() {
     local fzf_cmd="fzf \
         --ansi \
         --multi \
+        --print0 \
         --scheme 'history' \
         --list-label 'Commits' \
         --accept-nth 1 \
@@ -183,11 +179,11 @@ fzf-git-commits() {
     fi
 
     cmd="git log --date-order --abbrev-commit --oneline --decorate --color=always"
-    eval "$cmd" | eval "$fzf_cmd"
+    eval "$cmd" | eval "$fzf_cmd" | xargs -0 echo
 }
 
 git-commit-widget() {
-    result=$(fzf-git-commits | join-lines)
+    result=$(fzf-git-commits)
     zle reset-prompt
     LBUFFER+=$result
 }
@@ -204,14 +200,16 @@ fzf-git-branch() {
     fzf \
         --ansi \
         --multi \
+        --print0 \
         --list-label "${prompt}" \
         --header "ctrl-a: All branches | ctrl-l: Local branches" \
         --bind "ctrl-a:reload($git_cmd --all | $format)+change-list-label(Branches (all))" \
         --bind "ctrl-l:reload($git_cmd | $format)+change-list-label(Branches)" \
-        --preview 'git log --oneline --graph --date=short --color=always --pretty="format:%C(auto)%cd %h%d %s" {}'
+        --preview 'git log --oneline --graph --date=short --color=always --pretty="format:%C(auto)%cd %h%d %s" {}' |
+        xargs -0 echo
 }
 git-branch-widget() {
-    result=$(fzf-git-branch | join-lines)
+    result=$(fzf-git-branch)
     zle reset-prompt
     LBUFFER+=$result
 }
@@ -226,13 +224,14 @@ fzf-git-changed() {
     fzf \
         --multi \
         --ansi \
+        --print0 \
         --scheme path \
+        --accept-nth 2 \
         --header 'ctrl-f: All files | ctrl-g: Changed files' \
         --bind "ctrl-f:change-list-label(Files)+change-preview($bat_cmd)+reload($FZF_DEFAULT_COMMAND)" \
         --bind "ctrl-g:change-list-label(Changed Files)+change-preview($diff_cmd)+reload($cmd)" \
         --list-label "Changed Files" \
-        --preview 'delta-git-diff {..}' |
-    sed 's/.* //'
+        --preview 'delta-git-diff {..}' | xargs -0 echo
 }
 
 zle -N fzf-ls-widget
@@ -244,15 +243,16 @@ fzf-ls() {
     fzf \
         --ansi \
         --multi \
+        --print0 \
         --scheme path \
         --header "ctrl-d: Directories / ctrl-f: Files" \
         --bind "ctrl-d:change-list-label(Directories)+reload(fd -td)+change-preview(${dir_preview})" \
         --bind "ctrl-f:change-list-label(Files)+reload(fd -tf)+change-preview(${file_preview})" \
         --preview "${file_preview}"\
-        --list-label "Files"
+        --list-label "Files" | xargs -0 echo
 }
 fzf-ls-widget() {
-    result=$(fzf-ls | join-lines)
+    result=$(fzf-ls)
     zle reset-prompt
     LBUFFER+=$result
 }
@@ -261,10 +261,17 @@ bindkey '' fzf-ls-widget
 fzf-cd() {
     fd -td -H -E '*.git' |
     fzf \
-        --ansi \
         --no-multi \
         --preview='eza -hal {..}' \
         --list-label "Directories"
+}
+c() {
+    local out="$(fzf-cd)"
+    if [ -z "$out" ]; then
+        return
+    fi
+
+    cd "$out"
 }
 
 # Others

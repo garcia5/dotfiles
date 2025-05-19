@@ -1,5 +1,10 @@
 #!/bin/zsh
 
+# make sure we can still use FZF from inside this script
+autoload -U +X compinit && compinit
+source ~/.fzf.custom
+source ~/.functions
+
 function get_jira_ticket() {
     local branch="$1"
     local jira_ticket="$(echo $cur_branch | grep -Eo '\w+-\d+')"

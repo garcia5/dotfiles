@@ -12,7 +12,6 @@ else
     alias show='ls -la $(fzf-ls)'
 fi
 alias v='nvim'
-alias c='cd $(fzf-cd)'
 alias td='tmux-dev'
 alias wd='source $HOME/bin/wez-dev'
 
@@ -25,6 +24,7 @@ alias clera='clear'
 alias :wq='echo "Wrong pane"'
 alias :w='echo "Wrong pane"'
 alias :q='echo "Wrong pane"'
+alias :W='echo "Wrong pane"'
 
 # Git
 alias gs='git status'

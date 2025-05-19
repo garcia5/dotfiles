@@ -10,10 +10,10 @@ status_cols="${status_output% *}"
 
 if [[ "$status_cols" == 'M ' ]]; then
     # staged changes
-    git diff --staged --color=always -- "$fname" | fzf-delta
+    git diff --staged -- "$fname" | fzf-delta
 elif [[ "$status_cols" == '??' ]]; then
     # new file
-    bat --color=always -- "$fname"
+    bat "$fname"
 else
-    git diff --color=always -- "$fname" | fzf-delta
+    git diff -- "$fname" | fzf-delta
 fi

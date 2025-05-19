@@ -4,4 +4,5 @@ return {
     on_attach = function(client, bufnr)
         custom_attach(client, bufnr, { allowed_clients = { "dartls" }, format_on_save = true })
     end,
+    filetypes = { "dart" },
 }
