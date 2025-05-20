@@ -3,6 +3,9 @@ return {
     priority = 1000,
     lazy = false,
     opts = {
+        quickfile = {
+            enabled = true,
+        },
         explorer = {
             enabled = true,
         },
@@ -102,7 +105,9 @@ return {
         { "<leader>gg", function() require("snacks").picker.grep() end, desc = "Live grep" },
         { "<leader>qf", function() require("snacks").picker.qflist() end, desc = "Fuzzy find in qflist" },
         { "<leader>fl", function() require("snacks").picker.lines() end, desc = "Fuzzy find in file" },
-        { "<leader>fs", function() require("snacks").picker.lsp_symbols() end, desc = "Find LSP symbols" },
+        { "<leader>fs", function() require("snacks").picker.lsp_symbols() end, desc = "Find LSP" },
+        { "<leader>R", function() require("snacks").picker.resume() end, desc = "Resume last picker" },
+        { "<leader>q", function() require("snacks").picker.command_history() end, desc = "Command history picker" },
         -- explorer (also a picker)
         { "<leader>nt", function() require("snacks").explorer.open() end, desc = "Open filetree" },
         { "<leader>nf", function() require("snacks").explorer.reveal() end, desc = "Open current file in filetree" },
