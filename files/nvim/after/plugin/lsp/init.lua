@@ -7,7 +7,7 @@ local clients = {
     "gopls",
     "jsonls",
     "lua_ls",
-    "pyright",
+    "basedpyright",
     "rust_analyzer",
     "ts_ls",
     "volar",
