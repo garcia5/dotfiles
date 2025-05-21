@@ -101,7 +101,7 @@ return {
             end,
             desc = "Fuzzy find buffers",
         },
-        { "<leader>ff", function() require("snacks").picker.files() end, desc = "Fuzzy find Files" },
+        { "<leader>ff", function() require("snacks").picker.smart() end, desc = "Fuzzy find Files" },
         { "<leader>gg", function() require("snacks").picker.grep() end, desc = "Live grep" },
         { "<leader>qf", function() require("snacks").picker.qflist() end, desc = "Fuzzy find in qflist" },
         { "<leader>fl", function() require("snacks").picker.lines() end, desc = "Fuzzy find in file" },
