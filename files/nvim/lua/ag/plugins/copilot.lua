@@ -89,9 +89,6 @@ local chat = {
         {
             "<Leader>cc",
             function()
-                -- make sure telescope UI select is loaded first
-                require("telescope").load_extension("ui-select")
-
                 -- Pick a prompt using vim.ui.select
                 local actions = require("CopilotChat.actions")
                 actions.pick(actions.prompt_actions({
