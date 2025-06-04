@@ -26,7 +26,7 @@ end
 
 ---@param client vim.lsp.Client the lsp client instance
 ---@param bufnr number buffer we're attaching to
----@param format_opts table how to deal with formatting, takes the following keys:
+---@param format_opts table? how to deal with formatting, takes the following keys:
 -- allowed_clients (string[]): names of the lsp clients that are allowed to handle vim.lsp.buf.format() when this client is attached
 -- format_on_save (bool): whether or not to auto format on save
 M.custom_attach = function(client, bufnr, format_opts)

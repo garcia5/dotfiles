@@ -5,8 +5,6 @@ local eslint = require("efmls-configs.linters.eslint_d")
 local flake8 = require("efmls-configs.linters.flake8")
 local prettier = require("efmls-configs.formatters.prettier_d")
 local pylint = require("efmls-configs.linters.pylint")
-local ruff_fmt = require("efmls-configs.formatters.ruff")
-local ruff_lint = require("efmls-configs.linters.ruff")
 local shellcheck = require("efmls-configs.linters.shellcheck")
 local stylua = require("efmls-configs.formatters.stylua")
 
@@ -15,7 +13,7 @@ local languages = {
     typescript = { prettier, eslint },
     javascript = { prettier, eslint },
     vue = { prettier, eslint },
-    python = { black, autopep8, flake8, pylint, ruff_lint, ruff_fmt },
+    python = { black, autopep8, flake8, pylint },
     bash = { shellcheck },
     sh = { shellcheck },
 }
@@ -26,9 +24,7 @@ if python_venv_path ~= nil then
     local cmd_prefix = python_venv_path .. "/bin/"
     for _, prog in ipairs(languages["python"]) do
         local cmd = prog["formatCommand"]
-        if cmd == nil then
-            cmd = prog["lintCommand"]
-        end
+        if cmd == nil then cmd = prog["lintCommand"] end
 
         -- only prepend virtual env if it's not already there
         if cmd ~= nil and cmd:find(cmd_prefix, 1, true) == nil then

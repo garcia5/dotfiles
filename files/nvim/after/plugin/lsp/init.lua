@@ -8,6 +8,7 @@ local clients = {
     "jsonls",
     "lua_ls",
     "basedpyright",
+    "ruff",
     "rust_analyzer",
     "ts_ls",
     "volar",
