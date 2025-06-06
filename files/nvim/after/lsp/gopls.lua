@@ -3,7 +3,7 @@ local custom_attach = require("ag.lsp.common").custom_attach
 return {
     filetypes = { "go" },
     on_attach = function(client, bufnr)
-        custom_attach(client, bufnr, { allowed_clients = { "gopls" }, format_on_save = true })
+        custom_attach(client, bufnr, { format_on_save = true })
         -- auto organize imports
         vim.api.nvim_create_autocmd("BufWritePre", {
             pattern = "*.go",

@@ -2,9 +2,7 @@ local custom_attach = require("ag.lsp.common").custom_attach
 
 return {
     cmd = { "typescript-language-server", "--stdio" },
-    on_attach = function(client, bufnr)
-        custom_attach(client, bufnr, { allowed_clients = { "efm" }, format_on_save = false })
-    end,
+    on_attach = function(client, bufnr) custom_attach(client, bufnr) end,
     filetypes = { "javascript", "typescript", "vue" },
     root_dir = function(bufnr, cb)
         local root = vim.fs.root(bufnr, { "package.json", "tsconfig.json", "jsconfig.json" })

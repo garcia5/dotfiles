@@ -21,8 +21,6 @@ return {
                     genericTypes = false,
                     callArgumentNames = false,
                 },
-                -- disable basedpyright linting, use ruff instead
-                ignore = {"*"}
             },
         },
         python = {

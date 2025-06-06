@@ -1,33 +1,35 @@
 local M = {}
 
+local allowed_formatters = {
+    "ruff",
+    "efm",
+    "rust_analyzer",
+    "gopls",
+    "dartls",
+}
+
 -- restricted format
 ---@param bufnr number buffer to format
----@param allowed_clients string[] client names to allow formatting
-local function format_by_client(bufnr, allowed_clients)
+local function format_by_client(bufnr)
     vim.lsp.buf.format({
         bufnr = bufnr,
-        filter = function(client)
-            if not allowed_clients then return true end
-            return vim.tbl_contains(allowed_clients, client.name)
-        end,
+        filter = function(client) return vim.tbl_contains(allowed_formatters, client.name) end,
     })
 end
 
 ---@param bufnr number
----@param allowed_clients string[]
-local function register_format_on_save(bufnr, allowed_clients)
+local function register_format_on_save(bufnr)
     local format_group = vim.api.nvim_create_augroup("LspFormatting", { clear = true })
     vim.api.nvim_create_autocmd("BufWritePre", {
         group = format_group,
         buffer = bufnr,
-        callback = function() format_by_client(bufnr, allowed_clients) end,
+        callback = function() format_by_client(bufnr) end,
     })
 end
 
 ---@param client vim.lsp.Client the lsp client instance
 ---@param bufnr number buffer we're attaching to
 ---@param format_opts table? how to deal with formatting, takes the following keys:
--- allowed_clients (string[]): names of the lsp clients that are allowed to handle vim.lsp.buf.format() when this client is attached
 -- format_on_save (bool): whether or not to auto format on save
 M.custom_attach = function(client, bufnr, format_opts)
     local keymap_opts = { buffer = bufnr, silent = true, noremap = true }
@@ -49,39 +51,9 @@ M.custom_attach = function(client, bufnr, format_opts)
         vim.cmd("edit")
     end, with_desc(keymap_opts, "Restart all LSP clients")) -- restart clients
 
-    if format_opts ~= nil then
-        vim.keymap.set(
-            "n",
-            "<leader>F",
-            function() format_by_client(bufnr, format_opts.allowed_clients or { client.name }) end,
-            with_desc(keymap_opts, "Format")
-        ) -- format
+    vim.keymap.set("n", "<leader>F", function() format_by_client(bufnr) end, with_desc(keymap_opts, "Format")) -- format
 
-        if format_opts.format_on_save then
-            register_format_on_save(bufnr, format_opts.allowed_clients or { client.name })
-        end
-    end
-end
-
----If the configured client's "cmd" is available, enable it
----Otherwise do nothing
----@param client string
-M.register_if_installed = function(client)
-    local config = vim.lsp.config[client]
-    if config == nil or config.cmd == nil then return end
-
-    local cmd = nil
-    if type(config.cmd) == "table" then
-        cmd = config.cmd[1]
-    elseif type(config.cmd) == "string" then
-        cmd = config.cmd
-    end
-
-    if cmd == nil then return end
-
-    local output = vim.fn.trim(vim.fn.system({ "which", cmd }))
-
-    if vim.fn.filereadable(output) then vim.lsp.enable(client) end
+    if format_opts ~= nil and format_opts.format_on_save then register_format_on_save(bufnr) end
 end
 
 return M

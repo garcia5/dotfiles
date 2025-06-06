@@ -82,7 +82,7 @@ local efmls_config = {
 return vim.tbl_extend("force", efmls_config, {
     cmd = { "efm-langserver" },
     filetypes = vim.tbl_keys(languages),
-    on_attach = function(client, bufnr) custom_attach(client, bufnr, { allowed_clients = { "efm" } }) end,
+    on_attach = function(client, bufnr) custom_attach(client, bufnr) end,
     handlers = {
         ["textDocument/publishDiagnostics"] = custom_publish_diagnostics,
     },
