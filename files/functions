@@ -46,14 +46,18 @@ ws() {
     done
 }
 
-# update all panes in current tab to the given directory
+# update all panes in current tab/window to the given directory
 cda() {
     local target_dir="$1"
     if [[ -z "${target_dir}" ]]; then
         target_dir="$HOME"
     fi
 
-    ws "cd ${target_dir}"
+    if [ -n "${WEZTERM_PANE}" ]; then
+        ws "cd ${target_dir}"
+    elif [ -n "${TMUX}" ]; then
+        tmux list-panes -F '#{pane_id} #{pane_current_command}' | grep -E 'zsh|tmux' | cut -d' ' -f1 | xargs -I {} tmux send-keys -t {} "cd ${target_dir}" Enter
+    fi
 }
 compdef '_path_files -/' cda
 

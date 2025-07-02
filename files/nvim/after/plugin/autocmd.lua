@@ -59,6 +59,12 @@ au("BufEnter", {
 })
 
 au("BufEnter", {
+    pattern = "Bogiefile",
+    desc = "Bogiefiles are always yaml",
+    callback = function() vim.opt_local.filetype = "yaml" end,
+})
+
+au("BufEnter", {
     pattern = "*.tmTheme",
     callback = function() vim.opt_local.filetype = "tmTheme" end,
 })

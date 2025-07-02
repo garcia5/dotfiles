@@ -46,8 +46,11 @@ function dotfiles {
 function apps {
     open '/Applications/Slack.app/'
     open '/Applications/Obsidian.app/'
-    open 'https://gmail.com' 'https://calendar.google.com'
-    [ -n "${JIRA_URL}" ] && open "${JIRA_URL}"
+    if [ -n "${STARTUP_URLS}" ]; then
+        for url in "${STARTUP_URLS[@]}"; do
+            open "${url}"
+        done
+    fi
 }
 
 function main {

@@ -53,4 +53,5 @@
 	plus-emph-style = syntax ul auto
 	plus-empty-line-marker-style = syntax auto
 [absorb]
-	maxStack = 20
+	maxStack = 60
+	oneFixupPerCommit = true
