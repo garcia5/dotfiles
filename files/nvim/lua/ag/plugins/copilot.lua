@@ -63,7 +63,7 @@ local chat = {
     },
     opts = {
         debug = false,
-        model = "gpt-4o",
+        model = "claude-3.5-sonnet",
         window = {
             layout = "float",
             border = "rounded",
