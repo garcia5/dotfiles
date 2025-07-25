@@ -24,18 +24,18 @@ export FZF_DEFAULT_OPTS="--height 90% \
     --multi \
     --pointer='' \
     --marker='' \
-    --input-label='Search' \
+    --ghost='Search' \
     --list-border=$border_style \
     --header-border=$border_style \
     --input-border=$border_style \
     --preview-label='Preview (<C-h> to toggle)' \
     --bind 'resize,start:transform:$TRANSFORMER' \
     --bind 'ctrl-b:preview-half-page-up,ctrl-f:preview-half-page-down' \
-    --bind 'ctrl-h:toggle-preview'\
+    --bind 'ctrl-h:toggle-preview' \
     --bind 'ctrl-y:jump-accept'"
 
 export FZF_CTRL_R_OPTS="--scheme history \
-    --list-label 'History'
+    --ghost 'Search Command History'
     --bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort' \
     --header 'ctrl-y: Copy command to clipboard'"
 

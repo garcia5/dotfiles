@@ -86,7 +86,7 @@ vs() {
     local cmd='fd -tf'
     local fzf_cmd="fzf \
         --scheme path \
-        --list-label 'Files' \
+        --ghost 'Search Files' \
         --preview 'bat --color=always --style=numbers,changes {}' \
         --header 'enter: open in \$EDITOR' \
         --bind 'enter:become(${EDITOR:-nvim} {+})'"
@@ -99,7 +99,7 @@ fzf-ctrl-t() {
     local fzf_cmd="fzf \
         --scheme path \
         --print0 \
-        --list-label 'Files' \
+        --ghost 'Search Files' \
         --preview 'bat --color=always --style=numbers,changes {}'"
     eval "$cmd" | eval "$fzf_cmd" | xargs -0 echo
 }
@@ -115,8 +115,8 @@ fzf-js-test() {
         --accept-nth 1 \
         --list-label='Test Files' \
         --header 'ctrl-f: All files | ctrl-g Test files' \
-        --bind 'ctrl-f:change-list-label(Files)+reload($FZF_DEFAULT_COMMAND)' \
-        --bind 'ctrl-g:change-list-label(Test Files)+reload($cmd)' \
+        --bind 'ctrl-f:change-ghost(Files)+reload($FZF_DEFAULT_COMMAND)' \
+        --bind 'ctrl-g:change-ghost(Test Files)+reload($cmd)' \
         --preview 'bat --color=always --style=plain --highlight-line={2} {1}'"
     eval "$cmd" | "$fzf_cmd" | xargs -0 echo
 }
@@ -129,9 +129,9 @@ fzf-pytest() {
         --print0 \
         --scheme path \
         --header 'ctrl-f: All files | ctrl-g Test files' \
-        --bind "ctrl-f:change-list-label(Files)+reload($FZF_DEFAULT_COMMAND)" \
-        --bind "ctrl-g:change-list-label(Test Files)+reload($cmd)" \
-        --list-label "Test Files" \
+        --bind "ctrl-f:change-ghost(Search All Files)+reload($FZF_DEFAULT_COMMAND)" \
+        --bind "ctrl-g:change-ghost(Search Test Files)+reload($cmd)" \
+        --ghost "Test Files" \
         --preview "bat --color=always {}" | xargs -0 echo
 }
 
@@ -154,9 +154,9 @@ fzf-git-checkout() {
         --bind "enter:execute(git switch {..})+accept" \
         --bind "ctrl-a:execute(git switch -c {q})+accept" \
         --bind "ctrl-t:execute(git switch --track {..})+accept" \
-        --bind "ctrl-r:reload($git_cmd --all | $format)+change-list-label(All Branches)" \
-        --bind "ctrl-l:reload($git_cmd | $format)+change-list-label(Local Branches)" \
-        --list-label "All Branches" \
+        --bind "ctrl-r:reload($git_cmd --all | $format)+change-ghost(Search All Branches)" \
+        --bind "ctrl-l:reload($git_cmd | $format)+change-ghost(Search Local Branches)" \
+        --ghost "All Branches" \
         --preview 'git log --oneline --graph --date=short --color=always --pretty="format:%C(auto)%cd %h%d %s" {}'
 }
 
@@ -171,7 +171,7 @@ fzf-git-commits() {
         --multi \
         --print0 \
         --scheme 'history' \
-        --list-label 'Commits' \
+        --ghost 'Search Commits' \
         --accept-nth 1 \
         --header 'Ctrl-a: open in delta | Ctrl-t: open in nvim' \
         --bind 'ctrl-a:execute($diff_cmd)' \
@@ -205,10 +205,10 @@ fzf-git-branch() {
         --ansi \
         --multi \
         --print0 \
-        --list-label "${prompt}" \
+        --ghost "${prompt}" \
         --header "ctrl-a: All branches | ctrl-l: Local branches" \
-        --bind "ctrl-a:reload($git_cmd --all | $format)+change-list-label(Branches (all))" \
-        --bind "ctrl-l:reload($git_cmd | $format)+change-list-label(Branches)" \
+        --bind "ctrl-a:reload($git_cmd --all | $format)+change-ghost(Search All Branches)" \
+        --bind "ctrl-l:reload($git_cmd | $format)+change-ghost(Search Local Branches)" \
         --preview 'git log --oneline --graph --date=short --color=always --pretty="format:%C(auto)%cd %h%d %s" {}' |
         xargs -0 echo
 }
@@ -232,9 +232,9 @@ fzf-git-changed() {
         --scheme path \
         --accept-nth 2 \
         --header 'ctrl-f: All files | ctrl-g: Changed files' \
-        --bind "ctrl-f:change-list-label(Files)+change-preview($bat_cmd)+reload($FZF_DEFAULT_COMMAND)" \
-        --bind "ctrl-g:change-list-label(Changed Files)+change-preview($diff_cmd)+reload($cmd)" \
-        --list-label "Changed Files" \
+        --bind "ctrl-f:change-ghost(Search Files)+change-preview($bat_cmd)+reload($FZF_DEFAULT_COMMAND)" \
+        --bind "ctrl-g:change-ghost(Search Changed Files)+change-preview($diff_cmd)+reload($cmd)" \
+        --ghost "Search Changed Files" \
         --preview 'delta-git-diff {..}' | xargs -0 echo
 }
 
@@ -250,10 +250,10 @@ fzf-ls() {
         --print0 \
         --scheme path \
         --header "ctrl-d: Directories / ctrl-f: Files" \
-        --bind "ctrl-d:change-list-label(Directories)+reload(fd -td)+change-preview(${dir_preview})" \
-        --bind "ctrl-f:change-list-label(Files)+reload(fd -tf)+change-preview(${file_preview})" \
-        --preview "${file_preview}"\
-        --list-label "Files" | xargs -0 echo
+        --bind "ctrl-d:change-ghost(Search Directories)+reload(fd -td)+change-preview(${dir_preview})" \
+        --bind "ctrl-f:change-ghost(Search Files)+reload(fd -tf)+change-preview(${file_preview})" \
+        --preview "${file_preview}" \
+        --list-label "Search Files" | xargs -0 echo
 }
 fzf-ls-widget() {
     result=$(fzf-ls)
@@ -267,7 +267,7 @@ fzf-cd() {
     fzf \
         --no-multi \
         --preview='eza -hal {..}' \
-        --list-label "Directories"
+        --ghost "Search Directories"
 }
 c() {
     local out="$(fzf-cd)"
