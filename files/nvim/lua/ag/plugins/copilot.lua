@@ -68,6 +68,12 @@ local chat = {
             layout = "float",
             border = "rounded",
         },
+        {
+            -- Uses visual selection or falls back to buffer
+            selection = function(source)
+                return require("CopilotChat.select").visual(source) or require("CopilotChat.select").buffer(source)
+            end,
+        },
         prompts = {
             PythonExpert = {
                 system_prompt = "You are an expert Python developer with knowledge of language best practices, helping an experienced software engineer in their day to day work",

@@ -6,9 +6,14 @@ return {
     },
     ft = {
         "markdown",
+        "copilot-chat",
     },
     main = "render-markdown",
     opts = {
+        file_types = {
+            "markdown",
+            "copilot-chat",
+        },
         latex = {
             enabled = false,
         },
