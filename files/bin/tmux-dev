@@ -9,16 +9,17 @@ function work {
     fi
     tmux new-session -d -s "$session" -c "$HOME/work" # working session
 
-    # open terminal in vertical split pane
-    tmux split-window -h -c "$HOME/work"
-    # Keep focus in original pane
-    tmux select-pane -t "$session:1.1"
-    # Adjust pane sizes if necessary (this only sort of works)
+    # Open in "widescreen" or "normal" mode depending on screen size
     local width
     width=$(tput cols)
     if [ "$width" -gt 300 ]; then
-        tmux resize-pane -t "$session:1.1" -x '66%'
+        tmux split-window -h -c "$HOME/work" -l '66%'
+    else
+        tmux split-window -v -c "$HOME/work" -l '66%'
     fi
+
+    # Keep focus in original pane
+    tmux select-pane -t "$session:1.1"
 }
 
 function notes {
