@@ -71,8 +71,12 @@ ctrl-t-widget() {
     # Find only '.spec' files
     elif [[ $LBUFFER =~ '^(yarn|pnpm) test ' ]]; then
         result=$(fzf-js-test)
+    # Find only test_*.py files
     elif [[ $LBUFFER =~ 'pytest' ]]; then
         result=$(fzf-pytest)
+    # Find only python files, replace '/' with '.' to properly run locally as module
+    elif [[ $LBUFFER =~ 'python \-m ' ]]; then
+        result=$(fzf-python-module)
     # Otherwise do default and fuzzy search all files
     else
         result=$(fzf-ctrl-t)
@@ -113,10 +117,10 @@ fzf-js-test() {
         --delimiter : \
         --nth 1 \
         --accept-nth 1 \
-        --list-label='Test Files' \
+        --ghost='Search Test Files' \
         --header 'ctrl-f: All files | ctrl-g Test files' \
-        --bind 'ctrl-f:change-ghost(Files)+reload($FZF_DEFAULT_COMMAND)' \
-        --bind 'ctrl-g:change-ghost(Test Files)+reload($cmd)' \
+        --bind 'ctrl-f:change-ghost(Search All Files)+reload($FZF_DEFAULT_COMMAND)' \
+        --bind 'ctrl-g:change-ghost(Search Test Files)+reload($cmd)' \
         --preview 'bat --color=always --style=plain --highlight-line={2} {1}'"
     eval "$cmd" | "$fzf_cmd" | xargs -0 echo
 }
@@ -131,8 +135,26 @@ fzf-pytest() {
         --header 'ctrl-f: All files | ctrl-g Test files' \
         --bind "ctrl-f:change-ghost(Search All Files)+reload($FZF_DEFAULT_COMMAND)" \
         --bind "ctrl-g:change-ghost(Search Test Files)+reload($cmd)" \
-        --ghost "Test Files" \
+        --ghost "Search Test Files" \
         --preview "bat --color=always {}" | xargs -0 echo
+}
+
+fzf-python-module() {
+    local cmd="fd -tf -e '.py'"
+
+    eval "$cmd" |
+    fzf \
+        --no-multi \
+        --print0 \
+        --scheme path \
+        --header 'ctrl-f: All files | ctrl-g Python files' \
+        --bind "ctrl-f:change-ghost(Search All Files)+reload($FZF_DEFAULT_COMMAND)" \
+        --bind "ctrl-g:change-ghost(Search Python Files)+reload($cmd)" \
+        --ghost "Search Python Files" \
+        --preview "bat --color=always {}" |
+    sed 's$/$.$g' |
+    sed 's/.py$//' |
+    xargs -0 echo
 }
 
 fzf-git-checkout() {
@@ -266,6 +288,7 @@ fzf-cd() {
     fd -td -H -E '*.git' |
     fzf \
         --no-multi \
+        --scheme "path" \
         --preview='eza -hal {..}' \
         --ghost "Search Directories"
 }

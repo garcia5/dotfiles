@@ -132,6 +132,11 @@ syntax_highlights_theme="$HOME/.zsh/catppuccin_mocha-zsh-syntax-highlighting.zsh
 syntax_highlights="$(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 [ -f "$syntax_highlights" ] && source "$syntax_highlights"
 
+zsh_interactive_cd() {
+    interactive_cd="$ZSH_CUSTOM/plugins/zsh-interactive-cd/zsh-interactive-cd.zsh"
+    [ -f "$interactive_cd" ] && source "$interactive_cd"
+}
+
 # vi mode
 # NOTE: edit command in $EDITOR happens from zsh-vi-mode with `vv`
 
@@ -141,6 +146,7 @@ zvm_after_init() {
     [ -f "$HOME/.fzf.custom" ] && source "$HOME/.fzf.custom"
     [ -f "$HOME/.functions" ] && source "$HOME/.functions"
     [ -f "$HOME/.custom" ] && source "$HOME/.custom"
+    zsh_interactive_cd
 }
 # Do vim surround on the command line
 export ZVM_VI_SURROUND_BINDKEY='classic'
