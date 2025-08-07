@@ -1,54 +1,20 @@
 local copilot = {
     "zbirenbaum/copilot.lua",
-    keys = {
-        {
-            "<M-j>",
-            function() require("copilot.suggestion").next() end,
-            mode = "i",
-            desc = "Next copilot suggestion",
-        },
-        {
-            "<M-k>",
-            function() require("copilot.suggestion").prev() end,
-            mode = "i",
-            desc = "Prev copilot suggestion",
-        },
-        {
-            "<M-y>",
-            function() require("copilot.suggestion").accept_line() end,
-            mode = "i",
-            desc = "Accept copilot suggestion",
-        },
-    },
+    event = "InsertEnter",
     cmd = {
         "Copilot",
     },
     opts = {
         suggestion = {
-            enabled = true,
-            auto_trigger = false,
-            hide_during_completion = true,
-            keymap = {
-                accept = "<M-y>",
-                next = "<M-j>",
-                prev = "<M-k>",
-                dismiss = "<C-c>",
-            },
+            enabled = false,
         },
         panel = {
-            enabled = true,
-            keymap = {
-                jump_prev = "cp",
-                jump_next = "cn",
-                accept = "<CR>",
-                refresh = "gr",
-            },
+            enabled = false,
         },
         filetypes = {
             markdown = false,
             gitrebase = false,
             help = false,
-            gitcommit = false,
             ["*"] = true,
         },
     },
@@ -67,6 +33,10 @@ local chat = {
         window = {
             layout = "float",
             border = "rounded",
+            relative = "cursor",
+            width = 1,
+            height = 0.4,
+            row = 1,
         },
         {
             -- Uses visual selection or falls back to buffer
@@ -93,21 +63,41 @@ local chat = {
     },
     keys = {
         {
-            "<Leader>cc",
-            function()
-                -- Pick a prompt using vim.ui.select
-                local actions = require("CopilotChat.actions")
-                actions.pick(actions.prompt_actions({
-                    selection = require("CopilotChat.select").visual,
-                }))
-            end,
-            mode = { "n", "v" },
-            desc = "Copilot Chat Action",
-        },
-        {
             "<Leader>co",
             function() require("CopilotChat").open() end,
             mode = { "n", "v" },
+        },
+        {
+            "<Leader>cd",
+            function ()
+                require("CopilotChat").ask("/Docs", {
+                    window = {
+                        layout = "float",
+                        relative = "cursor",
+                        width = 1,
+                        height = 0.4,
+                        row = 1,
+                    }
+                })
+            end,
+            mode = { "n", "v" },
+            desc = "Generate docs for selected code",
+        },
+        {
+            "<Leader>ct",
+            function ()
+                require("CopilotChat").ask("/Tests", {
+                    window = {
+                        layout = "float",
+                        relative = "cursor",
+                        width = 1,
+                        height = 0.4,
+                        row = 1,
+                    }
+                })
+            end,
+            mode = { "n", "v" },
+            desc = "Generate tests for selected code",
         },
     },
     cmd = {

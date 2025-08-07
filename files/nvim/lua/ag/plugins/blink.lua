@@ -6,6 +6,9 @@ return {
             "L3MON4D3/LuaSnip",
             version = "v2.*",
         },
+        {
+            "fang2hou/blink-copilot", -- copilot integration
+        },
     },
     -- use a release tag to download pre-built binaries
     version = "v0.*",
@@ -25,6 +28,9 @@ return {
 
             ["<C-b>"] = { "scroll_documentation_up", "fallback" },
             ["<C-f>"] = { "scroll_documentation_down", "fallback" },
+
+            ["<M-j>"] = { function(cmp) cmp.show({ providers = { "copilot" } }) end },
+            ["<M-y>"] = { "select_and_accept", "fallback" },
         },
 
         appearance = {
@@ -54,6 +60,11 @@ return {
                         -- complete path from vim CWD rather than buffer directory
                         get_cwd = function(_) return vim.fn.getcwd() end,
                     },
+                },
+                copilot = {
+                    name = "copilot",
+                    module = "blink-copilot",
+                    async = true,
                 },
             },
         },
