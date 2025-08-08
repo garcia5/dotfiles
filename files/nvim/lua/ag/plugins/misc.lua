@@ -16,11 +16,6 @@ return {
         cond = function() return not vim.tbl_contains({ "TelescopePrompt", "fugitive" }, vim.opt.filetype) end,
         event = "InsertEnter",
     },
-    -- devicons
-    {
-        "nvim-tree/nvim-web-devicons",
-        lazy = true,
-    },
     -- highlight color codes
     {
         "norcalli/nvim-colorizer.lua",

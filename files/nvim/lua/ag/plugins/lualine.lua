@@ -103,7 +103,6 @@ return {
             component_separators = { left = "", right = "" },
             theme = "catppuccin",
             globalstatus = true,
-            disabled_filetypes = { "alpha" },
         },
         extensions = {
             "aerial",
