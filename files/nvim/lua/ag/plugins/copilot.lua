@@ -70,7 +70,7 @@ local chat = {
         {
             "<Leader>cd",
             function ()
-                require("CopilotChat").ask("/Docs", {
+                require("CopilotChat").ask("#buffer /Docs", {
                     window = {
                         layout = "float",
                         relative = "cursor",
@@ -86,7 +86,7 @@ local chat = {
         {
             "<Leader>ct",
             function ()
-                require("CopilotChat").ask("/Tests", {
+                require("CopilotChat").ask("#buffer /Tests", {
                     window = {
                         layout = "float",
                         relative = "cursor",
