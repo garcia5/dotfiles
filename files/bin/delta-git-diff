@@ -12,8 +12,13 @@ if [[ "$status_cols" == 'M ' ]]; then
     # staged changes
     git diff --staged -- "$fname" | fzf-delta
 elif [[ "$status_cols" == '??' ]]; then
-    # new file
-    bat "$fname"
+    # new dir
+    if [[ -d "$fname" ]]; then
+        eza --color=always -T --level 2 "$fname"
+    else
+        # new file
+        bat "$fname"
+    fi
 else
     git diff -- "$fname" | fzf-delta
 fi
