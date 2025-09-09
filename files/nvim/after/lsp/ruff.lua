@@ -4,8 +4,11 @@ return {
     filetypes = { "python" },
     cmd = { "uvx", "ruff", "server" },
     root_dir = function(bufnr, cb)
-        local root = vim.fs.root(bufnr, { "pyproject.toml", "ruff.toml", ".ruff.toml" })
-        cb(root)
+        local is_diffview = vim.fn.bufname(bufnr):match("^diffview%S")
+        if not is_diffview then
+            local root = vim.fs.root(bufnr, { "pyproject.toml", "ruff.toml", ".ruff.toml" })
+            cb(root)
+        end
     end,
     on_attach = function(client, bufnr)
         custom_attach(client, bufnr)
