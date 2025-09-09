@@ -29,14 +29,13 @@ local chat = {
     },
     opts = {
         debug = false,
-        model = "claude-3.5-sonnet",
+        model = "claude-sonnet-4",
         window = {
             layout = "float",
             border = "rounded",
-            relative = "cursor",
-            width = 1,
-            height = 0.4,
-            row = 1,
+            width = 0.5,
+            height = 0.5,
+            title = " Copilot Chat",
         },
         {
             -- Uses visual selection or falls back to buffer
@@ -69,7 +68,7 @@ local chat = {
         },
         {
             "<Leader>cd",
-            function ()
+            function()
                 require("CopilotChat").ask("#buffer /Docs", {
                     window = {
                         layout = "float",
@@ -77,7 +76,7 @@ local chat = {
                         width = 1,
                         height = 0.4,
                         row = 1,
-                    }
+                    },
                 })
             end,
             mode = { "n", "v" },
@@ -85,7 +84,7 @@ local chat = {
         },
         {
             "<Leader>ct",
-            function ()
+            function()
                 require("CopilotChat").ask("#buffer /Tests", {
                     window = {
                         layout = "float",
@@ -93,7 +92,7 @@ local chat = {
                         width = 1,
                         height = 0.4,
                         row = 1,
-                    }
+                    },
                 })
             end,
             mode = { "n", "v" },
