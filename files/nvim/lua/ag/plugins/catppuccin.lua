@@ -35,6 +35,7 @@ return {
             blink_cmp = true,
             diffview = true,
             gitsigns = true,
+            fzf = true,
             native_lsp = {
                 enabled = true,
                 inlay_hints = {
@@ -48,7 +49,7 @@ return {
             render_markdown = true,
             semantic_tokens = true,
             snacks = {
-                enabled = true,
+                enabled = false,
                 indent_scope_color = "blue",
             },
             treesitter = true,
