@@ -46,6 +46,7 @@ return {
                     errors = { "underline" },
                 },
             },
+            neotree = true,
             render_markdown = true,
             semantic_tokens = true,
             snacks = {
