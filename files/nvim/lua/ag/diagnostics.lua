@@ -18,7 +18,6 @@ vim.diagnostic.config({
     float = {
         severity_sort = true,
         source = "if_many",
-        border = "single",
         header = {
             "",
             "DiagnosticSignWarn",

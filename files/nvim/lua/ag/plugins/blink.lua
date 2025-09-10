@@ -106,7 +106,6 @@ return {
                 -- Show completion menu by default
                 auto_show = true,
                 -- menu looks more like nvim-cmp
-                border = "single",
                 draw = {
                     columns = { { "label", "label_description", gap = 1 }, { "kind_icon", "kind" } },
                 },
@@ -133,9 +132,6 @@ return {
         -- Enable experimental signature help support
         signature = {
             enabled = true,
-            window = {
-                border = "single",
-            },
         },
 
         -- enable luasnip as snippet backend

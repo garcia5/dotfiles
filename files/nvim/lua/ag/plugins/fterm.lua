@@ -38,7 +38,6 @@ return {
 
         -- display
         require("FTerm").setup({
-            border = "rounded",
             cmd = { "/bin/zsh", "-l" },
         })
     end,

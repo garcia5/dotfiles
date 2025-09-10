@@ -75,7 +75,6 @@ local ts = {
             -- peek definitions from LSP
             lsp_interop = {
                 enable = true,
-                border = "single",
                 peek_definition_code = {
                     ["<Leader>pf"] = "@function.outer",
                     ["<Leader>pc"] = "@class.outer",
