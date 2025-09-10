@@ -27,29 +27,29 @@ local chat = {
         { "zbirenbaum/copilot.lua" },
         { "nvim-lua/plenary.nvim" },
     },
+    build = "make tiktoken",
     opts = {
         debug = false,
         model = "claude-sonnet-4",
         window = {
-            layout = "float",
-            border = "rounded",
-            width = 0.5,
-            height = 0.5,
+            layout = "vertical",
+            width = 0.3,
             title = " Copilot Chat",
         },
-        {
-            -- Uses visual selection or falls back to buffer
-            selection = function(source)
-                return require("CopilotChat.select").visual(source) or require("CopilotChat.select").buffer(source)
-            end,
+        headers = {
+            user = "󰀉",
+            assistant = "󰚩",
+            tool = "󱁤",
         },
+        highlight_headers = true,
+        separator = "---",
+        error_header = "> [!ERROR] Error",
         prompts = {
             PythonExpert = {
                 system_prompt = "You are an expert Python developer with knowledge of language best practices, helping an experienced software engineer in their day to day work",
             },
         },
         mappings = {
-            -- Swap default "submit" and "accept" mappings - I don't really use diff mappings and <C-y> is more common for me
             submit_prompt = {
                 normal = "<CR>",
                 insert = "<C-y>",
@@ -69,34 +69,22 @@ local chat = {
         {
             "<Leader>cd",
             function()
-                require("CopilotChat").ask("#buffer /Docs", {
-                    window = {
-                        layout = "float",
-                        relative = "cursor",
-                        width = 1,
-                        height = 0.4,
-                        row = 1,
-                    },
-                })
+                local sticky = {
+                    "#buffers", "#gitdiff",
+                }
+                if vim.bo.filetype == "python" then
+                    table.insert(sticky, "/PythonExpert")
+                end
+
+                require("CopilotChat").ask(
+                    "Please update the comments, docstrings, and unit tests related to my changed code",
+                    {
+                        sticky = sticky,
+                    }
+                )
             end,
             mode = { "n", "v" },
-            desc = "Generate docs for selected code",
-        },
-        {
-            "<Leader>ct",
-            function()
-                require("CopilotChat").ask("#buffer /Tests", {
-                    window = {
-                        layout = "float",
-                        relative = "cursor",
-                        width = 1,
-                        height = 0.4,
-                        row = 1,
-                    },
-                })
-            end,
-            mode = { "n", "v" },
-            desc = "Generate tests for selected code",
+            desc = "Update tests, docstrings based on new changes",
         },
     },
     cmd = {
@@ -114,6 +102,15 @@ local chat = {
         "CopilotChatCommitStaged",
         "CopilotChatModels",
     },
+    init = function()
+        vim.api.nvim_create_autocmd("BufEnter", {
+            pattern = "copilot-*",
+            callback = function()
+                vim.opt_local.relativenumber = false
+                vim.opt_local.number = false
+            end,
+        })
+    end,
 }
 
 return {
