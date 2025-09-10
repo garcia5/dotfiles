@@ -52,15 +52,12 @@ return {
 
         -- load my custom snippets
         ls.add_snippets("typescript", snippets.typescript)
-        ls.add_snippets("dart", snippets.dart)
         ls.add_snippets("python", snippets.python)
     end,
     ft = {
         "vue",
         "typescript",
         "javascript",
-        "dart",
-        "rust",
         "python",
     },
 }

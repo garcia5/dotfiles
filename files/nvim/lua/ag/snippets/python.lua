@@ -72,7 +72,7 @@ M.test_function_snippet = s(
         doc = optional_docstring_choice(1, "DOC", "Test that ..."),
         test_name = i(2, "test_name"),
         params = i(3),
-        body = i(0, "assert True"),
+        body = i(0, "raise NotImplementedError"),
     })
 )
 ---
