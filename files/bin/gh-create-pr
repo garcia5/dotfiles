@@ -7,7 +7,7 @@ source ~/.functions
 
 function get_jira_ticket() {
     local branch="$1"
-    local jira_ticket="$(echo $cur_branch | grep -Eo '\w+-\d+')"
+    local jira_ticket="$(echo $cur_branch | grep -Eo '\/(\w+-\d+)\/' | grep -Eo '\w+-\d+')"
     echo "$jira_ticket"
 }
 
