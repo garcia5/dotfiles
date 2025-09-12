@@ -87,25 +87,22 @@ ctrl-t-widget() {
 bindkey '' ctrl-t-widget
 
 vs() {
-    local cmd='fd -tf'
-    local fzf_cmd="fzf \
+    fzf \
         --scheme path \
         --ghost 'Search Files' \
+        --tmux 'center,60%' \
         --preview 'bat --color=always --style=numbers,changes {}' \
         --header 'enter: open in \$EDITOR' \
-        --bind 'enter:become(${EDITOR:-nvim} {+})'"
-
-    eval "$cmd" | eval "$fzf_cmd"
+        --bind 'enter:become(${EDITOR:-nvim} {+})'
 }
 
 fzf-ctrl-t() {
-    local cmd='fd -tf'
-    local fzf_cmd="fzf \
+    fzf \
         --scheme path \
         --print0 \
         --ghost 'Search Files' \
-        --preview 'bat --color=always --style=numbers,changes {}'"
-    eval "$cmd" | eval "$fzf_cmd" | xargs -0 echo
+        --preview 'bat --color=always --style=numbers,changes {}' |
+    xargs -0 echo
 }
 
 fzf-js-test() {
@@ -126,7 +123,7 @@ fzf-js-test() {
 }
 
 fzf-pytest() {
-    local cmd="fd -tf -g 'test_*.py'"
+    local cmd="$FZF_CTRL_T_COMMAND -g 'test_*.py'"
     eval "$cmd" |
     fzf \
         --multi \
@@ -140,7 +137,7 @@ fzf-pytest() {
 }
 
 fzf-python-module() {
-    local cmd="fd -tf -e '.py'"
+    local cmd="$FZF_CTRL_T_COMMAND -e '.py'"
 
     eval "$cmd" |
     fzf \
@@ -266,7 +263,7 @@ fzf-ls() {
     file_preview="bat --color=always --line-range=:40 --style=numbers,changes {}"
     dir_preview="eza --color=always -T --level 2 {}"
 
-    file_cmd="fd -tf"
+    file_cmd="$FZF_CTRL_T_COMMAND"
     dir_cmd="fd -td"
 
     eval "$file_cmd" |
