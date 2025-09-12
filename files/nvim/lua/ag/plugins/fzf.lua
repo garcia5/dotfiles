@@ -2,6 +2,7 @@ return {
     "ibhagwan/fzf-lua",
     dependencies = { "nvim-tree/nvim-web-devicons" },
     opts = {
+        "borderless-full",
         fzf_opts = {
             ["--info"] = "inline-right",
             ["--scrollbar"] = "▏▕",
@@ -11,11 +12,17 @@ return {
             ["--marker"] = "",
             ["--ghost"] = "Search",
         },
+        files = {
+            formatter = "path.filename_first", -- display as "filename path/to/filename" in list
+        }
     },
     init = function()
         -- clear fancy terminal FZF setup, simplify for nvim
         vim.env.FZF_DEFAULT_OPTS = nil
     end,
+    cmd = {
+        "FzfLua",
+    },
     keys = {
         {
             "<Leader>ff",
