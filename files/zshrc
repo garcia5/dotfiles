@@ -150,6 +150,8 @@ zvm_after_init() {
 }
 # Do vim surround on the command line
 export ZVM_VI_SURROUND_BINDKEY='classic'
+# use system clipboard w/ vi mode
+export ZVM_SYSTEM_CLIPBOARD_ENABLED=true
 # OMZ end
 
 # Other configs
