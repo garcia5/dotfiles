@@ -87,7 +87,7 @@ ctrl-t-widget() {
 bindkey '' ctrl-t-widget
 
 vs() {
-    fzf \
+    eval "$FZF_CTRL_T_COMMAND" | fzf \
         --scheme path \
         --ghost 'Search Files' \
         --tmux 'center,60%' \
@@ -97,7 +97,7 @@ vs() {
 }
 
 fzf-ctrl-t() {
-    fzf \
+    eval "$FZF_CTRL_T_COMMAND" | fzf \
         --scheme path \
         --print0 \
         --ghost 'Search Files' \
@@ -116,7 +116,7 @@ fzf-js-test() {
         --accept-nth 1 \
         --ghost='Search Test Files' \
         --header 'ctrl-f: All files | ctrl-g Test files' \
-        --bind 'ctrl-f:change-ghost(Search All Files)+reload($FZF_DEFAULT_COMMAND)' \
+        --bind 'ctrl-f:change-ghost(Search All Files)+reload($FZF_CTRL_T_COMMAND)' \
         --bind 'ctrl-g:change-ghost(Search Test Files)+reload($cmd)' \
         --preview 'bat --color=always --style=plain --highlight-line={2} {1}'"
     eval "$cmd" | "$fzf_cmd" | xargs -0 echo
@@ -130,7 +130,7 @@ fzf-pytest() {
         --print0 \
         --scheme path \
         --header 'ctrl-f: All files | ctrl-g Test files' \
-        --bind "ctrl-f:change-ghost(Search All Files)+reload($FZF_DEFAULT_COMMAND)" \
+        --bind "ctrl-f:change-ghost(Search All Files)+reload($FZF_CTRL_T_COMMAND)" \
         --bind "ctrl-g:change-ghost(Search Test Files)+reload($cmd)" \
         --ghost "Search Test Files" \
         --preview "bat --color=always {}" | xargs -0 echo
@@ -145,7 +145,7 @@ fzf-python-module() {
         --print0 \
         --scheme path \
         --header 'ctrl-f: All files | ctrl-g Python files' \
-        --bind "ctrl-f:change-ghost(Search All Files)+reload($FZF_DEFAULT_COMMAND)" \
+        --bind "ctrl-f:change-ghost(Search All Files)+reload($FZF_CTRL_T_COMMAND)" \
         --bind "ctrl-g:change-ghost(Search Python Files)+reload($cmd)" \
         --ghost "Search Python Files" \
         --preview "bat --color=always {}" |
