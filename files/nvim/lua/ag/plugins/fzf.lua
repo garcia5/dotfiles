@@ -12,9 +12,6 @@ return {
             ["--marker"] = "",
             ["--ghost"] = "Search",
         },
-        files = {
-            formatter = "path.filename_first", -- display as "filename path/to/filename" in list
-        }
     },
     init = function()
         -- clear fancy terminal FZF setup, simplify for nvim
