@@ -29,26 +29,65 @@ local chat = {
     },
     build = "make tiktoken",
     opts = {
-        debug = false,
-        model = "claude-sonnet-4",
+        debug = true,
+        model = "claude-sonnet-4", -- default model
+        auto_insert_mode = false, -- Automatically enter insert mode when opening window and on new prompt
+        insert_at_end = true, -- Move cursor to end of buffer when inserting text
+        sticky = { "@copilot" }, -- automatically use copilot tools in every sesssion
+        -- open window in right 1/3rd of window
         window = {
             layout = "vertical",
             width = 0.3,
             title = " Copilot Chat",
         },
         headers = {
-            user = "󰀉",
-            assistant = "󰚩",
-            tool = "󱁤",
+            user = "󰀉 User",
+            assistant = "󰚩 Assistant",
+            tool = "󱁤 Tool",
         },
+        -- Use render-markdown for nicer rendering
         highlight_headers = true,
         separator = "---",
         error_header = "> [!ERROR] Error",
+        -- custom prompts
         prompts = {
             PythonExpert = {
                 system_prompt = "You are an expert Python developer with knowledge of language best practices, helping an experienced software engineer in their day to day work",
             },
         },
+        -- custom functions for copilot agent to use
+        functions = {
+            pytest = {
+                group = "copilot",
+                description = "Collect unit test outputs for the current project using pytest. Requires a python project with pytest installed",
+                uri = "pytest://run",
+                resolve = function(_, source)
+                    local utils = require("CopilotChat.utils")
+                    utils.schedule_main()
+                    local venv = require("ag.utils").get_python_venv_path()
+                    local pytest_cmd
+                    if venv == nil then
+                        pytest_cmd = "pytest"
+                    else
+                        pytest_cmd = venv .. "/bin/pytest"
+                    end
+
+                    if not vim.fn.executable(pytest_cmd) then error("Pytest installation not found: " .. pytest_cmd) end
+                    local cmd = { pytest_cmd, "-v", source.cwd() }
+
+                    local out = utils.system(cmd)
+
+                    return {
+                        {
+                            uri = "pytest://run",
+                            mimetype = "text/plain",
+                            data = out.stdout,
+                        },
+                    }
+                end,
+            },
+        },
+        -- custom mappings within copilot chat buffer
         mappings = {
             submit_prompt = {
                 normal = "<CR>",
@@ -57,6 +96,11 @@ local chat = {
             accept_diff = {
                 normal = "<C-s>",
                 insert = "<C-s>",
+            },
+            -- make it hard to accidentally reset the chat
+            reset = {
+                normal = "ggr",
+                insert = "<C-r><C-y>",
             },
         },
     },
@@ -70,11 +114,10 @@ local chat = {
             "<Leader>cd",
             function()
                 local sticky = {
-                    "#buffers", "#gitdiff",
+                    "#buffers",
+                    "#gitdiff",
                 }
-                if vim.bo.filetype == "python" then
-                    table.insert(sticky, "/PythonExpert")
-                end
+                if vim.bo.filetype == "python" then table.insert(sticky, "/PythonExpert") end
 
                 require("CopilotChat").ask(
                     "Please update the comments, docstrings, and unit tests related to my changed code",
@@ -101,6 +144,7 @@ local chat = {
         "CopilotChatCommit",
         "CopilotChatCommitStaged",
         "CopilotChatModels",
+        "CopilotChatLoad",
     },
     init = function()
         vim.api.nvim_create_autocmd("BufEnter", {
