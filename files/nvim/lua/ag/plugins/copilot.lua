@@ -1,10 +1,9 @@
 local copilot = {
     "zbirenbaum/copilot.lua",
-    event = "InsertEnter",
-    cmd = {
-        "Copilot",
-    },
+    -- copilot.lua bundles the copilot LSP - make sure it's always available for other tools to use
+    init = function() vim.lsp.enable("copilot") end,
     opts = {
+        -- suggestion + panel settings as suggested by blink-copilot integration
         suggestion = {
             enabled = false,
         },
