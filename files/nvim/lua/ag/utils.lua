@@ -42,21 +42,33 @@ M.get_python_path = function()
     end
 end
 
--- Use project-local typescript installation if available, fallback to global install
--- assumes typescript installed globally w/ nvm
+---Return the nearest typescript installation from the given root_dir, or `nil` if
+---no installation exists
+---@param root_dir string Project cwd
+---@return string | nil path server path to use, or nil if no typescript installation is found
 M.get_typescript_server_path = function(root_dir)
-    local lspconfig = require("lspconfig")
-    local global_ts = vim.fn.expand("$NVM_DIR/versions/node/$DEFAULT_NODE_VERSION/lib/node_modules/typescript/lib")
-    local project_ts = ""
-    local function check_dir(path)
-        project_ts = lspconfig.util.path.join(path, "node_modules", "typescript", "lib")
-        if vim.fn.isdirectory(project_ts) then return path end
+    local check_path = function(dir)
+        local install_path = vim.fs.joinpath(dir, "node_modules", "typescript", "lib")
+        if vim.fn.isdirectory(install_path) == 1 then return install_path end
+        return nil
     end
-    if lspconfig.util.search_ancestors(root_dir, check_dir) then
-        return project_ts
-    else
-        return global_ts
+
+    -- check current dir for typescript
+    local project_ts_path = check_path(root_dir)
+    if project_ts_path ~= nil then return project_ts_path end
+
+    -- check parent directories for typescript in case of monorepo setup
+    for dir in vim.fs.parents(root_dir) do
+        project_ts_path = check_path(dir)
+        if project_ts_path ~= nil then return project_ts_path end
     end
+
+    -- fallback to global install
+    local default_node_version = vim.fn.trim(vim.fn.system("nvm current"))
+    local global_ts =
+        vim.fn.expand("$NVM_DIR/versions/node/" .. default_node_version .. "/lib/node_modules/typescript/lib")
+    if vim.fn.isdirectory(global_ts) == 1 then return global_ts end
+    return nil
 end
 
 return M
