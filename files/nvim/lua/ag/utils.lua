@@ -23,8 +23,15 @@ end
 ---Get the path to the virtual environment for the current project
 ---@return string | nil
 M.get_python_venv_path = function()
+    -- Default to the active virtual environment
+    local active_venv = vim.fn.environ()["VIRTUAL_ENV"]
+    if active_venv ~= nil then return active_venv end
+
+    -- Check project-local virtual environment
     local venv = get_venv_path()
     if venv ~= nil then return venv end
+
+    -- Check pipenv
     local pipenv = get_pipenv_venv_path()
     if pipenv ~= nil then return pipenv end
 
@@ -42,10 +49,11 @@ M.get_python_path = function()
     end
 end
 
----Return the nearest typescript installation from the given root_dir, or `nil` if
----no installation exists
 ---@param root_dir string Project cwd
 ---@return string | nil path server path to use, or nil if no typescript installation is found
+---
+---Return the nearest typescript installation from the given root_dir, or `nil` if
+---no installation exists
 M.get_typescript_server_path = function(root_dir)
     local check_path = function(dir)
         local install_path = vim.fs.joinpath(dir, "node_modules", "typescript", "lib")

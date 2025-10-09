@@ -28,10 +28,10 @@ local chat = {
     },
     build = "make tiktoken",
     opts = {
-        debug = true,
+        debug = false,
         model = "claude-sonnet-4", -- default model
         auto_insert_mode = false, -- Automatically enter insert mode when opening window and on new prompt
-        insert_at_end = true, -- Move cursor to end of buffer when inserting text
+        insert_at_end = false, -- Move cursor to end of buffer when inserting text
         sticky = { "@copilot" }, -- automatically use copilot tools in every sesssion
         -- open window in right 1/3rd of window
         window = {
@@ -59,7 +59,6 @@ local chat = {
             pytest = {
                 group = "copilot",
                 description = "Collect unit test outputs for the current project using pytest. Requires a python project with pytest installed",
-                uri = "pytest://run",
                 resolve = function(_, source)
                     local utils = require("CopilotChat.utils")
                     utils.schedule_main()
@@ -78,8 +77,6 @@ local chat = {
 
                     return {
                         {
-                            uri = "pytest://run",
-                            mimetype = "text/plain",
                             data = out.stdout,
                         },
                     }
