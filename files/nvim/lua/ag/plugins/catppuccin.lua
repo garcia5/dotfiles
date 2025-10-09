@@ -6,7 +6,7 @@ return {
     priority = 1000,
     enabled = true,
     opts = {
-        transparent_background = false,
+        transparent_background = true,
         flavour = "auto",
         term_colors = true,
         compile = {
@@ -49,10 +49,6 @@ return {
             neotree = true,
             render_markdown = true,
             semantic_tokens = true,
-            snacks = {
-                enabled = false,
-                indent_scope_color = "blue",
-            },
             treesitter = true,
             treesitter_context = true,
         },

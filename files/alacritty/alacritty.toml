@@ -1,3 +1,21 @@
+[general]
+live_config_reload = true
+import = ["colors/catppuccin-mocha.toml", "keymaps.toml"]
+
+[window]
+decorations = "Buttonless"
+dynamic_padding = true
+dynamic_title = false
+startup_mode = "Maximized"
+option_as_alt = "Both"
+opacity = 0.95
+blur = true
+padding = {x = 5, y = 5}
+
+[env]
+# https://unix.stackexchange.com/questions/597445/why-would-i-set-term-to-xterm-256color-when-using-alacritty
+TERM = "alacritty"
+
 [bell]
 command = "None"
 duration = 0
@@ -5,10 +23,7 @@ duration = 0
 [cursor]
 unfocused_hollow = true
 vi_mode_style = "Block"
-
-[cursor.style]
-blinking = "Off"
-shape = "Beam"
+style = { blinking = "Off", shape = "Beam" }
 
 [font]
 size = 14.0
@@ -25,18 +40,14 @@ alphabet = "jfkdls;ahgurieowpq"
 command = "open"
 post_processing = true
 regex = "(ipfs:|ipns:|magnet:|mailto:|gemini:|gopher:|https:|http:|news:|file:|git:|ssh:|ftp:)[^\u0000-\u001F\u007F-<>\"\\s{-}\\^⟨⟩`]+"
-[hints.enabled.binding]
-key = "U"
-mods = "Control|Shift"
+binding = { key = "U", mods = "Control|Shift" }
 
 # copy aws ARN
 [[hints.enabled]]
 action = "Copy"
 post_processing = true
 regex = "(arn:aws:)[A-Za-z0-9:/\\-_]+"
-[hints.enabled.binding]
-key = "A"
-mods = "Control|Shift"
+binding = { key = "A", mods = "Control|Shift" }
 
 [scrolling]
 history = 10000
@@ -48,22 +59,3 @@ semantic_escape_chars = ''',│`|:"' ()[]{}<>	/'''
 [terminal.shell]
 args = ["--login"]
 program = "/bin/zsh"
-
-[window]
-decorations = "buttonless"
-dynamic_padding = true
-dynamic_title = false
-startup_mode = "Maximized"
-option_as_alt = "OnlyLeft"
-
-[window.padding]
-x = 5
-y = 5
-
-[general]
-live_config_reload = true
-import = ["colors/catppuccin-mocha.toml", "keymaps.toml"]
-
-[env]
-# https://unix.stackexchange.com/questions/597445/why-would-i-set-term-to-xterm-256color-when-using-alacritty
-TERM = "alacritty"
