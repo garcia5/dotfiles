@@ -48,7 +48,8 @@ export FZF_COLOR_OPTS="--color=bg+:#313244,spinner:#f5e0dc,hl:#f38ba8 \
     --color=list-border:#a6e3a1,list-label:#a6e3a1 \
     --color=input-border:#cba6f7,input-label:#cba6f7 \
     --color=preview-border:#f38ba8,preview-label:#f39ba8 \
-    --color=header-border:#89b4fa,header-label:#89b4fa"
+    --color=header-border:#89b4fa,header-label:#89b4fa \
+    --color=nomatch:#585b70:dim:strikethrough"
 
 # "latte"
 [[ "$THEME_MODE" == "Light" ]] && export FZF_COLOR_OPTS=" \
@@ -59,6 +60,7 @@ export FZF_COLOR_OPTS="--color=bg+:#313244,spinner:#f5e0dc,hl:#f38ba8 \
 --color=list-border:#40a02b,list-label:#40a02b \
 --color=input-border:#8839ef,input-label:#8839ef \
 --color=preview-border:#d20f39,preview-label:#d20f39 \
---color=header-border:#1e66f5,header-label:#1e66f5"
+--color=header-border:#1e66f5,header-label:#1e66f5 \
+--color=nomatch:#acb0be:dim:strikethrough"
 
 export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS $FZF_COLOR_OPTS"

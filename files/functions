@@ -185,10 +185,16 @@ fzf-git-commits() {
 
     diff_cmd="git show --color=always --format=medium --stat -p {1} | fzf-delta"
     diffview_cmd='nvim -c "DiffviewOpen {1}^..{1}"'
+    # use "--raw" mode from 0.66.0 to keep nearby commits visible even after filtering
+    # alt-r to toggle raw mode
     local fzf_cmd="fzf \
         --ansi \
         --multi \
         --print0 \
+        --raw \
+        --bind 'enter:transform:[[ \${FZF_RAW-1} = 1 ]] && echo accept || echo bell' \
+        --bind 'result:best' \
+        --bind 'alt-r:toggle-raw' \
         --scheme 'history' \
         --ghost 'Search Commits' \
         --accept-nth 1 \
