@@ -1,11 +1,8 @@
 return {
-    -- utility functions
-    "nvim-lua/plenary.nvim",
-
+    -- all hail tpope
     "tpope/vim-surround",
     "tpope/vim-repeat",
-    -- commenting Just Works
-    { "numToStr/Comment.nvim", config = true, enabled = false },
+    "tpope/vim-vinegar",
     -- autopairs
     {
         "windwp/nvim-autopairs",
@@ -13,7 +10,6 @@ return {
             map_cr = true, -- send closing symbol to its own line
             check_ts = true, -- use treesitter
         },
-        cond = function() return not vim.tbl_contains({ "TelescopePrompt", "fugitive" }, vim.opt.filetype) end,
         event = "InsertEnter",
     },
     -- highlight color codes

@@ -6,6 +6,7 @@ return {
         "MunifTanjim/nui.nvim",
         "nvim-tree/nvim-web-devicons",
     },
+    enabled = false,
     lazy = false, -- neo-tree will lazily load itself
     opts = {
         window = {

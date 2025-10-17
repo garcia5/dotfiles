@@ -113,6 +113,7 @@ vim.opt.cursorline = true -- hightlight line cursor is on
 vim.opt.laststatus = 3 -- single global statusline
 vim.opt.formatoptions = "lrqjn" -- default format options, can be overridden by builtin ftplugins
 vim.opt.winborder = "bold" -- default style for _all_ floating windows
+vim.g.netrw_winsize = 20 -- netrw set to 20%
 
 -- Searching
 vim.opt.wildmenu = true -- tab complete on command line
