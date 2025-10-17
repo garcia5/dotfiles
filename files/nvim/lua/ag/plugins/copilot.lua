@@ -29,10 +29,16 @@ local chat = {
     build = "make tiktoken",
     opts = {
         debug = false,
-        model = "claude-sonnet-4", -- default model
+        model = "gpt-4.1", -- default model
         auto_insert_mode = false, -- Automatically enter insert mode when opening window and on new prompt
         insert_at_end = false, -- Move cursor to end of buffer when inserting text
-        sticky = { "@copilot" }, -- automatically use copilot tools in every sesssion
+        sticky = {
+            -- automatically use copilot tools in every sesssion
+            "@copilot",
+            -- Using all the tools in the @copilot group are nice, but the diffs specifically don't work well
+            -- For now, tell copilot to not use that tool
+            [[When recommending edits to a file or files, _never_ generate diffs for your changes unless you are _explicitly_ asked to do so. Instead, paste the entire new file contents in markdown formatted code blocks]],
+        },
         -- open window in right 1/3rd of window
         window = {
             layout = "vertical",
@@ -51,7 +57,15 @@ local chat = {
         -- custom prompts
         prompts = {
             PythonExpert = {
-                system_prompt = "You are an expert Python developer with knowledge of language best practices, helping an experienced software engineer in their day to day work",
+                system_prompt = [[
+                You are an expert Python developer with knowledge of language best practices, helping an experienced software engineer in their day to day work.
+                Before suggesting new python code, make sure you understand the project's style for unit tests, docstrings, comments, and variable names, as to not cause new code to "stick out".
+
+                Make sure you adhere to high code quality standards, such as:
+                - Always use type hints where possible
+                - Prefer builtin types (`list`, `dict`, etc.) instead of variants from `typing` (`List`, `Dict`)
+                - When writing unit tests, prefer function-based (pytest) style, rather than unittest class-based style
+                ]],
             },
         },
         -- custom functions for copilot agent to use

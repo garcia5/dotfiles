@@ -70,6 +70,7 @@ return {
                     "lsp_status",
                     icon = " LSP:",
                     color = { gui = "bold" },
+                    ignore_lsp = {"copilot"}, -- don't show copilot in LSP list
                     cond = IS_WIDE,
                 },
                 {
