@@ -32,7 +32,8 @@ HYPHEN_INSENSITIVE="true"
 # DISABLE_MAGIC_FUNCTIONS=true
 
 # Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
+# If eza is installed, disable LS_COLORS in favor of eza theme
+command -v "eza" 2>&1 > /dev/null && DISABLE_LS_COLORS="true"
 
 # Uncomment the following line to disable auto-setting terminal title.
 DISABLE_AUTO_TITLE="true"

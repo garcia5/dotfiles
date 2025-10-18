@@ -166,6 +166,13 @@ function install_colorscheme {
         curl -o- https://raw.githubusercontent.com/catppuccin/delta/refs/heads/main/catppuccin.gitconfig \
             > "${HOME}/.catppuccin-delta.gitconfig"
     fi
+
+    if command -v eza; then
+        # better "LS_COLORS"
+        mkdir -p "${CONFIG_HOME}/eza"
+        curl -o- https://raw.githubusercontent.com/catppuccin/eza/refs/heads/main/themes/mocha/catppuccin-mocha-blue.yml \
+            > "${CONFIG_HOME}/eza/theme.yml"
+    fi
 }
 
 function install_python {
