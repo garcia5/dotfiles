@@ -1,0 +1,11 @@
+#!/bin/bash
+
+[ -z "$JIRA_BASE_URL" ] && echo "define 'JIRA_BASE_URL' to use" && exit 1
+
+if [[ "$1" =~ ^[A-Z]+-[0-9]+$ ]]; then
+    echo "[$1](${JIRA_BASE_URL}/browse/$1)" | pbcopy
+    exit 0
+fi
+
+echo "Invaild jira ticket $1"
+exit 1
