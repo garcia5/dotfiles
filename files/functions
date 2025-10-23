@@ -65,8 +65,8 @@ compdef '_path_files -/' cda
 zle -N ctrl-t-widget
 ctrl-t-widget() {
     local result=''
-    # If the current command is 'git add ', 'git restore ', or 'git checkout ' fuzzy find changed files
-    if [[ $LBUFFER =~ '^git (add|restore|checkout|stash) ' || $LBUFFER =~ '^ga ' ]]; then
+    # If the current command is 'git add ', 'git restore ', or 'git stash ' fuzzy find changed files
+    if [[ $LBUFFER =~ '^git (add|restore|stash) ' || $LBUFFER =~ '^ga ' ]]; then
         result=$(fzf-git-changed)
     # Find only '.spec' files
     elif [[ $LBUFFER =~ '^(yarn|pnpm) test ' ]]; then
@@ -192,7 +192,6 @@ fzf-git-commits() {
         --multi \
         --print0 \
         --raw \
-        --bind 'enter:transform:[[ \${FZF_RAW-1} = 1 ]] && echo accept || echo bell' \
         --bind 'result:best' \
         --bind 'alt-r:toggle-raw' \
         --scheme 'history' \
@@ -203,9 +202,9 @@ fzf-git-commits() {
         --bind 'ctrl-t:execute($diffview_cmd)+abort' \
         --preview '$diff_cmd'"
 
-    if [[ "$1" == "-q" ]]; then
-        fzf_cmd="$fzf_cmd --sync --bind 'start:jump-accept'"
-    fi
+    # if [[ "$1" == "-q" ]]; then
+    #     fzf_cmd="$fzf_cmd --sync --bind 'start:jump-accept'"
+    # fi
 
     cmd="git log --date-order --abbrev-commit --oneline --decorate --color=always"
     eval "$cmd" | eval "$fzf_cmd" | xargs -0 echo
@@ -235,7 +234,7 @@ fzf-git-branch() {
         --bind "ctrl-a:reload($git_cmd --all | $format)+change-ghost(Search All Branches)" \
         --bind "ctrl-l:reload($git_cmd | $format)+change-ghost(Search Local Branches)" \
         --preview 'git log --oneline --graph --date=short --color=always --pretty="format:%C(auto)%cd %h%d %s" {}' |
-        xargs -0 echo
+    xargs -0 echo
 }
 git-branch-widget() {
     result=$(fzf-git-branch)
