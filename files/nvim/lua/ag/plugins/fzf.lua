@@ -2,7 +2,7 @@ return {
     "ibhagwan/fzf-lua",
     dependencies = { "nvim-tree/nvim-web-devicons" },
     opts = {
-        "border-fused",
+        "borderless-full",
         fzf_opts = {
             ["--info"] = "inline-right",
             ["--scrollbar"] = "▏▕",
@@ -14,10 +14,23 @@ return {
         },
     },
     init = function()
-        -- clear fancy terminal FZF setup, simplify for nvim
+        -- clear terminal FZF setup, simplify for nvim
         vim.env.FZF_DEFAULT_OPTS = nil
         -- use fuzzy finder for vim.ui.select interface
-        require("fzf-lua").register_ui_select()
+        require("fzf-lua").register_ui_select({
+            winopts = {
+                -- disable preview window for ui-select
+                preview = {
+                    hidden = true,
+                },
+                -- render UI select window centered at the top of the screen
+                row = 2,
+                col = 0.5,
+                -- make the window smaller
+                height = 0.2,
+                width = 0.4,
+            },
+        })
     end,
     cmd = {
         "FzfLua",
