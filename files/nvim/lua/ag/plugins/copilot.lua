@@ -1,3 +1,5 @@
+local default_model = vim.fn.environ()["DEFAULT_COPILOT_MODEL"]
+
 local copilot = {
     "zbirenbaum/copilot.lua",
     -- copilot.lua bundles the copilot LSP - make sure it's always available for other tools to use
@@ -29,19 +31,17 @@ local chat = {
     build = "make tiktoken",
     opts = {
         debug = false,
-        model = "gpt-4.1", -- default model
+        model = default_model, -- default model
         auto_insert_mode = false, -- Automatically enter insert mode when opening window and on new prompt
         insert_at_end = false, -- Move cursor to end of buffer when inserting text
+        diff = "block", -- default to markdown block diffs in chat output, rather than applying unified diffs to the buffer
         sticky = {
             -- automatically use copilot tools in every sesssion
             "@copilot",
-            -- Using all the tools in the @copilot group are nice, but the diffs specifically don't work well
-            -- For now, tell copilot to not use that tool
-            [[When recommending edits to a file or files, _never_ generate diffs for your changes unless you are _explicitly_ asked to do so. Instead, paste the entire new file contents in markdown formatted code blocks]],
         },
         -- open window in right 1/3rd of window
         window = {
-            layout = "vertical",
+            layout = "float",
             width = 0.3,
             title = " Copilot Chat",
         },
@@ -65,6 +65,7 @@ local chat = {
                 - Always use type hints where possible
                 - Prefer builtin types (`list`, `dict`, etc.) instead of variants from `typing` (`List`, `Dict`)
                 - When writing unit tests, prefer function-based (pytest) style, rather than unittest class-based style
+                - When generating docstrings for classes and methods, be sure to match the docstring style of the rest of the project
                 ]],
             },
         },
@@ -117,7 +118,15 @@ local chat = {
     keys = {
         {
             "<Leader>co",
-            function() require("CopilotChat").open() end,
+            function()
+                local ft = vim.bo.filetype
+                local args = {}
+                if ft == "python" then
+                    args = { sticky = { "@copilot", "/PythonExpert" } }
+                end
+
+                require("CopilotChat").open(args)
+            end,
             mode = { "n", "v" },
         },
         {
@@ -166,6 +175,11 @@ local chat = {
         })
     end,
 }
+
+-- do not use copilot if no default model is defined
+if default_model == nil then
+    return {}
+end
 
 return {
     copilot,

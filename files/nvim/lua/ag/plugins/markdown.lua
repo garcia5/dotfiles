@@ -39,6 +39,8 @@ return {
         code = {
             style = "full", -- show language highlights and name in code blocks
             width = "block",
+            border = "thin",
+            position = "right",
             right_pad = 2,
         },
         link = {
