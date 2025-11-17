@@ -75,14 +75,20 @@ function create_pr_body {
     local cur_branch="$2"
     local base_branch="$3"
 
-    if [ -n "$(is_single_commit $cur_branch $base_branch)" ]; then
-        local commit_msg="$(git log -1 --pretty=%B | tail +2)"
-        [ -n "$commit_msg" ] && echo "$commit_msg" >> "$tmp_file"
+    local commit_msg
+    # get pull request template from current git repo (if one exists)
+    local template="$(gh api repos/:owner/:repo/contents/.github/pull_request_template.md | jq -r '.content')"
+
+    if [[ -n "$template" && "$template" != "null" ]]; then
+        commit_msg="$(echo $template | base64 -d)"
+    elif [ -n "$(is_single_commit $cur_branch $base_branch)" ]; then
+        commit_msg="$(git log -1 --pretty=%B | tail +2)"
     fi
+    [ -n "$commit_msg" ] && echo "$commit_msg" >> "$tmp_file"
 
     local jira_ticket="$(get_jira_ticket $cur_branch)"
     [ -n "$jira_ticket" ] && echo "\n\n[$jira_ticket]($JIRA_BASE_URL/browse/$jira_ticket)" >> "$tmp_file"
-    local nvim_cmd="nvim --cmd 'set ft=markdown' --cmd 'set foldlevelstart=99' -- $fname"
+    local nvim_cmd="nvim -c 'set ft=gitcommit' -- $fname"
     eval "$nvim_cmd"
 }
 
