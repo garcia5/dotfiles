@@ -41,7 +41,7 @@ local chat = {
         },
         -- open window in right 1/3rd of window
         window = {
-            layout = "float",
+            layout = "vertical",
             width = 0.3,
             title = " Copilot Chat",
         },
