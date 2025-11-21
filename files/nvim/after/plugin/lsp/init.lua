@@ -11,6 +11,7 @@ local clients = {
     "ruff",
     "rust_analyzer",
     "ts_ls",
+    "ty",
     "volar",
     "yamlls",
 }

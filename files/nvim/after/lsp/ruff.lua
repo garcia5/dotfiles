@@ -1,8 +1,10 @@
 local custom_attach = require("ag.lsp.common").custom_attach
+local ruff_cmd = require("ag.utils").command_in_virtual_env("ruff")
+if ruff_cmd == nil then return {} end
 
 return {
     filetypes = { "python" },
-    cmd = { "uvx", "ruff", "server" },
+    cmd = { ruff_cmd, "server" },
     root_dir = function(bufnr, cb)
         local is_diffview = vim.fn.bufname(bufnr):match("^diffview%S")
         if not is_diffview then

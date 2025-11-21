@@ -49,6 +49,19 @@ M.get_python_path = function()
     end
 end
 
+---Return the full path of the python executable if it exists in the current virtual environment
+---If the command does not exist, return nil
+---@param exec string
+---@return string | nil
+M.command_in_virtual_env = function(exec)
+    local venv_path = M.get_python_venv_path()
+    if venv_path == nil then return nil end
+    local exec_path = venv_path .. "/bin/" .. exec
+    if not vim.fn.filereadable(exec_path) then return nil end
+    if vim.fn.executable(exec_path) ~= 1 then return nil end
+    return exec_path
+end
+
 ---@param root_dir string Project cwd
 ---@return string | nil path server path to use, or nil if no typescript installation is found
 ---
