@@ -1,4 +1,3 @@
 vim.opt_local.wrap = true
-vim.bo.textwidth = 80
--- enable auto formatting as I type
-vim.opt.formatoptions = vim.opt.formatoptions + "ta"
+vim.opt_local.formatoptions:remove("t") -- don't auto-wrap text as I type
+vim.opt_local.formatoptions:remove("a") -- don't auto-wrap text as I type
