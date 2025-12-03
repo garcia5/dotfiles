@@ -10,8 +10,7 @@ local clients = {
     "basedpyright",
     "ruff",
     "rust_analyzer",
-    "ts_ls",
-    "ty",
+    "vtsls",
     "volar",
     "yamlls",
 }
