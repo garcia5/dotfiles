@@ -202,10 +202,6 @@ fzf-git-commits() {
         --bind 'ctrl-t:execute($diffview_cmd)+abort' \
         --preview '$diff_cmd'"
 
-    # if [[ "$1" == "-q" ]]; then
-    #     fzf_cmd="$fzf_cmd --sync --bind 'start:jump-accept'"
-    # fi
-
     cmd="git log --date-order --abbrev-commit --oneline --decorate --color=always"
     eval "$cmd" | eval "$fzf_cmd" | xargs -0 echo
 }
