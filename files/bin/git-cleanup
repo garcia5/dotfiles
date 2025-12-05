@@ -1,23 +1,20 @@
-#!/bin/bash
+#!/bin/zsh
 
-main() {
-    local branches
-    branches="$(git branch --list)"
-    local primary
-    if echo "$branches" | grep -q 'main'; then
-        primary="main"
-    elif echo "$branches" | grep -q 'master'; then
-        primary="master"
+function main() {
+    local deleted
+    deleted="$(git branch -vv | grep ': gone]' | awk '{print $1 }')"
+
+    echo "${BLUE}Branches deleted upstream:${NC}"
+    echo "$deleted"
+
+    local input
+    vared -p "Cleanup all? [Y/n] " -c input
+
+    if [ "$input" = "n" ]; then
+        return
     fi
 
-    if [[ -z "$primary" ]]; then
-        exit 0
-    fi
-
-    local cmd
-    cmd="git branch --merged $primary | grep -Ev '$primary|qa|develop' | xargs git branch -d"
-
-    eval "$cmd"
+    echo "$deleted" | xargs git branch -D
 }
 
 main
