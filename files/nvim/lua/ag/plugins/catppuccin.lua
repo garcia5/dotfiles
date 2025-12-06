@@ -46,7 +46,7 @@ return {
                     errors = { "underline" },
                 },
             },
-            neotree = true,
+            nvimtree = true,
             render_markdown = true,
             semantic_tokens = true,
             treesitter = true,

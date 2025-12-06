@@ -8,6 +8,9 @@ vim.g.loaded_python3_provider = 0
 vim.g.loaded_ruby_provider = 0
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_node_provider = 0
+-- use NvimTree for file explorer
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
 
 -- Plugins
 vim.loader.enable() -- cache lua modules (https://github.com/neovim/neovim/pull/22668)
@@ -85,9 +88,9 @@ end
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.signcolumn = "yes" -- show the sign column always
-vim.opt.list = true -- show list chars
 vim.opt.foldtext = "" -- show normal buffer content (w/ highlights) through fold
 vim.opt.showbreak = "> " -- prefix wrapped lines with '>'
+vim.opt.list = true -- show list chars
 vim.opt.listchars = {
     -- these list chars
     tab = "<->",
@@ -110,6 +113,7 @@ vim.opt.fillchars:append({
     diff = "╱",
 })
 vim.opt.cursorline = true -- hightlight line cursor is on
+vim.opt.cursorlineopt = "both" -- highlight both the current line _and_ the line number
 vim.opt.laststatus = 3 -- single global statusline
 vim.opt.formatoptions = "lrqjn" -- default format options, can be overridden by builtin ftplugins
 vim.opt.winborder = "bold" -- default style for _all_ floating windows

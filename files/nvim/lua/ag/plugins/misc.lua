@@ -2,7 +2,6 @@ return {
     -- all hail tpope
     "tpope/vim-surround",
     "tpope/vim-repeat",
-    "tpope/vim-vinegar",
     -- autopairs
     {
         "windwp/nvim-autopairs",

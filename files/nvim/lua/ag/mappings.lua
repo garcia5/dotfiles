@@ -47,9 +47,6 @@ mapper("n", "<M-k>", "<cmd>cprev<CR>", "Prev quickfix")
 mapper("n", "<M-c>", "<cmd>cclose<CR>", "Close quickfix")
 mapper("n", "<M-o>", "<cmd>copen<CR>", "Open quickfix")
 
--- netrw
-mapper("n", "<Leader>nt", "<cmd>Lexplore<CR>", "Open netrw")
-
 -- Others
 mapper("n", "<Down>", [["pdd"pp]], "Move line down")
 mapper("n", "<Up>", [["pddk"pP]], "Move line up")
