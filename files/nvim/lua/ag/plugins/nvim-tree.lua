@@ -29,6 +29,19 @@ return {
                 "^\\.git", -- always hide .git/ dir
             },
         },
+        on_attach = function(bufnr)
+            local api = require("nvim-tree.api")
+            -- use default mappings
+            api.config.mappings.default_on_attach(bufnr)
+
+            -- custom mappings
+            vim.keymap.set(
+                "n",
+                "<C-s>",
+                api.node.open.horizontal,
+                { silent = true, buffer = bufnr, noremap = true, desc = "Open: Horizontal split" }
+            )
+        end,
     },
     keys = {
         {
