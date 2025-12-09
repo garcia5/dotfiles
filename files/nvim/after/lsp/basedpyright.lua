@@ -4,13 +4,7 @@ local has_ty = require("ag.utils").command_in_virtual_env("ty") ~= nil
 return {
     filetypes = { "python" },
     cmd = { "basedpyright-langserver", "--stdio" },
-    root_dir = function(bufnr, cb)
-        local root = vim.fs.root(
-            bufnr,
-            { "pyproject.toml", "setup.py", "setup.cfg", "requirements.txt", "Pipfile", "pyrightconfig.json" }
-        )
-        cb(root)
-    end,
+    root_markers = { "pyproject.toml", "setup.py", "setup.cfg", "requirements.txt", "Pipfile", "pyrightconfig.json" },
     on_attach = custom_attach,
     settings = {
         basedpyright = {
