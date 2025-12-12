@@ -4,6 +4,7 @@ local copilot = {
     "zbirenbaum/copilot.lua",
     -- copilot.lua bundles the copilot LSP - make sure it's always available for other tools to use
     init = function() vim.lsp.enable("copilot") end,
+    event = "VeryLazy",
     opts = {
         -- suggestion + panel settings as suggested by blink-copilot integration
         suggestion = {
@@ -18,6 +19,8 @@ local copilot = {
             help = false,
             ["*"] = true,
         },
+        -- constant node version so copilot can still work in older projects
+        copilot_node_command = vim.fn.expand("$DEFAULT_NODE_CMD")
     },
 }
 
@@ -121,9 +124,7 @@ local chat = {
             function()
                 local ft = vim.bo.filetype
                 local args = {}
-                if ft == "python" then
-                    args = { sticky = { "@copilot", "/PythonExpert" } }
-                end
+                if ft == "python" then args = { sticky = { "@copilot", "/PythonExpert" } } end
 
                 require("CopilotChat").open(args)
             end,
@@ -177,9 +178,7 @@ local chat = {
 }
 
 -- do not use copilot if no default model is defined
-if default_model == nil then
-    return {}
-end
+if default_model == nil then return {} end
 
 return {
     copilot,

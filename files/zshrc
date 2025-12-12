@@ -111,6 +111,8 @@ if [[ -d "$NVM_DIR" ]]; then
     add-zsh-hook preexec nvm-git-branch
     add-zsh-hook precmd nvm-git-branch
     add-zsh-hook chpwd load-nvmrc
+
+    export DEFAULT_NODE_CMD="$(nvm which default)"
 fi
 # NVM end
 
