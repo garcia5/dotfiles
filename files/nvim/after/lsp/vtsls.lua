@@ -10,6 +10,8 @@ return {
     },
     settings = {
         vstls = {
+            -- use workspace-installed tsserver if available,
+            -- fall back to bundled ts version otherwise
             autoUseWorkspaceTsdk = true,
         },
     },

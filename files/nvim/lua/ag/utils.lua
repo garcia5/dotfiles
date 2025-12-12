@@ -43,7 +43,7 @@ end
 M.get_python_path = function()
     local venv_path = M.get_python_venv_path()
     if venv_path ~= nil then
-        return venv_path .. "/bin/python"
+        return vim.fs.joinpath(venv_path, "bin", "python")
     else
         return vim.fn.trim(vim.fn.system("python -c 'import sys; print(sys.executable)'"))
     end
@@ -56,9 +56,12 @@ end
 M.command_in_virtual_env = function(exec)
     local venv_path = M.get_python_venv_path()
     if venv_path == nil then return nil end
-    local exec_path = venv_path .. "/bin/" .. exec
+
+    local exec_path = vim.fs.joinpath(venv_path, "bin", exec)
+
     if not vim.fn.filereadable(exec_path) then return nil end
     if vim.fn.executable(exec_path) ~= 1 then return nil end
+
     return exec_path
 end
 
@@ -86,8 +89,16 @@ M.get_typescript_server_path = function(root_dir)
 
     -- fallback to global install
     local default_node_version = vim.fn.trim(vim.fn.system("nvm current"))
-    local global_ts =
-        vim.fn.expand("$NVM_DIR/versions/node/" .. default_node_version .. "/lib/node_modules/typescript/lib")
+    local global_ts = vim.fs.joinpath(
+        vim.fn.expand("$NVM_DIR"),
+        "versions",
+        "node",
+        default_node_version,
+        "lib",
+        "node_modules",
+        "typescript",
+        "lib"
+    )
     if vim.fn.isdirectory(global_ts) == 1 then return global_ts end
     return nil
 end

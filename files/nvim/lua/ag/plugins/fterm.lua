@@ -8,13 +8,12 @@ return {
     cmd = {
         "FTest",
     },
-    config = function()
+    init = function()
         local get_pytest_prefix = function()
-            local cmd = "pytest"
-            local pipenv_venv_path = require("ag.utils").get_python_venv_path()
-            if pipenv_venv_path ~= nil then cmd = pipenv_venv_path .. "/bin/pytest" end
-
-            return cmd
+            local pytest = "pytest"
+            local venv_cmd = require("ag.utils").command_in_virtual_env(pytest)
+            if venv_cmd ~= nil then return venv_cmd end
+            return pytest
         end
 
         local test_commands = {
@@ -35,10 +34,8 @@ return {
 
             if runner ~= nil then require("FTerm").scratch({ cmd = scratch_cmd }) end
         end, { desc = "Test current file", nargs = "?" })
-
-        -- display
-        require("FTerm").setup({
-            cmd = { "/bin/zsh", "-l" },
-        })
     end,
+    opts = {
+        cmd = { "/bin/zsh", "-l" },
+    },
 }
