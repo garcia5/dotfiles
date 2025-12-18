@@ -15,15 +15,18 @@ vim.g.loaded_netrwPlugin = 1
 -- Plugins
 vim.loader.enable() -- cache lua modules (https://github.com/neovim/neovim/pull/22668)
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
-    vim.fn.system({
-        "git",
-        "clone",
-        "--filter=blob:none",
-        "https://github.com/folke/lazy.nvim.git",
-        "--branch=stable", -- latest stable release
-        lazypath,
-    })
+if not vim.uv.fs_stat(lazypath) then
+    local lazyrepo = "https://github.com/folke/lazy.nvim.git"
+    local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
+    if vim.v.shell_error ~= 0 then
+        vim.api.nvim_echo({
+            { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
+            { out, "WarningMsg" },
+            { "\nPress any key to exit..." },
+        }, true, {})
+        vim.fn.getchar()
+        os.exit(1)
+    end
 end
 vim.opt.rtp:prepend(lazypath)
 require("lazy").setup("ag.plugins", {
@@ -31,6 +34,14 @@ require("lazy").setup("ag.plugins", {
         -- automatically check for config file changes and reload the ui
         enabled = true,
         notify = false,
+    },
+    checker = {
+        -- automatically check for plugin updates
+        enabled = true,
+        frequency = 60 * 60 * 24, -- only check 1x/day
+    },
+    install = {
+        colorscheme = { "catppuccin" },
     },
 })
 
@@ -117,7 +128,6 @@ vim.opt.cursorlineopt = "both" -- highlight both the current line _and_ the line
 vim.opt.laststatus = 3 -- single global statusline
 vim.opt.formatoptions = "lrqjn" -- default format options, can be overridden by builtin ftplugins
 vim.opt.winborder = "bold" -- default style for _all_ floating windows
-vim.g.netrw_winsize = 20 -- netrw set to 20%
 
 -- Searching
 vim.opt.wildmenu = true -- tab complete on command line
