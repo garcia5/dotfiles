@@ -38,11 +38,13 @@ alias gl="git log \
     --pretty='%C(#a6e3a1)%h%Creset -%C(auto)%d%Creset %C(bold)%C(#f5e0dc)%s%Creset %C(#a6adc8)(%as - %an)%Creset'"
 alias gc='fzf-git-checkout'
 alias gpf='gpush --force-with-lease'
-alias gf='git commit --fixup="$(fzf-git-commits -q)"'
+alias gf='git commit --fixup="$(fzf-git-commits)"'
 alias cpr='gh-create-pr'
 alias gpush='git push'
 
 alias kitty-update='curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin'
+
+alias compose='docker-compose'
 
 # sqlize, but use clipboard as in/out
 alias pbsqlize='pbpaste | sqlize | pbcopy'
