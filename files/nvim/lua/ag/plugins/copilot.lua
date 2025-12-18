@@ -14,9 +14,7 @@ local copilot = {
             enabled = false,
         },
         filetypes = {
-            markdown = false,
             gitrebase = false,
-            help = false,
             ["*"] = true,
         },
         -- constant node version so copilot can still work in older projects

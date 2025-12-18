@@ -25,6 +25,7 @@ local fugitive = {
     },
     cmd = "Git",
 }
+
 local gitsigns = {
     "lewis6991/gitsigns.nvim",
     opts = {
@@ -92,6 +93,7 @@ local gitsigns = {
         end,
     },
 }
+
 local diffview = {
     "sindrets/diffview.nvim",
     keys = {
@@ -115,8 +117,32 @@ local diffview = {
     },
 }
 
+local vscode_diff = {
+    "esmuellert/vscode-diff.nvim",
+    dependencies = { "MunifTanjim/nui.nvim" },
+    opts = {
+        keymaps = {
+            view = {
+                next_file = "<Tab>",
+                prev_file = "<S-Tab>",
+            },
+        },
+    },
+    cmd = {
+        "CodeDiff",
+    },
+    keys = {
+        {
+            "<Leader>gd",
+            "<cmd>CodeDiff<CR>",
+            desc = "Open diffview",
+        },
+    },
+}
+
 return {
     fugitive,
     gitsigns,
     diffview,
+    -- vscode_diff,
 }

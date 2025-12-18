@@ -34,8 +34,15 @@ return {
             alpha = true,
             blink_cmp = true,
             diffview = true,
-            gitsigns = true,
             fzf = true,
+            gitsigns = {
+                enabled = true,
+                transparent = true,
+            },
+            indent_blankline = {
+                enabled = true,
+                colored_indent_levels = true,
+            },
             native_lsp = {
                 enabled = true,
                 inlay_hints = {
