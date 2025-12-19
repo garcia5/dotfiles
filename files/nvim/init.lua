@@ -35,11 +35,6 @@ require("lazy").setup("ag.plugins", {
         enabled = true,
         notify = false,
     },
-    checker = {
-        -- automatically check for plugin updates
-        enabled = true,
-        frequency = 60 * 60 * 24, -- only check 1x/day
-    },
     install = {
         colorscheme = { "catppuccin" },
     },
