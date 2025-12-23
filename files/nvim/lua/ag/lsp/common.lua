@@ -33,25 +33,25 @@ end
 -- format_on_save (bool): whether or not to auto format on save
 M.custom_attach = function(client, bufnr, format_opts)
     local keymap_opts = { buffer = bufnr, silent = true, noremap = true }
-    local with_desc = function(opts, desc) return vim.tbl_extend("force", opts, { desc = desc }) end
+    local with_desc = function(desc) return vim.tbl_extend("force", keymap_opts, { desc = desc }) end
 
-    vim.keymap.set("n", "K", function() vim.lsp.buf.hover({ border = "rounded" }) end, with_desc(keymap_opts, "Hover"))
-    vim.keymap.set("n", "<c-]>", vim.lsp.buf.definition, with_desc(keymap_opts, "Goto Definition"))
-    vim.keymap.set("n", "<leader>gr", vim.lsp.buf.references, with_desc(keymap_opts, "Find References"))
-    vim.keymap.set("n", "gr", vim.lsp.buf.rename, with_desc(keymap_opts, "Rename"))
-    vim.keymap.set("n", "H", vim.lsp.buf.code_action, with_desc(keymap_opts, "Code Actions"))
+    vim.keymap.set("n", "K", function() vim.lsp.buf.hover({ border = "rounded" }) end, with_desc("Hover"))
+    vim.keymap.set("n", "<c-]>", vim.lsp.buf.definition, with_desc("Goto Definition"))
+    vim.keymap.set("n", "<leader>gr", vim.lsp.buf.references, with_desc("Find References"))
+    vim.keymap.set("n", "gr", vim.lsp.buf.rename, with_desc("Rename"))
+    vim.keymap.set("n", "H", vim.lsp.buf.code_action, with_desc("Code Actions"))
     vim.keymap.set(
         "n",
         "<Leader>ti",
         function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled()) end,
-        with_desc(keymap_opts, "Toggle inlay hints")
+        with_desc("Toggle inlay hints")
     )
     vim.keymap.set("n", "<Leader>rr", function()
         vim.lsp.stop_client(vim.lsp.get_clients())
         vim.cmd("edit")
-    end, with_desc(keymap_opts, "Restart all LSP clients")) -- restart clients
+    end, with_desc("Restart all LSP clients")) -- restart clients
 
-    vim.keymap.set("n", "<leader>F", function() format_by_client(bufnr) end, with_desc(keymap_opts, "Format")) -- format
+    vim.keymap.set("n", "<leader>F", function() format_by_client(bufnr) end, with_desc("Format")) -- format
 
     if format_opts ~= nil and format_opts.format_on_save then register_format_on_save(bufnr) end
 end

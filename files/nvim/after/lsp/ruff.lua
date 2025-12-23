@@ -15,22 +15,7 @@ return {
     on_attach = function(client, bufnr)
         custom_attach(client, bufnr)
         -- organize imports keymap
-        vim.keymap.set(
-            "n",
-            "<Leader>ii",
-            function()
-                vim.lsp.buf.code_action({
-                    context = {
-                        diagnostics = vim.diagnostic.get(bufnr),
-                        only = {
-                            "source.organizeImports",
-                        },
-                    },
-                    apply = true,
-                })
-            end,
-            { buffer = true, desc = "Ruff organize imports", silent = true, noremap = true }
-        )
+        require("ag.utils").register_organize_imports("ruff", bufnr)
     end,
     init_options = {
         settings = {
