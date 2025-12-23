@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Essentials
-if [[ $(command -v eza) ]]; then
+if command -v eza > /dev/null 2>&1 ; then
     alias ll='eza -hal --icons=auto'
     alias la='eza -a'
     alias show='eza -hal $(fzf-ls)'
@@ -21,6 +21,7 @@ alias pc='pbcopy'
 # Typos
 alias claer='clear'
 alias clera='clear'
+alias sg='git status' # too fast with gs
 alias :wq='echo "Wrong pane"'
 alias :w='echo "Wrong pane"'
 alias :q='echo "Wrong pane"'

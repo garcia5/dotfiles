@@ -92,7 +92,7 @@ vs() {
         --scheme path \
         --ghost 'Search Files' \
         --tmux 'center,60%' \
-        --preview 'bat --color=always --style=numbers,changes {}' \
+        --preview "$FZF_FILE_PREVIEW" \
         --header 'enter: open in \$EDITOR' \
         --bind 'enter:become(${EDITOR:-nvim} {+})'
 }
@@ -102,25 +102,24 @@ fzf-ctrl-t() {
         --scheme path \
         --print0 \
         --ghost 'Search Files' \
-        --preview 'bat --color=always --style=numbers,changes {}' |
+        --preview "$FZF_CTRL_T_PREVIEW" |
     xargs -0 echo
 }
 
 fzf-js-test() {
-    local cmd="rg -n -m 1 'describe' --glob '*.spec.ts' --line-number --no-heading"
-    local fzf_cmd="fzf \
+    local cmd="$FZF_CTRL_T_COMMAND -g '*.spec.{js,ts}'"
+    eval "$cmd" |
+    fzf \
         --multi \
         --print0 \
         --scheme path \
-        --delimiter : \
-        --nth 1 \
-        --accept-nth 1 \
         --ghost='Search Test Files' \
         --header 'ctrl-f: All files | ctrl-g Test files' \
-        --bind 'ctrl-f:change-ghost(Search All Files)+reload($FZF_CTRL_T_COMMAND)' \
-        --bind 'ctrl-g:change-ghost(Search Test Files)+reload($cmd)' \
-        --preview 'bat --color=always --style=plain --highlight-line={2} {1}'"
-    eval "$cmd" | "$fzf_cmd" | xargs -0 echo
+        --bind "ctrl-f:change-ghost(Search All Files)+reload($FZF_CTRL_T_COMMAND)" \
+        --bind "ctrl-g:change-ghost(Search Test Files)+reload($cmd)" \
+        --ghost "Search Test Files" \
+        --preview "${FZF_FILE_PREVIEW}" |
+    xargs -0 echo
 }
 
 fzf-pytest() {
@@ -134,7 +133,7 @@ fzf-pytest() {
         --bind "ctrl-f:change-ghost(Search All Files)+reload($FZF_CTRL_T_COMMAND)" \
         --bind "ctrl-g:change-ghost(Search Test Files)+reload($cmd)" \
         --ghost "Search Test Files" \
-        --preview "bat --color=always {}" | xargs -0 echo
+        --preview "${FZF_FILE_PREVIEW}" | xargs -0 echo
 }
 
 fzf-python-module() {
@@ -243,7 +242,6 @@ bindkey '' git-branch-widget
 fzf-git-changed() {
     cmd="git -c color.status=always status --short"
     diff_cmd="delta-git-diff {}"
-    bat_cmd="bat --color=always {}"
 
     eval "$cmd" |
     fzf \
@@ -254,7 +252,7 @@ fzf-git-changed() {
         --accept-nth 2 \
         --nth 2 \
         --header 'ctrl-f: All files | ctrl-g: Changed files' \
-        --bind "ctrl-f:change-ghost(Search Files)+change-preview($bat_cmd)+reload($FZF_DEFAULT_COMMAND)" \
+        --bind "ctrl-f:change-ghost(Search Files)+change-preview($FZF_FILE_PREVIEW)+reload($FZF_DEFAULT_COMMAND)" \
         --bind "ctrl-g:change-ghost(Search Changed Files)+change-preview($diff_cmd)+reload($cmd)" \
         --ghost "Search Changed Files" \
         --preview 'delta-git-diff {..}' | xargs -0 echo
@@ -262,9 +260,6 @@ fzf-git-changed() {
 
 zle -N fzf-ls-widget
 fzf-ls() {
-    file_preview="bat --color=always --line-range=:40 --style=numbers,changes {}"
-    dir_preview="eza --color=always -T --level 2 {}"
-
     file_cmd="$FZF_CTRL_T_COMMAND"
     dir_cmd="fd -td"
 
@@ -275,9 +270,9 @@ fzf-ls() {
         --print0 \
         --scheme path \
         --header "ctrl-d: Directories / ctrl-f: Files" \
-        --bind "ctrl-d:change-ghost(Search Directories)+reload(${dir_cmd})+change-preview(${dir_preview})" \
-        --bind "ctrl-f:change-ghost(Search Files)+reload(${file_cmd})+change-preview(${file_preview})" \
-        --preview "${file_preview}" \
+        --bind "ctrl-d:change-ghost(Search Directories)+reload(${dir_cmd})+change-preview(${FZF_DIR_PREVIEW})" \
+        --bind "ctrl-f:change-ghost(Search Files)+reload(${file_cmd})+change-preview(${FZF_FILE_PREVIEW})" \
+        --preview "${FZF_FILE_PREVIEW}" \
         --list-label "Search Files" | xargs -0 echo
 }
 fzf-ls-widget() {
@@ -292,7 +287,7 @@ fzf-cd() {
     fzf \
         --no-multi \
         --scheme "path" \
-        --preview='eza -hal {..}' \
+        --preview="$FZF_DIR_PREVIEW" \
         --ghost "Search Directories"
 }
 c() {

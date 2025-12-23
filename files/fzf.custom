@@ -39,6 +39,12 @@ export FZF_CTRL_R_OPTS="--scheme history \
     --bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort' \
     --header 'ctrl-y: Copy command to clipboard'"
 
+# Default command for previewing text files
+export FZF_FILE_PREVIEW="bat --color=always --style=numbers,changes {..}"
+
+# Default command for previewing directories
+export FZF_DIR_PREVIEW="[ -d {..} ] && eza -T -L 2 {..} || echo '{..} is not a directory'"
+
 # Color schemes -- https://github.com/catppuccin/fzf
 # "mocha"
 export FZF_COLOR_OPTS="--color=bg+:#313244,spinner:#f5e0dc,hl:#f38ba8 \
