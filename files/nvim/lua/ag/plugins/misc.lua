@@ -2,15 +2,6 @@ return {
     -- all hail tpope
     "tpope/vim-surround",
     "tpope/vim-repeat",
-    -- autopairs
-    {
-        "windwp/nvim-autopairs",
-        opts = {
-            map_cr = true, -- send closing symbol to its own line
-            check_ts = true, -- use treesitter
-        },
-        event = "InsertEnter",
-    },
     -- highlight color codes
     {
         "norcalli/nvim-colorizer.lua",

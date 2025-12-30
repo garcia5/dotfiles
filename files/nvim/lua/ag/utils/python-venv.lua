@@ -65,26 +65,4 @@ M.command_in_virtual_env = function(exec)
     return exec_path
 end
 
----Register the <Leader>ii keymap to run organize imports for the given language server
----@param client_name string
----@param bufnr integer
-M.register_organize_imports = function(client_name, bufnr)
-    vim.keymap.set(
-        "n",
-        "<Leader>ii",
-        function()
-            vim.lsp.buf.code_action({
-                context = {
-                    diagnostics = vim.diagnostic.get(bufnr),
-                    only = {
-                        "source.organizeImports",
-                    },
-                },
-                apply = true,
-            })
-        end,
-        { buffer = true, desc = client_name .. ": Organize Imports", silent = true, noremap = true }
-    )
-end
-
 return M

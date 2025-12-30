@@ -13,14 +13,6 @@ local ts = {
             init = function() vim.g.skip_ts_context_commentstring_module = true end,
             config = true,
         },
-        -- auto insert closing tags
-        {
-            "windwp/nvim-ts-autotag",
-            ft = {
-                "html",
-                "vue",
-            },
-        },
     },
     init = function()
         vim.opt.foldmethod = "expr" -- use function to determine folds
@@ -89,10 +81,6 @@ local ts = {
                     ["<Leader>h"] = "@parameter.inner",
                 },
             },
-        },
-        autotag = {
-            enable = true,
-            filetypes = { "html", "vue" },
         },
     },
 }
