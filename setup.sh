@@ -257,10 +257,9 @@ function install_scripts {
     # link files 1 by 1 to avoid overwriting any other custom stuff in there
     local dir="$HOME/bin"
     mkdir -p "$dir"
-    local files
-    files=$(ls "$DF_HOME/files/bin/")
-    for file in "${files[@]}"; do
-        replace_file "$HOME/bin/$file" "$DF_HOME/files/bin/$file"
+    for file in "${DF_HOME}"/files/bin/*; do
+        fname="$(basename "$file")"
+        replace_file "$HOME/bin/$fname" "$DF_HOME/files/bin/$fname"
     done
 }
 
@@ -270,6 +269,11 @@ function setup_kitty {
 
 function setup_alacritty {
     replace_dir "$CONFIG_HOME/alacritty" "$DF_HOME/files/alacritty"
+}
+
+function setup_ghostty {
+    mkdir -p "$CONFIG_HOME/ghostty"
+    replace_dir "$CONFIG_HOME/ghostty" "$DF_HOME/files/ghostty"
 }
 
 function setup_wez {
@@ -284,6 +288,7 @@ function setup_wez {
 }
 
 function setup_dev {
+    touch "$HOME/.hushlogin"
     # first install package managers
     install_brew
     install_npm
@@ -332,8 +337,14 @@ for conf in "$@"; do
         "alacritty")
             setup_alacritty
             ;;
+        "ghostty")
+            setup_ghostty
+            ;;
         "colors")
             install_colorscheme
+            ;;
+        "scripts")
+            install_scripts
             ;;
         "*")
             usage

@@ -1,0 +1,39 @@
+# vim:foldmethod=marker
+
+#: Behavior {{{
+clipboard-read        = allow
+clipboard-write       = allow
+command               = "/bin/zsh --login"
+confirm-close-surface = false
+#: }}}
+
+#: Look + feel {{{
+background-blur           = true
+background-opacity        = 0.975
+font-family               = JetBrainsMono Nerd Font Mono
+font-size                 = 14
+macos-icon                = retro
+macos-titlebar-proxy-icon = hidden
+macos-titlebar-style      = tabs
+split-divider-color       = #f5e0dc
+theme                     = Catppuccin Mocha
+unfocused-split-fill      = #1e1e2e
+unfocused-split-opacity   = 0.75
+window-padding-x          = 5
+window-padding-y          = 5
+#: }}}
+
+#: Keybinds {{{
+# always read opt key as alt
+macos-option-as-alt = true
+
+# disable tabs+windows in favor of tmux
+keybind = super+t=ignore
+keybind = super+n=ignore
+
+# cmd+. -> reset font size
+keybind = super+.=reset_font_size
+
+# cmd+` -> quick terminal
+keybind = global:super+`=toggle_quick_terminal
+#: }}}
