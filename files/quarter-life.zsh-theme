@@ -98,4 +98,7 @@ ZSH_THEME_RUBY_PROMPT_SUFFIX="%{$reset_color%}"
 ZSH_THEME_RVM_PROMPT_OPTIONS="v g"
 
 setopt prompt_subst
-PROMPT="${limegreen}%~%{$reset_color%}\$(ruby_prompt_info)\$vcs_info_msg_0_${orange} λ%{$reset_color%} "
+# include special escape sequence in start of prompt so tmux knows where it starts
+# https://github.com/tmux/tmux/issues/3734
+# https://stackoverflow.com/a/30577265
+PROMPT=$'\e]133;A\e${limegreen}%~%{$reset_color%}\$(ruby_prompt_info)\$vcs_info_msg_0_${orange} λ%{$reset_color%} '
