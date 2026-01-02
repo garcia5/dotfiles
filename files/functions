@@ -102,7 +102,7 @@ fzf-ctrl-t() {
         --scheme path \
         --print0 \
         --ghost 'Search Files' \
-        --preview "$FZF_CTRL_T_PREVIEW" |
+        --preview "$FZF_FILE_PREVIEW" |
     xargs -0 echo
 }
 
