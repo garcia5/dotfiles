@@ -41,8 +41,32 @@ return {
                 api.node.open.horizontal,
                 { silent = true, buffer = bufnr, noremap = true, desc = "Open: Horizontal split" }
             )
+            -- always show cursorline
+            vim.bo[bufnr].cursorline = true
         end,
     },
+    init = function()
+        -- autocmds
+        local nvim_tree_group = vim.api.nvim_create_augroup("NvimTree", { clear = true })
+        vim.api.nvim_create_autocmd("QuitPre", {
+            group = nvim_tree_group,
+            desc = "Quit nvim when nvim-tree is last window",
+            callback = function()
+                local invalid_win = {}
+                local wins = vim.api.nvim_list_wins()
+                for _, w in ipairs(wins) do
+                    local bufname = vim.api.nvim_buf_get_name(vim.api.nvim_win_get_buf(w))
+                    if bufname:match("NvimTree_") ~= nil then table.insert(invalid_win, w) end
+                end
+                if #invalid_win == #wins - 1 then
+                    -- Should quit, so we close all invalid windows.
+                    for _, w in ipairs(invalid_win) do
+                        vim.api.nvim_win_close(w, true)
+                    end
+                end
+            end,
+        })
+    end,
     keys = {
         {
             "<Leader>nt",

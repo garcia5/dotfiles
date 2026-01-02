@@ -10,8 +10,16 @@ return {
             desc = "Open code outline",
         },
     },
+    init = function()
+        vim.api.nvim_create_autocmd("FileType", {
+            pattern = "aerial",
+            callback = function()
+                vim.keymap.set("n", "q", ":q<CR>", { noremap = true, silent = true, buffer = true, desc = "quit aerial" })
+            end,
+        })
+    end,
     opts = {
-        backends = { "treesitter" },
+        backends = { "treesitter", "lsp", "markdown", "man" },
         layout = {
             max_width = 40,
             min_width = 20,

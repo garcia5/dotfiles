@@ -1,10 +1,6 @@
 local augroup = vim.api.nvim_create_augroup
 local au = vim.api.nvim_create_autocmd
 
-local exit_if_last = function()
-    if vim.fn.winnr("$") == 1 then vim.cmd("q") end
-end
-
 local term_group = augroup("term", { clear = false })
 au("TermOpen", {
     group = term_group,
@@ -25,9 +21,6 @@ au("BufEnter", {
     callback = function()
         local buftype = vim.opt.buftype:get()
         if buftype == "terminal" then
-            -- quit if the terminal is the last buffer open
-            exit_if_last()
-            -- enter insert mode automatically when entering terminal
             vim.cmd("startinsert")
         end
     end,
@@ -42,14 +35,6 @@ au("BufEnter", {
 au("VimResized", {
     command = "wincmd =",
     desc = "Keep splits even when vim resized",
-})
-
-local gitcommit_group = augroup("gitcommit", { clear = true })
-au("FileType", {
-    group = gitcommit_group,
-    desc = "gitcommit formatopts",
-    pattern = "gitcommit",
-    callback = function() vim.opt_local.formatoptions = "tcrnqj" end,
 })
 
 au("BufEnter", {
@@ -69,43 +54,8 @@ au("BufEnter", {
     callback = function() vim.opt_local.filetype = "tmTheme" end,
 })
 
-local nvim_tree_group = augroup("NvimTree", { clear = true })
-au("FileType", {
-    group = nvim_tree_group,
-    pattern = "NvimTree",
-    desc = "Quit nvim if NvimTree is the only buffer",
-    callback = function()
-        exit_if_last()
-        vim.opt_local.cursorline = true
-    end,
-})
-
 au("BufReadPost", {
     pattern = "kitty.conf",
     desc = "Open kitty with all folds closed",
     callback = function() vim.opt_local.foldlevel = 0 end,
-})
-
--- Aerial specific mapping
-au("FileType", {
-    pattern = "aerial",
-    callback = function()
-        vim.keymap.set("n", "q", ":q<CR>", { noremap = true, silent = true, buffer = true, desc = "quit aerial" })
-    end,
-})
-
-au("FileType", {
-    pattern = "vue",
-    desc = "Treesitter indenting for vue files",
-    command = "TSBufEnable indent",
-})
-
-au("FileType", {
-    pattern = "gitrebase",
-    desc = "EZ rebase keybinds",
-    callback = function()
-        for _, key in ipairs({ "p", "r", "e", "s", "f", "d", "x", "b", "l", "r", "t", "m" }) do
-            vim.keymap.set("n", key, "ciw" .. key .. "<Esc>", { noremap = true, silent = true, buffer = true })
-        end
-    end,
 })
