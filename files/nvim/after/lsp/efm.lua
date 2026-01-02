@@ -60,11 +60,11 @@ local custom_publish_diagnostics = function(_, result, ctx, _)
     for _, diagnostic in pairs(result.diagnostics) do
         -- drop all linter diagnostics down to HINT severity rather than ERROR
         -- (it's never that serious)
-        if
-            -- (diagnostic.source == "efm/flake8" or diagnostic.source == "efm/pylint") and
-            diagnostic.severity == vim.diagnostic.severity.ERROR
-        then
-            diagnostic.severity = vim.diagnostic.severity.HINT
+        diagnostic.severity = vim.diagnostic.severity.HINT
+        -- remove built in "[source]" from diagnostic prefix
+        -- displaying the source is taken care of my global diagnostic config
+        if diagnostic.message then
+            diagnostic.message = string.gsub(diagnostic.message, "^%[[^%s]+%] ", "")
         end
     end
     vim.lsp.diagnostic.on_publish_diagnostics(_, result, ctx)
