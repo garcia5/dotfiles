@@ -58,11 +58,11 @@ local custom_publish_diagnostics = function(_, result, ctx, _)
     end, result.diagnostics)
 
     for _, diagnostic in pairs(result.diagnostics) do
-        -- flake8 reports everything as error, force it back to hint
+        -- drop all linter diagnostics down to HINT severity rather than ERROR
         -- (it's never that serious)
         if
-            (diagnostic.source == "efm/flake8" or diagnostic.source == "efm/pylint")
-            and diagnostic.severity == vim.diagnostic.severity.ERROR
+            -- (diagnostic.source == "efm/flake8" or diagnostic.source == "efm/pylint") and
+            diagnostic.severity == vim.diagnostic.severity.ERROR
         then
             diagnostic.severity = vim.diagnostic.severity.HINT
         end
@@ -85,7 +85,7 @@ local efmls_config = {
 return vim.tbl_extend("force", efmls_config, {
     cmd = { "efm-langserver" },
     filetypes = vim.tbl_keys(languages),
-    on_attach = function(client, bufnr) custom_attach(client, bufnr) end,
+    on_attach = custom_attach,
     handlers = {
         ["textDocument/publishDiagnostics"] = custom_publish_diagnostics,
     },
