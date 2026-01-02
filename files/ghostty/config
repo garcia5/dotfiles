@@ -14,13 +14,13 @@ font-family               = JetBrainsMono Nerd Font Mono
 font-size                 = 14
 macos-icon                = retro
 macos-titlebar-proxy-icon = hidden
-macos-titlebar-style      = tabs
+macos-titlebar-style      = hidden
 split-divider-color       = #f5e0dc
 theme                     = Catppuccin Mocha
 unfocused-split-fill      = #1e1e2e
 unfocused-split-opacity   = 0.75
 window-padding-x          = 5
-window-padding-y          = 5
+window-padding-y          = 10
 #: }}}
 
 #: Keybinds {{{
