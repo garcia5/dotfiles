@@ -1,10 +1,11 @@
 # vim:foldmethod=marker
 
 #: Behavior {{{
-clipboard-read        = allow
-clipboard-write       = allow
-command               = "/bin/zsh --login"
-confirm-close-surface = false
+clipboard-read             = allow
+clipboard-write            = allow
+command                    = "/bin/zsh --login"
+confirm-close-surface      = false
+shell-integration-features = cursor,sudo
 #: }}}
 
 #: Look + feel {{{
