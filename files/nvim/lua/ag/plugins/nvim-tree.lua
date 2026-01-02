@@ -42,7 +42,7 @@ return {
                 { silent = true, buffer = bufnr, noremap = true, desc = "Open: Horizontal split" }
             )
             -- always show cursorline
-            vim.bo[bufnr].cursorline = true
+            vim.opt_local.cursorline = true
         end,
     },
     init = function()
