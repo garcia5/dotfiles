@@ -10,7 +10,10 @@ vim.diagnostic.config({
     virtual_lines = {
         current_line = true,
         format = function(diagnostic)
-            return "[" .. diagnostic.source .. "] " .. diagnostic.message
+            if diagnostic.source ~= nil then
+                return "[" .. diagnostic.source .. "] " .. diagnostic.message
+            end
+            return diagnostic.message
         end,
     },
     virtual_text = false,
