@@ -12,12 +12,7 @@ return {
             ["--marker"] = "",
             ["--ghost"] = "Search",
         },
-    },
-    init = function()
-        -- clear terminal FZF setup, simplify for nvim
-        vim.env.FZF_DEFAULT_OPTS = nil
-        -- use fuzzy finder for vim.ui.select interface
-        require("fzf-lua").register_ui_select({
+        ui_select = {
             winopts = {
                 -- disable preview window for ui-select
                 preview = {
@@ -30,7 +25,11 @@ return {
                 height = 0.2,
                 width = 0.4,
             },
-        })
+        },
+    },
+    init = function()
+        -- clear terminal FZF setup, simplify for nvim
+        vim.env.FZF_DEFAULT_OPTS = nil
     end,
     cmd = {
         "FzfLua",
