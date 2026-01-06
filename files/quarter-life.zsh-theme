@@ -104,5 +104,6 @@ if [[ -n "$TMUX" && -z "$NVIM" ]]; then
     # https://stackoverflow.com/a/30577265
     PROMPT=$'%{\033]133;A\033\\%}${limegreen}%~%{$reset_color%}\$(ruby_prompt_info)\$vcs_info_msg_0_${orange} λ%{$reset_color%}%{\033]133;B\033\\%} '
 else
+    # use 'normal' prompt when not running in tmux
     PROMPT="${limegreen}%~%{$reset_color%}\$(ruby_prompt_info)\$vcs_info_msg_0_${orange} λ%{$reset_color%} "
 fi
