@@ -51,18 +51,26 @@ end
 
 ---Return the full path of the python executable if it exists in the current virtual environment
 ---If the command does not exist, return nil
----@param exec string
+---@param exec string command to find in the current virtual environment
+---@param venv_only boolean when true, only look in project virtual environment
 ---@return string | nil
-M.command_in_virtual_env = function(exec)
+M.command_in_virtual_env = function(exec, venv_only)
     local venv_path = M.get_python_venv_path()
-    if venv_path == nil then return nil end
 
-    local exec_path = vim.fs.joinpath(venv_path, "bin", exec)
+    if venv_path ~= nil then
+        local exec_path = vim.fs.joinpath(venv_path, "bin", exec)
 
-    if not vim.fn.filereadable(exec_path) then return nil end
-    if vim.fn.executable(exec_path) ~= 1 then return nil end
+        if not vim.fn.filereadable(exec_path) then return nil end
+        if vim.fn.executable(exec_path) ~= 1 then return nil end
 
-    return exec_path
+        return exec_path
+    -- no virtual environment found, check if installed for system
+    elseif not venv_only then
+        if vim.fn.executable(exec) ~= 1 then return nil end
+        return exec
+    else
+        return nil
+    end
 end
 
 return M

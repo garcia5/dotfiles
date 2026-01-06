@@ -1,5 +1,5 @@
 local custom_attach = require("ag.lsp.common").custom_attach
-local ruff_cmd = require("ag.utils").command_in_virtual_env("ruff")
+local ruff_cmd = require("ag.utils").command_in_virtual_env("ruff", false)
 if ruff_cmd == nil then return {} end
 
 return {
