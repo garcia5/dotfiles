@@ -10,6 +10,12 @@ local fugitive = {
                 [ent_url] = "https://" .. ent_url,
             }
         end
+        vim.api.nvim_create_user_command("Gwipe", function(_)
+            vim.cmd("Git reset --hard")
+            vim.cmd("Git clean --force -df")
+        end, {
+            desc = "Reset fully to working tree",
+        })
     end,
     keys = {
         {
