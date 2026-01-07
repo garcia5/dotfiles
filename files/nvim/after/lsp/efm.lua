@@ -1,8 +1,10 @@
+vim.g.efm_should_attach = true
+
 local custom_attach = require("ag.lsp.common").custom_attach
 local autopep8 = require("efmls-configs.formatters.autopep8")
 local black = require("efmls-configs.formatters.black")
 local eslint = require("efmls-configs.linters.eslint_d")
--- local flake8 = require("efmls-configs.linters.flake8")
+local flake8 = require("efmls-configs.linters.flake8")
 local prettier = require("efmls-configs.formatters.prettier_d")
 local pylint = require("efmls-configs.linters.pylint")
 local shellcheck = require("efmls-configs.linters.shellcheck")
@@ -15,8 +17,7 @@ local languages = {
     typescriptreact = { prettier, eslint },
     javascriptreact = { prettier, eslint },
     vue = { prettier, eslint },
-    -- python = { black, autopep8, flake8, pylint },
-    python = { black, autopep8, pylint },
+    python = { black, autopep8, flake8, pylint },
     bash = { shellcheck },
     sh = { shellcheck },
 }
@@ -63,9 +64,7 @@ local custom_publish_diagnostics = function(_, result, ctx, _)
         diagnostic.severity = vim.diagnostic.severity.HINT
         -- remove built in "[source]" from diagnostic prefix
         -- displaying the source is taken care of my global diagnostic config
-        if diagnostic.message then
-            diagnostic.message = string.gsub(diagnostic.message, "^%[[^%s]+%] ", "")
-        end
+        if diagnostic.message then diagnostic.message = string.gsub(diagnostic.message, "^%[[^%s]+%] ", "") end
     end
     vim.lsp.diagnostic.on_publish_diagnostics(_, result, ctx)
 end
@@ -82,10 +81,50 @@ local efmls_config = {
     },
 }
 
+---Check to see if the current filetype has any linters/formatters that are actually executable
+---If not, stop the LSP client
+---@param client vim.lsp.Client
+---@param bufnr integer
+local function check_tools_exist(client, bufnr)
+    if not vim.g.efm_should_attach then return end
+
+    local filetype = vim.bo[bufnr].filetype
+    local language_config = client.config.settings.languages[filetype]
+    if #language_config == 0 then
+        vim.g.efm_should_attach = false
+        return
+    end
+
+    local function get_command(tool) return tool.lintCommand or tool.formatCommand end
+
+    local function check_executable(cmd, callback)
+        vim.schedule(function()
+            local is_executable = vim.fn.executable(cmd) == 1
+            callback(is_executable)
+        end)
+    end
+
+    local any_executable = false
+    local commands = vim.tbl_map(get_command, language_config)
+
+    for _, cmd in ipairs(commands) do
+        check_executable(cmd, function(is_executable)
+            if is_executable then any_executable = true end
+        end)
+    end
+    if not any_executable then vim.g.efm_should_attach = false end
+end
+
 return vim.tbl_extend("force", efmls_config, {
     cmd = { "efm-langserver" },
     filetypes = vim.tbl_keys(languages),
-    on_attach = custom_attach,
+    ---@param client vim.lsp.Client
+    ---@param bufnr integer
+    on_attach = function(client, bufnr)
+        check_tools_exist(client, bufnr)
+        if not vim.g.efm_should_attach then client:stop(true) end
+        custom_attach(client, bufnr)
+    end,
     handlers = {
         ["textDocument/publishDiagnostics"] = custom_publish_diagnostics,
     },

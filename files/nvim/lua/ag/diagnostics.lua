@@ -1,12 +1,7 @@
 -- global diagnostic config
 vim.diagnostic.config({
     severity_sort = true,
-    underline = {
-        severity = {
-            min = vim.diagnostic.severity.WARN,
-            max = vim.diagnostic.severity.ERROR,
-        },
-    },
+    underline = true,
     virtual_lines = {
         current_line = true,
         format = function(diagnostic)

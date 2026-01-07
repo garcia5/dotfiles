@@ -56,6 +56,7 @@ end
 ---@return string | nil
 M.command_in_virtual_env = function(exec, venv_only)
     local venv_path = M.get_python_venv_path()
+    if venv_only and venv_path == nil then return nil end
 
     if venv_path ~= nil then
         local exec_path = vim.fs.joinpath(venv_path, "bin", exec)
@@ -65,11 +66,9 @@ M.command_in_virtual_env = function(exec, venv_only)
 
         return exec_path
     -- no virtual environment found, check if installed for system
-    elseif not venv_only then
+    else
         if vim.fn.executable(exec) ~= 1 then return nil end
         return exec
-    else
-        return nil
     end
 end
 

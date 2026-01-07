@@ -91,6 +91,8 @@ end
 
 return {
     cmd = { "vtsls", "--stdio" },
+    ---@param client vim.lsp.Client
+    ---@param bufnr integer
     on_attach = function(client, bufnr)
         custom_attach(client, bufnr)
 

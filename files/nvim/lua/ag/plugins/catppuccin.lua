@@ -43,14 +43,15 @@ return {
                 enabled = true,
                 colored_indent_levels = true,
             },
-            native_lsp = {
-                enabled = true,
+            lsp_styles = {
                 inlay_hints = {
                     background = false,
                 },
-                virtual_text = {},
                 underlines = {
                     errors = { "underline" },
+                    hints = { "underline" },
+                    warnings = { "underline" },
+                    information = { "underline" },
                 },
             },
             nvimtree = true,

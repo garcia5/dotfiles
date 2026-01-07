@@ -39,6 +39,7 @@ M.custom_attach = function(client, bufnr, format_opts)
     vim.keymap.set("n", "<c-]>", vim.lsp.buf.definition, with_desc("Goto Definition"))
     vim.keymap.set("n", "<leader>gr", vim.lsp.buf.references, with_desc("Find References"))
     vim.keymap.set("n", "gr", vim.lsp.buf.rename, with_desc("Rename"))
+    vim.keymap.set("n", "<Leader>gi", vim.lsp.buf.implementation, with_desc("Implementations"))
     vim.keymap.set("n", "H", vim.lsp.buf.code_action, with_desc("Code Actions"))
     vim.keymap.set(
         "n",
