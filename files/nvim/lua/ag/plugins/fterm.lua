@@ -2,25 +2,19 @@ return {
     "numToStr/FTerm.nvim",
     keys = {
         { "<M-i>", function() require("FTerm").toggle() end, mode = { "n", "t", "i" }, desc = "toggle floatterm" },
-        { "<Leader>tt", "<CMD>FTest<CR>", mode = "n", desc = "test current file" },
-        { "<Leader>ta", "<CMD>FTest all<CR>", mode = "n", desc = "run test suite" },
+        { "<Leader>tt", "<cmd>Ftest<cr>", mode = "n", desc = "test current file" },
+        { "<Leader>ta", "<cmd>Ftest all<cr>", mode = "n", desc = "run test suite" },
     },
     cmd = {
-        "FTest",
+        "Ftest",
     },
     init = function()
-        local get_pytest_prefix = function()
-            local pytest = "pytest"
-            local venv_cmd = require("ag.utils").command_in_virtual_env(pytest)
-            if venv_cmd ~= nil then return venv_cmd end
-            return pytest
-        end
-
         local test_commands = {
-            python = get_pytest_prefix,
+            python = function() return { vim.fn.exepath("pytest") } end,
+            typescript = function() return { "yarn", "test", "--" } end,
         }
 
-        vim.api.nvim_create_user_command("FTest", function(opts)
+        vim.api.nvim_create_user_command("Ftest", function(opts)
             local buf = vim.api.nvim_buf_get_name(0)
             local filetype = vim.filetype.match({ filename = buf })
             local runner = test_commands[filetype]
@@ -31,6 +25,7 @@ return {
             else
                 scratch_cmd = { runner(), buf }
             end
+            scratch_cmd = vim.iter(scratch_cmd):flatten():totable()
 
             if runner ~= nil then require("FTerm").scratch({ cmd = scratch_cmd }) end
         end, { desc = "Test current file", nargs = "?" })
