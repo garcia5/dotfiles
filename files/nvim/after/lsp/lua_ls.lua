@@ -3,7 +3,13 @@ local custom_attach = require("ag.lsp.common").custom_attach
 return {
     cmd = { "lua-language-server", "--stdio" },
     filetypes = { "lua" },
-    on_attach = function(client, bufnr) custom_attach(client, bufnr) end,
+    on_attach = function(client, bufnr)
+        custom_attach(client, bufnr, {
+            format = {
+                format_on_save = true,
+            },
+        })
+    end,
     settings = {
         Lua = {
             runtime = {

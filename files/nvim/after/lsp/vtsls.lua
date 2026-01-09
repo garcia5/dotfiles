@@ -94,16 +94,32 @@ return {
     ---@param client vim.lsp.Client
     ---@param bufnr integer
     on_attach = function(client, bufnr)
-        custom_attach(client, bufnr)
+        custom_attach(client, bufnr, {
+            references = {
+                inclue_declaration = false,
+                test_file_filter = function(fname) return fname:match(".spec.[tj]s$") end,
+            },
+            code_actions = {
+                -- have to use custom organize imports to sort + remove unused
+                register_organize_imports = false,
+            },
+        })
+
+        vim.keymap.set("n", "<Leader>ii", function()
+            vim.cmd("VtsExec sort_imports")
+            vim.cmd("VtsExec organize_imports")
+        end, {
+            buffer = bufnr,
+            silent = true,
+            noremap = true,
+            desc = "vtsls: Organize imports",
+        })
 
         -- integrate w/ nvim-tree renames
         if not vim.g.loaded_vtsls_nvim_tree then
             register_nvim_tree_rename()
             vim.g.loaded_vtsls_nvim_tree = true
         end
-
-        -- organize imports
-        require("ag.utils").register_organize_imports("vtsls", bufnr)
     end,
     filetypes = { "javascript", "typescript", "javascriptreact", "typescriptreact" },
     root_markers = { "package.json", "tsconfig.json", "jsconfig.json" },

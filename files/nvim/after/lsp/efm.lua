@@ -1,5 +1,3 @@
-vim.g.efm_should_attach = true
-
 local custom_attach = require("ag.lsp.common").custom_attach
 local autopep8 = require("efmls-configs.formatters.autopep8")
 local black = require("efmls-configs.formatters.black")
@@ -22,21 +20,11 @@ local languages = {
     sh = { shellcheck },
 }
 
--- special handling for python to use virtual envs w/o activating
-local python_venv_path = require("ag.utils").get_python_venv_path()
-if python_venv_path ~= nil then
-    local cmd_prefix = python_venv_path .. "/bin/"
-    for _, prog in ipairs(languages["python"]) do
-        local cmd = prog["formatCommand"]
-        if cmd == nil then cmd = prog["lintCommand"] end
-
-        -- only prepend virtual env if it's not already there
-        if cmd ~= nil and cmd:find(cmd_prefix, 1, true) == nil then
-            if prog["formatCommand"] then prog["formatCommand"] = cmd_prefix .. cmd end
-            if prog["lintCommand"] then prog["lintCommand"] = cmd_prefix .. cmd end
-        end
-    end
+local initial_should_attach = {}
+for language, _ in pairs(languages) do
+    initial_should_attach[language] = true
 end
+vim.g.efm_should_attach = initial_should_attach
 
 -- explicitly point stylua to my config
 local stylua_format_cmd = languages["lua"][1]["formatCommand"]
@@ -69,33 +57,39 @@ local custom_publish_diagnostics = function(_, result, ctx, _)
     vim.lsp.diagnostic.on_publish_diagnostics(_, result, ctx)
 end
 
-local efmls_config = {
-    filetypes = vim.tbl_keys(languages),
-    settings = {
-        rootMarkers = { ".git/" },
-        languages = languages,
-    },
-    init_options = {
-        documentFormatting = true,
-        documentRangeFormatting = true,
-    },
-}
-
 ---Check to see if the current filetype has any linters/formatters that are actually executable
 ---If not, stop the LSP client
 ---@param client vim.lsp.Client
 ---@param bufnr integer
-local function check_tools_exist(client, bufnr)
-    if not vim.g.efm_should_attach then return end
-
+local function efm_attach(client, bufnr)
     local filetype = vim.bo[bufnr].filetype
+
+    local function stop()
+        vim.schedule(function() client:stop(true) end)
+    end
+
+    local function block_ft()
+        local should_attach = vim.g.efm_should_attach
+        should_attach[filetype] = false
+        vim.g.efm_should_attach = should_attach
+        stop()
+    end
+
+    -- if we've already checked the linters/formatters for this filetype
+    -- and determined none are available, stop the client
+    if not vim.g.efm_should_attach[filetype] then stop() end
+
     local language_config = client.config.settings.languages[filetype]
     if #language_config == 0 then
-        vim.g.efm_should_attach = false
+        block_ft()
         return
     end
 
-    local function get_command(tool) return tool.lintCommand or tool.formatCommand end
+    local function get_command(tool)
+        local cmd = tool.lintCommand or tool.formatCommand
+        if not cmd then return nil end
+        return cmd:match("^%S+")
+    end
 
     local function check_executable(cmd, callback)
         vim.schedule(function()
@@ -104,28 +98,42 @@ local function check_tools_exist(client, bufnr)
         end)
     end
 
+    local checked = 0
     local any_executable = false
     local commands = vim.tbl_map(get_command, language_config)
 
+    -- For each linter/formatter for the current filetype, check if the command is executable.
+    -- If _no_ linters/formatters are executable, mark this filetype as "false" in the global
+    -- `efm_should_attach` dict and stop the client
     for _, cmd in ipairs(commands) do
         check_executable(cmd, function(is_executable)
+            checked = checked + 1
             if is_executable then any_executable = true end
+
+            if checked == #commands then
+                if not any_executable then
+                    block_ft()
+                else
+                    custom_attach(client, bufnr)
+                end
+            end
         end)
     end
-    if not any_executable then vim.g.efm_should_attach = false end
 end
 
-return vim.tbl_extend("force", efmls_config, {
+return {
     cmd = { "efm-langserver" },
     filetypes = vim.tbl_keys(languages),
-    ---@param client vim.lsp.Client
-    ---@param bufnr integer
-    on_attach = function(client, bufnr)
-        check_tools_exist(client, bufnr)
-        if not vim.g.efm_should_attach then client:stop(true) end
-        custom_attach(client, bufnr)
-    end,
+    on_attach = efm_attach,
+    settings = {
+        rootMarkers = { ".git/" },
+        languages = languages,
+    },
+    init_options = {
+        documentFormatting = true,
+        documentRangeFormatting = true,
+    },
     handlers = {
         ["textDocument/publishDiagnostics"] = custom_publish_diagnostics,
     },
-})
+}

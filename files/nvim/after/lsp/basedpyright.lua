@@ -1,11 +1,18 @@
 local custom_attach = require("ag.lsp.common").custom_attach
-local has_ty = require("ag.utils").command_in_virtual_env("ty") ~= nil
+local has_ty = require("ag.utils").command_in_virtual_env("ty", true) ~= nil
 
 return {
     filetypes = { "python" },
     cmd = { "basedpyright-langserver", "--stdio" },
     root_markers = { "pyproject.toml", "setup.py", "setup.cfg", "requirements.txt", "Pipfile", "pyrightconfig.json" },
-    on_attach = custom_attach,
+    on_attach = function(client, bufnr)
+        custom_attach(client, bufnr, {
+            references = {
+                test_file_filter = function(fname) return fname:match("^test_") end,
+                inclue_declaration = false,
+            },
+        })
+    end,
     settings = {
         basedpyright = {
             autoImportCompletions = true,

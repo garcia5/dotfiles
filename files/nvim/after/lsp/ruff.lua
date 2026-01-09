@@ -13,9 +13,11 @@ return {
         end
     end,
     on_attach = function(client, bufnr)
-        custom_attach(client, bufnr)
-        -- organize imports keymap
-        require("ag.utils").register_organize_imports("ruff", bufnr)
+        custom_attach(client, bufnr, {
+            code_actions = {
+                register_organize_imports = true,
+            }
+        })
     end,
     init_options = {
         settings = {

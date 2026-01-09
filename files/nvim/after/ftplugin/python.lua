@@ -2,6 +2,9 @@
 vim.g.pyindent_nested_paren = vim.fn.shiftwidth()
 vim.g.pyindent_open_paren = vim.fn.shiftwidth()
 
+local venv_path = require("ag.utils").get_python_venv_path()
+if venv_path ~= nil then vim.env["PATH"] = vim.fs.joinpath(venv_path, "bin") .. ":" .. vim.env["PATH"] end
+
 -- Helper to fold docstrings
 local function fold_docstrings()
     -- Use treesitter folding as base

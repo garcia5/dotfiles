@@ -12,6 +12,21 @@ local efm = {
     },
 }
 
+local vtsls = {
+    "yioneko/nvim-vtsls",
+    ft = {
+        "javascript",
+        "typescript",
+        "javascriptreact",
+        "typescriptreact",
+    },
+    cmd = {
+        "VtsExec",
+        "VtsRename",
+    }
+}
+
 return {
     efm,
+    vtsls,
 }
