@@ -1,5 +1,5 @@
 local custom_attach = require("ag.lsp.common").custom_attach
-local has_ty = require("ag.utils").command_in_virtual_env("ty", true) ~= nil
+local has_ty = require("ag.utils").command_in_virtual_env("ty") ~= nil
 
 return {
     filetypes = { "python" },

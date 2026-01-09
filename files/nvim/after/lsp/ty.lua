@@ -1,4 +1,4 @@
-local ty_cmd = require("ag.utils").command_in_virtual_env("ty", true)
+local ty_cmd = require("ag.utils").command_in_virtual_env("ty")
 if ty_cmd == nil then return {} end
 
 return {

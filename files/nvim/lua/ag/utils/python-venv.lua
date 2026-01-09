@@ -52,10 +52,11 @@ end
 ---Return the full path of the python executable if it exists in the current virtual environment
 ---If the command does not exist, return nil
 ---@param exec string command to find in the current virtual environment
----@param venv_only boolean when true, only look in project virtual environment
+---@param venv_only? boolean when true, only look in project virtual environment (default `true`)
 ---@return string | nil
 M.command_in_virtual_env = function(exec, venv_only)
     local venv_path = M.get_python_venv_path()
+    if venv_only == nil then venv_only = true end
     if venv_only and venv_path == nil then return nil end
 
     if venv_path ~= nil then
