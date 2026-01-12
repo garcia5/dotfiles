@@ -8,7 +8,7 @@ return {
     on_attach = function(client, bufnr)
         custom_attach(client, bufnr, {
             references = {
-                test_file_filter = function(fname) return fname:match("^test_") end,
+                test_file_filter = function(fname) return fname:match("^test_") ~= nil end,
                 inclue_declaration = false,
             },
         })

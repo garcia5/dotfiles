@@ -1,5 +1,20 @@
 local M = {}
 
+---@class LspFormatOpts
+---@field format_on_save? boolean whether or not the client should automatically format on save
+---
+---@class LspReferenceOpts
+---@field test_file_filter? fun(fname: string): boolean a function that returns `true` if the given file name is a test file
+---@field inclue_declaration? boolean whether or not to include the symbol definition in the output (default `false`)
+---
+---@class LspCodeActionOpts
+---@field register_organize_imports? boolean whether or not to register the organize imports keybinding
+---
+---@class LspOpts
+---@field format? LspFormatOpts client formatting behavior
+---@field references? LspReferenceOpts client "goto references" behavior
+---@field code_actions? LspCodeActionOpts client code action behavior
+
 local allowed_formatters = {
     "ruff",
     "efm",
@@ -7,6 +22,18 @@ local allowed_formatters = {
     "gopls",
     "dartls",
 }
+
+---@param bufnr integer
+---@param desc string
+---@return vim.keymap.set.Opts
+local function keymap_opts(bufnr, desc)
+    return {
+        buffer = bufnr,
+        desc = desc,
+        silent = true,
+        noremap = true,
+    }
+end
 
 -- restricted format
 ---@param bufnr number buffer to format
@@ -27,20 +54,22 @@ local function register_format_on_save(bufnr)
     })
 end
 
----Return a function that can be called to find all references to the symbol under the cursor _not including_ test files
----@param inclue_declaration boolean whether or not to include the symbol definition in the output (default `false`)
----@param test_file_filter fun(filename: string): boolean method that should return `true` if the given filename is a test file
----@return function
-local function non_test_references(inclue_declaration, test_file_filter)
-    return function()
-        vim.lsp.buf.references({ includeDeclaration = inclue_declaration }, {
+---Find all references to the symbol under the cursor _not including_ test files
+---@param bufnr integer
+---@param opts LspReferenceOpts
+local function register_non_test_references(bufnr, opts)
+    vim.keymap.set("n", "<leader>gr", function()
+        vim.lsp.buf.references({ includeDeclaration = opts.inclue_declaration }, {
             on_list = function(options)
                 local non_test_items = vim.tbl_filter(function(item)
                     local fname = item.filename or vim.api.nvim_buf_get_name(item.bufnr)
-                    local is_test_file = test_file_filter(fname)
+                    local is_test_file = opts.test_file_filter(fname)
                     return not is_test_file
                 end, options.items)
-                vim.fn.setqflist(non_test_items, "r")
+                vim.fn.setqflist({}, "r", {
+                    title = options.title or "References",
+                    items = non_test_items,
+                })
                 if #non_test_items == 0 then
                     vim.print("No references found")
                     return
@@ -49,7 +78,7 @@ local function non_test_references(inclue_declaration, test_file_filter)
                 if #non_test_items == 1 then vim.cmd("cfirst") end
             end,
         })
-    end
+    end, keymap_opts(bufnr, "Non-test LSP References"))
 end
 
 ---Register keymap to organize imports
@@ -70,24 +99,9 @@ local function register_organize_imports(client, bufnr)
                 apply = true,
             })
         end,
-        { buffer = bufnr, desc = client.name .. ": Organize Imports", silent = true, noremap = true }
+        keymap_opts(bufnr, client.name .. ": Organize Imports")
     )
 end
-
----@class LspFormatOpts
----@field format_on_save? boolean whether or not the client should automatically format on save
----
----@class LspReferenceOpts
----@field test_file_filter? fun(fname: string): boolean a function that returns `true` if the given file name is a test file
----@field inclue_declaration? boolean whether or not to include the symbol definition in the output (default `false`)
----
----@class LspCodeActionOpts
----@field register_organize_imports? boolean whether or not to register the organize imports keybinding
----
----@class LspOpts
----@field format? LspFormatOpts client formatting behavior
----@field references? LspReferenceOpts client "goto references" behavior
----@field code_actions? LspCodeActionOpts client code action behavior
 
 ---@type LspOpts
 local default_opts = {
@@ -99,7 +113,7 @@ local default_opts = {
     },
     references = {
         inclue_declaration = false,
-        test_file_filter = function(_) return false end,
+        test_file_filter = nil,
     },
 }
 
@@ -107,45 +121,57 @@ local default_opts = {
 ---@param bufnr number buffer we're attaching to
 ---@param opts LspOpts? Options to register special functionality for some clients
 M.custom_attach = function(client, bufnr, opts)
-    local keymap_opts = { buffer = bufnr, silent = true, noremap = true }
-    local with_desc = function(desc) return vim.tbl_extend("force", keymap_opts, { desc = desc }) end
-
     ---@type LspOpts
     local resolved_opts = vim.tbl_extend("force", default_opts, opts or {})
 
-    vim.keymap.set("n", "K", function() vim.lsp.buf.hover({ border = "rounded" }) end, with_desc("Hover"))
-    vim.keymap.set("n", "<c-]>", vim.lsp.buf.definition, with_desc("Goto Definition"))
-    vim.keymap.set(
-        "n",
-        "<leader>ga",
-        function() vim.lsp.buf.references({ includeDeclaration = false }) end,
-        with_desc("All LSP References")
-    )
-    if resolved_opts.references.test_file_filter then
-        vim.keymap.set(
-            "n",
-            "<Leader>gr",
-            non_test_references(false, resolved_opts.references.test_file_filter),
-            with_desc("Non-test LSP References")
-        )
+    local mappings = {
+        {
+            left = "K",
+            right = function() vim.lsp.buf.hover({ border = "rounded" }) end,
+            desc = "Hover",
+        },
+        {
+            left = "<c-]>",
+            right = vim.lsp.buf.definition,
+            desc = "Goto Definition",
+        },
+        {
+            left = "<leader>ga",
+            right = function() vim.lsp.buf.references({ includeDeclaration = false }) end,
+            desc = "All LSP references",
+        },
+        {
+            left = "gr",
+            right = vim.lsp.buf.rename,
+            desc = "LSP Rename",
+        },
+        {
+            left = "<leader>gi",
+            right = vim.lsp.buf.implementation,
+            desc = "LSP Implementations",
+        },
+        {
+            left = "H",
+            right = vim.lsp.buf.code_action,
+            desc = "LSP Code Actions",
+        },
+        {
+            left = "<leader>ti",
+            right = function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled()) end,
+            desc = "Toggle inlay hints",
+        },
+        {
+            left = "<Leader>F",
+            right = function() format_by_client(bufnr) end,
+            desc = "LSP Format",
+        },
+    }
+    for _, map in ipairs(mappings) do
+        vim.keymap.set("n", map.left, map.right, keymap_opts(bufnr, map.desc))
     end
+
+    if resolved_opts.references.test_file_filter then register_non_test_references(bufnr, resolved_opts.references) end
     if resolved_opts.code_actions.register_organize_imports then register_organize_imports(client, bufnr) end
-    vim.keymap.set("n", "gr", vim.lsp.buf.rename, with_desc("Rename"))
-    vim.keymap.set("n", "<Leader>gi", vim.lsp.buf.implementation, with_desc("Implementations"))
-    vim.keymap.set("n", "H", vim.lsp.buf.code_action, with_desc("Code Actions"))
-    vim.keymap.set(
-        "n",
-        "<Leader>ti",
-        function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled()) end,
-        with_desc("Toggle inlay hints")
-    )
-    vim.keymap.set("n", "<Leader>rr", function()
-        vim.lsp.stop_client(vim.lsp.get_clients())
-        vim.cmd("edit")
-    end, with_desc("Restart all LSP clients")) -- restart clients
-
-    vim.keymap.set("n", "<leader>F", function() format_by_client(bufnr) end, with_desc("Format")) -- format
-
     if resolved_opts.format.format_on_save then register_format_on_save(bufnr) end
 end
 
