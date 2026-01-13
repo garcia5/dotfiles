@@ -61,12 +61,17 @@ local function register_non_test_references(bufnr, opts)
     vim.keymap.set("n", "<leader>gr", function()
         vim.lsp.buf.references({ includeDeclaration = opts.inclue_declaration }, {
             on_list = function(options)
-                local non_test_items = vim.tbl_filter(function(item)
-                    local fname = item.filename or vim.api.nvim_buf_get_name(item.bufnr)
-                    local is_test_file = opts.test_file_filter(fname)
-                    return not is_test_file
-                end, options.items)
+                local non_test_items = vim.tbl_filter(
+                    ---@param item vim.quickfix.entry
+                    function(item)
+                        local fname = item.filename or vim.api.nvim_buf_get_name(item.bufnr)
+                        local is_test_file = opts.test_file_filter(fname)
+                        return not is_test_file
+                    end,
+                    options.items
+                )
                 vim.fn.setqflist({}, "r", {
+                    context = options.context,
                     title = options.title or "References",
                     items = non_test_items,
                 })
@@ -127,7 +132,7 @@ M.custom_attach = function(client, bufnr, opts)
     local mappings = {
         {
             left = "K",
-            right = function() vim.lsp.buf.hover({ border = "rounded" }) end,
+            right = vim.lsp.buf.hover,
             desc = "Hover",
         },
         {

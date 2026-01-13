@@ -123,7 +123,8 @@ vim.opt.cursorline = true -- hightlight line cursor is on
 vim.opt.cursorlineopt = "both" -- highlight both the current line _and_ the line number
 vim.opt.laststatus = 3 -- single global statusline
 vim.opt.formatoptions = "lrqjn" -- default format options, can be overridden by builtin ftplugins
-vim.opt.winborder = "bold" -- default style for _all_ floating windows
+vim.opt.winborder = "solid" -- default style for _all_ floating windows
+vim.opt.winblend = 0 -- opaque floating windows
 
 -- Searching
 vim.opt.wildmenu = true -- tab complete on command line
