@@ -16,6 +16,7 @@ font-size                 = 14
 macos-icon                = retro
 macos-titlebar-proxy-icon = hidden
 macos-titlebar-style      = hidden
+macos-window-shadow       = false
 split-divider-color       = #f5e0dc
 theme                     = Catppuccin Mocha
 unfocused-split-fill      = #1e1e2e
@@ -34,6 +35,8 @@ keybind = super+n=ignore
 
 # cmd+. -> reset font size
 keybind = super+.=reset_font_size
+keybind = super++=increase_font_size:1
+keybind = super+-=decrease_font_size:1
 
 # cmd+` -> quick terminal
 keybind = global:super+`=toggle_quick_terminal
