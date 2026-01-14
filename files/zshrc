@@ -113,6 +113,7 @@ if [[ -d "$NVM_DIR" ]]; then
     add-zsh-hook chpwd load-nvmrc
 
     export DEFAULT_NODE_CMD="$(nvm which default)"
+    export NODE_PATH="$(npm root --quiet -g)"
 fi
 # NVM end
 

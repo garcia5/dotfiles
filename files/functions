@@ -107,7 +107,7 @@ fzf-ctrl-t() {
 }
 
 fzf-js-test() {
-    local cmd="$FZF_CTRL_T_COMMAND -g '*.spec.{js,ts}'"
+    local cmd="$FZF_CTRL_T_COMMAND -e '.spec.ts' -e '.spec.js' -e '.test.tsx'"
     eval "$cmd" |
     fzf \
         --multi \
