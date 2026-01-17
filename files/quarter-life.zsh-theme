@@ -98,7 +98,11 @@ ZSH_THEME_RUBY_PROMPT_SUFFIX="%{$reset_color%}"
 ZSH_THEME_RVM_PROMPT_OPTIONS="v g"
 
 setopt prompt_subst
-# include special escape sequence in start of prompt so tmux knows where it starts
-# https://github.com/tmux/tmux/issues/3734
-# https://stackoverflow.com/a/30577265
-PROMPT=$'\e]133;A\e${limegreen}%~%{$reset_color%}\$(ruby_prompt_info)\$vcs_info_msg_0_${orange} λ%{$reset_color%} '
+if [[ -n "$TMUX" && -z "$NVIM" ]]; then
+    # include special escape sequence in start and end of prompt so tmux knows how to jump between them
+    # https://github.com/tmux/tmux/issues/3734
+    # https://stackoverflow.com/a/30577265
+    PROMPT=$'%{\033]133;A\033\\%}${limegreen}%~%{$reset_color%}\$(ruby_prompt_info)\$vcs_info_msg_0_${orange} λ%{$reset_color%}%{\033]133;B\033\\%} '
+else
+    PROMPT="${limegreen}%~%{$reset_color%}\$(ruby_prompt_info)\$vcs_info_msg_0_${orange} λ%{$reset_color%} "
+fi
