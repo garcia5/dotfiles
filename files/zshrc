@@ -130,8 +130,10 @@ syntax_highlights_theme="$HOME/.zsh/catppuccin_mocha-zsh-syntax-highlighting.zsh
 [[ "$THEME_MODE" == "Light" ]] && syntax_highlights_theme="$HOME/.zsh/catppuccin_latte-zsh-syntax-highlighting.zsh"
 [ -f "$syntax_highlights_theme" ] && source "$syntax_highlights_theme"
 # syntax highlights, must run after compinit - https://github.com/zsh-users/zsh-syntax-highlighting?tab=readme-ov-file#faq
-syntax_highlights="$(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-[ -f "$syntax_highlights" ] && source "$syntax_highlights"
+if [ -d /opt/homebrew ]; then
+    syntax_highlights="$(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+    [ -f "$syntax_highlights" ] && source "$syntax_highlights"
+fi
 
 zsh_interactive_cd() {
     interactive_cd="$ZSH_CUSTOM/plugins/zsh-interactive-cd/zsh-interactive-cd.zsh"
