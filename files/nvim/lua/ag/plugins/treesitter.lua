@@ -1,6 +1,7 @@
 local ts = {
     "nvim-treesitter/nvim-treesitter",
     main = "nvim-treesitter.configs",
+    branch = "master",
     build = ":TSUpdate",
     lazy = false,
     dependencies = {
