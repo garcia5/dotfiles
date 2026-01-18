@@ -1,3 +1,9 @@
+---@type string | string[]
+local install_parsers = "all"
+if vim.fn.environ()["TREESITTER_INSTALL"] ~= nil then
+    install_parsers = vim.split(vim.fn.environ()["TREESITTER_INSTALL"], ",")
+end
+
 local ts = {
     "nvim-treesitter/nvim-treesitter",
     main = "nvim-treesitter.configs",
@@ -21,7 +27,7 @@ local ts = {
     end,
     opts = {
         -- either "all" or a list of languages
-        ensure_installed = "all",
+        ensure_installed = install_parsers,
         ignore_install = { "fusion", "blueprint", "jsonc", "t32" }, -- issues with tarball extraction
         highlight = {
             -- false will disable the whole extension
