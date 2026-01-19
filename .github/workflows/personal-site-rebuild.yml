@@ -1,0 +1,17 @@
+name: Trigger Personal Site Rebuild
+
+on:
+  push:
+    branches:
+      - master # or main
+
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Site Rebuild
+        run: |
+          curl -X POST https://api.github.com/repos/yourusername/personal-site/dispatches \
+          -H 'Accept: application/vnd.github.everest-preview+json' \
+          -H 'Authorization: token ${{ secrets.PERSONAL_SITE_PAT }}' \
+          -d '{"event_type": "dotfiles_update"}'
