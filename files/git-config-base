@@ -5,6 +5,7 @@
 	cleanup = "! git-cleanup"
 	rockstars = "shortlog -s -n --no-merges"
 	amend = "commit --amend"
+	squash = "commit --amend --no-edit"
 [init]
 	defaultBranch = main
 [merge]
