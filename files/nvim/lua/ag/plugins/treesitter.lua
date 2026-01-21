@@ -1,95 +1,132 @@
----@type string | string[]
-local install_parsers = "all"
+local install_parsers = {
+    "bash",
+    "css",
+    "zsh",
+    "python",
+    "lua",
+    "javascript",
+    "typescript",
+    "json",
+    "csv",
+    "swift",
+    "yaml",
+    "toml",
+    "markdown",
+}
 if vim.fn.environ()["TREESITTER_INSTALL"] ~= nil then
     install_parsers = vim.split(vim.fn.environ()["TREESITTER_INSTALL"], ",")
 end
 
-local ts = {
-    "nvim-treesitter/nvim-treesitter",
-    main = "nvim-treesitter.configs",
-    branch = "master",
-    build = ":TSUpdate",
-    lazy = false,
+local textobjects = {
+    "nvim-treesitter/nvim-treesitter-textobjects",
+    branch = "main",
     dependencies = {
-        -- extra textobjects
-        "nvim-treesitter/nvim-treesitter-textobjects",
-        -- commenting for vue SFCs
-        {
-            "JoosepAlviste/nvim-ts-context-commentstring",
-            ft = { "vue" },
-            init = function() vim.g.skip_ts_context_commentstring_module = true end,
-            config = true,
+        "nvim-treesitter/nvim-treesitter",
+    },
+    opts = {
+        select = {
+            lookahead = true,
+            selection_modes = {
+                ["@function.outer"] = "V", -- linewise
+            },
         },
     },
     init = function()
-        vim.opt.foldmethod = "expr" -- use function to determine folds
-        vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()" -- use TS for folding
+        --#region SWAP
+        vim.keymap.set(
+            "n",
+            "<leader>l",
+            function() require("nvim-treesitter-textobjects.swap").swap_next("@parameter.inner") end,
+            { desc = "[Treesitter] Swap with right parameter", silent = true }
+        )
+        vim.keymap.set(
+            "n",
+            "<leader>h",
+            function() require("nvim-treesitter-textobjects.swap").swap_previous("@parameter.inner") end,
+            { desc = "[Treesitter] Swap with right parameter", silent = true }
+        )
+        --#endregion SWAP
+
+        --#region MOVE
+        local move_maps = {
+            class = {
+                first = "[",
+                last = "]",
+            },
+            func = {
+                first = "(",
+                last = ")",
+            },
+        }
+        for t, vals in pairs(move_maps) do
+            for which_direction, first_key in pairs(vals) do
+                for which_end, second_key in pairs(vals) do
+                    local first = which_direction == "first" and "previous" or "next"
+                    local second = which_end == "first" and "start" or "end"
+                    local func_name = "goto_" .. first .. "_" .. second
+                    vim.keymap.set(
+                        { "n", "x", "o" },
+                        first_key .. second_key,
+                        function() require("nvim-treesitter-textobjects.move")[func_name]("@" .. t .. ".outer") end,
+                        {
+                            desc = "[Treesitter]" .. func_name,
+                            silent = true,
+                        }
+                    )
+                end
+            end
+        end
+        --#endregion MOVE
+
+        --#region CUSTOM MOTIONS
+        for _, t in ipairs({ "function", "class" }) do
+            local first = t:sub(1, 1)
+            vim.keymap.set(
+                { "x", "o" },
+                "a" .. first,
+                function()
+                    require("nvim-treesitter-textobjects.select").select_textobject("@" .. t .. ".outer", "textobjects")
+                end,
+                {
+                    desc = "[Treesitter] _ all " .. t,
+                    silent = true,
+                }
+            )
+            vim.keymap.set(
+                { "x", "o" },
+                "i" .. first,
+                function()
+                    require("nvim-treesitter-textobjects.select").select_textobject("@" .. t .. ".inner", "textobjects")
+                end,
+                {
+                    desc = "[Treesitter] _ in " .. t,
+                    silent = true,
+                }
+            )
+        end
+        --#endregion CUSTOM MOTIONS
     end,
+}
+
+local ts = {
+    "nvim-treesitter/nvim-treesitter",
+    branch = "main",
+    build = ":TSUpdate",
+    lazy = false,
     opts = {
-        -- either "all" or a list of languages
-        ensure_installed = install_parsers,
-        ignore_install = { "fusion", "blueprint", "jsonc", "t32" }, -- issues with tarball extraction
-        highlight = {
-            -- false will disable the whole extension
-            enable = true,
-            additional_vim_regex_highlighting = false,
-        },
-        indent = {
-            enable = true,
-        },
-        -- custom text objects
-        textobjects = {
-            -- change/delete/select in function or class
-            select = {
-                enable = true,
-                lookahead = true,
-                keymaps = {
-                    ["af"] = "@function.outer",
-                    ["if"] = "@function.inner",
-                    ["ac"] = "@class.outer",
-                    ["ic"] = "@class.inner",
-                },
-            },
-            -- easily move to next function/class
-            move = {
-                enable = true,
-                set_jumps = true, -- track in jumplist (<C-o>, <C-i>)
-                goto_next_start = {
-                    ["]["] = "@function.outer",
-                    [")("] = "@class.outer",
-                },
-                goto_next_end = {
-                    ["]]"] = "@function.outer",
-                    ["))"] = "@class.outer",
-                },
-                goto_previous_start = {
-                    ["[["] = "@function.outer",
-                    ["(("] = "@class.outer",
-                },
-                goto_previous_end = {
-                    ["[]"] = "@function.outer",
-                    ["()"] = "@class.outer",
-                },
-            },
-            -- peek definitions from LSP
-            lsp_interop = {
-                enable = true,
-                peek_definition_code = {
-                    ["<Leader>pf"] = "@function.outer",
-                    ["<Leader>pc"] = "@class.outer",
-                },
-            },
-            swap = {
-                enable = true,
-                swap_next = {
-                    ["<Leader>l"] = "@parameter.inner",
-                },
-                swap_previous = {
-                    ["<Leader>h"] = "@parameter.inner",
-                },
-            },
-        },
+        install_dir = vim.fs.joinpath(vim.fn.stdpath("data"), "treesitter", "parsers"),
     },
+    init = function()
+        require("nvim-treesitter").install(install_parsers)
+        vim.api.nvim_create_autocmd("FileType", {
+            pattern = install_parsers,
+            callback = function()
+                vim.treesitter.start()
+                vim.wo[0][0].foldexpr = "v:lua.vim.treesitter.foldexpr()"
+                vim.wo[0][0].foldmethod = "expr"
+            end,
+        })
+    end,
 }
 
 local ts_context = {
@@ -118,4 +155,5 @@ local ts_context = {
 return {
     ts,
     ts_context,
+    textobjects,
 }
