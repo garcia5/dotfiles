@@ -97,7 +97,9 @@ return {
         custom_attach(client, bufnr, {
             references = {
                 inclue_declaration = false,
-                test_file_filter = function(fname) return fname:match(".spec.[tj]s$") ~= nil end,
+                test_file_filter = function(fname)
+                    return fname:match("%.spec%.[tj]s$") ~= nil or fname:match("%.test%.tsx$") ~= nil
+                end,
             },
             code_actions = {
                 -- have to use custom organize imports to sort + remove unused
