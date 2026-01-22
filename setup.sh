@@ -94,7 +94,31 @@ function install_packages {
 
     echo ""
     echo "Installing from brew..."
-    local brew_packages=( 'gcc' 'fzf' 'bat' 'ripgrep' 'eza' 'pyenv' 'yarn' 'neovim' 'xz' 'sqlite' 'unixodbc' 'tmux' 'ninja' 'zsh' 'git-delta' 'stylua' 'git-absorb' 'lua-language-server' 'efm-langserver' 'shellcheck' 'gh' )
+    local brew_packages=(
+        'gcc'
+        'fzf'
+        'bat'
+        'ripgrep'
+        'eza'
+        'pyenv'
+        'yarn'
+        'neovim'
+        'xz'
+        'sqlite'
+        'unixodbc'
+        'tmux'
+        'ninja'
+        'zsh'
+        'git-delta'
+        'stylua'
+        'git-absorb'
+        'lua-language-server'
+        'efm-langserver'
+        'shellcheck'
+        'gh'
+        'tree-sitter'
+        'tree-sitter-cli'
+    )
     local brew_installed
     brew_installed="$(brew list)"
     for pkg in "${brew_packages[@]}"; do
@@ -199,17 +223,6 @@ function setup_nvim {
     fi
     mkdir -p "$NVIM_HOME"
     replace_dir "$NVIM_HOME" "$DF_HOME/files/nvim"
-    # Set up neovim python virtualenv
-    if [[ ! -d "$HOME/py3nvim" && "$(python --version)" != 2* ]]; then
-        runcmd python -m venv "$HOME/py3nvim"
-        runcmd source "$HOME/py3nvim/bin/activate"
-        runcmd pip install --upgrade pip
-        runcmd pip install pynvim
-        runcmd deactivate
-    fi
-    if [[ -n "${HAS_NPM}" && "$(npm ls -g)" != *neovim* ]]; then
-        runcmd npm i -g neovim
-    fi
 }
 
 function setup_tmux {
