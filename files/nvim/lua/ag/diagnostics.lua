@@ -4,10 +4,9 @@ vim.diagnostic.config({
     underline = true,
     virtual_lines = {
         current_line = true,
+        severity = vim.diagnostic.severity.WARN,
         format = function(diagnostic)
-            if diagnostic.source ~= nil then
-                return "[" .. diagnostic.source .. "] " .. diagnostic.message
-            end
+            if diagnostic.source ~= nil then return "[" .. diagnostic.source .. "] " .. diagnostic.message end
             return diagnostic.message
         end,
     },

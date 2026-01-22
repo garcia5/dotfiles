@@ -36,7 +36,7 @@ local function keymap_opts(bufnr, desc)
 end
 
 -- restricted format
----@param bufnr number buffer to format
+---@param bufnr integer buffer to format
 local function format_by_client(bufnr)
     vim.lsp.buf.format({
         bufnr = bufnr,
@@ -44,7 +44,7 @@ local function format_by_client(bufnr)
     })
 end
 
----@param bufnr number
+---@param bufnr integer
 local function register_format_on_save(bufnr)
     local format_group = vim.api.nvim_create_augroup("LspFormatting", { clear = true })
     vim.api.nvim_create_autocmd("BufWritePre", {
