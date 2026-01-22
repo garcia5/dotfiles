@@ -2,6 +2,7 @@
 
 # Essentials
 if command -v eza > /dev/null 2>&1 ; then
+    alias ls='eza'
     alias ll='eza -hal --icons=auto'
     alias la='eza -a'
     alias show='eza -hal $(fzf-ls)'
