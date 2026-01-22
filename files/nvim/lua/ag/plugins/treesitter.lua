@@ -153,10 +153,16 @@ local ts = {
         end
 
         require("nvim-treesitter").install(install_parsers)
+        -- always try and do treesitter highlighting
+        vim.api.nvim_create_autocmd("FileType", {
+            pattern = "*",
+            callback = function()
+                vim.schedule(function() pcall(vim.treesitter.start) end)
+            end,
+        })
         vim.api.nvim_create_autocmd("FileType", {
             pattern = install_parsers,
             callback = function()
-                vim.treesitter.start()
                 vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
                 vim.wo[0][0].foldexpr = "v:lua.vim.treesitter.foldexpr()"
                 vim.wo[0][0].foldmethod = "expr"

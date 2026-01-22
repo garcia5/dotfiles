@@ -4,7 +4,10 @@ vim.diagnostic.config({
     underline = true,
     virtual_lines = {
         current_line = true,
-        severity = vim.diagnostic.severity.WARN,
+        severity = {
+            min = vim.diagnostic.severity.WARN,
+            max = vim.diagnostic.severity.ERROR,
+        },
         format = function(diagnostic)
             if diagnostic.source ~= nil then return "[" .. diagnostic.source .. "] " .. diagnostic.message end
             return diagnostic.message
