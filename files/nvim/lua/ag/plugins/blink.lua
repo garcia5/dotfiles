@@ -59,10 +59,6 @@ return {
                     name = "Path",
                     module = "blink.cmp.sources.path",
                     fallbacks = { "buffer" },
-                    opts = {
-                        -- complete path from vim CWD rather than buffer directory
-                        get_cwd = function(_) return vim.fn.getcwd() end,
-                    },
                 },
                 copilot = {
                     name = "copilot",

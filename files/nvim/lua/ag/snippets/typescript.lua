@@ -17,7 +17,7 @@ local ts_function_fmt = [[
 	{body}
 }}
 ]]
-local ts_function_snippet = function(type)
+local function ts_function_snippet(type)
     return fmt(ts_function_fmt, {
         doc = isn(1, {
             t({ "/**", " " }),
@@ -61,7 +61,7 @@ local ts_loop_fmt = [[
 	{body}
 }})
 ]]
-local ts_loop_snippet = function(type)
+local function ts_loop_snippet(type)
     return fmt(ts_loop_fmt, {
         type = t(type),
         async = c(1, { t(""), t("async ") }),

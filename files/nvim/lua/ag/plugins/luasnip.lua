@@ -52,12 +52,10 @@ return {
 
         -- load my custom snippets
         ls.add_snippets("typescript", snippets.typescript)
+        ls.add_snippets("typescriptreact", snippets.typescript)
+        ls.add_snippets("javascript", snippets.typescript)
+        ls.add_snippets("javascriptreact", snippets.typescript)
         ls.add_snippets("python", snippets.python)
     end,
-    ft = {
-        "vue",
-        "typescript",
-        "javascript",
-        "python",
-    },
+    event = "InsertEnter",
 }

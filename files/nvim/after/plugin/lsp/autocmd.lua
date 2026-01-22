@@ -3,9 +3,7 @@ vim.api.nvim_create_autocmd("LspNotify", {
         local bufnr = args.buf
         local winnr = vim.fn.bufwinid(bufnr)
         if vim.wo[winnr].diff then return end
-        if args.data.method == "textDocument/didOpen" then
-            vim.lsp.foldclose("imports", winnr)
-        end
+        if args.data.method == "textDocument/didOpen" then vim.lsp.foldclose("imports", winnr) end
     end,
 })
 
@@ -16,6 +14,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
         if client ~= nil and client:supports_method("textDocument/foldingRange") then
             local win = vim.api.nvim_get_current_win()
             vim.wo[win][0].foldexpr = "v:lua.vim.lsp.foldexpr()"
+            vim.wo[win][0].foldmethod = "expr"
         end
     end,
 })
