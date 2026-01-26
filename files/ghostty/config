@@ -41,3 +41,4 @@ keybind = super+-=decrease_font_size:1
 # cmd+` -> quick terminal
 keybind = global:super+`=toggle_quick_terminal
 #: }}}
+keybind = shift+enter=text:\x1b\r
