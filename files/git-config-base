@@ -6,6 +6,7 @@
 	rockstars = "shortlog -s -n --no-merges"
 	amend = "commit --amend"
 	squash = "commit --amend --no-edit"
+	wip = "commit -m 'WIP' --no-verify"
 [init]
 	defaultBranch = main
 [merge]
