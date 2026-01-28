@@ -302,6 +302,6 @@ c() {
 # Others
 source-envfile() {
     set -a
-    source "$1"
+    source "${1:-.env}"
     set +a
 }
