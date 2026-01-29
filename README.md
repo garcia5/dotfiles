@@ -12,12 +12,23 @@ My own personal configurations, `setup.sh` sort of works to get things set up
 - [after/plugin/autocmd.lua](./files/nvim/after/plugin/autocmd.lua): Place to stuff all my autocommands
 - [after/ftplugin/](./files/nvim/after/ftplugin/): Language-specific editor configuration (special mappings, tab width, etc)
 
+### External Dependencies
+- [`tree-sitter`](https://tree-sitter.github.io/tree-sitter/)
+- [`tree-sitter-cli`](https://tree-sitter.github.io/tree-sitter/)
+- [`ripgrep`](https://github.com/BurntSushi/ripgrep)
+- [`fzf`](https://github.com/junegunn/fzf)
+
+### Environment Variables
+- `DEFAULT_COPILOT_MODEL`: model to use for copilot-chat plugin. If not set, does not load copilot chat plugin
+- `TREESITTER_INSTALL`: comma separated list of treesitter parsers to install
+- `CUSTOM_NVIM_PLUGINS`: comma separates list of directories containing plugins to load
+
 ## Shell/Terminal
 - [zshrc](./files/zshrc): Main ZSH configuration, uses [oh-my-zsh](https://ohmyz.sh/) and pulls in a few other scripts
   - [quarter-life.zsh-theme](./files/quarter-life.zsh-theme): A simpler version of the half-life oh-my-zsh theme
   - [functions](./files/functions): More complex terminal functions, primarily focused on [FZF](https://github.com/junegunn/fzf) integration
 - [ghostty/config](./files/ghostty/config): My current terminal config
-- [tmux.conf](./files/tmux.conf): My tmux config for when I can't use wezterm
+- [tmux.conf](./files/tmux.conf): My tmux config
 
 ## Sketchybar
 A customizable MacOS menu bar - https://github.com/FelixKratz/SketchyBar
