@@ -87,8 +87,8 @@ function create_pr_body {
     [ -n "$commit_msg" ] && echo "$commit_msg" >> "$tmp_file"
 
     local jira_ticket="$(get_jira_ticket $cur_branch)"
-    [ -n "$jira_ticket" ] && echo "\n\n[$jira_ticket]($JIRA_BASE_URL/browse/$jira_ticket)" >> "$tmp_file"
-    local nvim_cmd="nvim -c 'set ft=gitcommit' -- $fname"
+    [ -n "$jira_ticket" ] && echo "\n\n$(jira-md $jira_ticket)" >> "$tmp_file"
+    local nvim_cmd="nvim -c 'set ft=markdown' -- $fname"
     eval "$nvim_cmd"
 }
 
