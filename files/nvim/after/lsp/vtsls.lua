@@ -142,6 +142,9 @@ return {
         },
         typescript = {
             inlayHints = inlay_hint_settings,
+            preferences = {
+                importModuleSpecifier = "relative",
+            },
         },
         vtsls = {
             -- auto detect project typescript installation and use it, rather than using
