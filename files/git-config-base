@@ -10,6 +10,8 @@
 	unwip = "reset --mixed HEAD^"
 [init]
 	defaultBranch = main
+[advice]
+	skippedCherryPicks = false
 [merge]
 	conflictstyle = zdiff3
 [column]
