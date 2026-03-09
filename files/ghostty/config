@@ -1,11 +1,14 @@
 # vim:foldmethod=marker
 
 #: Behavior {{{
-clipboard-read             = allow
-clipboard-write            = allow
-command                    = "/bin/zsh --login"
-confirm-close-surface      = false
-shell-integration-features = cursor,sudo
+clipboard-read                  = allow
+clipboard-write                 = allow
+command                         = "/bin/zsh --login"
+confirm-close-surface           = false
+shell-integration-features      = cursor,sudo
+notify-on-command-finish        = unfocused
+notify-on-command-finish-action = no-bell,notify
+notify-on-command-finish-after  = 30s
 #: }}}
 
 #: Look + feel {{{
@@ -40,5 +43,7 @@ keybind = super+-=decrease_font_size:1
 
 # cmd+` -> quick terminal
 keybind = global:super+`=toggle_quick_terminal
-#: }}}
+
+# shift+enter -> newline (from claude)
 keybind = shift+enter=text:\x1b\r
+#: }}}
