@@ -2,7 +2,7 @@
 
 return {
     "coder/claudecode.nvim",
-    enabled = function() return vim.fn.executable("claude") ~= 1 end,
+    enabled = function() return vim.fn.executable("claude") == 1 end,
     event = "VeryLazy",
     opts = {
         terminal = {
