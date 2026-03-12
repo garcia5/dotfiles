@@ -61,6 +61,7 @@ cda() {
     fi
 }
 compdef '_path_files -/' cda
+compdef '_path_files -/' start-dev
 
 # FZF
 zle -N ctrl-t-widget
@@ -166,7 +167,7 @@ fzf-git-checkout() {
 
     local git_cmd="git branch --color=always --sort=-committerdate"
     local format="grep -v HEAD | sed 's/^..//' | sed 's,remotes/,,' | cut -d' ' -f1"
-    eval "$git_cmd --all | $format" |
+    eval "$git_cmd | $format" |
     fzf \
         --ansi \
         --header "ctrl-a: switch -c | ctrl-t: switch --track | ctrl-r: All branches | ctrl-l: Local branches" \
