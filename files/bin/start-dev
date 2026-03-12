@@ -1,0 +1,51 @@
+#!/bin/zsh
+
+# Usage: start-dev [directory]
+# Sets up a 3-pane tmux dev layout:
+#   Left: nvim | Top-right: claude --ide | Bottom-right: terminal
+
+main() {
+    # Guard: must be inside tmux
+    if [[ -z "$TMUX" ]]; then
+        echo "start-dev: must be run inside tmux"
+        return 1
+    fi
+
+    # Resolve target directory to absolute path
+    local dir="${1:-$(pwd)}"
+    dir="$(cd "$dir" 2>/dev/null && pwd)" || {
+        echo "start-dev: directory not found: $1"
+        return 1
+    }
+
+    create_layout "$dir"
+}
+
+create_layout() {
+    local dir="$1"
+
+    local width="$(tmux display-message -p '#{window_width}')"
+
+    # Vertical split: right pane is 1/3 on wide screens, 1/2 otherwise
+    if [[ "$width" -gt 300 ]]; then
+        tmux split-window -h -c "$dir" -l '33%'
+    else
+        tmux split-window -h -c "$dir"
+    fi
+
+    # Horizontal split on the right pane: bottom gets 1/3 height
+    tmux split-window -v -c "$dir" -l '33%'
+
+    # Capture pane IDs (order: left, top-right, bottom-right)
+    local panes=(${(f)"$(tmux list-panes -F '#{pane_id}')"})
+
+    # Send commands to each pane
+    tmux send-keys -t "${panes[1]}" "cd ${(q)dir} && nvim" Enter
+    tmux send-keys -t "${panes[2]}" "cd ${(q)dir} && claude --ide" Enter
+    tmux send-keys -t "${panes[3]}" "cd ${(q)dir}" Enter
+
+    # Focus the left pane (nvim)
+    tmux select-pane -t "${panes[1]}"
+}
+
+main "$@"
