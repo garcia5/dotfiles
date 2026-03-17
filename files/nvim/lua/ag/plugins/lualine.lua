@@ -53,6 +53,7 @@ return {
                     "lsp_status",
                     icon = " LSP:",
                     color = { gui = "bold" },
+                    ignore_lsp = { "copilot" }, -- don't show copilot in LSP list
                     cond = IS_WIDE,
                 },
                 {
@@ -84,7 +85,7 @@ return {
         options = {
             section_separators = { left = "", right = "" },
             component_separators = { left = "", right = "" },
-            theme = "catppuccin-nvim",
+            theme = "catppuccin-mocha",
             globalstatus = true,
         },
         extensions = {

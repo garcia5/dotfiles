@@ -36,7 +36,7 @@ require("lazy").setup("ag.plugins", {
         notify = false,
     },
     install = {
-        colorscheme = { "catppuccin" },
+        colorscheme = { "catppuccin-mocha" },
     },
 })
 
@@ -84,7 +84,7 @@ vim.opt.softtabstop = 4 -- <Tab> behaves as 4 spaces when editing
 vim.opt.breakindent = true -- when `wrap` is on, continue line at same indentation level as previous
 
 -- Colors
-vim.cmd("colorscheme catppuccin")
+vim.cmd("colorscheme catppuccin-mocha")
 if vim.fn.environ()["THEME_MODE"] == "Light" then
     vim.opt.background = "light"
 else
