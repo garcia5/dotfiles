@@ -7,5 +7,11 @@ if [[ "$1" =~ ^[A-Z0-9]+-[0-9]+$ ]]; then
     exit 0
 fi
 
-echo "Invaild jira ticket $1"
+if [[ "$1" =~ ^[0-9]+$ ]] && [ -n "$DEFAULT_JIRA_PROJECT" ]; then
+    ticket="${DEFAULT_JIRA_PROJECT}-$1"
+    echo "[$ticket](${JIRA_BASE_URL}/browse/$ticket)" | pbcopy
+    exit 0
+fi
+
+echo "Invalid jira ticket $1"
 exit 1

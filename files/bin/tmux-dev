@@ -8,18 +8,6 @@ function work {
         fi
     fi
     tmux new-session -d -s "$session" -c "$HOME/work" # working session
-
-    # Open in "widescreen" or "normal" mode depending on screen size
-    local width
-    width=$(tput cols)
-    if [ "$width" -gt 300 ]; then
-        tmux split-window -h -c "$HOME/work" -l '66%'
-    else
-        tmux split-window -v -c "$HOME/work" -l '66%'
-    fi
-
-    # Keep focus in original pane
-    tmux select-pane -t "$session:1.1"
 }
 
 function notes {

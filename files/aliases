@@ -16,6 +16,7 @@ alias v='nvim'
 alias td='. tmux-dev'
 alias wd='source $HOME/bin/wez-dev'
 alias sd='start-dev'
+alias jmd='jira-md'
 
 alias pp='pbpaste'
 alias pc='pbcopy'
