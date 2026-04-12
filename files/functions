@@ -197,7 +197,7 @@ fzf-git-commits() {
         --scheme 'history' \
         --ghost 'Search Commits' \
         --accept-nth 1 \
-        --header 'Ctrl-a: open in delta | Ctrl-t: open in nvim' \
+        --header 'Ctrl-a: open in delta | Ctrl-t: open in nvim | Alt-r: toggle raw mode' \
         --bind 'ctrl-a:execute($diff_cmd)' \
         --bind 'ctrl-t:execute($diffview_cmd)+abort' \
         --preview '$diff_cmd'"
