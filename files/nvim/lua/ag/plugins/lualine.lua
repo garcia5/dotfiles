@@ -4,7 +4,6 @@ return {
     "nvim-lualine/lualine.nvim",
     dependencies = {
         "nvim-tree/nvim-web-devicons",
-        "AndreM222/copilot-lualine",
     },
     opts = {
         sections = {
@@ -48,29 +47,12 @@ return {
                     cond = function() return not IS_WIDE() end,
                 },
             },
-            lualine_x = {
-                {
-                    "copilot",
-                    show_colors = true,
-                    show_status = true,
-                    color = { gui = "bold" },
-                    symbols = {
-                        status = {
-                            enabled = " ",
-                            sleep = " ",
-                            disabled = " ",
-                            warning = " ",
-                            unknown = " ",
-                        },
-                    },
-                },
-            },
+            lualine_x = {},
             lualine_y = {
                 {
                     "lsp_status",
                     icon = " LSP:",
                     color = { gui = "bold" },
-                    ignore_lsp = {"copilot"}, -- don't show copilot in LSP list
                     cond = IS_WIDE,
                 },
                 {
@@ -102,7 +84,7 @@ return {
         options = {
             section_separators = { left = "", right = "" },
             component_separators = { left = "", right = "" },
-            theme = "catppuccin",
+            theme = "catppuccin-nvim",
             globalstatus = true,
         },
         extensions = {
