@@ -92,8 +92,9 @@ else
 end
 
 -- Look and feel
-vim.opt.number = true
-vim.opt.relativenumber = true
+require("vim._core.ui2").enable() -- enable new experimental UI (nvim 0.12)
+vim.opt.number = true -- line numbers in gutter
+vim.opt.relativenumber = true -- current line number + relative line offsets in gutter
 vim.opt.signcolumn = "yes" -- show the sign column always
 vim.opt.foldtext = "" -- show normal buffer content (w/ highlights) through fold
 vim.opt.showbreak = "> " -- prefix wrapped lines with '>'

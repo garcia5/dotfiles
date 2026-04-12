@@ -1,6 +1,7 @@
-local custom_attach = require("ag.lsp.common").custom_attach
-
--- return {
---     on_attach = function(client, bufnr) custom_attach(client, bufnr, { format_on_save = true }) end,
---     filetypes = { "dart" },
--- }
+return {
+    cmd = { "dart", "language-server", "--protocol=lsp" },
+    on_attach = function(client, bufnr)
+        require("ag.lsp.common").custom_attach(client, bufnr, { format = { format_on_save = true } })
+    end,
+    filetypes = { "dart" },
+}
