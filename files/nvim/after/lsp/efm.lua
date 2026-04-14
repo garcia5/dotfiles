@@ -1,5 +1,6 @@
 local custom_attach = require("ag.lsp.common").custom_attach
 local autopep8 = require("efmls-configs.formatters.autopep8")
+local biome = require("efmls-configs.formatters.biome")
 local black = require("efmls-configs.formatters.black")
 local eslint = require("efmls-configs.linters.eslint_d")
 local eslint_format = require("efmls-configs.formatters.eslint_d")
@@ -11,10 +12,10 @@ local stylua = require("efmls-configs.formatters.stylua")
 
 local languages = {
     lua = { stylua },
-    typescript = { eslint, eslint_format },
-    javascript = { eslint, eslint_format },
-    typescriptreact = { eslint, eslint_format },
-    javascriptreact = { eslint, eslint_format },
+    typescript = { biome, eslint, eslint_format },
+    javascript = { biome, eslint, eslint_format },
+    typescriptreact = { biome, eslint, eslint_format },
+    javascriptreact = { biome, eslint, eslint_format },
     vue = { prettier, eslint },
     python = { black, autopep8, flake8, pylint },
     bash = { shellcheck },

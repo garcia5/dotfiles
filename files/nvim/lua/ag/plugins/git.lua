@@ -108,6 +108,12 @@ local diffview = {
             "<cmd>DiffviewOpen<CR>",
             desc = "Open changed files",
         },
+        {
+            "<Leader>gR",
+            "<cmd>DiffviewRefresh<CR>",
+            desc = "Refresh diff view",
+            buffer = true,
+        },
     },
     cmd = {
         "DiffviewOpen",

@@ -92,7 +92,13 @@ else
 end
 
 -- Look and feel
-require("vim._core.ui2").enable() -- enable new experimental UI (nvim 0.12)
+-- enable new experimental UI (nvim 0.12)
+require("vim._core.ui2").enable({
+    enable = true,
+    msg = {
+        targets = "msg" -- show outputs in notifiaction window
+    }
+})
 vim.opt.number = true -- line numbers in gutter
 vim.opt.relativenumber = true -- current line number + relative line offsets in gutter
 vim.opt.signcolumn = "yes" -- show the sign column always

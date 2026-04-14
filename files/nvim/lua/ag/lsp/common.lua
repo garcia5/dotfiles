@@ -21,6 +21,7 @@ local allowed_formatters = {
     "rust_analyzer",
     "gopls",
     "dartls",
+    "sourcekit",
 }
 
 ---@param bufnr integer
