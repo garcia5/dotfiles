@@ -8,6 +8,7 @@
 	squash = "commit --amend --no-edit"
 	wip = "commit -m 'WIP' --no-verify"
 	unwip = "reset --mixed HEAD^"
+	fixup = "commit --fixup"
 [init]
 	defaultBranch = main
 [advice]
