@@ -38,6 +38,11 @@ zstyle ':vcs_info:*' enable git
 # you should disable it, if you work with large repositories
 zstyle ':vcs_info:*:prompt:*' check-for-changes true
 
+# To use lightweight git prompt for specific directories (e.g., large repos),
+# set PROMPT_GIT_LIGHTWEIGHT_DIRS to an array of absolute paths in ~/.custom:
+#   PROMPT_GIT_LIGHTWEIGHT_DIRS=(/path/to/large-repo /path/to/another)
+# Lightweight mode shows the branch name but skips dirty-state detection.
+
 # set formats
 # %b - branchname
 # %u - unstagedstr (see below)
@@ -58,6 +63,16 @@ zstyle ':vcs_info:*:prompt:*' formats       "${FMT_BRANCH}"
 zstyle ':vcs_info:*:prompt:*' nvcsformats   ""
 
 
+function _prompt_git_lightweight {
+  [ -n "$PROMPT_GIT_LIGHTWEIGHT_DIRS" ] || return 1
+  for dir in "${PROMPT_GIT_LIGHTWEIGHT_DIRS[@]}"; do
+    if [[ "$PWD" == "$dir" || "$PWD" == "$dir/"* ]]; then
+      return 0
+    fi
+  done
+  return 1
+}
+
 function steeef_chpwd {
   PR_GIT_UPDATE=1
 }
@@ -70,6 +85,15 @@ function steeef_preexec {
 
 function steeef_precmd {
   (( PR_GIT_UPDATE )) || return
+
+  if _prompt_git_lightweight; then
+    zstyle ':vcs_info:*:prompt:*' check-for-changes false
+    zstyle ':vcs_info:*:prompt:*' formats " ${turquoise} %b${PR_RST}"
+    vcs_info 'prompt'
+    zstyle ':vcs_info:*:prompt:*' check-for-changes true
+    PR_GIT_UPDATE=
+    return
+  fi
 
   # check for untracked files or updated submodules, since vcs_info doesn't
   if [[ -n "$(git ls-files --other --exclude-standard 2>/dev/null)" ]]; then
