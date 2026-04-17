@@ -7,7 +7,9 @@ return {
         ".sourcekit-lsp",
         "Package.swift",
     },
-    on_attach = require("ag.lsp.common").custom_attach,
+    on_attach = function(client, bufnr)
+        require("ag.lsp.common").custom_attach(client, bufnr, { format = { format_on_save = true } })
+    end,
     get_language_id = function(_, ftype) return ftype end,
     capabilities = {
         workspace = {
