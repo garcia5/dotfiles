@@ -1,0 +1,30 @@
+# Homebrew dependencies
+tap "FelixKratz/formulae"
+
+# CLI Tools
+brew "gcc"
+brew "fzf"
+brew "bat"
+brew "ripgrep"
+brew "eza"
+brew "pyenv"
+brew "yarn"
+brew "neovim"
+brew "xz"
+brew "sqlite"
+brew "unixodbc"
+brew "tmux"
+brew "ninja"
+brew "zsh"
+brew "git-delta"
+brew "stylua"
+brew "git-absorb"
+brew "lua-language-server"
+brew "efm-langserver"
+brew "shellcheck"
+brew "gh"
+brew "tree-sitter"
+brew "tree-sitter-cli"
+
+# System / Desktop Tools
+brew "sketchybar"

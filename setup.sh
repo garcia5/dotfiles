@@ -1,16 +1,17 @@
 #!/bin/bash
 
+set -eo pipefail
+
 export CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
 if [[ ! -d "$CONFIG_HOME" ]]; then
     mkdir -p "$CONFIG_HOME"
 fi
 export NVIM_HOME=$CONFIG_HOME/nvim
-export DF_HOME=$HOME/dotfiles
+export DF_HOME="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-HAS_PYENV="$(command -v pyenv)"
-HAS_BREW="$(command -v brew)"
-HAS_NPM="$(command -v npm)"
-HAS_NVIM="$(command -v nvim)"
+function has_command {
+    command -v "$1" >/dev/null 2>&1
+}
 
 function runcmd {
     echo "$@"
@@ -29,7 +30,7 @@ function replace_file {
     fi
 
     if [[ -n "${new_file}" && -n "${old_file}" ]]; then
-        ln -s "${new_file}" "${old_file}"
+        runcmd ln -sfn "${new_file}" "${old_file}"
     fi
 }
 
@@ -37,22 +38,21 @@ function replace_dir {
     local old_dir=$1
     local new_dir=$2
     if [[ -d "${old_dir}" ]]; then
-        # Symlink, just remove it
         if [[ -L "${old_dir}" ]]; then
             runcmd unlink "${old_dir}"
         else
-            runcmd mv "${old_dir}" "${old_dir} backup"
+            runcmd mv "${old_dir}" "${old_dir}.backup"
         fi
     fi
 
     if [[ -n "${new_dir}" && -n "${old_dir}" ]]; then
-        ln -s "${new_dir}" "${old_dir}"
+        runcmd ln -sfn "${new_dir}" "${old_dir}"
     fi
 }
 
 function install_npm {
     if [[ -d "$HOME/.nvm" ]]; then
-        echo "found nvm installation $(nvm --verison)"
+        echo "found nvm installation"
     else
         echo "installing nvm"
         curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
@@ -60,100 +60,69 @@ function install_npm {
         [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
     fi
 
-    if [[ -z "$(command -v node)" ]]; then
-        echo "installing node"
-        runcmd nvm install --latest-npm
-    fi
+    echo "installing node using nvm"
+    runcmd nvm install --latest-npm
 }
 
 function install_brew {
-    if [[ -n "${HAS_BREW}" ]]; then
-        echo "Existing brew installation found at ${HAS_BREW}"
+    if has_command brew; then
+        echo "Existing brew installation found at $(command -v brew)"
         return
     fi
     # no brew, install it
     echo "No brew installation found, installing..."
-    runcmd /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
-    eval "$(/opt/homebrew/bin/brew shellenv)"
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+    if [[ -d "/opt/homebrew/bin" ]]; then
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+    elif [[ -d "/usr/local/bin" ]]; then
+        eval "$(/usr/local/bin/brew shellenv)"
+    fi
     runcmd brew update
 }
 
 function install_sketchybar {
-    runcmd brew tap FelixKratz/formulae
-    runcmd brew install sketchybar
-
+    echo "Installing sketchybar..."
+    # Installed via Brewfile
     replace_dir "$CONFIG_HOME/sketchybar" "$DF_HOME/files/sketchybar"
     runcmd brew services start sketchybar
 }
 
 function install_packages {
-    if [[ -z "${HAS_BREW}" ]]; then
-        echo "No brew installation found, exiting"
-        exit 1
+    if ! has_command brew; then
+        echo "No brew installation found, attempting to install..."
+        install_brew
     fi
 
     echo ""
-    echo "Installing from brew..."
-    local brew_packages=(
-        'gcc'
-        'fzf'
-        'bat'
-        'ripgrep'
-        'eza'
-        'pyenv'
-        'yarn'
-        'neovim'
-        'xz'
-        'sqlite'
-        'unixodbc'
-        'tmux'
-        'ninja'
-        'zsh'
-        'git-delta'
-        'stylua'
-        'git-absorb'
-        'lua-language-server'
-        'efm-langserver'
-        'shellcheck'
-        'gh'
-        'tree-sitter'
-        'tree-sitter-cli'
-    )
-    local brew_installed
-    brew_installed="$(brew list)"
-    for pkg in "${brew_packages[@]}"; do
-        if [[ "$brew_installed" == *"$pkg"* ]]; then
-            echo "$pkg already installed, skipping"
-        else
-            runcmd brew install "$pkg"
-        fi
-    done
+    echo "Installing packages from Brewfile..."
+    runcmd brew bundle --file="$DF_HOME/Brewfile"
 
-    # extra setup for some pacakges
+    # extra setup for some packages
     # fzf
-    if [[ -f "$(brew --prefix)/opt/fzf/install" ]]; then
-        "$(brew --prefix)"/opt/fzf/install --no-update-rc
+    local fzf_install_script
+    fzf_install_script="$(brew --prefix)/opt/fzf/install"
+    if [[ -f "$fzf_install_script" ]]; then
+        "$fzf_install_script" --no-update-rc --no-bash --no-zsh --no-fish
     fi
-    if [[ -n "$(command -v pyenv)" ]]; then
+
+    if has_command pyenv; then
         eval "$(pyenv init -)"
     fi
 
-    if [[ -z "${HAS_NPM}" ]]; then
-        echo "No npm installation found, exiting"
-        exit 1
+    if ! has_command npm; then
+        echo "No npm installation found, installing node via nvm..."
+        install_npm
     fi
-    echo "Installing from npm..."
+    echo "Installing global npm packages..."
     local npm_packages=( 'bash-language-server' 'pyright' 'typescript-language-server' 'vscode-langservers-extracted' 'yaml-language-server' 'eslint_d' '@fsouza/prettierd' '@vue/language-server' 'typescript' )
-    local npm_installed
-    npm_installed=$(npm -g list)
     for pkg in "${npm_packages[@]}"; do
-        if [[ "$npm_installed" == *"$pkg"* ]]; then
+        if npm list -g "$pkg" >/dev/null 2>&1; then
             echo "$pkg already installed, skipping"
         else
             runcmd npm i -g "$pkg"
         fi
     done
-
 }
 
 # Catppuccin
@@ -200,16 +169,20 @@ function install_colorscheme {
 }
 
 function install_python {
-    if [[ -z "${HAS_PYENV}" ]]; then
-        echo "No pyenv installation found, exiting"
-        exit 1
+    if ! has_command pyenv; then
+        echo "No pyenv installation found, skipping python setup"
+        return
     fi
 
     echo ""
-    echo "Installing python"
-    runcmd git clone https://github.com/momo-lab/xxenv-latest.git "$(pyenv root)"/plugins/xxenv-latest
+    echo "Installing python via pyenv..."
+    local xxenv_latest_dir
+    xxenv_latest_dir="$(pyenv root)/plugins/xxenv-latest"
+    if [[ ! -d "$xxenv_latest_dir" ]]; then
+        runcmd git clone https://github.com/momo-lab/xxenv-latest.git "$xxenv_latest_dir"
+    fi
     runcmd pyenv latest install --skip-existing
-    if [[ "$PYENV_VERSION" != "" ]]; then
+    if [[ -n "${PYENV_VERSION:-}" ]]; then
         # Also install defined version
         runcmd pyenv install --skip-existing "$PYENV_VERSION"
     fi
@@ -217,20 +190,20 @@ function install_python {
 
 
 function setup_nvim {
-    if [[ -z "${HAS_NVIM}" ]]; then
-        echo "No neovim installation found, installing from brew"
-        brew install neovim > /dev/null 2>&1 || echo "Unable to install neovim, exiting" && exit 1
+    if ! has_command nvim; then
+        echo "Neovim not found, installing via brew..."
+        runcmd brew install neovim
     fi
     mkdir -p "$NVIM_HOME"
     replace_dir "$NVIM_HOME" "$DF_HOME/files/nvim"
 }
 
 function setup_tmux {
-    replace_file "$HOME/.tmux.conf" "$DF_HOME/files/tmux.conf" 
+    replace_file "$HOME/.tmux.conf" "$DF_HOME/files/tmux.conf"
 }
 
 function setup_zsh {
-    if [[ ! $(command -v zsh) ]]; then
+    if ! has_command zsh; then
         echo "Command zsh not found, install it first"
         exit 1
     fi
@@ -240,7 +213,7 @@ function setup_zsh {
         runcmd sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
     fi
 
-    DEFAULT_ZSH_CUSTOM="$HOME/.oh-my-zsh/custom"
+    local DEFAULT_ZSH_CUSTOM="$HOME/.oh-my-zsh/custom"
     mkdir -p "${DEFAULT_ZSH_CUSTOM}/plugins"
     mkdir -p "${DEFAULT_ZSH_CUSTOM}/themes"
 
@@ -252,7 +225,7 @@ function setup_zsh {
     fi
 
     # syntax highlighting
-    local syntax_highlighting="${ZSH_CUSTOM:-$DEFAULT_ZSH_CUSTOM}/plugins/zsh-vi-mode"
+    local syntax_highlighting="${ZSH_CUSTOM:-$DEFAULT_ZSH_CUSTOM}/plugins/zsh-syntax-highlighting"
     if [[ ! -d "${syntax_highlighting}" ]]; then
         runcmd git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "${syntax_highlighting}"
     fi
@@ -262,18 +235,19 @@ function setup_zsh {
     replace_file "$HOME/.aliases" "$DF_HOME/files/aliases"
     replace_file "$HOME/.functions" "$DF_HOME/files/functions"
     # custom theme
-    replace_file "${ZSH_CUSTOM:-$DEFAULT_ZSH_CUSTOM}/themes/quarter-life.zsh-theme" "$DF_HOME/files/quarter-life.zsh-theme" 
-
+    replace_file "${ZSH_CUSTOM:-$DEFAULT_ZSH_CUSTOM}/themes/quarter-life.zsh-theme" "$DF_HOME/files/quarter-life.zsh-theme"
 }
 
 function install_scripts {
     # link files 1 by 1 to avoid overwriting any other custom stuff in there
     local dir="$HOME/bin"
     mkdir -p "$dir"
+    shopt -s nullglob
     for file in "${DF_HOME}"/files/bin/*; do
         fname="$(basename "$file")"
         replace_file "$HOME/bin/$fname" "$DF_HOME/files/bin/$fname"
     done
+    shopt -u nullglob
 }
 
 function setup_kitty {
@@ -320,7 +294,7 @@ function setup_dev {
     setup_zsh
 
     # terminal
-    setup_wez
+    setup_ghostty
 
     runcmd source "$HOME/.zshrc"
 }
