@@ -46,6 +46,15 @@ mapper("n", "<M-j>", "<cmd>cnext<CR>", "Next quickfix")
 mapper("n", "<M-k>", "<cmd>cprev<CR>", "Prev quickfix")
 mapper("n", "<M-c>", "<cmd>cclose<CR>", "Close quickfix")
 mapper("n", "<M-o>", "<cmd>copen<CR>", "Open quickfix")
+-- Snippets
+vim.keymap.set("i", "<C-j>", function()
+    if vim.snippet.active({ direction = 1 }) then return "<Cmd>lua vim.snippet.jump(1)<CR>" end
+    return "<C-j>"
+end, { desc = "Next snippet location", expr = true, silent = true })
+vim.keymap.set("i", "<C-k>", function()
+    if vim.snippet.active({ direction = -1 }) then return "<Cmd>lua vim.snippet.jump(-1)<CR>" end
+    return "<C-k>"
+end, { desc = "Prev snippet location", expr = true, silent = true })
 
 -- Others
 mapper("n", "<Down>", [["pdd"pp]], "Move line down")

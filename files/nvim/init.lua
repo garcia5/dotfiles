@@ -14,31 +14,6 @@ vim.g.loaded_netrwPlugin = 1
 
 -- Plugins
 vim.loader.enable() -- cache lua modules (https://github.com/neovim/neovim/pull/22668)
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.uv.fs_stat(lazypath) then
-    local lazyrepo = "https://github.com/folke/lazy.nvim.git"
-    local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
-    if vim.v.shell_error ~= 0 then
-        vim.api.nvim_echo({
-            { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
-            { out, "WarningMsg" },
-            { "\nPress any key to exit..." },
-        }, true, {})
-        vim.fn.getchar()
-        os.exit(1)
-    end
-end
-vim.opt.rtp:prepend(lazypath)
-require("lazy").setup("ag.plugins", {
-    change_detection = {
-        -- automatically check for config file changes and reload the ui
-        enabled = true,
-        notify = false,
-    },
-    install = {
-        colorscheme = { "catppuccin-mocha" },
-    },
-})
 
 -- Keymaps
 require("ag.mappings")
@@ -83,21 +58,13 @@ vim.opt.tabstop = 4 -- <Tab> appears as 4 spaces
 vim.opt.softtabstop = 4 -- <Tab> behaves as 4 spaces when editing
 vim.opt.breakindent = true -- when `wrap` is on, continue line at same indentation level as previous
 
--- Colors
-vim.cmd("colorscheme catppuccin-mocha")
-if vim.fn.environ()["THEME_MODE"] == "Light" then
-    vim.opt.background = "light"
-else
-    vim.opt.background = "dark"
-end
-
 -- Look and feel
 -- enable new experimental UI (nvim 0.12)
 require("vim._core.ui2").enable({
     enable = true,
     msg = {
-        targets = "msg" -- show outputs in notifiaction window
-    }
+        targets = "msg", -- show outputs in notifiaction window
+    },
 })
 vim.opt.number = true -- line numbers in gutter
 vim.opt.relativenumber = true -- current line number + relative line offsets in gutter
