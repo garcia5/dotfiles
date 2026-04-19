@@ -56,3 +56,5 @@
 [absorb]
 	maxStack = 60
 	oneFixupPerCommit = true
+[url "https://github.com/"]
+	insteadOf = gh: # expand gh:user/plugin -> https://github.com/user/plugin (useful for nvim plugins)
