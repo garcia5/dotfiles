@@ -2,11 +2,26 @@ vim.pack.add({
     { src = "gh:saghen/blink.cmp", version = vim.version.range("v1.*") },
 })
 
-require("blink.cmp").setup({
-    -- disable for special buffers
-    enabled = function() return not vim.tbl_contains({ "snacks_picker_input", "copilot-chat" }, vim.bo.filetype) end,
+vim.api.nvim_create_autocmd("BufEnter", {
+    pattern = { "*gemini-edit*", "*/.gemini/tmp/*", "*claude-*", "*claudecode*" },
+    callback = function() vim.opt_local.iskeyword:append(".") end,
+})
 
-    -- For the most part keep default keymaps, but trigger with <C-h> instead of <C-space>
+require("blink.cmp").setup({
+    -- disable for special buffers, but FORCE enable for ai prompt buffers
+    enabled = function()
+        local bufname = vim.api.nvim_buf_get_name(0)
+        if
+            bufname:match("gemini%-edit")
+            or bufname:match("%.gemini/tmp/")
+            or bufname:match("claude%-")
+            or bufname:match("claudecode")
+        then
+            return "force"
+        end
+        return not vim.tbl_contains({ "snacks_picker_input", "copilot-chat" }, vim.bo.filetype)
+    end,
+
     keymap = {
         preset = "default",
         ["<C-h>"] = { "show", "show_documentation", "hide_documentation" },
@@ -25,7 +40,9 @@ require("blink.cmp").setup({
     },
 
     sources = {
-        default = { "snippets", "lsp", "path", "buffer" },
+        default = function()
+            return { "snippets", "lsp", "path", "buffer", "files" }
+        end,
         per_filetype = { yaml = { "path", "buffer" } },
         min_keyword_length = 0,
         providers = {
@@ -44,7 +61,12 @@ require("blink.cmp").setup({
                 module = "blink.cmp.sources.path",
                 fallbacks = { "buffer" },
             },
-            snippets = {},
+            files = {
+                name = "Files",
+                module = "ag.sources.files",
+                score_offset = 100,
+                async = true,
+            },
         },
     },
 
@@ -53,56 +75,27 @@ require("blink.cmp").setup({
     },
 
     completion = {
-        -- disable automatically adding brackets on accept: really annoying for adding imports
         accept = { auto_brackets = { enabled = false } },
-
-        documentation = {
-            -- show documentation popup by default
-            auto_show = true,
-        },
-
-        -- show ghost text of top completion item
+        documentation = { auto_show = true },
         ghost_text = { enabled = false },
-
-        -- use entire word under cursor for completion, not just the part before the cursor
         keyword = { range = "full" },
-
         list = {
-            -- Limit number of results shown in menu
             max_items = 25,
-            -- allow cycling on either end of the list
-            cycle = {
-                from_bottom = true,
-                from_top = true,
-            },
-            selection = {
-                preselect = false,
-                auto_insert = true,
-            },
+            cycle = { from_bottom = true, from_top = true },
+            selection = { preselect = false, auto_insert = true },
         },
-
         menu = {
-            -- Show completion menu by default
             auto_show = true,
-            -- menu looks more like nvim-cmp
             draw = {
                 columns = { { "label", "label_description", gap = 1 }, { "kind_icon", "kind" } },
             },
         },
     },
 
-    -- enable fuzzy matching
     fuzzy = {
         implementation = "prefer_rust_with_warning",
-        sorts = {
-            "exact",
-            "score",
-            "sort_text",
-        },
+        sorts = { "score", "sort_text", "exact" },
     },
 
-    -- Enable experimental signature help support
-    signature = {
-        enabled = true,
-    },
+    signature = { enabled = true },
 })
