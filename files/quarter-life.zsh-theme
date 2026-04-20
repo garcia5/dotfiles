@@ -8,7 +8,7 @@
 # https://briancarper.net/blog/570/git-info-in-your-zsh-prompt
 
 #use extended color palette if available
-if [[ $TERM = (*256color|*rxvt*|alacritty*) ]]; then
+if [[ $TERM = (*256color|*rxvt*|alacritty*|xterm-ghostty) || $COLORTERM = (truecolor|24bit) ]]; then
     if [[ "$THEME_MODE" == "Light" ]]; then
       turquoise="%{${(%):-"%F{69}"}%}"
       orange="%{${(%):-"%F{202}"}%}"

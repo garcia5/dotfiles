@@ -1,16 +1,10 @@
 #!/bin/zsh
 
 # Usage: start-dev [directory]
-# Sets up a 3-pane tmux dev layout:
+# Sets up a 3-pane dev layout (tmux or native Ghostty splits):
 #   Left: nvim | Top-right: claude --ide | Bottom-right: terminal
 
 main() {
-    # Guard: must be inside tmux
-    if [[ -z "$TMUX" ]]; then
-        echo "start-dev: must be run inside tmux"
-        return 1
-    fi
-
     # Resolve target directory to absolute path
     local dir="${1:-$(pwd)}"
     dir="$(cd "$dir" 2>/dev/null && pwd)" || {
@@ -18,10 +12,48 @@ main() {
         return 1
     }
 
-    create_layout "$dir"
+    if [[ -n "$TMUX" ]]; then
+        create_tmux_layout "$dir"
+    elif [[ "$TERM_PROGRAM" == "ghostty" ]]; then
+        create_ghostty_layout "$dir"
+    else
+        echo "start-dev: must be run inside tmux or Ghostty"
+        return 1
+    fi
 }
 
-create_layout() {
+create_ghostty_layout() {
+    local dir="$1"
+
+    osascript - "$dir" <<'APPLESCRIPT'
+on run argv
+    set dir to item 1 of argv
+
+    tell application "Ghostty"
+        -- Grab the terminal where the script is running
+        set origTerm to focused terminal of selected tab of front window
+
+        -- Surface config sets working directory for new splits
+        set cfg to new surface configuration from {initial working directory: dir}
+
+        -- Split right → top-right pane (claude --ide)
+        set rightTerm to split origTerm direction right with configuration cfg
+
+        -- Split the right pane down → bottom-right pane (terminal)
+        split rightTerm direction down with configuration cfg
+
+        -- Send commands (executes after this script exits)
+        input text "nvim" & linefeed to origTerm
+        input text "claude --ide" & linefeed to rightTerm
+
+        -- Focus the nvim pane
+        focus origTerm
+    end tell
+end run
+APPLESCRIPT
+}
+
+create_tmux_layout() {
     local dir="$1"
 
     local width="$(tmux display-message -p '#{window_width}')"
