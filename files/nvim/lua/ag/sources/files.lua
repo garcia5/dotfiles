@@ -1,68 +1,65 @@
-local source = {}
+local M = {}
 
-function source.new(opts)
-    local self = setmetatable({}, { __index = source })
-    self.opts = opts
-    return self
-end
-
-function source:get_trigger_characters()
-    return { "@" }
-end
-
-function source:enabled()
-    local bufname = vim.api.nvim_buf_get_name(0)
-    local is_prompt = bufname:match("gemini%-edit")
-        or bufname:match("%.gemini/tmp/")
-        or bufname:match("claude%-")
-        or bufname:match("claudecode")
-
-    if not is_prompt then return false end
-
-    local col = vim.api.nvim_win_get_cursor(0)[2]
-    local line = vim.api.nvim_get_current_line()
-    local char_at_cursor = line:sub(col, col)
-
-    -- If we just typed @, check if it's at start of line or preceded by space
-    if char_at_cursor == "@" then
-        if col <= 1 then return true end
-        local char_before_at = line:sub(col - 1, col - 1)
-        return char_before_at:match("%s") ~= nil
+---Native completion function for files triggered by @
+---@param findstart integer 1 to find the start of the word, 0 to return matches
+---@param base string the text to match against
+function M.complete(findstart, base)
+    if findstart == 1 then
+        local line = vim.fn.getline(".")
+        local col = vim.fn.col(".")
+        -- Find the start of the word including the @ sign
+        local res = vim.fn.matchstrpos(line:sub(1, col - 1), [=[@\k*$]=])
+        local start = res[2]
+        if start ~= -1 then return start end
+        return -3
     end
 
-    -- If we just typed ., check if we're currently in the middle of an @ file path
-    if char_at_cursor == "." then
-        local before = line:sub(1, col)
-        return before:match("@%S+$") ~= nil
-    end
-
-    return false
-end
-
-function source:get_completions(ctx, callback)
-    local cmd = { "fd", "--type", "f", "--exclude", ".*", "--color", "never" }
+    -- Get the full list of files
+    local cmd = "fd --type f --exclude '.*' --color never"
     if vim.fn.executable("fd") == 0 then
-        cmd = { "git", "ls-files" }
-        if vim.fn.isdirectory(".git") == 0 then cmd = { "find", ".", "-type", "f", "-not", "-path", "*/.*" } end
+        if vim.fn.isdirectory(".git") == 1 then
+            cmd = "git ls-files"
+        else
+            cmd = "find . -type f -not -path '*/.*' | sed 's|^./||'"
+        end
     end
 
-    vim.system(cmd, { text = true }, function(out)
-        if out.code ~= 0 then
-            callback()
-            return
+    local files = vim.fn.systemlist(cmd)
+    local matches = {}
+    local max_w = vim.o.pummaxwidth - 5 -- leave room for kind icon and padding
+
+    local has_devicons, devicons = pcall(require, "nvim-web-devicons")
+
+    for _, f in ipairs(files) do
+        local word = "@" .. f:gsub("^./", "")
+        local abbr = word
+
+        -- Respect pummaxwidth by truncating the middle of long paths
+        if max_w > 0 and #abbr > max_w then
+            local prefix_len = 15
+            local suffix_len = max_w - prefix_len - 3 -- -3 for "..."
+            if suffix_len > 0 then
+                abbr = abbr:sub(1, prefix_len) .. "..." .. abbr:sub(-suffix_len)
+            else
+                abbr = abbr:sub(1, max_w - 3) .. "..."
+            end
         end
-        local lines = vim.split(out.stdout, "\n", { trimempty = true })
-        local items = {}
-        for _, f in ipairs(lines) do
-            f = f:gsub("^./", "")
-            table.insert(items, {
-                label = "@" .. f,
-                insertText = "@" .. f,
-                kind = vim.lsp.protocol.CompletionItemKind.File,
-            })
+
+        local kind = "f"
+        if has_devicons then
+            local extension = vim.fn.fnamemodify(f, ":e")
+            local icon = devicons.get_icon(f, extension, { default = true })
+            if icon then kind = icon end
         end
-        callback({ is_incomplete = false, items = items })
-    end)
+
+        table.insert(matches, {
+            word = word,
+            abbr = abbr,
+            kind = kind,
+        })
+    end
+
+    return matches
 end
 
-return source
+return M

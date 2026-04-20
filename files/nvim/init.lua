@@ -24,7 +24,6 @@ require("ag.lsp")
 
 -- Behaviors
 vim.opt.belloff = "all" -- NO BELLS!
-vim.opt.completeopt = { "menuone", "noselect", "fuzzy", "noinsert", "popup" } -- ins-completion how I like it
 vim.opt.swapfile = false -- no swap files
 vim.opt.inccommand = "nosplit" -- preview %s commands live as I type
 vim.opt.undofile = true -- keep track of my 'undo's between sessions
@@ -47,6 +46,11 @@ vim.opt.diffopt = { -- smarter diff detection
     "linematch:60", -- re-arrange up to {n} lines in a hunk to place similar lines side-by-side
     "algorithm:histogram", -- https://tiarkrompf.github.io/notes/?/diff-algorithm/
 }
+
+-- Autocomplete
+vim.opt.completeopt = { "menuone", "fuzzy", "noinsert", "noselect", "popup" } -- ins-completion how I like it
+vim.opt.autocomplete = true -- enable native Neovim 0.12 autocompletion
+vim.opt.complete = "o^25,.,w,b,u,t,f" -- limit # completion items per source
 
 -- Indentation
 vim.opt.autoindent = true -- continue indentation to new line
@@ -99,6 +103,8 @@ vim.opt.laststatus = 3 -- single global statusline
 vim.opt.formatoptions = "lrqjn" -- default format options, can be overridden by builtin ftplugins
 vim.opt.winborder = "solid" -- default style for _all_ floating windows
 vim.opt.winblend = 0 -- opaque floating windows
+vim.opt.pumborder = "rounded" -- popup menu border
+vim.opt.pummaxwidth = 60
 
 -- Searching
 vim.opt.wildmenu = true -- tab complete on command line

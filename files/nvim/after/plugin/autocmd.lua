@@ -20,9 +20,7 @@ au("BufEnter", {
     desc = "Auto enter insert mode when entering terminal buffer",
     callback = function()
         local buftype = vim.opt.buftype:get()
-        if buftype == "terminal" then
-            vim.cmd("startinsert")
-        end
+        if buftype == "terminal" then vim.cmd("startinsert") end
     end,
 })
 
@@ -58,4 +56,23 @@ au("BufReadPost", {
     pattern = "kitty.conf",
     desc = "Open kitty with all folds closed",
     callback = function() vim.opt_local.foldlevel = 0 end,
+})
+
+au({ "BufEnter", "BufWinEnter" }, {
+    pattern = { "**/gemini-edit*", "**/.gemini/tmp/*", "**/claude-*", "**/claudecode*" },
+    desc = "Setup AI prompt buffers (iskeyword and custom completion)",
+    callback = function()
+        -- Ensure @ and . are keyword characters
+        local isk = vim.bo.iskeyword
+        if not string.find(isk, "@") then isk = isk .. ",@" end
+        if not string.find(isk, "%.") then isk = isk .. ",." end
+        vim.bo.iskeyword = isk
+
+        -- Prepend our custom file completion source for @ mentions
+        local custom_source = "Fv:lua.require'ag.sources.files'.complete"
+        local cpt = vim.bo.complete
+        if not string.find(cpt, custom_source, 1, true) then
+            vim.bo.complete = custom_source .. "," .. cpt
+        end
+    end,
 })
