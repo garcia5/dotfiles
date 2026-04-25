@@ -4,15 +4,6 @@ source <(fzf --zsh)
 export FZF_DEFAULT_COMMAND='fd -tf -H -E .git'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
-# "smart" layout -> vertical on small terminals, horiz on wide ones
-TRANSFORMER='
-    if [[ ${FZF_COLS:-$COLUMNS} -lt 120 ]]; then
-        echo "+change-preview-window(50%,down)"
-    else
-        echo "+change-preview-window(right)"
-    fi
-'
-
 border_style="rounded"
 
 # Global opts
@@ -29,9 +20,9 @@ export FZF_DEFAULT_OPTS="--height 90% \
     --header-border=$border_style \
     --input-border=$border_style \
     --preview-label='Preview (<C-h> to toggle)' \
-    --bind 'resize,start:transform:$TRANSFORMER' \
     --bind 'ctrl-b:preview-half-page-up,ctrl-f:preview-half-page-down' \
     --bind 'ctrl-h:toggle-preview' \
+    --preview-window '<80(down)' \
     --bind 'ctrl-y:jump-accept'"
 
 export FZF_CTRL_R_OPTS="--scheme history \
@@ -40,7 +31,12 @@ export FZF_CTRL_R_OPTS="--scheme history \
     --header 'ctrl-y: Copy command to clipboard'"
 
 # Default command for previewing text files
-export FZF_FILE_PREVIEW="bat --color=always --style=numbers,changes {..}"
+export FZF_FILE_PREVIEW="bat --color=always --style=full {..}"
+
+# Default preview window opts for text files
+# - sticky 4 rows at top (bat --style=full)
+# - move preview window to bottom when <80 chars wide
+export FZF_FILE_PREVIEW_WINDOW="~4,<80(down)"
 
 # Default command for previewing directories
 export FZF_DIR_PREVIEW="[ -d {..} ] && eza -T -L 2 {..} || echo '{..} is not a directory'"

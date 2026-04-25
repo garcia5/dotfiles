@@ -94,6 +94,7 @@ vs() {
         --ghost 'Search Files' \
         --tmux 'center,60%' \
         --preview "$FZF_FILE_PREVIEW" \
+        --preview-window "$FZF_FILE_PREVIEW_WINDOW" \
         --header 'enter: open in \$EDITOR' \
         --bind 'enter:become(${EDITOR:-nvim} {+})'
 }
@@ -103,7 +104,8 @@ fzf-ctrl-t() {
         --scheme path \
         --print0 \
         --ghost 'Search Files' \
-        --preview "$FZF_FILE_PREVIEW" |
+        --preview "$FZF_FILE_PREVIEW" \
+        --preview-window "$FZF_FILE_PREVIEW_WINDOW" |
     xargs -0 echo
 }
 
@@ -119,7 +121,8 @@ fzf-js-test() {
         --bind "ctrl-f:change-ghost(Search All Files)+reload($FZF_CTRL_T_COMMAND)" \
         --bind "ctrl-g:change-ghost(Search Test Files)+reload($cmd)" \
         --ghost "Search Test Files" \
-        --preview "${FZF_FILE_PREVIEW}" |
+        --preview "${FZF_FILE_PREVIEW}" \
+        --preview-window "$FZF_FILE_PREVIEW_WINDOW" |
     xargs -0 echo
 }
 
@@ -134,7 +137,9 @@ fzf-pytest() {
         --bind "ctrl-f:change-ghost(Search All Files)+reload($FZF_CTRL_T_COMMAND)" \
         --bind "ctrl-g:change-ghost(Search Test Files)+reload($cmd)" \
         --ghost "Search Test Files" \
-        --preview "${FZF_FILE_PREVIEW}" | xargs -0 echo
+        --preview "${FZF_FILE_PREVIEW}" \
+        --preview-window "$FZF_FILE_PREVIEW_WINDOW" |
+    xargs -0 echo
 }
 
 fzf-python-module() {
@@ -149,7 +154,8 @@ fzf-python-module() {
         --bind "ctrl-f:change-ghost(Search All Files)+reload($FZF_CTRL_T_COMMAND)" \
         --bind "ctrl-g:change-ghost(Search Python Files)+reload($cmd)" \
         --ghost "Search Python Files" \
-        --preview "bat --color=always {}" |
+        --preview "${FZF_FILE_PREVIEW}" \
+        --preview-window "$FZF_FILE_PREVIEW_WINDOW" |
     sed 's$/$.$g' |
     sed 's/.py$//' |
     xargs -0 echo
