@@ -1,17 +1,14 @@
 vim.pack.add({
     "gh:tpope/vim-fugitive",
-    "gh:tpope/vim-rhubarb",
     "gh:lewis6991/gitsigns.nvim",
     "gh:sindrets/diffview.nvim",
 })
 
 -- Fugitive
 local ent_url = vim.fn.environ()["GH_ENTERPRISE_URL"]
-if ent_url ~= nil then
-    vim.g.github_enterprise_urls = {
-        [ent_url] = "https://" .. ent_url,
-    }
-end
+if ent_url ~= nil then vim.g.github_enterprise_urls = {
+    [ent_url] = "https://" .. ent_url,
+} end
 vim.api.nvim_create_user_command("Gwipe", function(_)
     vim.cmd("Git reset --hard")
     vim.cmd("Git clean --force -df")

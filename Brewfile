@@ -1,6 +1,3 @@
-# Homebrew dependencies
-tap "FelixKratz/formulae"
-
 # CLI Tools
 brew "gcc"
 brew "fzf"
@@ -25,6 +22,7 @@ brew "shellcheck"
 brew "gh"
 brew "tree-sitter"
 brew "tree-sitter-cli"
-
-# System / Desktop Tools
-brew "sketchybar"
+brew "zsh-syntax-highlighting"
+brew "zsh-vi-mode"
+brew "jq"
+brew "rsync"
