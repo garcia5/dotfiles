@@ -279,8 +279,7 @@ fzf-ls() {
         --header "ctrl-d: Directories / ctrl-f: Files" \
         --bind "ctrl-d:change-ghost(Search Directories)+reload(${dir_cmd})+change-preview(${FZF_DIR_PREVIEW})" \
         --bind "ctrl-f:change-ghost(Search Files)+reload(${file_cmd})+change-preview(${FZF_FILE_PREVIEW})" \
-        --preview "${FZF_FILE_PREVIEW}" \
-        --list-label "Search Files" | xargs -0 echo
+        --preview "${FZF_FILE_PREVIEW}" | xargs -0 echo
 }
 fzf-ls-widget() {
     result=$(fzf-ls)

@@ -15,14 +15,18 @@ export FZF_DEFAULT_OPTS="--height 90% \
     --multi \
     --pointer='' \
     --marker='' \
+    --marker-multi-line='╻┃╹' \
     --ghost='Search' \
     --list-border=$border_style \
-    --header-border=$border_style \
+    --header-border=inline \
+    --footer-border=inline \
+    --bind 'load:transform-footer:echo \$FZF_TOTAL_COUNT results' \
+    --header-lines-border=inline \
     --input-border=$border_style \
     --preview-label='Preview (<C-h> to toggle)' \
+    --preview-window '<80(down)' \
     --bind 'ctrl-b:preview-half-page-up,ctrl-f:preview-half-page-down' \
     --bind 'ctrl-h:toggle-preview' \
-    --preview-window '<80(down)' \
     --bind 'ctrl-y:jump-accept'"
 
 export FZF_CTRL_R_OPTS="--scheme history \
@@ -31,7 +35,7 @@ export FZF_CTRL_R_OPTS="--scheme history \
     --header 'ctrl-y: Copy command to clipboard'"
 
 # Default command for previewing text files
-export FZF_FILE_PREVIEW="bat --color=always --style=full {..}"
+export FZF_FILE_PREVIEW='bat --color=always --terminal-width=$FZF_PREVIEW_COLUMNS --style=full {..}'
 
 # Default preview window opts for text files
 # - sticky 4 rows at top (bat --style=full)
