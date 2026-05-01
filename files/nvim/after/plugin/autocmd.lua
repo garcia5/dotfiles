@@ -59,20 +59,21 @@ au("BufReadPost", {
 })
 
 au({ "BufEnter", "BufWinEnter" }, {
-    pattern = { "**/gemini-edit*", "**/.gemini/tmp/*", "**/claude-*", "**/claudecode*" },
+    pattern = { "**/gemini-edit*", "**/.gemini/tmp/*", "**/claude-prompt-*", "**/claudecode*" },
     desc = "Setup AI prompt buffers (iskeyword and custom completion)",
     callback = function()
+        vim.bo.filetype = "markdown"
+
         -- Ensure @ and . are keyword characters
         local isk = vim.bo.iskeyword
         if not string.find(isk, "@") then isk = isk .. ",@" end
         if not string.find(isk, "%.") then isk = isk .. ",." end
         vim.bo.iskeyword = isk
 
-        -- Prepend our custom file completion source for @ mentions
-        local custom_source = "Fv:lua.require'ag.sources.files'.complete"
-        local cpt = vim.bo.complete
-        if not string.find(cpt, custom_source, 1, true) then
-            vim.bo.complete = custom_source .. "," .. cpt
-        end
+        -- Setup FZF completion for @ mentions
+        vim.keymap.set("i", "@", function()
+            vim.api.nvim_put({ "@" }, "c", false, true)
+            require("ag.sources.files").fzf_complete()
+        end, { silent = true, buffer = true, desc = "FZF file completion for @ mentions" })
     end,
 })

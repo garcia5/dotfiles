@@ -26,7 +26,7 @@ function M.complete(findstart, base)
 
     local files = vim.fn.systemlist(cmd)
     local matches = {}
-    local max_w = vim.o.pummaxwidth - 5 -- leave room for kind icon and padding
+    local max_w = (vim.o.pummaxwidth > 0 and vim.o.pummaxwidth or 60) - 5
 
     local has_devicons, devicons = pcall(require, "nvim-web-devicons")
 
@@ -60,6 +60,29 @@ function M.complete(findstart, base)
     end
 
     return matches
+end
+
+---FZF-lua based completion for files triggered by @
+---Positions the picker as a "dropdown" relative to the cursor.
+function M.fzf_complete()
+    local fzf = require("fzf-lua")
+
+    fzf.complete_path({
+        word_pattern = [=[[^%s"'@]*]=],
+        winopts = {
+            relative = "cursor",
+            row = 1, -- Directly below the cursor
+            col = 0, -- Aligned with the @
+            height = 10,
+            width = vim.opt.pummaxwidth:get(),
+            preview = { hidden = true },
+        },
+        -- Minimal look
+        fzf_opts = {
+            ["--multi"] = false,
+            ["--ghost"] = "Path"
+        },
+    })
 end
 
 return M
