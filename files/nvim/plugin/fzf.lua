@@ -11,6 +11,11 @@ require("fzf-lua").setup({
         ["--pointer"] = "",
         ["--marker"] = "",
         ["--ghost"] = "Search",
+        ["--header-border"] = "inline",
+        ["--footer-border"] = "inline",
+        ["--list-border"] = "rounded",
+        ["--input-border"] = "rounded",
+        ["--header-lines-border"] = "inline",
     },
     ui_select = {
         winopts = {
@@ -32,3 +37,4 @@ vim.keymap.set("n", "<Leader>fb", "<cmd>FzfLua buffers<CR>", { desc = "Fuzzy fin
 vim.keymap.set("n", "<Leader>gg", "<cmd>FzfLua live_grep<CR>", { desc = "Live grep" })
 vim.keymap.set("n", "<Leader>fl", "<cmd>FzfLua lines<CR>", { desc = "Fuzzy find lines" })
 vim.keymap.set("n", "<Leader>R", "<cmd>FzfLua resume<CR>", { desc = "Resume last fuzzy picker" })
+vim.keymap.set("n", "<Leader>G", "<cmd>FzfLua grep_cword<CR>", { desc = "Grep word under cursor" })

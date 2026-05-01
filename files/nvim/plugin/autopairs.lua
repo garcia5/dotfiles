@@ -9,10 +9,15 @@ require("nvim-autopairs").setup({
 -- Custom <CR> that dismisses the completion menu instead of accepting a match
 vim.keymap.set("i", "<CR>", function()
     if vim.fn.pumvisible() ~= 0 then
-        return vim.api.nvim_replace_termcodes("<C-e>", true, false, true) .. require("nvim-autopairs").autopairs_cr()
+        -- Dismiss popup first, then feed the autopairs CR
+        local dismiss = vim.api.nvim_replace_termcodes("<C-e>", true, false, true)
+        local cr = require("nvim-autopairs").autopairs_cr()
+        -- autopairs_cr() already returns replaced termcodes, so concat directly
+        vim.api.nvim_feedkeys(dismiss .. cr, "n", false)
+    else
+        vim.api.nvim_feedkeys(require("nvim-autopairs").autopairs_cr(), "n", false)
     end
-    return require("nvim-autopairs").autopairs_cr()
-end, { expr = true, noremap = true, silent = true, desc = "CR: dismiss completion + autopairs" })
+end, { noremap = true, silent = true, desc = "CR: dismiss completion + autopairs" })
 
 require("nvim-ts-autotag").setup({
     opts = {
