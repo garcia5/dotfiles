@@ -67,7 +67,10 @@ vim.opt.breakindent = true -- when `wrap` is on, continue line at same indentati
 require("vim._core.ui2").enable({
     enable = true,
     msg = {
-        targets = "msg", -- show outputs in notifiaction window
+        targets = {
+            ["*"] = "msg",
+            shell_err = "pager", -- pre-commit errors in pager for full visibility
+        },
     },
 })
 vim.opt.number = true -- line numbers in gutter
