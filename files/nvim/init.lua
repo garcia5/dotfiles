@@ -68,8 +68,43 @@ require("vim._core.ui2").enable({
     enable = true,
     msg = {
         targets = {
-            ["*"] = "msg",
-            shell_err = "pager", -- pre-commit errors in pager for full visibility
+            -- message types from :h ui-messages
+            [""] = "msg",
+            empty = "cmd",
+            bufwrite = "msg",
+            confirm = "cmd",
+            emsg = "pager",
+            echo = "msg",
+            echomsg = "msg",
+            echoerr = "pager",
+            completion = "cmd",
+            list_cmd = "pager",
+            lua_error = "pager",
+            lua_print = "msg",
+            progress = "pager",
+            rpc_error = "pager",
+            quickfix = "msg",
+            search_cmd = "cmd",
+            search_count = "cmd",
+            shell_cmd = "pager",
+            shell_err = "pager",
+            shell_out = "pager",
+            shell_ret = "msg",
+            typed_cmd = "cmd",
+            undo = "msg",
+            verbose = "pager",
+            wildlist = "cmd",
+            wmsg = "msg",
+        },
+        dialog = {
+            height = 0.5,
+        },
+        msg = {
+            height = 0.3,
+            timeout = 2000,
+        },
+        pager = {
+            height = 0.5,
         },
     },
 })
