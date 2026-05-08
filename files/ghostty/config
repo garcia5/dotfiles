@@ -35,6 +35,8 @@ window-theme              = system
 # always read opt key as alt
 macos-option-as-alt = true
 
+keybind = super+w=ignore
+
 # tabs
 keybind = ctrl+space>c=new_tab
 keybind = ctrl+space>n=next_tab
