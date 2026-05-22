@@ -63,6 +63,7 @@ au({ "BufEnter", "BufWinEnter" }, {
     desc = "Setup AI prompt buffers (iskeyword and custom completion)",
     callback = function()
         vim.bo.filetype = "markdown"
+        vim.bo.autocomplete = false
 
         -- Ensure @ and . are keyword characters
         local isk = vim.bo.iskeyword
