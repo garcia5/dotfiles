@@ -63,24 +63,22 @@ function M.complete(findstart, base)
 end
 
 ---FZF-lua based completion for files triggered by @
----Positions the picker as a "dropdown" relative to the cursor.
+---Positions the picker as a at the bottom of the window using ivy preset theme
 function M.fzf_complete()
     local fzf = require("fzf-lua")
 
     fzf.complete_path({
+        "ivy",
         word_pattern = [=[[^%s"'@]*]=],
         winopts = {
-            relative = "cursor",
-            row = 1, -- Directly below the cursor
-            col = 0, -- Aligned with the @
-            height = 10,
-            width = vim.opt.pummaxwidth:get(),
+            height = 0.40,
+            fullscreen = false,
             preview = { hidden = true },
         },
         -- Minimal look
         fzf_opts = {
             ["--multi"] = false,
-            ["--ghost"] = "Path"
+            ["--ghost"] = "Path",
         },
     })
 end
