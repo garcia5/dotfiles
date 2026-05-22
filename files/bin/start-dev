@@ -43,7 +43,7 @@ on run argv
         split rightTerm direction down with configuration cfg
 
         -- Send commands (executes after this script exits)
-        input text "nvim" & linefeed to origTerm
+        input text "cd " & quoted form of dir & linefeed & "nvim" & linefeed to origTerm
         input text "claude --ide" & linefeed to rightTerm
 
         -- Focus the nvim pane
