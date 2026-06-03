@@ -50,7 +50,7 @@ vim.opt.diffopt = { -- smarter diff detection
 -- Autocomplete
 vim.opt.completeopt = { "menuone", "fuzzy", "noinsert", "noselect", "popup" } -- ins-completion how I like it
 vim.opt.autocomplete = true -- enable native Neovim 0.12 autocompletion
-vim.opt.complete = "o^25,.,w,b,u,t,f,Fv:lua.require'ag.sources.files'.complete^25" -- limit # completion items per source
+vim.opt.complete = "o^25,.,w,b,u,t,f" -- limit # completion items per source
 
 -- Indentation
 vim.opt.autoindent = true -- continue indentation to new line

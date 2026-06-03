@@ -57,7 +57,14 @@ vim.keymap.set("i", "<C-k>", function()
     return "<C-k>"
 end, { desc = "Prev snippet location", expr = true, silent = true })
 vim.keymap.set("i", "<C-y>", function()
-    if vim.fn.pumvisible() ~= 0 then return "<C-n><C-y>" end
+    local info = vim.fn.complete_info({ "pum_visible", "selected" })
+    local pum_visible = info.pum_visible
+    local selected = info.selected
+
+    -- popup menu open _and_ no item selected -> select first item
+    if pum_visible and selected == -1 then return "<C-n><C-y>" end
+
+    -- else, fallback
     return "<C-y>"
 end, { desc = "Accept first option without navigating to it", expr = true, silent = true })
 
