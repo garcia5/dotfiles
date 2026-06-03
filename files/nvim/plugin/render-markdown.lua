@@ -4,6 +4,20 @@ vim.pack.add({
 })
 
 require("render-markdown").setup({
+    -- disable for prompt buffers
+    ignore = function(bufnr)
+        local name = vim.api.nvim_buf_get_name(bufnr)
+        local disable_bufs = {
+            "gemini%-edit",
+            "%.gemini/tmp/",
+            "/claude%-prompt%-",
+            "/claudecode",
+        }
+
+        return vim.iter(disable_bufs):any(function(p)
+            return p:match(name) ~= nil
+        end)
+    end,
     file_types = {
         "markdown",
         "copilot-chat",
