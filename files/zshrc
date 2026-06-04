@@ -188,3 +188,7 @@ fi
 # flutter
 export PATH="$HOME/devel/flutter/bin:$PATH"
 # end PATH
+
+
+# Added by Antigravity CLI installer
+export PATH="/Users/alexander/.local/bin:$PATH"
