@@ -76,5 +76,9 @@ au({ "BufEnter", "BufWinEnter" }, {
             vim.api.nvim_put({ "@" }, "c", false, true)
             require("ag.sources.files").fzf_complete()
         end, { silent = true, buffer = true, desc = "FZF file completion for @ mentions" })
+
+        -- Disable markdown formatting
+        local success, _ = pcall(require, "render-markdown")
+        if success then vim.cmd("RenderMarkdown disable") end
     end,
 })
