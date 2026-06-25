@@ -24,23 +24,20 @@ main() {
 
 create_ghostty_layout() {
     local dir="$1"
-    local work_dir="${HOME}/work"
 
-    osascript - "$dir" "$work_dir" <<'APPLESCRIPT'
+    osascript - "$dir" <<'APPLESCRIPT'
 on run argv
     set dir to item 1 of argv
-    set workDir to item 2 of argv
 
     tell application "Ghostty"
         -- Grab the terminal where the script is running
         set origTerm to focused terminal of selected tab of front window
 
         -- Surface configs set working directory for new splits
-        set cfgWork to new surface configuration from {initial working directory: workDir}
         set cfgDir to new surface configuration from {initial working directory: dir}
 
-        -- Split right → top-right pane (claude --ide), starting in ~/work
-        set rightTerm to split origTerm direction right with configuration cfgWork
+        -- Split right → top-right pane (claude --ide), starting in target dir
+        set rightTerm to split origTerm direction right with configuration cfgDir
 
         -- Split the right pane down → bottom-right pane (terminal), in target dir
         split rightTerm direction down with configuration cfgDir
