@@ -1,11 +1,62 @@
 #!/bin/zsh
 
 function main() {
-    local deleted
-    deleted="$(git branch -vv | grep ': gone]' | awk '{print $1 }')"
+    local default_branch
+    default_branch="$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@')"
+    default_branch="${default_branch:-main}"
 
-    echo "${BLUE}Branches deleted upstream:${NC}"
-    echo "$deleted"
+    local deleted
+    deleted="$(git branch -vv | grep ': gone]' | awk '{if ($1 ~ /^[*+]$/) print $2; else print $1}')"
+
+    local merged
+    merged="$(git branch --merged "origin/${default_branch}" | grep -v '^\*' | grep -v '^+' | grep -v "^[[:space:]]*${default_branch}$" | sed 's/^[[:space:]]*//')"
+
+    local to_delete
+    to_delete="$(printf '%s\n%s\n' "$deleted" "$merged" | sort -u | grep -v '^[[:space:]]*$')"
+
+    # Split branches into those checked out in a worktree vs those that aren't
+    local worktree_branches
+    worktree_branches="$(git worktree list --porcelain | awk '/^branch / {sub("refs/heads/", "", $2); print $2}')"
+
+    local safe_to_delete
+    safe_to_delete="$(comm -23 <(echo "$to_delete" | sort) <(echo "$worktree_branches" | sort))"
+
+    local worktrees_to_remove
+    worktrees_to_remove="$(comm -12 <(echo "$to_delete" | sort) <(echo "$worktree_branches" | sort))"
+
+    # Resolve worktree branch names → worktree paths
+    local stale_worktree_dirs=""
+    if [ -n "$worktrees_to_remove" ]; then
+        while IFS= read -r branch; do
+            local wt_path
+            wt_path="$(git worktree list --porcelain | awk -v b="refs/heads/$branch" '
+                /^worktree / { path=$2 }
+                /^branch / && $2==b { print path }
+            ')"
+            [ -n "$wt_path" ] && stale_worktree_dirs="${stale_worktree_dirs}${wt_path}\n"
+        done <<< "$worktrees_to_remove"
+        stale_worktree_dirs="$(printf "$stale_worktree_dirs" | grep -v '^[[:space:]]*$')"
+    fi
+
+    if [ -z "$safe_to_delete" ] && [ -z "$stale_worktree_dirs" ]; then
+        echo "Nothing to clean up."
+        return
+    fi
+
+    if [ -n "$deleted" ]; then
+        echo "${BLUE}Deleted upstream:${NC}"
+        echo "$deleted"
+    fi
+
+    if [ -n "$merged" ]; then
+        echo "${BLUE}Merged into ${default_branch}:${NC}"
+        echo "$merged"
+    fi
+
+    if [ -n "$stale_worktree_dirs" ]; then
+        echo "${BLUE}Worktrees to remove (branch + directory):${NC}"
+        echo "$stale_worktree_dirs"
+    fi
 
     local input
     vared -p "Cleanup all? [Y/n] " -c input
@@ -14,7 +65,23 @@ function main() {
         return
     fi
 
-    echo "$deleted" | xargs git branch -D
+    if [ -n "$safe_to_delete" ]; then
+        while IFS= read -r branch; do
+            git branch -D "$branch"
+        done <<< "$safe_to_delete"
+    fi
+
+    if [ -n "$stale_worktree_dirs" ]; then
+        while IFS= read -r wt_path; do
+            local wt_branch
+            wt_branch="$(git worktree list --porcelain | awk -v p="$wt_path" '
+                /^worktree / { path=$2 }
+                /^branch / && path==p { sub("refs/heads/", "", $2); print $2 }
+            ')"
+            git worktree remove --force "$wt_path"
+            [ -n "$wt_branch" ] && git branch -D "$wt_branch"
+        done <<< "$stale_worktree_dirs"
+    fi
 }
 
 main
