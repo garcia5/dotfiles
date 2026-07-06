@@ -73,11 +73,6 @@ mapper("n", "<Down>", [["pdd"pp]], "Move line down")
 mapper("n", "<Up>", [["pddk"pP]], "Move line up")
 mapper("n", "<C-e>", "3<C-e>") -- scroll down more quickly
 mapper("n", "<C-y>", "3<C-y>") -- scroll up more quickly
-mapper("n", "<Leader>bn", ":bn<CR>", "Next buffer")
-mapper("n", "<Leader>bp", ":bp<CR>", "Prev buffer")
 mapper("n", "<Leader>bd", ":bp | bd #<CR>", "Delete current buffer")
-mapper("n", "+", "=", "Format")
 mapper("i", "<M-r>", [[<Esc>:set paste<CR>i<C-r>"<Esc>:set nopaste<CR>a]], "'set paste' automatically")
-mapper("n", "<Leader>tn", "<cmd>tabn<CR>", "Next tab")
-mapper("n", "<Leader>tp", "<cmd>tabp<CR>", "Prev tab")
 mapper("n", "<Leader>tq", "<cmd>tabcl<CR>", "Close tab")

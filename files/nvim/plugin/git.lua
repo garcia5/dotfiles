@@ -5,6 +5,7 @@ vim.pack.add({
 })
 
 -- Fugitive
+vim.pack.add({ "gh:tpope/vim-fugitive" })
 local ent_url = vim.fn.environ()["GH_ENTERPRISE_URL"]
 if ent_url ~= nil then vim.g.github_enterprise_urls = {
     [ent_url] = "https://" .. ent_url,
@@ -18,6 +19,7 @@ vim.keymap.set("n", "<Leader>gs", ":tab Git<CR>", { desc = "Git status in new ta
 vim.keymap.set("n", "<Leader>gx", ":GBrowse<CR>", { desc = "Open current file in GitHub" })
 
 -- Gitsigns
+vim.pack.add({ "gh:lewis6991/gitsigns.nvim" })
 require("gitsigns").setup({
     preview_config = {
         style = "minimal",
@@ -34,6 +36,7 @@ require("gitsigns").setup({
     },
     on_attach = function(bufnr)
         local keymap_opts = { silent = true, noremap = true, buffer = bufnr }
+        local nav_opts = { wrap = true, navigation_message = true, foldopen = false, preview = false }
         vim.keymap.set(
             "n",
             "=",
@@ -54,24 +57,14 @@ require("gitsigns").setup({
         )
         vim.keymap.set(
             "n",
-            "<Leader>gn",
-            function()
-                require("gitsigns").nav_hunk(
-                    "next",
-                    { wrap = true, navigation_message = true, foldopen = false, preview = false }
-                )
-            end,
+            "]g",
+            function() require("gitsigns").nav_hunk("next", nav_opts) end,
             vim.tbl_extend("force", keymap_opts, { desc = "Gitsigns goto next" })
         )
         vim.keymap.set(
             "n",
-            "<Leader>gp",
-            function()
-                require("gitsigns").nav_hunk(
-                    "prev",
-                    { wrap = true, navigation_message = true, foldopen = false, preview = false }
-                )
-            end,
+            "[g",
+            function() require("gitsigns").nav_hunk("prev", nav_opts) end,
             vim.tbl_extend("force", keymap_opts, { desc = "Gitsigns goto prev" })
         )
         vim.keymap.set(
