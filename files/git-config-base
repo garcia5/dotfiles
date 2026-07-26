@@ -49,18 +49,10 @@
 # diffs + conflicts
 [merge]
 	conflictstyle = zdiff3
-	tool = codediff
-[mergetool "codediff"]
-	cmd = nvim \"$MERGED\" -c \"CodeDiff merge \\\"$MERGED\\\"\"
 [diff]
 	colorMoved = default
 	algorithm = histogram
 	renames = true
-	tool = codediff
-[difftool]
-	prompt = false
-[difftool "codediff"]
-	cmd = nvim \"$LOCAL\" \"$REMOTE\" +\"CodeDiff file $LOCAL $REMOTE\"
 
 # "plugins"
 [delta]

@@ -1,7 +1,7 @@
 vim.pack.add({
     "gh:tpope/vim-fugitive",
     "gh:lewis6991/gitsigns.nvim",
-    "gh:esmuellert/codediff.nvim",
+    "gh:dlyongemallo/diffview-plus.nvim",
 })
 
 -- Fugitive
@@ -84,12 +84,17 @@ require("gitsigns").setup({
 })
 
 -- Diffview
-require("codediff").setup({
-    keymaps = {
-        view = {
-            next_file = "<Tab>",
-            prev_file = "<S-Tab>",
+require("diffview").setup({
+    default_args = {
+        DiffviewOpen = { "--imply-local" },
+    },
+    enhanced_diff_hl = true,
+    use_icons = true,
+    persist_selections = { enabled = true },
+    view = {
+        merge_tool = {
+            layout = "diff3_mixed",
         },
     },
 })
-vim.keymap.set("n", "<Leader>gd", "<cmd>CodeDiff<CR>", { desc = "Open changed files" })
+vim.keymap.set("n", "<Leader>gd", "<cmd>DiffviewOpen<CR>", { desc = "Open changed files" })
