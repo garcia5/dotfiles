@@ -5,6 +5,7 @@ export FZF_DEFAULT_COMMAND='fd -tf -H -E .git'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 border_style="rounded"
+show_output='echo "Copied $( [ $FZF_SELECT_COUNT -gt 1 ] && echo $FZF_SELECT_COUNT items || echo 1 item )"'
 
 # Global opts
 export FZF_DEFAULT_OPTS="--height 90% \
@@ -27,7 +28,8 @@ export FZF_DEFAULT_OPTS="--height 90% \
     --preview-window '<80(down)' \
     --bind 'ctrl-b:preview-half-page-up,ctrl-f:preview-half-page-down' \
     --bind 'ctrl-h:toggle-preview' \
-    --bind 'ctrl-y:jump-accept'"
+    --bind 'ctrl-y:execute-silent(echo -n {+} | pbcopy)+transform-header($show_output)' \
+    --bind 'ctrl-a:jump-accept'"
 
 export FZF_CTRL_R_OPTS="--scheme history \
     --ghost 'Search Command History'
