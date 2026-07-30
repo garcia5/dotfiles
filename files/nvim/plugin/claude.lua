@@ -9,10 +9,6 @@ if vim.fn.executable("claude") == 1 then
             layout = "unified",
             open_in_new_tab = true,
         },
-        keys = {
-            { "<leader>ab", "<cmd>ClaudeCodeAdd %<cr>", { desc = "Add current buffer to claude", mode = "n" } },
-            { "<leader>as", "<cmd>ClaudeCodeSend<cr>", { desc = "Send selection to claude", mode = "v" } },
-        },
     })
 
     vim.api.nvim_create_autocmd("FileType", {
@@ -21,4 +17,16 @@ if vim.fn.executable("claude") == 1 then
             vim.keymap.set("n", "<leader>as", "<cmd>ClaudeCodeTreeAdd<cr>", { desc = "Add file", buffer = true })
         end,
     })
+    vim.keymap.set(
+        "n",
+        "<leader>ab",
+        "<cmd>ClaudeCodeAdd %<CR>",
+        { desc = "Send current buffer name to claude", silent = true }
+    )
+    vim.keymap.set(
+        "v",
+        "<leader>as",
+        "<cmd>ClaudeCodeSend<CR>",
+        { desc = "Send current selection to claude", silent = true }
+    )
 end

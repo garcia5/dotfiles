@@ -35,6 +35,10 @@ mapper("n", "<C-j>", "<C-w>j", "Window down")
 mapper("n", "<C-h>", "<C-w>h", "Window left")
 mapper("n", "<C-k>", "<C-w>k", "Window up")
 mapper("n", "<C-l>", "<C-w>l", "Window right")
+-- Between tabs
+mapper("n", "<Leader>tn", "<cmd>tabn<CR>", "Next tab")
+mapper("n", "<Leader>tp", "<cmd>tabp<CR>", "Prev tab")
+mapper("n", "<Leader>tq", "<cmd>tabcl<CR>", "Close tab")
 -- Term
 mapper("t", "<Esc><Esc>", [[<C-\><C-n>]], "Terminal esc")
 mapper("t", "<C-j>", [[<C-\><C-n><C-w>j]], "Window down")
@@ -75,4 +79,3 @@ mapper("n", "<C-e>", "3<C-e>") -- scroll down more quickly
 mapper("n", "<C-y>", "3<C-y>") -- scroll up more quickly
 mapper("n", "<Leader>bd", ":bp | bd #<CR>", "Delete current buffer")
 mapper("i", "<M-r>", [[<Esc>:set paste<CR>i<C-r>"<Esc>:set nopaste<CR>a]], "'set paste' automatically")
-mapper("n", "<Leader>tq", "<cmd>tabcl<CR>", "Close tab")
