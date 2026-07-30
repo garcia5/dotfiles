@@ -37,6 +37,8 @@ require("nvim-tree").setup({
         special_files = {
             "Makefile",
             "README.md",
+            "CLAUDE.md",
+            "AGENTS.md",
             "CONTRIBUTING.md",
             "package.json",
             "pyproject.toml",
