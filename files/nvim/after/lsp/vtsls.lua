@@ -107,6 +107,41 @@ return {
             },
         })
 
+        -- vtsls sets textEdit.range.start to the trigger character column (e.g. "."), not the
+        -- word start. vim.lsp.completion's adjust_start_col uses that as server_start_boundary,
+        -- making the filter prefix include the dot (menu closes on next keystroke) and replacing
+        -- the dot on accept. vim.lsp.completion calls client:request() with an inline callback
+        -- that bypasses client.handlers, so we wrap client.request to patch items first.
+        if not vim.g._vtsls_completion_patched then
+            vim.g._vtsls_completion_patched = true
+            local orig_request = client.request
+            client.request = function(self, method, params, callback, bufnr_arg)
+                if method == "textDocument/completion" then
+                    local wrapped = function(err, result, ctx, config)
+                        if result then
+                            local items = result.items or result
+                            local cursor = vim.api.nvim_win_get_cursor(0)
+                            local lnum = cursor[1] - 1
+                            local line = vim.api.nvim_buf_get_lines(ctx.bufnr, lnum, lnum + 1, false)[1] or ""
+                            for _, item in ipairs(items) do
+                                local te = item.textEdit
+                                if te then
+                                    local start = (te.range or te.insert or {}).start
+                                    if start and start.line == lnum then
+                                        local ch = line:sub(start.character + 1, start.character + 1)
+                                        if ch == "." or ch == ":" then start.character = start.character + 1 end
+                                    end
+                                end
+                            end
+                        end
+                        return callback(err, result, ctx, config)
+                    end
+                    return orig_request(self, method, params, wrapped, bufnr_arg)
+                end
+                return orig_request(self, method, params, callback, bufnr_arg)
+            end
+        end
+
         vim.keymap.set("n", "<Leader>ii", function()
             vim.cmd("VtsExec sort_imports")
             vim.cmd("VtsExec organize_imports")

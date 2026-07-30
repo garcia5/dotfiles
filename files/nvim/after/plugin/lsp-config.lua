@@ -21,8 +21,10 @@ vim.api.nvim_create_autocmd("LspNotify", {
     callback = function(args)
         local bufnr = args.buf
         local winnr = vim.fn.bufwinid(bufnr)
-        if vim.wo[winnr].diff then return end
-        if args.data.method == "textDocument/didOpen" then vim.lsp.foldclose("imports", winnr) end
+        if winnr ~= -1 then
+            if vim.wo[winnr].diff then return end
+            if args.data.method == "textDocument/didOpen" then vim.lsp.foldclose("imports", winnr) end
+        end
     end,
 })
 
@@ -104,7 +106,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
                     local abbr = word
                     local max_w = vim.o.pummaxwidth - 10
 
-                    -- Shorten long labels to fit the popup menu
                     if max_w > 0 and #abbr > max_w then abbr = abbr:sub(1, max_w - 3) .. "..." end
 
                     local kind_name = vim.lsp.protocol.CompletionItemKind[item.kind] or ""
