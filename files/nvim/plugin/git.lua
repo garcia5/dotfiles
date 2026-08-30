@@ -90,4 +90,5 @@ require("diffview").setup({
         },
     },
 })
+
 vim.keymap.set("n", "<Leader>gd", "<cmd>DiffviewOpen<CR>", { desc = "Open changed files" })
