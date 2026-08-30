@@ -75,8 +75,8 @@ vim.api.nvim_create_autocmd("FileType", {
             local is_installed = vim.tbl_contains(installed_langs, lang)
             if not is_installed then require("nvim-treesitter").install(lang):wait() end
 
-            -- enable treesitter features
-            vim.treesitter.start()
+            -- enable treesitter features (but exclude highlighting for csv)
+            if lang ~= "csv" then vim.treesitter.start() end
             vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
             vim.wo.foldmethod = "expr"
             vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
